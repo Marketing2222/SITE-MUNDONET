@@ -1,0 +1,990 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Administrador",
+      "email": "admin@mundonet.com.br",
+      "password": "$2a$10$o6CA/q37EAEkBTy3ksICkusqB2wdoH78iRTz1b8h56kH2ytdi/73y",
+      "created_at": "2026-06-27T12:19:47.938Z"
+    }
+  ],
+  "hero_slides": [
+    {
+      "id": 1,
+      "url": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png",
+      "title": "",
+      "subtitle": "",
+      "sort_order": 0,
+      "active": true
+    },
+    {
+      "id": 2,
+      "url": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/globoplay1.png",
+      "title": "",
+      "subtitle": "",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "id": 3,
+      "url": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/01/planogamer.png",
+      "title": "",
+      "subtitle": "",
+      "sort_order": 2,
+      "active": true
+    },
+    {
+      "id": 4,
+      "url": "http://mundonetbandalarga.com.br/wp-content/uploads/2026/06/vempramundonet2026.png",
+      "title": "",
+      "subtitle": "",
+      "sort_order": 3,
+      "active": true
+    }
+  ],
+  "plans": [
+    {
+      "id": 1,
+      "name": "600 MEGA",
+      "speed": "600",
+      "price": "39,90",
+      "highlight": "No 1° mês. Depois, R$99,90",
+      "highlight_icon": "",
+      "button_text": "EU QUERO!",
+      "whatsapp_msg": "Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20o%20plano%20de%20600%20MEGA.",
+      "included_apps": [
+        {
+          "name": "Deezer",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "DE",
+          "icon_url": "http://localhost:3001/uploads/1782571132499-deezer.png",
+          "description": "Sua música favorita, sem interrupções! 🎵 Com a Mundonet, você tem acesso ao Deezer Premium para ouvir milhões de músicas, podcasts e rádios onde e quando quiser, com qualidade de som incrível e sem anúncios."
+        },
+        {
+          "name": "Playkids",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "PL",
+          "icon_url": "http://localhost:3001/uploads/1782571166993-playkids-(2025).png",
+          "description": "Diversão e aprendizado para os pequenos! 👧📚 Com a Mundonet, você tem acesso ao PlayKids, com desenhos, jogos e livros educativos para as crianças aprenderem e se divertirem com segurança, onde e quando quiser."
+        },
+        {
+          "name": "Looke",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "LO",
+          "icon_url": "http://localhost:3001/uploads/1782571186481-looke-(2025).png",
+          "description": "Filmes e séries para toda a família! 🎬 Com a Mundonet, você tem acesso ao Looke, uma plataforma de streaming com filmes, séries e conteúdos infantis para assistir quando e onde quiser."
+        },
+        {
+          "name": "Mais apps",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "MA",
+          "icon_url": "http://localhost:3001/uploads/1782571215099-mais-apps.png",
+          "description": "Veja o catálogo completo de apps com nosso time comercial."
+        }
+      ],
+      "bonus_app": {
+        "name": "Ilimitado",
+        "color": "#111827",
+        "textColor": "#fff",
+        "abbr": "∞"
+      },
+      "details": [
+        "Internet 100% Fibra Óptica",
+        "Wi-Fi 6 incluso",
+        "40 canais de TV grátis",
+        "Filmes e E-Books inclusos",
+        "Velocidade ilimitada",
+        "Instalação por R$ 39,90"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 0,
+      "bonus_apps": [],
+      "enable_bonus": false,
+      "badges": [
+        {
+          "text": "Instalação R$39,90",
+          "icon_url": "",
+          "icon_emoji": "",
+          "bg_color": "#00C853",
+          "text_color": "#ffffff"
+        },
+        {
+          "text": "Canais Grátis",
+          "icon_url": "",
+          "icon_emoji": "",
+          "bg_color": "#323232",
+          "text_color": "#ffffff"
+        },
+        {
+          "text": "Wi-Fi 6",
+          "icon_url": "",
+          "icon_emoji": "",
+          "bg_color": "#323232",
+          "text_color": "#ffffff"
+        },
+        {
+          "text": "Wi-Fi Grátis",
+          "icon_url": "",
+          "icon_emoji": "",
+          "bg_color": "#323232",
+          "text_color": "#ffffff"
+        }
+      ],
+      "enable_details": false,
+      "plan_font": "",
+      "button_bg_color": "#1423eb",
+      "accent_color": "#1423eb",
+      "modal_title_color": "#1423eb"
+    },
+    {
+      "id": 2,
+      "name": "700 MEGA",
+      "speed": "700",
+      "price": "39,90",
+      "highlight": "No 1° mês. Depois, R129,90",
+      "highlight_icon": "",
+      "button_text": "EU QUERO!",
+      "whatsapp_msg": "Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20o%20plano%20de%20700%20MEGA.",
+      "included_apps": [
+        {
+          "name": "Deezer",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "DE",
+          "icon_url": "http://localhost:3001/uploads/1782571132499-deezer.png",
+          "description": "Sua música favorita, sem interrupções! 🎵 Com a Mundonet, você tem acesso ao Deezer Premium para ouvir milhões de músicas, podcasts e rádios onde e quando quiser, com qualidade de som incrível e sem anúncios."
+        },
+        {
+          "name": "Playkids",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "PL",
+          "icon_url": "http://localhost:3001/uploads/1782571166993-playkids-(2025).png",
+          "description": "Diversão e aprendizado para os pequenos! 👧📚 Com a Mundonet, você tem acesso ao PlayKids, com desenhos, jogos e livros educativos para as crianças aprenderem e se divertirem com segurança, onde e quando quiser."
+        },
+        {
+          "name": "Looke",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "LO",
+          "icon_url": "http://localhost:3001/uploads/1782571186481-looke-(2025).png",
+          "description": "Filmes e séries para toda a família! 🎬 Com a Mundonet, você tem acesso ao Looke, uma plataforma de streaming com filmes, séries e conteúdos infantis para assistir quando e onde quiser."
+        },
+        {
+          "name": "Mais apps",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "MA",
+          "icon_url": "http://localhost:3001/uploads/1782571215099-mais-apps.png",
+          "description": "Veja o catálogo completo de apps com nosso time comercial."
+        }
+      ],
+      "bonus_app": {
+        "name": "Ilimitado",
+        "color": "#111827",
+        "textColor": "#fff",
+        "abbr": "∞"
+      },
+      "details": [
+        "Internet 100% Fibra Óptica",
+        "Wi-Fi 6 incluso",
+        "40 canais de TV grátis",
+        "Filmes e E-Books inclusos",
+        "Velocidade ilimitada",
+        "Instalação por R$ 39,90"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 1,
+      "bonus_apps": [
+        {
+          "name": "Globoplay",
+          "color": "#111827",
+          "textColor": "#fff",
+          "abbr": "ADS",
+          "icon_url": "http://localhost:3001/uploads/1782571412775-GloboPlay-(com-anÃºncios).png",
+          "description": "O melhor do entretenimento brasileiro! 📺 Com a Mundonet, você tem acesso ao Globoplay, com novelas, séries, filmes, programas e conteúdos exclusivos para assistir quando e onde quiser."
+        },
+        {
+          "name": "Apple TV",
+          "color": "#111827",
+          "textColor": "#fff",
+          "abbr": "AP",
+          "icon_url": "http://localhost:3001/uploads/1782571436666-AppleTV.png",
+          "description": "Entretenimento de qualidade na sua tela! 🍎📺 Com a Mundonet, você tem acesso ao Apple TV+, com séries e filmes exclusivos para assistir quando e onde quiser."
+        },
+        {
+          "name": "SKY+ e Amazon Prime",
+          "color": "#111827",
+          "textColor": "#fff",
+          "abbr": "SK",
+          "icon_url": "http://localhost:3001/uploads/1782571462240-Sky+-Amazon-Prime-(com-anÃºncios).png",
+          "description": "Dobro de entretenimento para você! 📺🎬 Com a Mundonet, você tem acesso ao SKY+ e Amazon Prime, reunindo canais ao vivo, filmes, séries, esportes e benefícios exclusivos para aproveitar quando e onde quiser."
+        }
+      ],
+      "enable_bonus": true,
+      "badges": [],
+      "enable_details": false,
+      "button_bg_color": "#1423eb",
+      "accent_color": "#1423eb",
+      "modal_title_color": "#1423eb",
+      "label_bonus": "1 APP DA ÁREA TOP",
+      "label_included": "1 APP DA ÁREA STANDARD"
+    },
+    {
+      "id": 3,
+      "name": "800 MEGA",
+      "speed": "800",
+      "price": "139,90",
+      "highlight": "Alta performance para tudo",
+      "highlight_icon": "",
+      "button_text": "EU QUERO!",
+      "whatsapp_msg": "Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20o%20plano%20de%20800%20MEGA.",
+      "included_apps": [
+        {
+          "name": "Deezer",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "DE",
+          "icon_url": "http://localhost:3001/uploads/1782571132499-deezer.png",
+          "description": "Sua música favorita, sem interrupções! 🎵 Com a Mundonet, você tem acesso ao Deezer Premium para ouvir milhões de músicas, podcasts e rádios onde e quando quiser, com qualidade de som incrível e sem anúncios."
+        },
+        {
+          "name": "Playkids",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "PL",
+          "icon_url": "http://localhost:3001/uploads/1782571166993-playkids-(2025).png",
+          "description": "Diversão e aprendizado para os pequenos! 👧📚 Com a Mundonet, você tem acesso ao PlayKids, com desenhos, jogos e livros educativos para as crianças aprenderem e se divertirem com segurança, onde e quando quiser."
+        },
+        {
+          "name": "Looke",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "LO",
+          "icon_url": "http://localhost:3001/uploads/1782571186481-looke-(2025).png",
+          "description": "Filmes e séries para toda a família! 🎬 Com a Mundonet, você tem acesso ao Looke, uma plataforma de streaming com filmes, séries e conteúdos infantis para assistir quando e onde quiser."
+        },
+        {
+          "name": "Mais apps",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "MA",
+          "icon_url": "http://localhost:3001/uploads/1782571215099-mais-apps.png",
+          "description": "Veja o catálogo completo de apps com nosso time comercial."
+        }
+      ],
+      "bonus_app": {
+        "name": "2 Roteadores",
+        "color": "#7C3AED",
+        "textColor": "#fff",
+        "abbr": "2R"
+      },
+      "details": [
+        "Internet 100% Fibra Óptica",
+        "2 Roteadores Mesh Wi-Fi 6",
+        "40 canais de TV grátis",
+        "Filmes e E-Books inclusos",
+        "Velocidade ilimitada",
+        "Instalação GRÁTIS"
+      ],
+      "popular": true,
+      "active": true,
+      "sort_order": 2,
+      "bonus_apps": [
+        {
+          "name": "HBO Max",
+          "color": "#111827",
+          "textColor": "#fff",
+          "abbr": "HB",
+          "icon_url": "http://localhost:3001/uploads/1782571586473-max.png",
+          "description": "Os maiores sucessos em um só lugar! 🎬 Com a Mundonet, você tem acesso à HBO Max, com filmes, séries, documentários e produções exclusivas para assistir quando e onde quiser."
+        },
+        {
+          "name": "Disney+",
+          "color": "#111827",
+          "textColor": "#fff",
+          "abbr": "DI",
+          "icon_url": "http://localhost:3001/uploads/1782571603512-disney+.png",
+          "description": "Diversão para toda a família! ✨ Com a Mundonet, você tem acesso ao Disney+, com filmes, séries e conteúdos da Disney, Pixar, Marvel, Star Wars e National Geographic para assistir quando e onde quiser."
+        },
+        {
+          "name": "Globoplay",
+          "color": "#111827",
+          "textColor": "#fff",
+          "abbr": "GL",
+          "icon_url": "http://localhost:3001/uploads/1782571660761-GloboPlay-(sem-anÃºncios).png",
+          "description": "O melhor do entretenimento brasileiro! 📺 Com a Mundonet, você tem acesso ao Globoplay, com novelas, séries, filmes, programas e conteúdos exclusivos para assistir quando e onde quiser."
+        }
+      ],
+      "enable_bonus": true,
+      "badges": [],
+      "label_bonus": "1 APP DA ÁREA PLUS",
+      "button_bg_color": "#1423eb",
+      "accent_color": "#1423eb",
+      "modal_title_color": "#1423eb",
+      "label_included": "1 APP DA ÁREA STANDARD",
+      "enable_details": false
+    }
+  ],
+  "quick_links": [
+    {
+      "id": 1,
+      "title": "Não é cliente?",
+      "description": "Conheça nossos planos e ofertas de internet.",
+      "url": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet",
+      "button_text": "Conhecer Planos",
+      "icon_type": "user",
+      "sort_order": 0,
+      "active": true,
+      "card_bg": "#ededed",
+      "icon_bg": "#2563EB",
+      "icon_color": "#ededed",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#2563EB"
+    },
+    {
+      "id": 2,
+      "title": "Perdeu o prazo?",
+      "description": "Emita a segunda via do seu boleto de forma rápida.",
+      "url": "https://ixc.mundonetbandalarga.com.br/central_assinante_web/login",
+      "button_text": "Emitir Boleto",
+      "icon_type": "document",
+      "sort_order": 1,
+      "active": true,
+      "card_bg": "#ededed",
+      "icon_bg": "#2563EB",
+      "icon_color": "#ededed",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#2563EB"
+    },
+    {
+      "id": 3,
+      "title": "Precisa de suporte?",
+      "description": "Fale com o nosso suporte técnico especializado.",
+      "url": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20suporte.",
+      "button_text": "Suporte Técnico",
+      "icon_type": "chat",
+      "sort_order": 2,
+      "active": true,
+      "card_bg": "#ededed",
+      "icon_bg": "#2563EB",
+      "icon_color": "#ededed",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#2563EB"
+    },
+    {
+      "id": 4,
+      "title": "Teste de velocidade",
+      "description": "Faça um teste de velocidade de conexões agora.",
+      "url": "https://www.speedtest.net/pt",
+      "button_text": "Testar Velocidade",
+      "icon_type": "speed",
+      "sort_order": 3,
+      "active": true,
+      "card_bg": "#ededed",
+      "icon_bg": "#2563EB",
+      "icon_color": "#ededed",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#2563EB"
+    }
+  ],
+  "entertainment": [
+    {
+      "id": 1,
+      "name": "Streaming",
+      "icon": "🎬",
+      "sort_order": 0,
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Infantil",
+      "icon": "🎈",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "Música",
+      "icon": "🎵",
+      "sort_order": 2,
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "Leitura",
+      "icon": "📚",
+      "sort_order": 3,
+      "active": true
+    },
+    {
+      "id": 5,
+      "name": "Exercícios",
+      "icon": "💪",
+      "sort_order": 4,
+      "active": true
+    },
+    {
+      "id": 6,
+      "name": "Saúde & Bem-Estar",
+      "icon": "🍏",
+      "sort_order": 5,
+      "active": true
+    }
+  ],
+  "contact_info": [
+    {
+      "id": 1,
+      "key": "phone",
+      "value": "(98) 3042-0030",
+      "label": "Telefone Fixo"
+    },
+    {
+      "id": 2,
+      "key": "phone_raw",
+      "value": "559830420030",
+      "label": "Telefone (formato WhatsApp)"
+    },
+    {
+      "id": 3,
+      "key": "whatsapp",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.",
+      "label": "Link WhatsApp"
+    },
+    {
+      "id": 4,
+      "key": "instagram",
+      "value": "https://www.instagram.com/_mundonet/",
+      "label": "Instagram URL"
+    },
+    {
+      "id": 5,
+      "key": "instagram_handle",
+      "value": "@_mundonet",
+      "label": "Instagram @"
+    },
+    {
+      "id": 6,
+      "key": "email",
+      "value": "contato@mundonetbandalarga.com.br",
+      "label": "E-mail"
+    },
+    {
+      "id": 7,
+      "key": "address",
+      "value": "São Luís - MA",
+      "label": "Endereço"
+    },
+    {
+      "id": 8,
+      "key": "maps_url",
+      "value": "https://maps.app.goo.gl/mrMYuZiMiBY6ei527",
+      "label": "Link Google Maps"
+    },
+    {
+      "id": 9,
+      "key": "maps_embed",
+      "value": "https://maps.google.com/maps?q=mundonet%20telecom&t=m&z=15&output=embed&iwloc=near",
+      "label": "Embed Maps"
+    },
+    {
+      "id": 10,
+      "key": "intro_text",
+      "value": "Precisa tirar dúvidas, contratar um plano ou solicitar suporte? Nossa equipe está pronta para atendê-lo da melhor forma possível.",
+      "label": "Texto de Introdução"
+    }
+  ],
+  "site_settings": [
+    {
+      "id": 1,
+      "key": "_global_theme",
+      "value": "{\"customization_enabled\":true,\"bg_color\":\"#e6f0fa\",\"text_color\":\"#4b5563\",\"title_color\":\"#002db3\",\"primary_font\":\"'Outfit', sans-serif\",\"section_spacing\":\"80px\",\"accent_color\":\"#0041ff\",\"accent_hover_color\":\"#0041ff\",\"button_bg_color\":\"#0041ff\",\"button_text_color\":\"#ffffff\",\"section_bg_color\":\"#f7f7f7\",\"section_border_color\":\"#E2E8F0\",\"card_bg_color\":\"#ffffff\",\"card_text_color\":\"#1E293B\",\"hero_overlay_color\":\"rgba(0, 45, 114, 0.7)\",\"hero_overlay_enabled\":false,\"border_radius\":\"16px\",\"hero_height\":\"500\",\"hero_width\":600,\"hero_transition\":\"fade\",\"hero_show_buttons\":false,\"hero_btn1_text\":\"Ver Planos\",\"hero_btn1_link\":\"#internet\",\"hero_btn1_bg\":\"#ff6a00\",\"hero_btn1_text_color\":\"#ffffff\",\"hero_btn2_text\":\"Falar com Atendente\",\"hero_btn2_link\":\"https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.\",\"hero_btn2_bg\":\"rgba(255, 255, 255, 0.15)\",\"hero_btn2_text_color\":\"#ffffff\"}",
+      "label": "Tema Global"
+    },
+    {
+      "id": 2,
+      "key": "site_name",
+      "value": "Mundonet Banda Larga",
+      "label": "Nome do Site"
+    },
+    {
+      "id": 3,
+      "key": "logo_url",
+      "value": "http://mundonetbandalarga.com.br/wp-content/uploads/2024/10/2-png.png",
+      "label": "URL do Logo"
+    },
+    {
+      "id": 4,
+      "key": "primary_color",
+      "value": "#002db3",
+      "label": "Cor Primária"
+    },
+    {
+      "id": 5,
+      "key": "whatsapp_float",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.",
+      "label": "WhatsApp Flutuante"
+    },
+    {
+      "id": 6,
+      "key": "footer_cnpj",
+      "value": "07.038.108/0001-94",
+      "label": "CNPJ da empresa"
+    },
+    {
+      "id": 7,
+      "key": "footer_anatel",
+      "value": "00060-7999",
+      "label": "Número Anatel"
+    },
+    {
+      "id": 8,
+      "key": "header_bg_color",
+      "value": "#ffffff",
+      "label": "Cor de fundo do Header"
+    },
+    {
+      "id": 9,
+      "key": "header_text_color",
+      "value": "#000000",
+      "label": "Cor do texto/ícones"
+    },
+    {
+      "id": 10,
+      "key": "header_topbar_bg",
+      "value": "#002db3",
+      "label": "Cor de fundo da barra superior"
+    },
+    {
+      "id": 11,
+      "key": "header_topbar_text",
+      "value": "#ffffff",
+      "label": "Cor do texto da barra superior"
+    },
+    {
+      "id": 12,
+      "key": "header_font",
+      "value": "",
+      "label": "Fonte (Google Fonts)"
+    },
+    {
+      "id": 13,
+      "key": "header_portal_url",
+      "value": "https://ixc.mundonetbandalarga.com.br/central_assinante_web/login",
+      "label": "URL do botão Portal"
+    },
+    {
+      "id": 14,
+      "key": "header_portal_text",
+      "value": "Central do Assinante",
+      "label": "Texto do botão Portal"
+    },
+    {
+      "id": 15,
+      "key": "header_portal_bg",
+      "value": "#00a0f0",
+      "label": "Cor de fundo do botão Portal"
+    },
+    {
+      "id": 16,
+      "key": "header_portal_text_color",
+      "value": "#ffffff",
+      "label": "Cor do texto do botão Portal"
+    },
+    {
+      "id": 17,
+      "key": "header_nav_item1_text",
+      "value": "Planos",
+      "label": "Nav: Item 1 Texto"
+    },
+    {
+      "id": 18,
+      "key": "header_nav_item2_text",
+      "value": "App Mundonet +",
+      "label": "Nav: Item 2 Texto"
+    },
+    {
+      "id": 19,
+      "key": "header_nav_item3_text",
+      "value": "Para Você",
+      "label": "Nav: Item 3 Texto"
+    },
+    {
+      "id": 20,
+      "key": "header_nav_item4_text",
+      "value": "Para Empresas",
+      "label": "Nav: Item 4 Texto"
+    },
+    {
+      "id": 21,
+      "key": "header_nav_item5_text",
+      "value": "Trabalhe Conosco",
+      "label": "Nav: Item 5 Texto"
+    },
+    {
+      "id": 22,
+      "key": "footer_bg_color",
+      "value": "#002db3",
+      "label": "Cor de fundo do Footer"
+    },
+    {
+      "id": 23,
+      "key": "footer_text_color",
+      "value": "#cbd5e1",
+      "label": "Cor do texto"
+    },
+    {
+      "id": 24,
+      "key": "footer_heading_color",
+      "value": "#ffffff",
+      "label": "Cor dos títulos das colunas"
+    },
+    {
+      "id": 25,
+      "key": "footer_link_color",
+      "value": "#93c5fd",
+      "label": "Cor dos links"
+    },
+    {
+      "id": 26,
+      "key": "footer_about_text",
+      "value": "Conectando você com o mundo!",
+      "label": "Texto institucional (sobre a empresa)"
+    },
+    {
+      "id": 27,
+      "key": "footer_col2_title",
+      "value": "CONTATO",
+      "label": "Título da coluna de Contato"
+    },
+    {
+      "id": 28,
+      "key": "footer_col3_title",
+      "value": "ATALHOS",
+      "label": "Título da coluna de Atalhos"
+    },
+    {
+      "id": 29,
+      "key": "footer_col4_title",
+      "value": "ONDE NOS ENCONTRAR",
+      "label": "Título da coluna de Redes Sociais"
+    },
+    {
+      "id": 30,
+      "key": "footer_subbar_bg",
+      "value": "#001240",
+      "label": "Cor de fundo da barra inferior"
+    },
+    {
+      "id": 31,
+      "key": "footer_subbar_text",
+      "value": "#94a3b8",
+      "label": "Cor do texto da barra inferior"
+    },
+    {
+      "id": 32,
+      "key": "footer_anatel_logo_url",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/anatel-logo-1024x248.png",
+      "label": "URL do logo Anatel"
+    },
+    {
+      "id": 33,
+      "key": "footer_font",
+      "value": "",
+      "label": "Fonte do Footer (Google Fonts)"
+    },
+    {
+      "id": 34,
+      "key": "footer_padding",
+      "value": "60px 0",
+      "label": "Espaçamento interno do Footer"
+    },
+    {
+      "id": 35,
+      "key": "sections_order",
+      "value": "[\"hero\",\"quicklinks\",\"plans\",\"benefits\",\"entertainment\",\"app\",\"specialties\",\"contact\"]",
+      "label": "Ordem das Seções"
+    },
+    {
+      "id": 36,
+      "key": "sections_active",
+      "value": "{\"hero\":true,\"quicklinks\":true,\"plans\":true,\"benefits\":true,\"app\":true,\"specialties\":false,\"entertainment\":true,\"contact\":true}",
+      "label": "Seções Ativas"
+    },
+    {
+      "id": 37,
+      "key": "header_portal_position",
+      "value": "topbar_right",
+      "label": "Posição do botão Portal"
+    },
+    {
+      "id": 38,
+      "key": "nav_item_gap",
+      "value": "8px",
+      "label": "Distância entre os itens"
+    },
+    {
+      "id": 39,
+      "key": "nav_item_padding",
+      "value": "",
+      "label": "Espaço clicável de cada item"
+    },
+    {
+      "id": 40,
+      "key": "nav_dropdown_width",
+      "value": "300px",
+      "label": "Largura da caixa de sub-itens"
+    },
+    {
+      "id": 41,
+      "key": "nav_dropdown_padding",
+      "value": "8px",
+      "label": "Espaço interno da caixa"
+    },
+    {
+      "id": 42,
+      "key": "nav_subitem_padding",
+      "value": "",
+      "label": "Espaço clicável dos sub-itens"
+    },
+    {
+      "id": 43,
+      "key": "nav_font_size",
+      "value": "",
+      "label": "Tamanho do texto do menu"
+    },
+    {
+      "id": 44,
+      "key": "nav_menu",
+      "value": "[{\"id\":\"planos\",\"label\":\"Planos\",\"href\":\"#internet\",\"target\":\"_self\",\"hasDropdown\":true,\"items\":[{\"id\":\"planos-1\",\"label\":\"Internet\",\"href\":\"#internet\",\"target\":\"_self\"},{\"id\":\"planos-2\",\"label\":\"Aplicativos\",\"href\":\"#aplicativos\",\"target\":\"_self\"},{\"id\":\"planos-3\",\"label\":\"Canais de TV\",\"href\":\"#entretenimento\",\"target\":\"_self\"}]},{\"id\":\"app\",\"label\":\"App Mundonet +\",\"href\":\"#app\",\"target\":\"_self\",\"hasDropdown\":false,\"items\":[]},{\"id\":\"para-voce\",\"label\":\"Para Você\",\"href\":\"#para-voce\",\"target\":\"_self\",\"hasDropdown\":true,\"items\":[{\"id\":\"voce-1\",\"label\":\"Vem pra Mundonet\",\"href\":\"https://indique.mundonetbandalarga.com.br\",\"target\":\"_blank\"},{\"id\":\"voce-2\",\"label\":\"Guia do Assinante\",\"href\":\"https://drive.google.com/file/d/1HFTbp_ISg_4flLS33RzgpcLR9INaZPfq/view?usp=sharing\",\"target\":\"_blank\"}]},{\"id\":\"empresas\",\"label\":\"Para Empresas\",\"href\":\"https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20para%20a%20minha%20empresa.\",\"target\":\"_blank\",\"hasDropdown\":false,\"items\":[]},{\"id\":\"trabalhe\",\"label\":\"Trabalhe Conosco\",\"href\":\"https://www.linkedin.com/company/mundonettelecom\",\"target\":\"_blank\",\"hasDropdown\":false,\"items\":[]},{\"id\":\"mais\",\"label\":\"MAIS\",\"href\":\"#mais\",\"target\":\"_self\",\"hasDropdown\":true,\"items\":[{\"id\":\"mais-1\",\"label\":\"Contrato\",\"href\":\"https://drive.google.com/file/d/1t5XomND_mju6X07q1I3HFfQpdb81PXwJ/view?usp=sharing\",\"target\":\"_blank\"},{\"id\":\"mais-2\",\"label\":\"Contato\",\"href\":\"#contact\",\"target\":\"_self\"}]}]",
+      "label": "Menu de Navegação (JSON)"
+    }
+  ],
+  "app_library": [
+    {
+      "id": 1,
+      "name": "Deezer",
+      "color": "#6B21A8",
+      "textColor": "#fff",
+      "abbr": "DE",
+      "icon_url": "http://localhost:3001/uploads/1782571132499-deezer.png",
+      "description": "Sua música favorita, sem interrupções! 🎵 Com a Mundonet, você tem acesso ao Deezer Premium para ouvir milhões de músicas, podcasts e rádios onde e quando quiser, com qualidade de som incrível e sem anúncios.",
+      "created_at": "2026-06-27T12:22:16.308Z"
+    },
+    {
+      "id": 2,
+      "name": "Playkids",
+      "color": "#6B21A8",
+      "textColor": "#fff",
+      "abbr": "PL",
+      "icon_url": "http://localhost:3001/uploads/1782571166993-playkids-(2025).png",
+      "description": "Diversão e aprendizado para os pequenos! 👧📚 Com a Mundonet, você tem acesso ao PlayKids, com desenhos, jogos e livros educativos para as crianças aprenderem e se divertirem com segurança, onde e quando quiser.",
+      "created_at": "2026-06-27T13:01:56.779Z"
+    },
+    {
+      "id": 3,
+      "name": "Looke",
+      "color": "#6B21A8",
+      "textColor": "#fff",
+      "abbr": "LO",
+      "icon_url": "http://localhost:3001/uploads/1782571186481-looke-(2025).png",
+      "description": "Filmes e séries para toda a família! 🎬 Com a Mundonet, você tem acesso ao Looke, uma plataforma de streaming com filmes, séries e conteúdos infantis para assistir quando e onde quiser.",
+      "created_at": "2026-06-27T14:39:58.545Z"
+    },
+    {
+      "id": 4,
+      "name": "Mais apps",
+      "color": "#6B21A8",
+      "textColor": "#fff",
+      "abbr": "MA",
+      "icon_url": "http://localhost:3001/uploads/1782571215099-mais-apps.png",
+      "description": "Veja o catálogo completo de apps com nosso time comercial.",
+      "created_at": "2026-06-27T14:40:43.565Z"
+    },
+    {
+      "id": 5,
+      "name": "Globoplay",
+      "color": "#111827",
+      "textColor": "#fff",
+      "abbr": "GL",
+      "icon_url": "http://localhost:3001/uploads/1782571660761-GloboPlay-(sem-anÃºncios).png",
+      "description": "O melhor do entretenimento brasileiro! 📺 Com a Mundonet, você tem acesso ao Globoplay, com novelas, séries, filmes, programas e conteúdos exclusivos para assistir quando e onde quiser.",
+      "created_at": "2026-06-27T14:43:46.680Z"
+    },
+    {
+      "id": 6,
+      "name": "Apple TV",
+      "color": "#111827",
+      "textColor": "#fff",
+      "abbr": "AP",
+      "icon_url": "http://localhost:3001/uploads/1782571436666-AppleTV.png",
+      "description": "Entretenimento de qualidade na sua tela! 🍎📺 Com a Mundonet, você tem acesso ao Apple TV+, com séries e filmes exclusivos para assistir quando e onde quiser.",
+      "created_at": "2026-06-27T14:44:05.766Z"
+    },
+    {
+      "id": 7,
+      "name": "SKY+ e Amazon Prime",
+      "color": "#111827",
+      "textColor": "#fff",
+      "abbr": "SK",
+      "icon_url": "http://localhost:3001/uploads/1782571462240-Sky+-Amazon-Prime-(com-anÃºncios).png",
+      "description": "Dobro de entretenimento para você! 📺🎬 Com a Mundonet, você tem acesso ao SKY+ e Amazon Prime, reunindo canais ao vivo, filmes, séries, esportes e benefícios exclusivos para aproveitar quando e onde quiser.",
+      "created_at": "2026-06-27T14:44:44.365Z"
+    },
+    {
+      "id": 8,
+      "name": "HBO Max",
+      "color": "#111827",
+      "textColor": "#fff",
+      "abbr": "HB",
+      "icon_url": "http://localhost:3001/uploads/1782571586473-max.png",
+      "description": "Os maiores sucessos em um só lugar! 🎬 Com a Mundonet, você tem acesso à HBO Max, com filmes, séries, documentários e produções exclusivas para assistir quando e onde quiser.",
+      "created_at": "2026-06-27T14:46:33.892Z"
+    },
+    {
+      "id": 9,
+      "name": "Disney+",
+      "color": "#111827",
+      "textColor": "#fff",
+      "abbr": "DI",
+      "icon_url": "http://localhost:3001/uploads/1782571603512-disney+.png",
+      "description": "Diversão para toda a família! ✨ Com a Mundonet, você tem acesso ao Disney+, com filmes, séries e conteúdos da Disney, Pixar, Marvel, Star Wars e National Geographic para assistir quando e onde quiser.",
+      "created_at": "2026-06-27T14:46:58.820Z"
+    },
+    {
+      "id": 10,
+      "name": "Globoplay (com anúncios)",
+      "color": "#111827",
+      "textColor": "#fff",
+      "abbr": "ADS",
+      "icon_url": "http://localhost:3001/uploads/1782571412775-GloboPlay-(com-anÃºncios).png",
+      "description": "O melhor do entretenimento brasileiro! 📺 Com a Mundonet, você tem acesso ao Globoplay, com novelas, séries, filmes, programas e conteúdos exclusivos para assistir quando e onde quiser. COM ANÚNCIOS.",
+      "created_at": "2026-06-27T14:47:18.259Z"
+    }
+  ],
+  "benefits": [
+    {
+      "id": 1,
+      "title": "Planos perfeitos",
+      "description": "Atendentes especializados te indicam o plano perfeito para sua necessidade",
+      "icon_type": "star",
+      "sort_order": 0,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 2,
+      "title": "Tráfego ilimitado",
+      "description": "Sem limite de uso, para você poder fazer tudo o que ama online!",
+      "icon_type": "speed",
+      "sort_order": 1,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 3,
+      "title": "Pós Pago",
+      "description": "Utilize antes, pague depois e ganhe desconto pagando em dia!",
+      "icon_type": "clock",
+      "sort_order": 2,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 4,
+      "title": "Internet Gaming",
+      "description": "Rota exclusiva para gamers, com ping muito menor e velocidade muito maior!",
+      "icon_type": "globe",
+      "sort_order": 3,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 5,
+      "title": "Instalação rápida",
+      "description": "Saiba o dia da instalação, e vai ser em menos de 48 horas, legal né?",
+      "icon_type": "download",
+      "sort_order": 4,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 6,
+      "title": "Suporte rápido",
+      "description": "Em raras ocasiões vamos ter um prazo máximo de 24 horas após a solicitação!",
+      "icon_type": "chat",
+      "sort_order": 5,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 7,
+      "title": "Roteador de alta potência",
+      "description": "Roteador de longo alcance, 1200Mbps e frequências 2.4 e 5.8 Ghz",
+      "icon_type": "shield",
+      "sort_order": 6,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 8,
+      "title": "Tecnologia nova",
+      "description": "Equipamentos novos para velocidade de conexão e estabilidade do serviço",
+      "icon_type": "gift",
+      "sort_order": 7,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    }
+  ],
+  "_counters": {
+    "users": 1,
+    "hero": 5,
+    "plans": 5,
+    "ql": 5,
+    "ent": 7,
+    "app_lib": 1,
+    "benefits": 9
+  }
+}

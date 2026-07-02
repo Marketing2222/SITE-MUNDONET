@@ -1,0 +1,21 @@
+{
+  "name": "mundonet-backend",
+  "version": "1.0.0",
+  "description": "Backend API para o site Mundonet com SQLite",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^12.11.1",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "jsonwebtoken": "^9.0.3",
+    "lowdb": "^7.0.1",
+    "multer": "^2.2.0"
+  }
+}

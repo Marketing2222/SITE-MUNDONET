@@ -1,0 +1,160 @@
+.site-footer {
+  background-color: var(--color-dark-accent);
+  color: #94A3B8;
+  padding-top: 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr 0.9fr 1fr;
+  gap: 32px;
+  padding-bottom: 40px;
+}
+
+.footer-col h3 {
+  color: var(--color-white);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.footer-col h3::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background-color: var(--color-primary);
+}
+
+/* Branding Column */
+.branding-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-logo img {
+  height: 54px;
+  width: auto;
+}
+
+.footer-about {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* List Column */
+.footer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-list li a {
+  font-size: 14px;
+  color: #94A3B8;
+  transition: color var(--transition-fast), padding-left var(--transition-fast);
+}
+
+.footer-list li a:hover {
+  color: var(--color-white);
+  padding-left: 4px;
+}
+
+/* Socials Column */
+.socials-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.footer-social-icons a {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.footer-social-icons a:hover {
+  background-color: var(--color-primary);
+  transform: translateY(-3px);
+}
+
+.anatel-container {
+  max-width: 180px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.anatel-logo {
+  width: 100%;
+  height: auto;
+}
+
+/* Footer Sub Bar */
+.footer-sub-bar {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 20px 0;
+  font-size: 13px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sub-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cnpj-info {
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.copyright-info {
+  opacity: 0.8;
+}
+
+@media (max-width: 992px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    padding-top: 36px;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-bottom: 28px;
+  }
+  
+  .sub-bar-container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
