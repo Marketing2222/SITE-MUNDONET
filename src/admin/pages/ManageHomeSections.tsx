@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
 import ManageQuickLinks from './ManageQuickLinks';
 import ManageBenefits from './ManageBenefits';
 import { RichTextField } from '../components/RichTextField';
+import { API_BASE_URL } from '../../config/api';
 
 interface Setting { key: string; value: string; label: string; }
 
@@ -257,7 +258,7 @@ export const ManageHomeSections = () => {
     formData.append('image', file);
     try {
       const token = localStorage.getItem('mundonet_token');
-      const res = await fetch('http://localhost:3001/api/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formData

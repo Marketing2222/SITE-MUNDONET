@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import '../styles/Header.css';
+import { API_BASE_URL } from '../config/api';
 
 type Settings = Record<string, { value: string; label: string }>;
 type ContactInfo = Record<string, { value: string; label: string }>;
@@ -26,8 +27,8 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://localhost:3001/api/settings').then(res => res.json()),
-      fetch('http://localhost:3001/api/contact').then(res => res.json())
+      fetch(`${API_BASE_URL}/api/settings`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/contact`).then(res => res.json())
     ]).then(([settingsData, contactsData]: [Settings, ContactInfo]) => {
       setSettings(settingsData);
       setContacts(contactsData);

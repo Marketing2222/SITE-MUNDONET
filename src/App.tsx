@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { isLoggedIn } from './admin/hooks/useAuth';
+import { API_BASE_URL } from './config/api';
 
 // Public site components
 import Header from './components/Header';
@@ -51,7 +52,7 @@ function PublicSite() {
   const [sectionsActive, setSectionsActive] = useState<Record<string, boolean> | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
         if (data.whatsapp_float?.value) setFloatLink(data.whatsapp_float.value);
@@ -165,7 +166,7 @@ function PublicSite() {
 
 function App() {
   useEffect(() => {
-    fetch('http://localhost:3001/api/site-settings')
+    fetch(`${API_BASE_URL}/api/site-settings`)
       .then(res => res.json())
       .then(data => {
         if (!data || Object.keys(data).length === 0) return;

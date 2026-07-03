@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Variáveis de ambiente (nunca commitar segredos!)
+.env
+.env.local
+.env.*.local
+
+# Banco de dados local (em produção fica no volume Docker)
+backend/mundonet-db.json
+backend/mundonet-db.backup.json

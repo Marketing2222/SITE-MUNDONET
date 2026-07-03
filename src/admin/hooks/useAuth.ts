@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../../config/api';
+
 export const getToken = () => localStorage.getItem('admin_token');
 export const getUser = () => {
   try { return JSON.parse(localStorage.getItem('admin_user') || 'null'); }
@@ -11,7 +13,7 @@ export const logout = () => {
 
 export const apiFetch = async (path: string, options: RequestInit = {}) => {
   const token = getToken();
-  const res = await fetch(`http://localhost:3001/api${path}`, {
+  const res = await fetch(`${API_BASE_URL}/api${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

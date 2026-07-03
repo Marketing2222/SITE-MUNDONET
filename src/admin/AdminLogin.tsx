@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/Admin.css';
+import { API_BASE_URL } from '../config/api';
 
 export const AdminLogin = () => {
   const [email, setEmail] = useState('admin@mundonet.com.br');
@@ -14,7 +15,7 @@ export const AdminLogin = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:3001/api/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

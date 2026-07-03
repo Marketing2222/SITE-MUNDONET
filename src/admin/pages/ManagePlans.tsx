@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { API_BASE_URL } from '../../config/api';
 
 interface Plan {
   id: number; name: string; speed: string; price: string; highlight: string;
@@ -221,7 +222,7 @@ export const ManagePlans = () => {
     try {
       setSaving(true);
       const token = localStorage.getItem('admin_token');
-      const res = await fetch('http://localhost:3001/api/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd

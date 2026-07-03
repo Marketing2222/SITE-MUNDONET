@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import '../styles/Entertainment.css';
+import { API_BASE_URL } from '../config/api';
 
 interface AppItem {
   id: number;
@@ -17,12 +18,12 @@ export const Entertainment: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/entertainment')
+    fetch(`${API_BASE_URL}/api/entertainment`)
       .then(res => res.json())
       .then(data => setApps(data))
       .catch(console.error);
 
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
         const map: Record<string, string> = {};

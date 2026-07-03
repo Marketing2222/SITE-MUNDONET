@@ -21,14 +21,28 @@ import siteSettingsRoutes from './routes/siteSettingsRoutes.js';
 import benefitsRoutes from './routes/benefitsRoutes.js';
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-app.use(cors({ origin: ['http://localhost:5173', 'http://127.0.0.1:5173'] }));
+// CORS: aceita lista separada por vírgula via CORS_ORIGIN, ou localhost em dev
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+  : ['http://localhost:5173', 'http://127.0.0.1:5173'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Permite requisições sem origin (ex: mobile apps, curl) e origens da lista
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origem não permitida: ${origin}`));
+    }
+  }
+}));
 app.use(express.json());
 
-// Criar diretório de uploads se não existir
+// ── Uploads ──────────────────────────────────────────────────────────
 const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 
 app.use('/uploads', express.static(uploadsDir));
 
@@ -54,12 +68,24 @@ initDB().then(() => {
 
   app.post('/api/upload', upload.single('image'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Nenhuma imagem enviada' });
-    const url = `http://localhost:3001/uploads/${req.file.filename}`;
+    // URL relativa: funciona em qualquer domínio sem hardcode de localhost
+    const baseUrl = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
+    const url = `${baseUrl}/uploads/${req.file.filename}`;
     res.json({ url });
   });
 
+  // ── Serve o frontend React (dist/) em produção ────────────────────
+  const distPath = path.join(__dirname, 'public');
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    // Rota catch-all para o React Router (SPA)
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  }
+
   app.listen(PORT, () => {
-    console.log(`🚀 Mundonet Backend rodando em http://localhost:${PORT}`);
+    console.log(`🚀 Mundonet Backend rodando na porta ${PORT}`);
     console.log(`📦 Banco de dados: mundonet-db.json`);
     console.log(`🔐 Admin: admin@mundonet.com.br / admin123`);
   });
