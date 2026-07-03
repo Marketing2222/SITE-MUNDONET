@@ -346,7 +346,7 @@ export const Plans = () => {
                           <div className="plan-modal-price" style={{ margin: 0 }}>
                             <span className="currency">R$</span>
                             <span className="value">{selectedPlanModal.price}</span>
-                            <span className="period">{selectedPlanModal.modal_price_text || selectedPlanModal.label_price_period || 'por mês'}</span>
+                            <span className="period">{selectedPlanModal.label_price_period || 'por mês'}</span>
                           </div>
                           <a 
                             href={`https://api.whatsapp.com/send?phone=559830420030&text=${selectedPlanModal.whatsapp_msg}`}
