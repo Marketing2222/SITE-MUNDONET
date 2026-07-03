@@ -25,17 +25,17 @@ RUN npm run build
 # =============================================================
 # Stage 2: Runtime do Backend (Node.js + Express)
 # =============================================================
-FROM node:20-alpine AS runtime
+# Usa Debian (slim) em vez de Alpine: o better-sqlite3 tem binários pré-compilados
+# para glibc (Debian/Ubuntu), evitando compilação nativa e problemas de DNS.
+FROM node:20-slim AS runtime
 
 WORKDIR /app/backend
 
 # Copia arquivos de dependência do backend
 COPY backend/package.json backend/package-lock.json ./
 
-# Instala ferramentas de build necessárias para better-sqlite3 (node-gyp)
-RUN apk add --no-cache python3 make g++ \
-    && npm ci --omit=dev \
-    && apk del make g++
+# Instala dependências de produção (better-sqlite3 usa binário pré-compilado aqui)
+RUN npm ci --omit=dev
 
 # Copia o código do backend
 COPY backend/server.js ./
