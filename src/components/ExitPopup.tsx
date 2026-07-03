@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import '../styles/ExitPopup.css';
+import { API_BASE_URL } from '../config/api';
 
 interface PopupCard {
   id: number;
@@ -65,7 +66,7 @@ export const ExitPopup = () => {
   useEffect(() => {
     if (sessionStorage.getItem('exit_popup_dismissed')) return;
 
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
         if (data.exit_popup_enabled?.value === 'false') {

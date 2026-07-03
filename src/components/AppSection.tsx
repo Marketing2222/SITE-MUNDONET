@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import '../styles/AppSection.css';
+import { API_BASE_URL } from '../config/api';
 
 export const AppSection: React.FC = () => {
   const [s, setS] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
         const map: Record<string, string> = {};

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import '../styles/Hero.css';
+import { API_BASE_URL } from '../config/api';
 
 interface Slide {
   id: number;
@@ -27,12 +28,12 @@ export const Hero: React.FC = () => {
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({});
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/hero')
+    fetch(`${API_BASE_URL}/api/hero`)
       .then(res => res.json())
       .then(data => setSlides(data))
       .catch(console.error);
 
-    fetch('http://localhost:3001/api/site-settings')
+    fetch(`${API_BASE_URL}/api/site-settings`)
       .then(res => res.json())
       .then(data => setSiteSettings(data))
       .catch(console.error);

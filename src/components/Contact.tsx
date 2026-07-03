@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import '../styles/Contact.css';
+import { API_BASE_URL } from '../config/api';
 
 type ContactInfo = Record<string, { value: string; label: string }>;
 
@@ -7,7 +8,7 @@ export const Contact: React.FC = () => {
   const [contacts, setContacts] = useState<ContactInfo | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/contact')
+    fetch(`${API_BASE_URL}/api/contact`)
       .then(res => res.json())
       .then(data => setContacts(data))
       .catch(console.error);

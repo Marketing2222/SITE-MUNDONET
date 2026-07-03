@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import '../styles/Plans.css';
+import { API_BASE_URL } from '../config/api';
 
 interface AppIcon {
   name: string;
@@ -60,7 +61,7 @@ export const Plans = () => {
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/plans')
+    fetch(`${API_BASE_URL}/api/plans`)
       .then(res => res.json())
       .then(data => setPlans(data))
       .catch(console.error);

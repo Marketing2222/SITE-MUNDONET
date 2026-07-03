@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/Benefits.css';
+import { API_BASE_URL } from '../config/api';
 
 interface Benefit {
   id: number;
@@ -55,12 +56,12 @@ export const Benefits: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/benefits')
+    fetch(`${API_BASE_URL}/api/benefits`)
       .then(res => res.json())
       .then(data => setItems(data))
       .catch(console.error);
 
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
         if (data.benefits_title?.value) setTitle(data.benefits_title.value);

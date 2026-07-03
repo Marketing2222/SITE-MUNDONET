@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import '../styles/QuickLinks.css';
+import { API_BASE_URL } from '../config/api';
 
 interface QuickLink {
   id: number;
@@ -38,12 +39,12 @@ export const QuickLinks: React.FC = () => {
   const [title, setTitle] = useState('Como podemos te ajudar hoje?');
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/quicklinks')
+    fetch(`${API_BASE_URL}/api/quicklinks`)
       .then(res => res.json())
       .then(data => setLinks(data))
       .catch(console.error);
 
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
         if (data.quicklinks_title?.value) {

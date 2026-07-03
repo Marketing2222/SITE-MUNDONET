@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { API_BASE_URL } from '../../config/api';
 
 interface Slide { id: number; url: string; title: string; subtitle: string; sort_order: number; active: number; }
 const EMPTY: Omit<Slide,'id'> = { url:'', title:'', subtitle:'', sort_order:0, active:1 };
@@ -27,7 +28,7 @@ export const ManageHero = () => {
     try {
       const fd = new FormData();
       fd.append('image', file);
-      const res = await fetch('http://localhost:3001/api/upload', { method: 'POST', body: fd });
+      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: fd });
       const data = await res.json();
       if (data.url) setForm({ ...form, url: data.url });
     } catch { setMsg('Erro no upload'); }

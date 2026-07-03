@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { API_BASE_URL } from '../../config/api';
 
 interface Plan {
   id: number; name: string; speed: string; price: string; highlight: string;
@@ -15,6 +16,7 @@ interface Plan {
   label_bonus?: string; label_details?: string; label_price_period?: string; modal_price_text?: string;
   accent_color?: string;
   modal_label_color?: string;
+  modal_title_color?: string;
 }
 
 const EMPTY_PLAN: Omit<Plan, 'id'> = {
@@ -26,7 +28,7 @@ const EMPTY_PLAN: Omit<Plan, 'id'> = {
   card_bg_color: '', card_text_color: '', button_bg_color: '',
   button_text_color: '', plan_font: '', label_included: 'Incluso no plano:',
   label_bonus: 'Na assinatura, adicione mais um benefício:', label_details: 'Mais detalhes do plano',
-  label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151'
+  label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151', modal_title_color: ''
 };
 
 interface LibraryApp {
@@ -162,7 +164,7 @@ export const ManagePlans = () => {
     setNewApp({name:'',color:'#6B21A8',textColor:'#fff',abbr:'',icon_url:'',description:''});
   };
   const removeApp = (i: number) => setForm(f => ({ ...f, included_apps: f.included_apps.filter((_,j)=>j!==i) }));
-  const editApp = (i: number) => { setNewApp(form.included_apps[i]); setEditingAppIdx(i); };
+  const editApp = (i: number) => { const a = form.included_apps[i]; setNewApp({...a, icon_url: a.icon_url ?? '', description: a.description ?? ''}); setEditingAppIdx(i); };
   const moveApp = (i: number, dir: 'left' | 'right') => {
     setForm(f => {
       const apps = [...f.included_apps];
@@ -186,7 +188,7 @@ export const ManagePlans = () => {
     setNewBonus({name:'',color:'#111827',textColor:'#fff',abbr:'',icon_url:'',description:''});
   };
   const removeBonus = (i: number) => setForm(f => ({ ...f, bonus_apps: (f.bonus_apps || []).filter((_,j)=>j!==i) }));
-  const editBonus = (i: number) => { setNewBonus((form.bonus_apps || [])[i]); setEditingBonusIdx(i); };
+  const editBonus = (i: number) => { const a = (form.bonus_apps || [])[i]; setNewBonus({...a, icon_url: a.icon_url ?? '', description: a.description ?? ''}); setEditingBonusIdx(i); };
   const moveBonus = (i: number, dir: 'left' | 'right') => {
     setForm(f => {
       const apps = [...(f.bonus_apps || [])];
@@ -221,7 +223,7 @@ export const ManagePlans = () => {
     try {
       setSaving(true);
       const token = localStorage.getItem('admin_token');
-      const res = await fetch('http://localhost:3001/api/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd

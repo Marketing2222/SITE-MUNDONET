@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { API_BASE_URL } from '../../config/api';
 
 interface App {
   id:number; name:string; icon:string; logo_url:string; banner_url:string; description:string; link_url:string;
@@ -16,7 +17,7 @@ const UploadBtn = ({ value, onChange, label }: { value:string; onChange:(url:str
     try {
       setUploading(true);
       const token = localStorage.getItem('mundonet_token');
-      const res = await fetch('http://localhost:3001/api/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method:'POST', headers:{ Authorization:`Bearer ${token}` }, body:fd,
       });
       const d = await res.json();
