@@ -25,9 +25,7 @@ RUN npm run build
 # =============================================================
 # Stage 2: Runtime do Backend (Node.js + Express)
 # =============================================================
-# Usa Debian (slim) em vez de Alpine: o better-sqlite3 tem binários pré-compilados
-# para glibc (Debian/Ubuntu), evitando compilação nativa e problemas de DNS.
-FROM node:20-slim AS runtime
+FROM node:20-alpine AS runtime
 
 WORKDIR /app/backend
 
