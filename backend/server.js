@@ -84,7 +84,7 @@ initDB().then(() => {
     });
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Mundonet Backend rodando na porta ${PORT}`);
     console.log(`📦 Banco de dados: mundonet-db.json`);
     console.log(`🔐 Admin: admin@mundonet.com.br / admin123`);
