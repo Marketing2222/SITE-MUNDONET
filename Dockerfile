@@ -48,10 +48,10 @@ COPY --from=builder /app/dist ./public/
 RUN mkdir -p uploads data
 
 # Porta exposta
-EXPOSE 3001
+EXPOSE 80
 
 # Variáveis de ambiente (com defaults seguros)
-ENV PORT=3001
+ENV PORT=80
 ENV NODE_ENV=production
 
 # Inicia o servidor
