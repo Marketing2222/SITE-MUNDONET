@@ -54,7 +54,7 @@ export const Plans = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedPlanModal, setSelectedPlanModal] = useState<Plan | null>(null);
-  const [selectedBonusTab, setSelectedBonusTab] = useState<number>(0);
+  const [selectedBonusTab, setSelectedBonusTab] = useState<number | null>(0);
   const [selectedAppTab, setSelectedAppTab] = useState<number>(0);
 
   const [visible, setVisible] = useState(3);
