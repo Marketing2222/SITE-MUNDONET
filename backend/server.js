@@ -23,10 +23,11 @@ import benefitsRoutes from './routes/benefitsRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS: aceita configuração via CORS_ORIGIN, ou libera geral (*) para evitar problemas em produção
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*'
-}));
+// CORS: aceita configuração via CORS_ORIGIN (suporta múltiplas origens separadas por vírgula)
+const corsOrigin = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
+  : '*';
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
 // ── Uploads ──────────────────────────────────────────────────────────

@@ -1041,6 +1041,12 @@
       "key": "support_ch_btn2_color",
       "value": "#7c3aed",
       "label": "Central de Atendimento: Botão 2 Cor do Texto"
+    },
+    {
+      "id": 100,
+      "key": "favicon_url",
+      "value": "/favicon.svg",
+      "label": "URL do Favicon"
     }
   ],
   "app_library": [],

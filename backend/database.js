@@ -484,6 +484,17 @@ export async function initDB() {
     }
   }
 
+  // ── Migração: favicon_url ─────────────────────────────────────────
+  if (!db.data.site_settings.find(s => s.key === 'favicon_url')) {
+    db.data.site_settings.push({
+      id: db.nextId('site_settings'),
+      key: 'favicon_url',
+      value: '/favicon.svg',
+      label: 'URL do Favicon'
+    });
+    console.log('  → favicon_url adicionado às configurações');
+  }
+
   await db.write();
   console.log('✅ Banco de dados pronto (mundonet-db.json)');
   return db;
