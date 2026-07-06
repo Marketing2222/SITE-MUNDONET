@@ -56,9 +56,14 @@ export const ManageSettings = () => {
                     <input type="color" value={form[f.key]||'#002D72'} onChange={e=>setForm({...form,[f.key]:e.target.value})} style={{height:38,width:60}} />
                     <input value={form[f.key]||''} onChange={e=>setForm({...form,[f.key]:e.target.value})} style={{flex:1}} />
                   </div>
-                : f.value.startsWith('http')
-                  ? <input value={form[f.key]||''} onChange={e=>setForm({...form,[f.key]:e.target.value})} placeholder="https://..." />
-                  : <input value={form[f.key]||''} onChange={e=>setForm({...form,[f.key]:e.target.value})} />
+                : f.key === 'favicon_url'
+                  ? <div style={{display:'flex',gap:10,alignItems:'center'}}>
+                      {form[f.key] && <img src={form[f.key]} alt="Favicon" style={{width:24,height:24,objectFit:'contain',borderRadius:4,background:'#fff'}} />}
+                      <input value={form[f.key]||''} onChange={e=>setForm({...form,[f.key]:e.target.value})} placeholder="/favicon.svg" style={{flex:1}} />
+                    </div>
+                  : f.value.startsWith('http')
+                    ? <input value={form[f.key]||''} onChange={e=>setForm({...form,[f.key]:e.target.value})} placeholder="https://..." />
+                    : <input value={form[f.key]||''} onChange={e=>setForm({...form,[f.key]:e.target.value})} />
               }
             </div>
           ))}

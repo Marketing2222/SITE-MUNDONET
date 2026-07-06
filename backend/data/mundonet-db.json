@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Administrador",
       "email": "admin@mundonet.com.br",
-      "password": "$2a$10$EsrSaQeWqV.WQVxpKRDJg.fdJUcPq4M93OBw/2nQD0SnB4z3sYvY2",
+      "password": "$2a$10$1pazn/sP7cxyQFEa5O9bo.MfppxmCMHW2fCLbwf9lEULhFJ.ERMkq",
       "created_at": "2026-07-06T18:42:07.887Z"
     }
   ],
@@ -1041,6 +1041,12 @@
       "key": "support_ch_btn2_color",
       "value": "#7c3aed",
       "label": "Central de Atendimento: Botão 2 Cor do Texto"
+    },
+    {
+      "id": 100,
+      "key": "favicon_url",
+      "value": "/favicon.svg",
+      "label": "URL do Favicon"
     }
   ],
   "app_library": [],

@@ -235,6 +235,23 @@ function App() {
         if (data.hero_btn2_text_color) root.style.setProperty('--hero-btn2-text', data.hero_btn2_text_color);
       })
       .catch(console.error);
+
+    // Carrega o favicon das configurações gerais
+    fetch(`${API_BASE_URL}/api/settings`)
+      .then(res => res.json())
+      .then(data => {
+        const url = data.favicon_url?.value;
+        if (url) {
+          let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
+          if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            document.head.appendChild(link);
+          }
+          link.href = url;
+        }
+      })
+      .catch(console.error);
   }, []);
 
   return (

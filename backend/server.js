@@ -23,21 +23,11 @@ import benefitsRoutes from './routes/benefitsRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS: aceita lista separada por vírgula via CORS_ORIGIN, ou localhost em dev
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-  : ['http://localhost:5173', 'http://127.0.0.1:5173'];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    // Permite requisições sem origin (ex: mobile apps, curl) e origens da lista
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS: origem não permitida: ${origin}`));
-    }
-  }
-}));
+// CORS: aceita configuração via CORS_ORIGIN (suporta múltiplas origens separadas por vírgula)
+const corsOrigin = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
+  : '*';
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
 // ── Uploads ──────────────────────────────────────────────────────────
@@ -75,13 +65,25 @@ initDB().then(() => {
   });
 
   // ── Serve o frontend React (dist/) em produção ────────────────────
-  const distPath = path.join(__dirname, 'public');
-  if (fs.existsSync(distPath)) {
-    app.use(express.static(distPath));
-    // Rota catch-all para o React Router (SPA)
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+  const distPaths = [
+    path.join(__dirname, 'public'),
+    path.join(__dirname, '..', 'dist'),
+  ];
+  let foundDist = false;
+  for (const distPath of distPaths) {
+    if (fs.existsSync(distPath)) {
+      foundDist = true;
+      app.use(express.static(distPath));
+      // Rota catch-all para o React Router (SPA)
+      app.get('*', (_req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+      });
+      console.log(`📁 Servindo frontend de: ${distPath}`);
+      break;
+    }
+  }
+  if (!foundDist) {
+    console.log('⚠️  Nenhum build do frontend encontrado (public/ ou dist/). Apenas API disponível.');
   }
 
   app.listen(PORT, '0.0.0.0', () => {
