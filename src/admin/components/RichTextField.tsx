@@ -51,6 +51,7 @@ export const RichTextField = ({ value, onChange, placeholder }: RichTextFieldPro
   }, [onChange]);
 
   const exec = useCallback((cmd: string, val?: string) => {
+    document.execCommand('styleWithCSS', false, 'true');
     document.execCommand('styleWithCSS', false, true as unknown as string);
     document.execCommand(cmd, false, val);
     handleInput();
