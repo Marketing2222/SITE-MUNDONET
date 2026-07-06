@@ -20,8 +20,12 @@ export const AdminLogin = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+      if (!res.ok) {
+        let errMsg = 'Erro ao fazer login';
+        try { const d = await res.json(); if (d.error) errMsg = d.error; } catch {}
+        throw new Error(errMsg);
+      }
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erro ao fazer login');
       localStorage.setItem('admin_token', data.token);
       localStorage.setItem('admin_user', JSON.stringify(data.user));
       navigate('/admin/dashboard');
