@@ -35,7 +35,8 @@ export async function initDB() {
   };
 
   // ── Seed: admin ──────────────────────────────────────────────────
-  if (!db.data.users.find(u => u.email === 'admin@mundonet.com.br')) {
+  const adminUser = db.data.users.find(u => u.email === 'admin@mundonet.com.br');
+  if (!adminUser) {
     db.data.users.push({
       id: db.nextId('users'),
       name: 'Administrador',
@@ -44,6 +45,9 @@ export async function initDB() {
       created_at: new Date().toISOString()
     });
     console.log('✅ Admin criado: admin@mundonet.com.br / admin123');
+  } else {
+    // Garante que a senha seja sempre admin123 (útil quando o volume persiste)
+    adminUser.password = bcrypt.hashSync('admin123', 10);
   }
 
   // ── Seed: hero_slides ────────────────────────────────────────────
