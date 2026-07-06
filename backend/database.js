@@ -1,10 +1,11 @@
 import { JSONFilePreset } from 'lowdb/node';
 import bcrypt from 'bcryptjs';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DB_PATH = path.join(__dirname, 'mundonet-db.json');
+const DB_PATH = path.join(__dirname, 'data', 'mundonet-db.json');
 
 // ── Estrutura padrão do banco ─────────────────────────────────────
 const defaultData = {
@@ -23,6 +24,7 @@ const defaultData = {
 let db;
 
 export async function initDB() {
+  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
   db = await JSONFilePreset(DB_PATH, defaultData);
 
   // ── Auto-increment helper ────────────────────────────────────────

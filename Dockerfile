@@ -32,10 +32,7 @@ WORKDIR /app/backend
 # Copia arquivos de dependência do backend
 COPY backend/package.json backend/package-lock.json ./
 
-# Instala ferramentas de build necessárias para better-sqlite3 (node-gyp)
-RUN apk add --no-cache python3 make g++ \
-    && npm ci --omit=dev \
-    && apk del make g++
+RUN npm ci --omit=dev
 
 # Copia o código do backend
 COPY backend/server.js ./
