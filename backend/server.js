@@ -64,13 +64,25 @@ initDB().then(() => {
   });
 
   // ── Serve o frontend React (dist/) em produção ────────────────────
-  const distPath = path.join(__dirname, 'public');
-  if (fs.existsSync(distPath)) {
-    app.use(express.static(distPath));
-    // Rota catch-all para o React Router (SPA)
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+  const distPaths = [
+    path.join(__dirname, 'public'),
+    path.join(__dirname, '..', 'dist'),
+  ];
+  let foundDist = false;
+  for (const distPath of distPaths) {
+    if (fs.existsSync(distPath)) {
+      foundDist = true;
+      app.use(express.static(distPath));
+      // Rota catch-all para o React Router (SPA)
+      app.get('*', (_req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+      });
+      console.log(`📁 Servindo frontend de: ${distPath}`);
+      break;
+    }
+  }
+  if (!foundDist) {
+    console.log('⚠️  Nenhum build do frontend encontrado (public/ ou dist/). Apenas API disponível.');
   }
 
   app.listen(PORT, '0.0.0.0', () => {
