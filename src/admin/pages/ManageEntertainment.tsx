@@ -8,7 +8,6 @@ interface App {
 }
 const EMPTY = { name:'', icon:'🎬', logo_url:'', banner_url:'', description:'', link_url:'', sort_order:0, active:true };
 
-const UploadBtn = ({ value, onChange, label: _label }: { value:string; onChange:(url:string)=>void; label?:string }) => {
 const UploadBtn = ({ value, onChange }: { value:string; onChange:(url:string)=>void }) => {
   const [uploading, setUploading] = useState(false);
   const handle = async (e: React.ChangeEvent<HTMLInputElement>) => {

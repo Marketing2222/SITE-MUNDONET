@@ -1,0 +1,1154 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Administrador",
+      "email": "admin@mundonet.com.br",
+      "password": "$2a$10$EsrSaQeWqV.WQVxpKRDJg.fdJUcPq4M93OBw/2nQD0SnB4z3sYvY2",
+      "created_at": "2026-07-06T18:42:07.887Z"
+    }
+  ],
+  "hero_slides": [
+    {
+      "id": 1,
+      "url": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png",
+      "title": "Internet 100% Fibra Óptica",
+      "subtitle": "Navegue na velocidade da luz com estabilidade garantida.",
+      "sort_order": 0,
+      "active": true
+    },
+    {
+      "id": 2,
+      "url": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/globoplay1.png",
+      "title": "Planos com Streaming Inclusos",
+      "subtitle": "Assista seus filmes e séries favoritos sem interrupções.",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "id": 3,
+      "url": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/01/planogamer.png",
+      "title": "Plano Ultra Gamer",
+      "subtitle": "Baixo ping e máxima performance para vencer todas as partidas.",
+      "sort_order": 2,
+      "active": true
+    },
+    {
+      "id": 4,
+      "url": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/banner_site_indique-e-ganhe2.png",
+      "title": "Indique e Ganhe Descontos",
+      "subtitle": "Compartilhe conexões de qualidade e ganhe bônus na sua mensalidade.",
+      "sort_order": 3,
+      "active": true
+    }
+  ],
+  "plans": [
+    {
+      "id": 1,
+      "name": "600 MEGA",
+      "speed": "600",
+      "price": "79,90",
+      "highlight": "Streaming e reuniões sem travar",
+      "highlight_icon": "📶",
+      "button_text": "EU QUERO!",
+      "whatsapp_msg": "Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20o%20plano%20de%20600%20MEGA.",
+      "included_apps": [
+        {
+          "name": "Wi-Fi 6",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "WiFi"
+        },
+        {
+          "name": "TV 40ch",
+          "color": "#1E40AF",
+          "textColor": "#fff",
+          "abbr": "TV"
+        },
+        {
+          "name": "E-Book",
+          "color": "#166534",
+          "textColor": "#fff",
+          "abbr": "Bk"
+        },
+        {
+          "name": "Filmes",
+          "color": "#B45309",
+          "textColor": "#fff",
+          "abbr": "Fil"
+        }
+      ],
+      "bonus_app": {
+        "name": "Ilimitado",
+        "color": "#111827",
+        "textColor": "#fff",
+        "abbr": "∞"
+      },
+      "details": [
+        "Internet 100% Fibra Óptica",
+        "Wi-Fi 6 incluso",
+        "40 canais de TV grátis",
+        "Filmes e E-Books inclusos",
+        "Velocidade ilimitada",
+        "Instalação por R$ 39,90"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 0
+    },
+    {
+      "id": 2,
+      "name": "700 MEGA",
+      "speed": "700",
+      "price": "89,90",
+      "highlight": "Vários dispositivos conectados",
+      "highlight_icon": "📡",
+      "button_text": "EU QUERO!",
+      "whatsapp_msg": "Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20o%20plano%20de%20700%20MEGA.",
+      "included_apps": [
+        {
+          "name": "Wi-Fi 6",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "WiFi"
+        },
+        {
+          "name": "TV 40ch",
+          "color": "#1E40AF",
+          "textColor": "#fff",
+          "abbr": "TV"
+        },
+        {
+          "name": "E-Book",
+          "color": "#166534",
+          "textColor": "#fff",
+          "abbr": "Bk"
+        },
+        {
+          "name": "Filmes",
+          "color": "#B45309",
+          "textColor": "#fff",
+          "abbr": "Fil"
+        }
+      ],
+      "bonus_app": {
+        "name": "Ilimitado",
+        "color": "#111827",
+        "textColor": "#fff",
+        "abbr": "∞"
+      },
+      "details": [
+        "Internet 100% Fibra Óptica",
+        "Wi-Fi 6 incluso",
+        "40 canais de TV grátis",
+        "Filmes e E-Books inclusos",
+        "Velocidade ilimitada",
+        "Instalação por R$ 39,90"
+      ],
+      "popular": true,
+      "active": true,
+      "sort_order": 1
+    },
+    {
+      "id": 3,
+      "name": "800 MEGA",
+      "speed": "800",
+      "price": "119,90",
+      "highlight": "Alta performance para tudo",
+      "highlight_icon": "🚀",
+      "button_text": "EU QUERO!",
+      "whatsapp_msg": "Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20o%20plano%20de%20800%20MEGA.",
+      "included_apps": [
+        {
+          "name": "Wi-Fi 6",
+          "color": "#6B21A8",
+          "textColor": "#fff",
+          "abbr": "WiFi"
+        },
+        {
+          "name": "TV 40ch",
+          "color": "#1E40AF",
+          "textColor": "#fff",
+          "abbr": "TV"
+        },
+        {
+          "name": "E-Book",
+          "color": "#166534",
+          "textColor": "#fff",
+          "abbr": "Bk"
+        },
+        {
+          "name": "Filmes",
+          "color": "#B45309",
+          "textColor": "#fff",
+          "abbr": "Fil"
+        }
+      ],
+      "bonus_app": {
+        "name": "2 Roteadores",
+        "color": "#7C3AED",
+        "textColor": "#fff",
+        "abbr": "2R"
+      },
+      "details": [
+        "Internet 100% Fibra Óptica",
+        "2 Roteadores Mesh Wi-Fi 6",
+        "40 canais de TV grátis",
+        "Filmes e E-Books inclusos",
+        "Velocidade ilimitada",
+        "Instalação GRÁTIS"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 2
+    },
+    {
+      "id": 4,
+      "name": "LINK DEDICADO",
+      "speed": "DED",
+      "price": "Sob Consulta",
+      "highlight": "Conexão exclusiva para empresas",
+      "highlight_icon": "🏢",
+      "button_text": "CONSULTAR",
+      "whatsapp_msg": "Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações%20sobre%20o%20Link%20Dedicado.",
+      "included_apps": [
+        {
+          "name": "IP Fixo",
+          "color": "#1D4ED8",
+          "textColor": "#fff",
+          "abbr": "IP"
+        },
+        {
+          "name": "SLA 24h",
+          "color": "#065F46",
+          "textColor": "#fff",
+          "abbr": "SLA"
+        },
+        {
+          "name": "Simétrico",
+          "color": "#7C3AED",
+          "textColor": "#fff",
+          "abbr": "Sim"
+        }
+      ],
+      "bonus_app": {
+        "name": "Suporte VIP",
+        "color": "#991B1B",
+        "textColor": "#fff",
+        "abbr": "VIP"
+      },
+      "details": [
+        "Banda garantida 100%",
+        "Upload e download simétricos",
+        "IP fixo incluso",
+        "Suporte SLA 24/7/365",
+        "Monitoramento em tempo real",
+        "Proposta personalizada"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 3
+    }
+  ],
+  "quick_links": [
+    {
+      "id": 1,
+      "title": "Não é cliente?",
+      "description": "Conheça nossos planos e ofertas de internet.",
+      "url": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet",
+      "button_text": "Conhecer Planos",
+      "icon_type": "user",
+      "sort_order": 0,
+      "active": true,
+      "card_bg": "",
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#2563EB"
+    },
+    {
+      "id": 2,
+      "title": "Perdeu o prazo?",
+      "description": "Emita a segunda via do seu boleto de forma rápida.",
+      "url": "https://ixc.mundonetbandalarga.com.br/central_assinante_web/login",
+      "button_text": "Emitir Boleto",
+      "icon_type": "document",
+      "sort_order": 1,
+      "active": true,
+      "card_bg": "",
+      "icon_bg": "#05966920",
+      "icon_color": "#059669",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#059669"
+    },
+    {
+      "id": 3,
+      "title": "Precisa de suporte?",
+      "description": "Fale com o nosso suporte técnico especializado.",
+      "url": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20suporte.",
+      "button_text": "Suporte Técnico",
+      "icon_type": "chat",
+      "sort_order": 2,
+      "active": true,
+      "card_bg": "",
+      "icon_bg": "#7C3AED20",
+      "icon_color": "#7C3AED",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#7C3AED"
+    },
+    {
+      "id": 4,
+      "title": "Teste de velocidade?",
+      "description": "Faça um teste de velocidade de conexões agora.",
+      "url": "https://www.speedtest.net/pt",
+      "button_text": "Testar Velocidade",
+      "icon_type": "speed",
+      "sort_order": 3,
+      "active": true,
+      "card_bg": "",
+      "icon_bg": "#DC262620",
+      "icon_color": "#DC2626",
+      "title_color": "",
+      "title_font_size": "",
+      "desc_color": "",
+      "desc_font_size": "",
+      "btn_color": "#DC2626"
+    }
+  ],
+  "entertainment": [
+    {
+      "id": 1,
+      "name": "Deezer",
+      "icon": "🎵",
+      "logo_url": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/deezer-logo.png",
+      "description": "Onde a música ganha vida",
+      "link_url": "https://www.deezer.com/",
+      "sort_order": 0,
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Max",
+      "icon": "🎬",
+      "logo_url": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/max-logo.png",
+      "description": "Grandes histórias, dramas imperdíveis e as melhores comédias",
+      "link_url": "https://www.max.com/",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "Kaspersky",
+      "icon": "🛡️",
+      "logo_url": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/kaspersky-logo.png",
+      "description": "Proteção completa contra ameaças digitais",
+      "link_url": "https://www.kaspersky.com/",
+      "sort_order": 2,
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "PlayKids",
+      "icon": "🧒",
+      "logo_url": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/playkids-logo.png",
+      "description": "Diversão e aprendizado para as crianças",
+      "link_url": "https://www.playkids.com/",
+      "sort_order": 3,
+      "active": true
+    },
+    {
+      "id": 5,
+      "name": "Telecine",
+      "icon": "🎞️",
+      "logo_url": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/telecine-logo.png",
+      "description": "O melhor do cinema em casa",
+      "link_url": "https://www.telecine.com/",
+      "sort_order": 4,
+      "active": true
+    },
+    {
+      "id": 6,
+      "name": "Paramount+",
+      "icon": "🌟",
+      "logo_url": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/paramount-logo.png",
+      "description": "Séries, filmes e esportes ao vivo",
+      "link_url": "https://www.paramountplus.com/",
+      "sort_order": 5,
+      "active": true
+    }
+  ],
+  "contact_info": [
+    {
+      "id": 1,
+      "key": "phone",
+      "value": "(98) 3042-0030",
+      "label": "Telefone Fixo"
+    },
+    {
+      "id": 2,
+      "key": "phone_raw",
+      "value": "559830420030",
+      "label": "Telefone (formato WhatsApp)"
+    },
+    {
+      "id": 3,
+      "key": "whatsapp",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.",
+      "label": "Link WhatsApp"
+    },
+    {
+      "id": 4,
+      "key": "instagram",
+      "value": "https://www.instagram.com/_mundonet/",
+      "label": "Instagram URL"
+    },
+    {
+      "id": 5,
+      "key": "instagram_handle",
+      "value": "@_mundonet",
+      "label": "Instagram @"
+    },
+    {
+      "id": 6,
+      "key": "email",
+      "value": "contato@mundonetbandalarga.com.br",
+      "label": "E-mail"
+    },
+    {
+      "id": 7,
+      "key": "address",
+      "value": "São Luís - MA",
+      "label": "Endereço"
+    },
+    {
+      "id": 8,
+      "key": "maps_url",
+      "value": "https://maps.app.goo.gl/mrMYuZiMiBY6ei527",
+      "label": "Link Google Maps"
+    },
+    {
+      "id": 9,
+      "key": "maps_embed",
+      "value": "https://maps.google.com/maps?q=mundonet%20telecom&t=m&z=15&output=embed&iwloc=near",
+      "label": "Embed Maps"
+    },
+    {
+      "id": 10,
+      "key": "intro_text",
+      "value": "Precisa tirar dúvidas, contratar um plano ou solicitar suporte? Nossa equipe está pronta para atendê-lo da melhor forma possível.",
+      "label": "Texto de Introdução"
+    }
+  ],
+  "site_settings": [
+    {
+      "id": 1,
+      "key": "_global_theme",
+      "value": "{\"customization_enabled\":true,\"bg_color\":\"#f3e8ff\",\"text_color\":\"#4b5563\",\"title_color\":\"#1e1b4b\",\"primary_font\":\"Montserrat, sans-serif\",\"section_spacing\":\"80px\",\"accent_color\":\"#005CFF\",\"accent_hover_color\":\"#0046CC\",\"button_bg_color\":\"#005CFF\",\"button_text_color\":\"#ffffff\",\"section_bg_color\":\"#ffffff\",\"section_border_color\":\"#E2E8F0\",\"card_bg_color\":\"#ffffff\",\"card_text_color\":\"#1E293B\",\"hero_overlay_color\":\"rgba(0, 45, 114, 0.7)\",\"hero_overlay_enabled\":true,\"border_radius\":\"16px\",\"hero_height\":650,\"hero_width\":600,\"hero_transition\":\"fade\",\"hero_show_buttons\":true,\"hero_btn1_text\":\"Ver Planos\",\"hero_btn1_link\":\"#internet\",\"hero_btn1_bg\":\"#ff6a00\",\"hero_btn1_text_color\":\"#ffffff\",\"hero_btn2_text\":\"Falar com Atendente\",\"hero_btn2_link\":\"https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.\",\"hero_btn2_bg\":\"rgba(255, 255, 255, 0.15)\",\"hero_btn2_text_color\":\"#ffffff\"}",
+      "label": "Tema Global"
+    },
+    {
+      "id": 2,
+      "key": "site_name",
+      "value": "Mundonet Banda Larga",
+      "label": "Nome do Site"
+    },
+    {
+      "id": 3,
+      "key": "logo_url",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2023/10/logo-mundonet.png",
+      "label": "Logo URL"
+    },
+    {
+      "id": 4,
+      "key": "primary_color",
+      "value": "#002D72",
+      "label": "Cor Primária"
+    },
+    {
+      "id": 5,
+      "key": "whatsapp_float",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.",
+      "label": "WhatsApp Flutuante"
+    },
+    {
+      "id": 6,
+      "key": "footer_cnpj",
+      "value": "07.038.108/0001-94",
+      "label": "CNPJ"
+    },
+    {
+      "id": 7,
+      "key": "footer_anatel",
+      "value": "00060-7999",
+      "label": "Nº Anatel"
+    },
+    {
+      "id": 8,
+      "key": "header_bg_color",
+      "value": "#002D72",
+      "label": "Header: Cor de fundo"
+    },
+    {
+      "id": 9,
+      "key": "header_text_color",
+      "value": "#ffffff",
+      "label": "Header: Cor do texto"
+    },
+    {
+      "id": 10,
+      "key": "header_topbar_bg",
+      "value": "#001a4d",
+      "label": "Header: Fundo da barra superior"
+    },
+    {
+      "id": 11,
+      "key": "header_topbar_text",
+      "value": "#ffffff",
+      "label": "Header: Texto da barra superior"
+    },
+    {
+      "id": 12,
+      "key": "header_font",
+      "value": "",
+      "label": "Header: Fonte (Google Fonts, ex: Poppins)"
+    },
+    {
+      "id": 13,
+      "key": "header_portal_url",
+      "value": "https://ixc.mundonetbandalarga.com.br/central_assinante_web/login",
+      "label": "Header: URL do Portal do Assinante"
+    },
+    {
+      "id": 14,
+      "key": "header_portal_text",
+      "value": "Portal do Assinante",
+      "label": "Header: Texto do botão Portal"
+    },
+    {
+      "id": 15,
+      "key": "header_portal_bg",
+      "value": "#4f46e5",
+      "label": "Header: Cor de fundo do botão Portal"
+    },
+    {
+      "id": 16,
+      "key": "header_portal_text_color",
+      "value": "#ffffff",
+      "label": "Header: Cor do texto do botão Portal"
+    },
+    {
+      "id": 17,
+      "key": "header_nav_item1_text",
+      "value": "Planos",
+      "label": "Nav: Item 1 Texto"
+    },
+    {
+      "id": 18,
+      "key": "header_nav_item2_text",
+      "value": "App Mundonet +",
+      "label": "Nav: Item 2 Texto"
+    },
+    {
+      "id": 19,
+      "key": "header_nav_item3_text",
+      "value": "Para Você",
+      "label": "Nav: Item 3 Texto"
+    },
+    {
+      "id": 20,
+      "key": "header_nav_item4_text",
+      "value": "Para Empresas",
+      "label": "Nav: Item 4 Texto"
+    },
+    {
+      "id": 21,
+      "key": "header_nav_item5_text",
+      "value": "Trabalhe Conosco",
+      "label": "Nav: Item 5 Texto"
+    },
+    {
+      "id": 22,
+      "key": "footer_bg_color",
+      "value": "#002D72",
+      "label": "Footer: Cor de fundo"
+    },
+    {
+      "id": 23,
+      "key": "footer_text_color",
+      "value": "#cbd5e1",
+      "label": "Footer: Cor do texto"
+    },
+    {
+      "id": 24,
+      "key": "footer_heading_color",
+      "value": "#ffffff",
+      "label": "Footer: Cor dos títulos"
+    },
+    {
+      "id": 25,
+      "key": "footer_link_color",
+      "value": "#93c5fd",
+      "label": "Footer: Cor dos links"
+    },
+    {
+      "id": 26,
+      "key": "footer_about_text",
+      "value": "Conectando você com o mundo através de conexões de ultravelocidade 100% fibra óptica com tecnologia Wi-Fi 6 de ponta.",
+      "label": "Footer: Texto institucional"
+    },
+    {
+      "id": 27,
+      "key": "footer_col2_title",
+      "value": "CONTATO",
+      "label": "Footer: Título coluna 2"
+    },
+    {
+      "id": 28,
+      "key": "footer_col3_title",
+      "value": "ATALHOS",
+      "label": "Footer: Título coluna 3"
+    },
+    {
+      "id": 29,
+      "key": "footer_col4_title",
+      "value": "ONDE NOS ENCONTRAR",
+      "label": "Footer: Título coluna 4"
+    },
+    {
+      "id": 30,
+      "key": "footer_subbar_bg",
+      "value": "#001240",
+      "label": "Footer: Fundo da barra inferior"
+    },
+    {
+      "id": 31,
+      "key": "footer_subbar_text",
+      "value": "#94a3b8",
+      "label": "Footer: Cor do texto da barra inferior"
+    },
+    {
+      "id": 32,
+      "key": "footer_anatel_logo_url",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/anatel-logo-1024x248.png",
+      "label": "Footer: URL logo Anatel"
+    },
+    {
+      "id": 33,
+      "key": "footer_font",
+      "value": "",
+      "label": "Footer: Fonte (Google Fonts, ex: Poppins)"
+    },
+    {
+      "id": 34,
+      "key": "footer_padding",
+      "value": "60px 0",
+      "label": "Footer: Espaçamento interno (padding)"
+    },
+    {
+      "id": 35,
+      "key": "footer_logo_url",
+      "value": "",
+      "label": "Footer: URL da Logomarca"
+    },
+    {
+      "id": 36,
+      "key": "ent_subtitle",
+      "value": "Aplicativos para diversão, entretenimento e segurança para toda a família",
+      "label": "Entretenimento: Subtítulo"
+    },
+    {
+      "id": 37,
+      "key": "ent_title",
+      "value": "Aplicativos de entretenimento que traz diversão para toda a família. Junte-se a nós e descubra uma nova forma de se divertir juntos!",
+      "label": "Entretenimento: Título"
+    },
+    {
+      "id": 38,
+      "key": "ent_bottom_text",
+      "value": "Fale com nosso time e consulte a disponibilidade dos aplicativos.",
+      "label": "Entretenimento: Texto inferior"
+    },
+    {
+      "id": 39,
+      "key": "ent_btn_text",
+      "value": "Fale com nosso time",
+      "label": "Entretenimento: Texto do botão"
+    },
+    {
+      "id": 40,
+      "key": "ent_btn_bg",
+      "value": "#6d28d9",
+      "label": "Entretenimento: Cor de fundo do botão"
+    },
+    {
+      "id": 41,
+      "key": "ent_btn_text_color",
+      "value": "#ffffff",
+      "label": "Entretenimento: Cor do texto do botão"
+    },
+    {
+      "id": 42,
+      "key": "ent_btn_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Quero%20saber%20sobre%20os%20aplicativos%20disponíveis.",
+      "label": "Entretenimento: Link do botão"
+    },
+    {
+      "id": 43,
+      "key": "ent_bg_color",
+      "value": "#f8fafc",
+      "label": "Entretenimento: Cor de fundo"
+    },
+    {
+      "id": 44,
+      "key": "ent_text_color",
+      "value": "#1e293b",
+      "label": "Entretenimento: Cor do texto"
+    },
+    {
+      "id": 45,
+      "key": "ent_carousel_bg",
+      "value": "#ffffff",
+      "label": "Entretenimento: Fundo do carrossel"
+    },
+    {
+      "id": 46,
+      "key": "ent_title_font_size",
+      "value": "28px",
+      "label": "Entretenimento: Tamanho do Título"
+    },
+    {
+      "id": 47,
+      "key": "ent_title_font",
+      "value": "",
+      "label": "Entretenimento: Fonte do Título"
+    },
+    {
+      "id": 48,
+      "key": "ent_subtitle_font_size",
+      "value": "0.95rem",
+      "label": "Entretenimento: Tamanho do Subtítulo"
+    },
+    {
+      "id": 49,
+      "key": "ent_bottom_font_size",
+      "value": "0.92rem",
+      "label": "Entretenimento: Tamanho Texto Inferior"
+    },
+    {
+      "id": 50,
+      "key": "ent_btn_font_size",
+      "value": "0.95rem",
+      "label": "Entretenimento: Tamanho Botão"
+    },
+    {
+      "id": 51,
+      "key": "sections_order",
+      "value": "[\"hero\",\"quicklinks\",\"plans\",\"benefits\",\"app\",\"specialties\",\"entertainment\",\"cta\",\"support\",\"contact\"]",
+      "label": "Ordem das Seções"
+    },
+    {
+      "id": 52,
+      "value": "{\"hero\":true,\"quicklinks\":true,\"plans\":true,\"benefits\":true,\"app\":true,\"specialties\":true,\"entertainment\":true,\"cta\":true,\"support\":true,\"contact\":true}",
+      "label": "Seções Ativas"
+    },
+    {
+      "id": 53,
+      "key": "exit_popup_enabled",
+      "value": "true",
+      "label": "Popup de Saída: Ativo"
+    },
+    {
+      "id": 54,
+      "key": "exit_popup_title",
+      "value": "Ainda está aí?",
+      "label": "Popup de Saída: Título"
+    },
+    {
+      "id": 55,
+      "key": "exit_popup_subtitle",
+      "value": "Entre em contato e contrate com a gente de forma simples e segura!",
+      "label": "Popup de Saída: Subtítulo"
+    },
+    {
+      "id": 56,
+      "key": "exit_popup_bg_color",
+      "value": "#1a1028",
+      "label": "Popup de Saída: Cor de Fundo"
+    },
+    {
+      "id": 57,
+      "key": "exit_popup_text_color",
+      "value": "#a1a1aa",
+      "label": "Popup de Saída: Cor do Texto"
+    },
+    {
+      "id": 58,
+      "key": "exit_popup_title_color",
+      "value": "#ffffff",
+      "label": "Popup de Saída: Cor do Título"
+    },
+    {
+      "id": 59,
+      "key": "exit_popup_accent_color",
+      "value": "#a855f7",
+      "label": "Popup de Saída: Cor de Destaque"
+    },
+    {
+      "id": 60,
+      "key": "exit_popup_card_bg",
+      "value": "#2a1f3d",
+      "label": "Popup de Saída: Cor dos Cards"
+    },
+    {
+      "id": 61,
+      "key": "exit_popup_card_border",
+      "value": "rgba(255,255,255,0.08)",
+      "label": "Popup de Saída: Borda dos Cards"
+    },
+    {
+      "id": 62,
+      "key": "exit_popup_overlay_color",
+      "value": "rgba(0,0,0,0.6)",
+      "label": "Popup de Saída: Cor do Overlay"
+    },
+    {
+      "id": 63,
+      "key": "exit_popup_cards",
+      "value": "[{\"id\":1,\"title\":\"Contratar agora\",\"description\":\"Contratar agora pelo WhatsApp\",\"link\":\"https://api.whatsapp.com/send?phone=559830420030&text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.\",\"icon_type\":\"whatsapp\"},{\"id\":2,\"title\":\"Suporte\",\"description\":\"Suporte técnico via WhatsApp\",\"link\":\"https://api.whatsapp.com/send?phone=559830420030&text=Ol%C3%A1!%20Preciso%20de%20suporte%20t%C3%A9cnico.\",\"icon_type\":\"support\"},{\"id\":3,\"title\":\"Telefone\",\"description\":\"Ligue para nós agora\",\"link\":\"tel:+559830420030\",\"icon_type\":\"phone\"},{\"id\":4,\"title\":\"E-mail\",\"description\":\"Escreva para nós\",\"link\":\"mailto:contato@mundonetbandalarga.com.br\",\"icon_type\":\"email\"}]",
+      "label": "Popup de Saída: Cards"
+    },
+    {
+      "id": 64,
+      "key": "sections_active",
+      "value": "{\"hero\":true,\"quicklinks\":true,\"plans\":true,\"benefits\":true,\"app\":true,\"specialties\":true,\"entertainment\":true,\"cta\":true,\"support\":true,\"contact\":true}",
+      "label": "Seções Ativas"
+    },
+    {
+      "id": 65,
+      "key": "support_bg_color",
+      "value": "#f5f0ff",
+      "label": "Central de Atendimento: Cor de Fundo"
+    },
+    {
+      "id": 66,
+      "key": "support_padding",
+      "value": "60px 20px",
+      "label": "Central de Atendimento: Espaçamento Interno"
+    },
+    {
+      "id": 67,
+      "key": "support_title_color",
+      "value": "#1e1b4b",
+      "label": "Central de Atendimento: Cor dos Títulos"
+    },
+    {
+      "id": 68,
+      "key": "support_desc_color",
+      "value": "#64748b",
+      "label": "Central de Atendimento: Cor das Descrições"
+    },
+    {
+      "id": 69,
+      "key": "support_card_bg",
+      "value": "#ffffff",
+      "label": "Central de Atendimento: Cor de Fundo dos Cards"
+    },
+    {
+      "id": 70,
+      "key": "support_card_border",
+      "value": "#e9e5f5",
+      "label": "Central de Atendimento: Cor da Borda dos Cards"
+    },
+    {
+      "id": 71,
+      "key": "support_card_text_color",
+      "value": "#1e1b4b",
+      "label": "Central de Atendimento: Cor do Texto dos Cards"
+    },
+    {
+      "id": 72,
+      "key": "support_left_title",
+      "value": "Somos a Mundonet",
+      "label": "Central de Atendimento: Título Lado Esquerdo"
+    },
+    {
+      "id": 73,
+      "key": "support_left_desc",
+      "value": "Na Mundonet, em todas as nossas ações, acreditamos em desafiar os \"valores\" tradicionais dos provedores de internet. Fazemos isso tratando você como um parceiro que desejamos apoiar, e não apenas como um \"cliente\".",
+      "label": "Central de Atendimento: Descrição Lado Esquerdo"
+    },
+    {
+      "id": 74,
+      "key": "support_left_highlight",
+      "value": "Faça parte deste movimento.",
+      "label": "Central de Atendimento: Texto Destaque"
+    },
+    {
+      "id": 75,
+      "key": "support_left_btn_text",
+      "value": "Conheça mais",
+      "label": "Central de Atendimento: Texto do Botão Esquerdo"
+    },
+    {
+      "id": 76,
+      "key": "support_left_btn_link",
+      "value": "#",
+      "label": "Central de Atendimento: Link do Botão Esquerdo"
+    },
+    {
+      "id": 77,
+      "key": "support_left_btn_bg",
+      "value": "#7c3aed",
+      "label": "Central de Atendimento: Cor de Fundo do Botão Esquerdo"
+    },
+    {
+      "id": 78,
+      "key": "support_left_btn_color",
+      "value": "#ffffff",
+      "label": "Central de Atendimento: Cor do Texto do Botão Esquerdo"
+    },
+    {
+      "id": 79,
+      "key": "support_left_btn_font_size",
+      "value": "16px",
+      "label": "Central de Atendimento: Tamanho da Fonte Botão Esquerdo"
+    },
+    {
+      "id": 80,
+      "key": "support_left_btn_padding",
+      "value": "14px 40px",
+      "label": "Central de Atendimento: Espaçamento Botão Esquerdo"
+    },
+    {
+      "id": 81,
+      "key": "support_left_btn_border_radius",
+      "value": "8px",
+      "label": "Central de Atendimento: Arredondamento Botão Esquerdo"
+    },
+    {
+      "id": 82,
+      "key": "support_right_title",
+      "value": "Canais de atendimento",
+      "label": "Central de Atendimento: Título Lado Direito"
+    },
+    {
+      "id": 83,
+      "key": "support_right_desc",
+      "value": "Conheça os canais de atendimento da Mundonet e entre em contato com nosso time, estamos sempre a disposição.",
+      "label": "Central de Atendimento: Descrição Lado Direito"
+    },
+    {
+      "id": 84,
+      "key": "support_ch1_value",
+      "value": "0800 765 5507",
+      "label": "Central de Atendimento: Canal 1 Valor"
+    },
+    {
+      "id": 85,
+      "key": "support_ch1_label",
+      "value": "Whatsapp e telefone",
+      "label": "Central de Atendimento: Canal 1 Rótulo"
+    },
+    {
+      "id": 86,
+      "key": "support_ch1_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030",
+      "label": "Central de Atendimento: Canal 1 Link"
+    },
+    {
+      "id": 87,
+      "key": "support_ch1_icon",
+      "value": "phone",
+      "label": "Central de Atendimento: Canal 1 Ícone"
+    },
+    {
+      "id": 88,
+      "key": "support_ch2_value",
+      "value": "contato@mundonetbandalarga.com.br",
+      "label": "Central de Atendimento: Canal 2 Valor"
+    },
+    {
+      "id": 89,
+      "key": "support_ch2_label",
+      "value": "Por e-mail",
+      "label": "Central de Atendimento: Canal 2 Rótulo"
+    },
+    {
+      "id": 90,
+      "key": "support_ch2_link",
+      "value": "mailto:contato@mundonetbandalarga.com.br",
+      "label": "Central de Atendimento: Canal 2 Link"
+    },
+    {
+      "id": 91,
+      "key": "support_ch2_icon",
+      "value": "email",
+      "label": "Central de Atendimento: Canal 2 Ícone"
+    },
+    {
+      "id": 92,
+      "key": "support_ch_btn1_text",
+      "value": "Entre em contato",
+      "label": "Central de Atendimento: Botão 1 Texto"
+    },
+    {
+      "id": 93,
+      "key": "support_ch_btn1_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030",
+      "label": "Central de Atendimento: Botão 1 Link"
+    },
+    {
+      "id": 94,
+      "key": "support_ch_btn1_bg",
+      "value": "#7c3aed",
+      "label": "Central de Atendimento: Botão 1 Cor de Fundo"
+    },
+    {
+      "id": 95,
+      "key": "support_ch_btn1_color",
+      "value": "#ffffff",
+      "label": "Central de Atendimento: Botão 1 Cor do Texto"
+    },
+    {
+      "id": 96,
+      "key": "support_ch_btn2_text",
+      "value": "Quero que me liguem",
+      "label": "Central de Atendimento: Botão 2 Texto"
+    },
+    {
+      "id": 97,
+      "key": "support_ch_btn2_link",
+      "value": "tel:+559830420030",
+      "label": "Central de Atendimento: Botão 2 Link"
+    },
+    {
+      "id": 98,
+      "key": "support_ch_btn2_bg",
+      "value": "#ffffff",
+      "label": "Central de Atendimento: Botão 2 Cor de Fundo"
+    },
+    {
+      "id": 99,
+      "key": "support_ch_btn2_color",
+      "value": "#7c3aed",
+      "label": "Central de Atendimento: Botão 2 Cor do Texto"
+    }
+  ],
+  "app_library": [],
+  "benefits": [
+    {
+      "id": 1,
+      "title": "Planos perfeitos",
+      "description": "Atendentes especializados te indicam o plano perfeito para sua necessidade",
+      "icon_type": "star",
+      "sort_order": 0,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 2,
+      "title": "Tráfego ilimitado",
+      "description": "Sem limite de uso, para você poder fazer tudo o que ama online!",
+      "icon_type": "speed",
+      "sort_order": 1,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 3,
+      "title": "Pós Pago",
+      "description": "Utilize antes, pague depois e ganhe desconto pagando em dia!",
+      "icon_type": "clock",
+      "sort_order": 2,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 4,
+      "title": "Internet Gaming",
+      "description": "Rota exclusiva para gamers, com ping muito menor e velocidade muito maior!",
+      "icon_type": "globe",
+      "sort_order": 3,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 5,
+      "title": "Instalação rápida",
+      "description": "Saiba o dia da instalação, e vai ser em menos de 48 horas, legal né?",
+      "icon_type": "download",
+      "sort_order": 4,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 6,
+      "title": "Suporte rápido",
+      "description": "Em raras ocasiões vamos ter um prazo máximo de 24 horas após a solicitação!",
+      "icon_type": "chat",
+      "sort_order": 5,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 7,
+      "title": "Roteador de alta potência",
+      "description": "Roteador de longo alcance, 1200Mbps e frequências 2.4 e 5.8 Ghz",
+      "icon_type": "shield",
+      "sort_order": 6,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    },
+    {
+      "id": 8,
+      "title": "Tecnologia nova",
+      "description": "Equipamentos novos para velocidade de conexão e estabilidade do serviço",
+      "icon_type": "gift",
+      "sort_order": 7,
+      "active": true,
+      "icon_bg": "#2563EB20",
+      "icon_color": "#2563EB",
+      "title_color": "",
+      "desc_color": ""
+    }
+  ],
+  "_counters": {
+    "users": 0,
+    "hero": 0,
+    "plans": 0,
+    "ql": 0,
+    "ent": 0,
+    "app_lib": 0,
+    "benefits": 0
+  }
+}
