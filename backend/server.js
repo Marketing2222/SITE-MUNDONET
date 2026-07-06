@@ -86,6 +86,12 @@ initDB().then(() => {
     console.log('⚠️  Nenhum build do frontend encontrado (public/ ou dist/). Apenas API disponível.');
   }
 
+  // Tratamento global de erros (garante resposta JSON sempre)
+  app.use((err, _req, res, _next) => {
+    console.error('❌ Erro não tratado:', err);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  });
+
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Mundonet Backend rodando na porta ${PORT}`);
     console.log(`📦 Banco de dados: mundonet-db.json`);
