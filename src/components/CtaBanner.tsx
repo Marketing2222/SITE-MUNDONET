@@ -19,39 +19,29 @@ export const CtaBanner: React.FC = () => {
   }, []);
 
   const bg = s.cta_bg_color || '#1a0a2e';
-  const bgGrad = s.cta_bg_gradient || 'linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 100%)';
   const title = s.cta_title || 'Procurando um plano para sua empresa?';
   const desc = s.cta_desc || 'Planos de internet para empresas que impulsionam a produtividade e conectividade.';
   const btnText = s.cta_btn_text || 'Conheça nossas soluções';
   const btnLink = s.cta_btn_link || '#';
   const btnBg = s.cta_btn_bg || '#ffffff';
   const btnColor = s.cta_btn_color || '#7c3aed';
-  const btnFontSize = s.cta_btn_font_size || '14px';
-  const btnPadding = s.cta_btn_padding || '12px 28px';
-  const btnBorderRadius = s.cta_btn_border_radius || '24px';
   const textColor = s.cta_text_color || '#ffffff';
   const descColor = s.cta_desc_color || '#d1d5db';
-  const titleFontSize = s.cta_title_font_size || '28px';
-  const descFontSize = s.cta_desc_font_size || '15px';
-  const textAlign = s.cta_text_align || 'left';
   const contentPosition = s.cta_content_position || 'left';
   const bgImage = s.cta_bg_image || '';
-  const borderRadius = s.cta_border_radius || '16px';
-  const padding = s.cta_padding || '60px 50px';
-  const maxHeight = s.cta_max_height || '320px';
 
   const containerStyle: React.CSSProperties = {
-    background: bgImage ? `url(${bgImage}) center/cover no-repeat` : bgGrad,
+    background: bgImage ? `url(${bgImage}) center/cover no-repeat` : `linear-gradient(135deg, ${bg} 0%, ${bg}dd 100%)`,
     backgroundColor: bgImage ? bg : undefined,
-    borderRadius,
-    padding,
+    borderRadius: '16px',
+    padding: '60px 50px',
     maxWidth: 1200,
     margin: '0 auto',
     position: 'relative',
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
-    minHeight: maxHeight,
+    minHeight: '320px',
   };
 
   if (contentPosition === 'center') {
@@ -68,7 +58,6 @@ export const CtaBanner: React.FC = () => {
     position: 'relative',
     zIndex: 2,
     maxWidth: 500,
-    textAlign: textAlign as any,
   };
 
   return (
@@ -76,8 +65,8 @@ export const CtaBanner: React.FC = () => {
       <div className="container">
         <div style={containerStyle}>
           <div style={contentStyle}>
-            <h2 style={{ color: textColor, fontSize: titleFontSize, fontWeight: 700, margin: '0 0 12px', lineHeight: 1.3 }}>{title}</h2>
-            <p style={{ color: descColor, fontSize: descFontSize, margin: '0 0 24px', lineHeight: 1.6 }}>{desc}</p>
+            <h2 style={{ color: textColor, fontSize: '28px', fontWeight: 700, margin: '0 0 12px', lineHeight: 1.3 }}>{title}</h2>
+            <p style={{ color: descColor, fontSize: '15px', margin: '0 0 24px', lineHeight: 1.6 }}>{desc}</p>
             {btnText && (
               <a
                 href={btnLink}
@@ -88,9 +77,9 @@ export const CtaBanner: React.FC = () => {
                   display: 'inline-block',
                   backgroundColor: btnBg,
                   color: btnColor,
-                  fontSize: btnFontSize,
-                  padding: btnPadding,
-                  borderRadius: btnBorderRadius,
+                  fontSize: '14px',
+                  padding: '12px 28px',
+                  borderRadius: '24px',
                   textDecoration: 'none',
                   fontWeight: 600,
                   border: `2px solid ${btnBg === 'transparent' ? btnColor : 'transparent'}`,
