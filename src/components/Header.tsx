@@ -41,6 +41,9 @@ export const Header: React.FC = () => {
         link.href = `https://fonts.googleapis.com/css2?family=${settingsData.header_font.value.replace(/ /g, '+')}:wght@400;600;700;800&display=swap`;
         document.head.appendChild(link);
       }
+      if (settingsData?.header_height?.value) {
+        document.documentElement.style.setProperty('--header-height', settingsData.header_height.value + 'px');
+      }
       // Load nav menu
       if (settingsData?.nav_menu?.value) {
         try { setNavItems(JSON.parse(settingsData.nav_menu.value)); } catch { /* use default */ }
@@ -62,6 +65,7 @@ export const Header: React.FC = () => {
   const topbarBg = s?.header_topbar_bg?.value || '#001a4d';
   const topbarText = s?.header_topbar_text?.value || '#ffffff';
   const headerFont = s?.header_font?.value || '';
+  const headerHeight = s?.header_height?.value || '80';
   const portalUrl = s?.header_portal_url?.value || 'https://ixc.mundonetbandalarga.com.br/central_assinante_web/login';
   const portalText = s?.header_portal_text?.value || 'Portal do Assinante';
   const portalBg = s?.header_portal_bg?.value || '#4f46e5';
@@ -88,7 +92,7 @@ export const Header: React.FC = () => {
   return (
     <header
       className={`site-header ${isScrolled ? 'sticky' : ''}`}
-      style={{ fontFamily: headerFont || undefined } as React.CSSProperties}
+      style={{ fontFamily: headerFont || undefined, '--header-height': headerHeight + 'px' } as React.CSSProperties}
     >
       <div className="top-bar" style={{ backgroundColor: topbarBg, color: topbarText }}>
         <div className="container top-bar-container">

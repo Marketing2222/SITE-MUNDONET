@@ -186,6 +186,7 @@ export async function initDB() {
       { key:'header_portal_text', value:'Portal do Assinante', label:'Header: Texto do botão Portal' },
       { key:'header_portal_bg', value:'#4f46e5', label:'Header: Cor de fundo do botão Portal' },
       { key:'header_portal_text_color', value:'#ffffff', label:'Header: Cor do texto do botão Portal' },
+      { key:'header_height', value:'80', label:'Header: Altura do cabeçalho (px)' },
       { key:'header_nav_item1_text', value:'Planos', label:'Nav: Item 1 Texto' },
       { key:'header_nav_item2_text', value:'App Mundonet +', label:'Nav: Item 2 Texto' },
       { key:'header_nav_item3_text', value:'Para Você', label:'Nav: Item 3 Texto' },

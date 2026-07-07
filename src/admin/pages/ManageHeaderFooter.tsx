@@ -69,6 +69,7 @@ const HEADER_FIELDS: FieldDef[] = [
   { key: 'header_portal_url', label: 'URL do botão Portal', type: 'url' },
   { key: 'header_portal_bg', label: 'Cor de fundo do botão Portal', type: 'color' },
   { key: 'header_portal_text_color', label: 'Cor do texto do botão Portal', type: 'color' },
+  { key: 'header_height', label: 'Altura do cabeçalho (px)', type: 'spacing', hint: 'Altura da barra de navegação. Ex: 70, 80, 90' },
   { 
     key: 'header_portal_position', 
     label: 'Posição do botão Portal', 
