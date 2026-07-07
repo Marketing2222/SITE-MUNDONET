@@ -18,7 +18,8 @@ const defaultData = {
   site_settings: [],
   app_library: [],
   benefits: [],
-  _counters: { users:0, hero:0, plans:0, ql:0, ent:0, app_lib:0, benefits:0 }
+  file_uploads: [],
+  _counters: { users:0, hero:0, plans:0, ql:0, ent:0, app_lib:0, benefits:0, file_uploads:0 }
 };
 
 let db;

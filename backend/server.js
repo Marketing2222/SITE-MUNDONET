@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { initDB } from './database.js';
+import { initDB, db } from './database.js';
 import authRoutes from './routes/authRoutes.js';
 import heroRoutes from './routes/heroRoutes.js';
 import plansRoutes from './routes/plansRoutes.js';
@@ -30,17 +30,11 @@ const corsOrigin = process.env.CORS_ORIGIN
 app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
-// ── Uploads ──────────────────────────────────────────────────────────
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-
-app.use('/uploads', express.static(uploadsDir));
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => cb(null, Date.now() + '-' + file.originalname.replace(/\s+/g, '-'))
+// ── Uploads (armazenados no banco de dados) ────────────────────────────
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
-const upload = multer({ storage });
 
 // ── Inicializa banco antes de registrar rotas ─────────────────────
 initDB().then(() => {
@@ -56,12 +50,28 @@ initDB().then(() => {
   app.use('/api/benefits', benefitsRoutes);
   app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
-  app.post('/api/upload', upload.single('image'), (req, res) => {
+  app.post('/api/upload', upload.single('image'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'Nenhuma imagem enviada' });
-    // URL relativa: funciona em qualquer domínio sem hardcode de localhost
-    const baseUrl = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
-    const url = `${baseUrl}/uploads/${req.file.filename}`;
-    res.json({ url });
+    const base64 = req.file.buffer.toString('base64');
+    const id = db.nextId('file_uploads');
+    db.data.file_uploads.push({
+      id,
+      filename: req.file.originalname,
+      mimetype: req.file.mimetype,
+      data: base64,
+    });
+    await db.write();
+    res.json({ url: `/api/files/${id}` });
+  });
+
+  // Servir arquivos do banco de dados
+  app.get('/api/files/:id', (req, res) => {
+    const file = db.data.file_uploads.find(f => f.id === parseInt(req.params.id));
+    if (!file) return res.status(404).json({ error: 'Arquivo não encontrado' });
+    const buffer = Buffer.from(file.data, 'base64');
+    res.setHeader('Content-Type', file.mimetype);
+    res.setHeader('Cache-Control', 'public, max-age=31536000');
+    res.send(buffer);
   });
 
   // ── Serve o frontend React (dist/) em produção ────────────────────
