@@ -64,8 +64,6 @@ export const ExitPopup = () => {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem('exit_popup_dismissed')) return;
-
     fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
@@ -74,9 +72,7 @@ export const ExitPopup = () => {
           setReady(true);
           return;
         }
-        if (data.exit_popup_enabled?.value === 'true' || data.exit_popup_enabled?.value === '' || !data.exit_popup_enabled?.value) {
-          setEnabled(true);
-        }
+        setEnabled(true);
         setReady(true);
         if (data.exit_popup_title?.value) {
           const s = { ...DEFAULT_SETTINGS };
@@ -99,6 +95,7 @@ export const ExitPopup = () => {
 
     const handleMouseOut = (e: MouseEvent) => {
       if (e.clientY > 0) return;
+      if (sessionStorage.getItem('exit_popup_dismissed')) return;
       setVisible(true);
       document.removeEventListener('mouseout', handleMouseOut, true);
     };
