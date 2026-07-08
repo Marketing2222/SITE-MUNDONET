@@ -49,11 +49,14 @@ export const ManagePlans = () => {
   const [newBonus, setNewBonus] = useState({name:'',color:'#111827',textColor:'#fff',abbr:'',icon_url:'',description:''});
   const [editingBonusIdx, setEditingBonusIdx] = useState<number | null>(null);
   const [newBadge, setNewBadge] = useState({text:'',icon_url:'',icon_emoji:'',bg_color:'#00C853',text_color:'#ffffff'});
+  const [editingBadgeIdx, setEditingBadgeIdx] = useState<number | null>(null);
   const [appLibrary, setAppLibrary] = useState<LibraryApp[]>([]);
+  const [badgeLibrary, setBadgeLibrary] = useState<{id:number;text:string;icon_url:string;icon_emoji:string;bg_color:string;text_color:string}[]>([]);
 
   const load = async () => setPlans(await apiFetch('/plans/all'));
   const loadLibrary = async () => { try { setAppLibrary(await apiFetch('/app-library')); } catch { /* silently fail */ } };
-  useEffect(() => { load(); loadLibrary(); }, []);
+  const loadBadgeLibrary = async () => { try { setBadgeLibrary(await apiFetch('/badge-library')); } catch { /* silently fail */ } };
+  useEffect(() => { load(); loadLibrary(); loadBadgeLibrary(); }, []);
 
   const openNew = () => { setEditing(null); setForm(EMPTY_PLAN); setModal(true); setMsg(''); };
   const openEdit = (p: Plan) => { 
@@ -85,6 +88,19 @@ export const ManagePlans = () => {
     if (!confirm('Excluir este plano?')) return;
     await apiFetch(`/plans/${id}`, { method:'DELETE' });
     load();
+  };
+
+  const duplicate = async (p: Plan) => {
+    const newName = prompt('Nome do plano copiado:', `${p.name} (Cópia)`);
+    if (!newName) return;
+    setSaving(true);
+    try {
+      const { id, ...rest } = p;
+      await apiFetch('/plans', { method:'POST', body: JSON.stringify({ ...rest, name: newName, sort_order: plans.length }) });
+      setMsg('Plano copiado!');
+      load();
+    } catch (e: unknown) { setMsg(e instanceof Error ? e.message : 'Erro'); }
+    finally { setSaving(false); }
   };
 
   const reorder = async (index: number, direction: 'up' | 'down') => {
@@ -140,6 +156,20 @@ export const ManagePlans = () => {
       await apiFetch('/app-library', { method:'POST', body: JSON.stringify(app) });
     }
     loadLibrary();
+  };
+
+  const saveBadgeToLibrary = async (badge: {text:string;icon_url:string;icon_emoji:string;bg_color:string;text_color:string}) => {
+    const exists = badgeLibrary.find(b => b.text.toLowerCase() === badge.text.toLowerCase());
+    if (exists) {
+      await apiFetch(`/badge-library/${exists.id}`, { method:'PUT', body: JSON.stringify(badge) });
+    } else {
+      await apiFetch('/badge-library', { method:'POST', body: JSON.stringify(badge) });
+    }
+    loadBadgeLibrary();
+  };
+
+  const selectFromBadgeLibrary = (libBadge: {id:number;text:string;icon_url:string;icon_emoji:string;bg_color:string;text_color:string}) => {
+    setForm(f => ({ ...f, badges: [...(f.badges || []), { text: libBadge.text, icon_url: libBadge.icon_url, icon_emoji: libBadge.icon_emoji, bg_color: libBadge.bg_color, text_color: libBadge.text_color }] }));
   };
 
   const selectFromLibrary = (libApp: LibraryApp, target: 'included' | 'bonus') => {
@@ -201,10 +231,18 @@ export const ManagePlans = () => {
 
   const addBadge = () => {
     if (!newBadge.text) return;
-    setForm(f => ({ ...f, badges: [...(f.badges || []), { ...newBadge }] }));
+    const badgeToAdd = { ...newBadge };
+    if (editingBadgeIdx !== null) {
+      setForm(f => { const badges = [...(f.badges || [])]; badges[editingBadgeIdx] = badgeToAdd; return { ...f, badges }; });
+      setEditingBadgeIdx(null);
+    } else {
+      setForm(f => ({ ...f, badges: [...(f.badges || []), badgeToAdd] }));
+    }
+    saveBadgeToLibrary(badgeToAdd);
     setNewBadge({text:'',icon_url:'',icon_emoji:'',bg_color:'#00C853',text_color:'#ffffff'});
   };
   const removeBadge = (i: number) => setForm(f => ({ ...f, badges: (f.badges || []).filter((_,j)=>j!==i) }));
+  const editBadge = (i: number) => { const b = (form.badges || [])[i]; setNewBadge({...b}); setEditingBadgeIdx(i); };
   const moveBadge = (i: number, dir: 'left' | 'right') => {
     setForm(f => {
       const badges = [...(f.badges || [])];
@@ -269,6 +307,7 @@ export const ManagePlans = () => {
                     <button className="admin-btn ghost small" onClick={() => reorder(i, 'up')} disabled={i === 0 || saving}>⬆️</button>
                     <button className="admin-btn ghost small" onClick={() => reorder(i, 'down')} disabled={i === plans.length - 1 || saving}>⬇️</button>
                     <button className="admin-btn ghost small" onClick={() => openEdit(p)}>✏️ Editar</button>
+                    <button className="admin-btn ghost small" onClick={() => duplicate(p)} title="Copiar plano">📋</button>
                     <button className="admin-btn danger small" onClick={() => remove(p.id)}>🗑️</button>
                   </div>
                 </td>
@@ -304,6 +343,20 @@ export const ManagePlans = () => {
               {/* Badges do Pop-up */}
               <div className="admin-field">
                 <label>Chips de destaque (Pop-up) <span style={{fontSize:'0.78rem',color:'#888',fontWeight:'normal'}}>— aparecem no topo do pop-up, estilo pílula</span></label>
+                {badgeLibrary.length > 0 && (
+                  <div style={{marginBottom:10}}>
+                    <label style={{fontSize:'0.78rem',color:'#9ca3af',marginBottom:4,display:'block'}}>📚 Selecionar da Biblioteca:</label>
+                    <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+                      {badgeLibrary.map(libBadge => (
+                        <button key={libBadge.id} className="admin-btn ghost small" onClick={() => selectFromBadgeLibrary(libBadge)} style={{display:'flex',alignItems:'center',gap:4,fontSize:'0.75rem',padding:'4px 8px',borderLeft:`3px solid ${libBadge.bg_color}`}}>
+                          {libBadge.icon_emoji && <span>{libBadge.icon_emoji}</span>}
+                          {libBadge.icon_url && <img src={libBadge.icon_url} style={{width:16,height:16,borderRadius:3,objectFit:'contain'}} />}
+                          <span style={{color:libBadge.text_color}}>{libBadge.text}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="tags-list">
                   {(form.badges || []).map((b,i) => (
                     <div key={i} className="tag-chip" style={{borderLeft:`3px solid ${b.bg_color}`, alignItems:'center'}}>
@@ -312,10 +365,12 @@ export const ManagePlans = () => {
                       <span>{b.text}</span>
                       <button title="Mover esquerda" onClick={() => moveBadge(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>◀</button>
                       <button title="Mover direita" onClick={() => moveBadge(i,'right')} disabled={i===(form.badges||[]).length-1} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>▶</button>
+                      <button title="Editar" onClick={() => editBadge(i)} style={{background:'none',border:'none',cursor:'pointer',color:'#6d9eeb',padding:'0 2px'}}>✏️</button>
                       <button onClick={() => removeBadge(i)}>×</button>
                     </div>
                   ))}
                 </div>
+                {editingBadgeIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'#2a2a3d',borderRadius:6,fontSize:'0.78rem',color:'#a0c4ff'}}>✏️ Editando chip #{editingBadgeIdx+1} — clique em + para salvar</div>}
                 <div style={{display:'grid',gridTemplateColumns:'1fr 80px 1fr 1fr auto auto auto',gap:6,marginTop:8,alignItems:'center'}}>
                   <input placeholder="Texto (ex: Instalação Grátis)" value={newBadge.text} onChange={e=>setNewBadge({...newBadge,text:e.target.value})} />
                   <input placeholder="Emoji" value={newBadge.icon_emoji || ''} onChange={e=>setNewBadge({...newBadge,icon_emoji:e.target.value})} title="Ícone Emoji (ex: ⚙️)" />
@@ -325,7 +380,7 @@ export const ManagePlans = () => {
                     {newBadge.icon_url ? '📷 OK' : '📷'}
                     <input type="file" accept="image/*" onChange={e => handleUpload(e, 'newBadge')} style={{display:'none'}} />
                   </label>
-                  <button className="admin-btn ghost small" onClick={addBadge}>+</button>
+                  <button className="admin-btn ghost small" onClick={addBadge} title={editingBadgeIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingBadgeIdx !== null ? '✔' : '+'}</button>
                 </div>
               </div>
 

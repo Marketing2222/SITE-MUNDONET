@@ -19,6 +19,7 @@ import settingsRoutes from './routes/settingsRoutes.js';
 import appLibraryRoutes from './routes/appLibraryRoutes.js';
 import siteSettingsRoutes from './routes/siteSettingsRoutes.js';
 import benefitsRoutes from './routes/benefitsRoutes.js';
+import badgeLibraryRoutes from './routes/badgeLibraryRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -48,6 +49,7 @@ initDB().then(() => {
   app.use('/api/app-library', appLibraryRoutes);
   app.use('/api/site-settings', siteSettingsRoutes);
   app.use('/api/benefits', benefitsRoutes);
+  app.use('/api/badge-library', badgeLibraryRoutes);
   app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
   app.post('/api/upload', upload.single('image'), async (req, res) => {
