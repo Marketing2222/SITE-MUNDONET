@@ -1,5 +1,0 @@
-# ROADMAP DO SITE ....
-
-# ENVIANDO ATUALIZAÇÃO PARA PRODUÇÃO
-
-asdfasdfasdf
