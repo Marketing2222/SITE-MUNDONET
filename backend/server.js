@@ -88,6 +88,46 @@ initDB().then(() => {
     res.send(buffer);
   });
 
+  // ── Backup: Exportar banco de dados ────────────────────────────
+  app.get('/api/backup/export', (req, res) => {
+    const secret = req.query.secret || req.headers['x-backup-secret'];
+    if (secret !== 'mundonet-backup-2026') {
+      return res.status(403).json({ error: 'Acesso negado' });
+    }
+    const { _counters, ...exportData } = db.data;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="mundonet-backup-${Date.now()}.json"`);
+    res.json(exportData);
+  });
+
+  // ── Backup: Restaurar banco de dados ──────────────────────────
+  app.post('/api/backup/restore', express.json({ limit: '50mb' }), async (req, res) => {
+    const secret = req.body?.secret || req.headers['x-backup-secret'];
+    if (secret !== 'mundonet-backup-2026') {
+      return res.status(403).json({ error: 'Acesso negado' });
+    }
+    const backupData = req.body?.data;
+    if (!backupData || typeof backupData !== 'object') {
+      return res.status(400).json({ error: 'Dados de backup inválidos' });
+    }
+    try {
+      const tables = ['users','hero_slides','plans','quick_links','entertainment','contact_info','site_settings','app_library','benefits','file_uploads','badge_library'];
+      let restored = 0;
+      for (const table of tables) {
+        if (backupData[table] && Array.isArray(backupData[table])) {
+          db.data[table] = backupData[table];
+          restored += backupData[table].length;
+        }
+      }
+      await db.write();
+      console.log(`✅ Backup restaurado: ${restored} registros de ${tables.length} tabelas`);
+      res.json({ message: 'Backup restaurado com sucesso', records: restored });
+    } catch (err) {
+      console.error('❌ Erro ao restaurar backup:', err);
+      res.status(500).json({ error: 'Erro ao restaurar backup' });
+    }
+  });
+
   // ── Serve o frontend React (dist/) em produção ────────────────────
   const distPaths = [
     path.join(__dirname, 'public'),
