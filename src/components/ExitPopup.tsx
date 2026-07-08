@@ -74,7 +74,9 @@ export const ExitPopup = () => {
           setReady(true);
           return;
         }
-        setEnabled(true);
+        if (data.exit_popup_enabled?.value === 'true' || data.exit_popup_enabled?.value === '' || !data.exit_popup_enabled?.value) {
+          setEnabled(true);
+        }
         setReady(true);
         if (data.exit_popup_title?.value) {
           const s = { ...DEFAULT_SETTINGS };

@@ -94,6 +94,15 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'ent_text_color', label: 'Cor do Texto', type: 'color', hint: 'Padrão: #1e293b' },
     { key: 'ent_carousel_bg', label: 'Cor de Fundo do Carrossel', type: 'color', hint: 'Padrão: #ffffff' },
   ],
+  'Planos': [
+    { key: 'plans_eyebrow_color', label: 'Cor do Subtítulo ("Nossos Planos")', type: 'color', hint: 'Padrão: #7c3aed' },
+    { key: 'plans_eyebrow_bg', label: 'Fundo do Subtítulo ("Nossos Planos")', type: 'color', hint: 'Padrão: #f3e8ff' },
+    { key: 'plans_title_color', label: 'Cor do Título Principal', type: 'color', hint: 'Padrão: #1e1b4b' },
+    { key: 'plans_arrow_color', label: 'Cor das Setas do Carrossel', type: 'color', hint: 'Padrão: #7c3aed' },
+    { key: 'plans_arrow_bg', label: 'Fundo das Setas do Carrossel', type: 'color', hint: 'Padrão: #f3e8ff' },
+    { key: 'plans_arrow_border', label: 'Borda das Setas do Carrossel', type: 'color', hint: 'Padrão: #e9d5ff' },
+    { key: 'plans_dots_color', label: 'Cor dos Pontos do Carrossel', type: 'color', hint: 'Padrão: #7c3aed' },
+  ],
   'Popup de Saída': [
     { key: 'exit_popup_enabled', label: 'Popup Ativo', type: 'toggle' },
     { key: 'exit_popup_title', label: 'Título do Popup', type: 'text', hint: 'Padrão: Ainda está aí?' },

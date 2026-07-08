@@ -56,6 +56,7 @@ export const Plans = () => {
   const [selectedPlanModal, setSelectedPlanModal] = useState<Plan | null>(null);
   const [selectedBonusTab, setSelectedBonusTab] = useState<number | null>(0);
   const [selectedAppTab, setSelectedAppTab] = useState<number>(0);
+  const [sectionColors, setSectionColors] = useState<Record<string, string>>({});
 
   const [visible, setVisible] = useState(3);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -65,6 +66,16 @@ export const Plans = () => {
       .then(res => res.json())
       .then(data => setPlans(data))
       .catch(console.error);
+    fetch(`${API_BASE_URL}/api/settings`)
+      .then(res => res.json())
+      .then(data => {
+        const colors: Record<string, string> = {};
+        for (const [key, obj] of Object.entries(data) as [string, { value: string }][]) {
+          if (key.startsWith('plans_') && obj.value) colors[key] = obj.value;
+        }
+        setSectionColors(colors);
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -120,8 +131,8 @@ export const Plans = () => {
     <section id="internet" className="plans-section">
       <div className="plans-wrapper">
         <div className="plans-header">
-          <span className="plans-eyebrow">Nossos Planos</span>
-          <h2 className="site-section-title">A melhor internet da Área Itaqui Bacanga</h2>
+          <span className="plans-eyebrow" style={{ color: sectionColors.plans_eyebrow_color || undefined, backgroundColor: sectionColors.plans_eyebrow_bg || undefined }}>Nossos Planos</span>
+          <h2 className="site-section-title" style={{ color: sectionColors.plans_title_color || undefined }}>A melhor internet da Área Itaqui Bacanga</h2>
           <p className="site-section-subtitle">
             Assine a Mundonet e tenha acesso a aplicativos, canais de TV e muito mais!
           </p>
