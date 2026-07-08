@@ -17,6 +17,7 @@ import Benefits from './components/Benefits';
 import Contact from './components/Contact';
 import ExitPopup from './components/ExitPopup';
 import Footer from './components/Footer';
+import LandingPage from './components/LandingPage';
 
 // Admin components
 import AdminLogin from './admin/AdminLogin';
@@ -30,6 +31,7 @@ import ManageSettings from './admin/pages/ManageSettings';
 import ManageHeaderFooter from './admin/pages/ManageHeaderFooter';
 import ManageHomeSections from './admin/pages/ManageHomeSections';
 import { ManageSiteCustomization } from './admin/pages/ManageSiteCustomization';
+import ManageLandingPage from './admin/pages/ManageLandingPage';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -257,6 +259,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<PublicSite />} />
+      <Route path="/vem-pra-mundonet" element={<LandingPage />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
@@ -269,6 +272,7 @@ function App() {
         <Route path="site-settings" element={<ManageSiteCustomization />} />
         <Route path="header-footer" element={<ManageHeaderFooter />} />
         <Route path="home-sections" element={<ManageHomeSections />} />
+        <Route path="landing-page" element={<ManageLandingPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

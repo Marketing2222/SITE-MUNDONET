@@ -12,6 +12,7 @@ const NAV = [
   { to: '/admin/header-footer', icon: '🎨', label: 'Cabeçalho & Rodapé' },
   { to: '/admin/settings', icon: '⚙️', label: 'Configurações Gerais' },
   { to: '/admin/site-settings', icon: '🎨', label: 'Personalização Global' },
+  { to: '/admin/landing-page', icon: '🚀', label: 'Landing Page' },
 ];
 
 export const AdminLayout = () => {

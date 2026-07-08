@@ -502,6 +502,50 @@ export async function initDB() {
     console.log('  → favicon_url adicionado às configurações');
   }
 
+  // ── Migração: Landing Page (Vem pra Mundonet) ─────────────────────
+  const lpSettings = [
+    { key:'lp_hero_title', value:'Na MUNDONET você tem o', label:'LP: Título Hero' },
+    { key:'lp_hero_highlight', value:'melhor do entretenimento do MUNDO!', label:'LP: Destaque Hero' },
+    { key:'lp_hero_subtitle', value:'Internet 100% Fibra Óptica, alta velocidade e estabilidade garantida para navegar, jogar e assistir sem limites.', label:'LP: Subtítulo Hero' },
+    { key:'lp_hero_image', value:'https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png', label:'LP: Imagem Hero' },
+    { key:'lp_hero_bg_color', value:'#1a0533', label:'LP: Cor Fundo Hero' },
+    { key:'lp_hero_text_color', value:'#ffffff', label:'LP: Cor Texto Hero' },
+    { key:'lp_hero_highlight_color', value:'#22c55e', label:'LP: Cor Destaque Hero' },
+    { key:'lp_plan_name', value:'700 MEGA', label:'LP: Nome do Plano' },
+    { key:'lp_plan_speed', value:'700', label:'LP: Velocidade' },
+    { key:'lp_plan_price', value:'39,90', label:'LP: Preço' },
+    { key:'lp_plan_badge_text', value:'MEGA', label:'LP: Badge Texto' },
+    { key:'lp_plan_period', value:'POR APENAS', label:'LP: Texto Acima Preço' },
+    { key:'lp_plan_installment', value:'39,90', label:'LP: Instalação' },
+    { key:'lp_plan_original_price', value:'129,90', label:'LP: Preço Original' },
+    { key:'lp_plan_highlight_text', value:'1 APP DA ÁREA STANDARD A MAIS PARA VOCÊ UTILIZAR', label:'LP: Texto Destaque' },
+    { key:'lp_plan_apps', value:'Deezer,Globoplay,Sky,Apple TV', label:'LP: Apps (vírgula)' },
+    { key:'lp_plan_card_bg', value:'#ffffff', label:'LP: Cor Fundo Card' },
+    { key:'lp_plan_price_color', value:'#16a34a', label:'LP: Cor Preço' },
+    { key:'lp_plan_btn_text', value:'CONTRATAR AGORA', label:'LP: Texto Botão' },
+    { key:'lp_plan_btn_link', value:'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20landing%20page%20e%20quero%20contratar%20o%20plano%20de%20700%20MEGA.', label:'LP: Link Botão' },
+    { key:'lp_plan_btn_color', value:'#16a34a', label:'LP: Cor Fundo Botão' },
+    { key:'lp_plan_btn_text_color', value:'#ffffff', label:'LP: Cor Texto Botão' },
+    { key:'lp_features_title', value:'Por que escolher a Mundonet?', label:'LP: Título Benefícios' },
+    { key:'lp_features', value:'Internet 100% Fibra Óptica,Wi-Fi 6 incluso,40 canais de TV grátis,Filmes e E-Books inclusos,Instalação em até 48 horas,Suporte técnico rápido', label:'LP: Benefícios (vírgula)' },
+    { key:'lp_cta_title', value:'Não perca essa oportunidade!', label:'LP: Título CTA' },
+    { key:'lp_cta_desc', value:'Fale com nosso time e garanta seu plano com o melhor preço da região.', label:'LP: Descrição CTA' },
+    { key:'lp_cta_btn_text', value:'Falar com Atendente', label:'LP: Texto Botão CTA' },
+    { key:'lp_cta_btn_link', value:'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20landing%20page%20e%20quero%20contratar%20a%20internet.', label:'LP: Link Botão CTA' },
+    { key:'lp_cta_bg_color', value:'#16a34a', label:'LP: Cor Fundo CTA' },
+    { key:'lp_cta_text_color', value:'#ffffff', label:'LP: Cor Texto CTA' },
+    { key:'lp_cta_btn_color', value:'#ffffff', label:'LP: Cor Fundo Botão CTA' },
+    { key:'lp_cta_btn_text_color', value:'#16a34a', label:'LP: Cor Texto Botão CTA' },
+    { key:'lp_footer_text', value:'© 2026 Mundonet Telecom. Todos os direitos reservados.', label:'LP: Texto Rodapé' },
+    { key:'lp_footer_bg_color', value:'#1a0533', label:'LP: Cor Fundo Rodapé' },
+    { key:'lp_footer_text_color', value:'#a1a1aa', label:'LP: Cor Texto Rodapé' },
+  ];
+  for (const s of lpSettings) {
+    if (!db.data.site_settings.find(x => x.key === s.key)) {
+      db.data.site_settings.push({ id: db.nextId('site_settings'), ...s });
+    }
+  }
+
   await db.write();
   console.log('✅ Banco de dados pronto (mundonet-db.json)');
   return db;
