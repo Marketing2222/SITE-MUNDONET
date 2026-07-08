@@ -242,7 +242,17 @@ export const ManagePlans = () => {
     setNewBadge({text:'',icon_url:'',icon_emoji:'',bg_color:'#00C853',text_color:'#ffffff'});
   };
   const removeBadge = (i: number) => setForm(f => ({ ...f, badges: (f.badges || []).filter((_,j)=>j!==i) }));
-  const editBadge = (i: number) => { const b = (form.badges || [])[i]; setNewBadge({...b}); setEditingBadgeIdx(i); };
+  const editBadge = (i: number) => {
+    const b = (form.badges || [])[i];
+    setNewBadge({
+      text: b.text || '',
+      icon_url: b.icon_url || '',
+      icon_emoji: b.icon_emoji || '',
+      bg_color: b.bg_color || '#00C853',
+      text_color: b.text_color || '#ffffff'
+    });
+    setEditingBadgeIdx(i);
+  };
   const moveBadge = (i: number, dir: 'left' | 'right') => {
     setForm(f => {
       const badges = [...(f.badges || [])];
