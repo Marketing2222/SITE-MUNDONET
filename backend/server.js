@@ -51,26 +51,38 @@ initDB().then(() => {
   app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
   app.post('/api/upload', upload.single('image'), async (req, res) => {
-    if (!req.file) return res.status(400).json({ error: 'Nenhuma imagem enviada' });
-    const base64 = req.file.buffer.toString('base64');
-    const id = db.nextId('file_uploads');
-    db.data.file_uploads.push({
-      id,
-      filename: req.file.originalname,
-      mimetype: req.file.mimetype,
-      data: base64,
-    });
-    await db.write();
-    res.json({ url: `/api/files/${id}` });
+    try {
+      if (!req.file) return res.status(400).json({ error: 'Nenhuma imagem enviada' });
+      const base64 = req.file.buffer.toString('base64');
+      const id = db.nextId('file_uploads');
+      db.data.file_uploads.push({
+        id,
+        filename: req.file.originalname,
+        mimetype: req.file.mimetype,
+        data: base64,
+        created_at: new Date().toISOString(),
+      });
+      await db.write();
+      console.log(`✅ Upload salvo: id=${id}, filename=${req.file.originalname}, size=${req.file.size}bytes`);
+      res.json({ url: `/api/files/${id}?t=${Date.now()}` });
+    } catch (err) {
+      console.error('❌ Erro no upload:', err);
+      res.status(500).json({ error: 'Erro ao salvar arquivo' });
+    }
   });
 
-  // Servir arquivos do banco de dados
+  // Servir arquivos do banco de dados (cache curto para evitar imagens obsoletas)
   app.get('/api/files/:id', (req, res) => {
-    const file = db.data.file_uploads.find(f => f.id === parseInt(req.params.id));
-    if (!file) return res.status(404).json({ error: 'Arquivo não encontrado' });
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: 'ID inválido' });
+    const file = db.data.file_uploads.find(f => f.id === id);
+    if (!file) {
+      console.log(`⚠️ Arquivo não encontrado: id=${id}`);
+      return res.status(404).json({ error: 'Arquivo não encontrado' });
+    }
     const buffer = Buffer.from(file.data, 'base64');
     res.setHeader('Content-Type', file.mimetype);
-    res.setHeader('Cache-Control', 'public, max-age=31536000');
+    res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hora
     res.send(buffer);
   });
 
