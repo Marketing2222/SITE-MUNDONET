@@ -1,0 +1,330 @@
+.ig-page {
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+}
+
+.ig-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Hero */
+.ig-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  padding: 100px 24px 80px;
+  min-height: 85vh;
+}
+
+.ig-hero-content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.ig-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.ig-hero-content h1 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 20px;
+}
+
+.ig-hero-content p {
+  font-size: 18px;
+  line-height: 1.7;
+  margin: 0 0 36px;
+}
+
+.ig-hero-image {
+  flex: 1;
+  max-width: 500px;
+}
+
+.ig-hero-image img {
+  width: 100%;
+  height: auto;
+  animation: ig-float 3s ease-in-out infinite;
+}
+
+@keyframes ig-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Buttons */
+.ig-btn {
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.ig-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.ig-btn-primary {
+  background-color: #22c55e;
+  color: #fff;
+}
+
+.ig-btn-large {
+  padding: 20px 48px;
+  font-size: 18px;
+  border-radius: 14px;
+}
+
+/* Steps */
+.ig-steps {
+  padding: 100px 0;
+  text-align: center;
+}
+
+.ig-steps h2 {
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 12px;
+}
+
+.ig-steps-subtitle {
+  font-size: 18px;
+  margin: 0 0 60px;
+}
+
+.ig-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.ig-step-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.ig-step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.ig-step-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 20px;
+}
+
+.ig-step-num {
+  font-size: 64px;
+  font-weight: 900;
+  position: absolute;
+  top: -16px;
+  right: 24px;
+  opacity: 0.12;
+  line-height: 1;
+}
+
+.ig-step-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.ig-step-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Benefits */
+.ig-benefits {
+  padding: 100px 0;
+}
+
+.ig-benefits h2 {
+  font-size: 36px;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 60px;
+}
+
+.ig-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.ig-benefit-card {
+  border: 1px solid #dcfce7;
+  border-radius: 20px;
+  padding: 36px;
+  transition: all 0.3s;
+}
+
+.ig-benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.ig-benefit-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.ig-benefit-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.ig-benefit-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Rewards */
+.ig-rewards {
+  padding: 100px 0;
+}
+
+.ig-rewards-content {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+.ig-rewards-text {
+  flex: 1;
+}
+
+.ig-rewards-text h2 {
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 16px;
+}
+
+.ig-rewards-text > p {
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0 0 32px;
+}
+
+.ig-rewards-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px;
+}
+
+.ig-rewards-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ig-check {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.ig-rewards-image {
+  flex: 1;
+  max-width: 450px;
+}
+
+.ig-rewards-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
+/* CTA */
+.ig-cta {
+  padding: 100px 0;
+  text-align: center;
+}
+
+.ig-cta h2 {
+  font-size: 40px;
+  font-weight: 800;
+  margin: 0 0 16px;
+}
+
+.ig-cta p {
+  font-size: 18px;
+  margin: 0 0 40px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .ig-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 24px 60px;
+  }
+
+  .ig-hero-content h1 {
+    font-size: 32px;
+  }
+
+  .ig-steps-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .ig-benefits-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .ig-rewards-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .ig-rewards-list li {
+    justify-content: center;
+  }
+
+  .ig-cta h2 {
+    font-size: 28px;
+  }
+}

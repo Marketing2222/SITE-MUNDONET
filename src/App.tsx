@@ -18,6 +18,7 @@ import Contact from './components/Contact';
 import ExitPopup from './components/ExitPopup';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
+import IndiqueGanhe from './components/IndiqueGanhe';
 
 // Admin components
 import AdminLogin from './admin/AdminLogin';
@@ -32,6 +33,7 @@ import ManageHeaderFooter from './admin/pages/ManageHeaderFooter';
 import ManageHomeSections from './admin/pages/ManageHomeSections';
 import { ManageSiteCustomization } from './admin/pages/ManageSiteCustomization';
 import ManageLandingPage from './admin/pages/ManageLandingPage';
+import ManageIndiqueGanhe from './admin/pages/ManageIndiqueGanhe';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -260,6 +262,7 @@ function App() {
     <Routes>
       <Route path="/" element={<PublicSite />} />
       <Route path="/vem-pra-mundonet" element={<LandingPage />} />
+      <Route path="/indique-e-ganhe" element={<IndiqueGanhe />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
