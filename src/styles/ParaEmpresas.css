@@ -1,4 +1,4 @@
-.emp-page { font-family: 'Montserrat', sans-serif; }
+.emp-page { font-family: 'Montserrat', sans-serif; padding-top: calc(var(--header-height, 80px) + 36px); }
 
 .emp-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .emp-section-sub { font-size: 17px; text-align: center; margin: -8px 0 48px; }

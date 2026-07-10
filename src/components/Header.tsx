@@ -95,22 +95,20 @@ export const Header: React.FC = () => {
       className={`site-header ${isScrolled ? 'sticky' : ''}`}
       style={{ fontFamily: headerFont || undefined, '--header-height': headerHeight + 'px' } as React.CSSProperties}
     >
-      {/* Segment bar: Para você | Para empresas */}
-      <div className="segment-bar" style={{ backgroundColor: '#0d0d2b' }}>
-        <div className="container segment-bar-container">
-          <a href="/" className={`segment-link ${currentPath === '/' || currentPath.startsWith('/admin') ? 'active' : ''}`}
-            style={{ color: currentPath === '/' || currentPath.startsWith('/admin') ? '#fff' : 'rgba(255,255,255,0.5)' }}>
-            Para você
-          </a>
-          <a href="/para-empresas" className={`segment-link ${currentPath === '/para-empresas' ? 'active' : ''}`}
-            style={{ color: currentPath === '/para-empresas' ? '#fff' : 'rgba(255,255,255,0.5)' }}>
-            Para empresas
-          </a>
-        </div>
-      </div>
       <div className="top-bar" style={{ backgroundColor: topbarBg, color: topbarText }}>
         <div className="container top-bar-container">
           <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+            {/* Segment links na mesma linha do topo */}
+            <div className="topbar-segment" style={{ display: 'flex', alignItems: 'center', gap: 0, marginRight: 12 }}>
+              <a href="/" className={`segment-link ${currentPath === '/' || currentPath.startsWith('/admin') ? 'active' : ''}`}
+                style={{ color: currentPath === '/' || currentPath.startsWith('/admin') ? '#fff' : 'rgba(255,255,255,0.5)' }}>
+                Para você
+              </a>
+              <a href="/para-empresas" className={`segment-link ${currentPath === '/para-empresas' ? 'active' : ''}`}
+                style={{ color: currentPath === '/para-empresas' ? '#fff' : 'rgba(255,255,255,0.5)' }}>
+                Para empresas
+              </a>
+            </div>
             {portalPosition === 'topbar_left' && renderPortalBtn('topbar-cta', { transform: 'scale(0.85)', transformOrigin: 'left center', margin: '-10px 0' })}
             <div className="contact-info" style={{ color: topbarText }}>
               <span>

@@ -212,6 +212,10 @@
   border-bottom: none;
 }
 
+.site-header.sticky .topbar-segment {
+  display: none;
+}
+
 .site-header.sticky .navbar {
   background-color: rgba(255, 255, 255, 0.95);
   height: calc(var(--header-height) - 10px);
@@ -416,33 +420,24 @@
   }
 }
 
-/* Segment bar (Para você | Para empresas) */
-.segment-bar {
-  width: 100%;
-  height: 36px;
-  display: flex;
-  align-items: center;
-}
-
-.segment-bar-container {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  height: 100%;
+/* Segment links inside top-bar */
+.topbar-segment {
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  padding-right: 12px;
 }
 
 .segment-link {
-  padding: 6px 20px;
-  font-size: 13px;
+  padding: 4px 12px;
+  font-size: 12px;
   font-weight: 600;
   text-decoration: none;
   letter-spacing: 0.3px;
   transition: all 0.2s;
-  border-radius: 0;
+  border-radius: 4px;
   position: relative;
-  height: 100%;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .segment-link:hover {
@@ -450,13 +445,13 @@
 }
 
 .segment-link.active {
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.15);
 }
 
 .segment-link.active::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -2px;
   left: 0;
   right: 0;
   height: 2px;
@@ -464,11 +459,11 @@
 }
 
 @media (max-width: 768px) {
-  .segment-bar {
-    height: 32px;
+  .topbar-segment {
+    display: none;
   }
   .segment-link {
-    padding: 4px 14px;
-    font-size: 12px;
+    padding: 3px 8px;
+    font-size: 11px;
   }
 }
