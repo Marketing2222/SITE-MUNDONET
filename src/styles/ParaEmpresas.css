@@ -28,6 +28,10 @@
 /* Planos */
 .emp-plans { padding: 100px 0; text-align: center; }
 .emp-plans h2 { font-size: 34px; font-weight: 800; margin: 0 0 12px; }
+.emp-plans-empty {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 40px 24px;
+}
 .emp-plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
 .emp-plan-card {
   border-radius: 20px; padding: 36px 28px; text-align: center; position: relative;

@@ -33,6 +33,11 @@ const FIELDS = [
     { key: 'emp_plans_bg', label: 'Cor Fundo', type: 'color' },
     { key: 'emp_plans_title_color', label: 'Cor Título', type: 'color' },
     { key: 'emp_plans_subtitle_color', label: 'Cor Subtítulo', type: 'color' },
+    { key: 'emp_plans_empty_text', label: 'Texto (quando vazio)', type: 'text', hint: 'Em dúvida do plano ideal ou gostaria de personalizar seu plano?' },
+    { key: 'emp_plans_empty_btn_text', label: 'Texto Botão (quando vazio)', type: 'text', hint: 'Consultar um especialista' },
+    { key: 'emp_plans_empty_btn_link', label: 'Link Botão (quando vazio)', type: 'url' },
+    { key: 'emp_plans_empty_btn_bg', label: 'Cor Fundo Botão (quando vazio)', type: 'color' },
+    { key: 'emp_plans_empty_btn_color', label: 'Cor Texto Botão (quando vazio)', type: 'color' },
   ]},
   { section: 'Benefícios', fields: [
     { key: 'emp_benefits_title', label: 'Título', type: 'text' },

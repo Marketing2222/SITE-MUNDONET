@@ -700,6 +700,11 @@ export async function initDB() {
     { key:'emp_plans_bg', value:'#f8fafc', label:'Emp: Fundo Planos' },
     { key:'emp_plans_title_color', value:'#1a0533', label:'Emp: Cor Título Planos' },
     { key:'emp_plans_subtitle_color', value:'#64748b', label:'Emp: Cor Subtítulo Planos' },
+    { key:'emp_plans_empty_text', value:'Em dúvida do plano ideal ou gostaria de personalizar seu plano?', label:'Emp: Texto Planos Vazio' },
+    { key:'emp_plans_empty_btn_text', value:'Consultar um especialista', label:'Emp: Texto Botão Planos Vazio' },
+    { key:'emp_plans_empty_btn_link', value:'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20planos%20empresariais.', label:'Emp: Link Botão Planos Vazio' },
+    { key:'emp_plans_empty_btn_bg', value:'#005CFF', label:'Emp: Cor Fundo Botão Planos Vazio' },
+    { key:'emp_plans_empty_btn_color', value:'#ffffff', label:'Emp: Cor Texto Botão Planos Vazio' },
     // Benefícios
     { key:'emp_benefits_title', value:'Benefícios e vantagens para sua empresa', label:'Emp: Título Benefícios' },
     { key:'emp_benefits_items', value:'[{"icon":"📈","title":"Planos flexíveis e escaláveis","desc":"Opções que crescem junto com o seu negócio, sem complicações."},{"icon":"🌐","title":"Conectividade para todos","desc":"Planos exclusivos para empresas, garantindo maior desempenho."},{"icon":"🛡️","title":"Suporte Prioritário 24/7","desc":"Atendimento especializado para resolver qualquer necessidade."},{"icon":"🔒","title":"Segurança reforçada","desc":"Proteção contra ataques e segurança extra para os dados da sua empresa."}]', label:'Emp: Itens Benefícios' },

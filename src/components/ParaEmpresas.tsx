@@ -44,6 +44,7 @@ export const ParaEmpresas = () => {
   const servicesList = services.length > 0 ? services : DEFAULT_SERVICES;
   const heroHeight = g('emp_hero_height', '600');
   const pageBg = g('emp_page_bg', '');
+  const activePlans = plans.filter(p => p.active);
 
   return (
     <div className="emp-page" style={pageBg ? { backgroundColor: pageBg } : undefined}>
@@ -68,45 +69,59 @@ export const ParaEmpresas = () => {
 
       {/* Planos */}
       {g('emp_plans_enabled', 'true') !== 'false' && (
-        <section id="emp-planos" className="emp-plans" style={{ backgroundColor: g('emp_plans_bg', '#f8fafc') }}>
+        <section id="emp-planos" className="emp-plans" style={g('emp_plans_bg') ? { backgroundColor: g('emp_plans_bg') } : undefined}>
           <div className="emp-container">
             <h2 style={{ color: g('emp_plans_title_color', '#1a0533') }}>{g('emp_plans_title', 'Planos sob medida para sua empresa')}</h2>
             <p className="emp-section-sub" style={{ color: g('emp_plans_subtitle_color', '#64748b') }}>{g('emp_plans_subtitle', 'Temos soluções para qualquer que seja sua necessidade')}</p>
-            <div className="emp-plans-grid">
-              {plans.map(plan => (
-                <div key={plan.id} className="emp-plan-card" style={{
-                  backgroundColor: plan.card_bg_color || '#ffffff',
-                  color: plan.card_text_color || '#1a0533'
-                }}>
-                  {plan.popular && <div className="emp-plan-badge">⭐ Mais Popular</div>}
-                  <div className="emp-plan-icon">{plan.highlight_icon || '🏢'}</div>
-                  <h3>{plan.name}</h3>
-                  <div className="emp-plan-speed">{plan.speed} Mbps</div>
-                  <div className="emp-plan-price" style={{ color: plan.card_text_color === '#ffffff' ? '#22c55e' : '#005CFF' }}>
-                    {plan.price === 'Sob Consulta' ? 'Sob Consulta' : `R$ ${plan.price}/mês`}
+
+            {activePlans.length > 0 ? (
+              <div className="emp-plans-grid">
+                {activePlans.map(plan => (
+                  <div key={plan.id} className="emp-plan-card" style={{
+                    backgroundColor: plan.card_bg_color || '#ffffff',
+                    color: plan.card_text_color || '#1a0533'
+                  }}>
+                    {plan.popular && <div className="emp-plan-badge">⭐ Mais Popular</div>}
+                    <div className="emp-plan-icon">{plan.highlight_icon || '🏢'}</div>
+                    <h3>{plan.name}</h3>
+                    <div className="emp-plan-speed">{plan.speed} Mbps</div>
+                    <div className="emp-plan-price" style={{ color: plan.card_text_color === '#ffffff' ? '#22c55e' : '#005CFF' }}>
+                      {plan.price === 'Sob Consulta' ? 'Sob Consulta' : `R$ ${plan.price}/mês`}
+                    </div>
+                    <p className="emp-plan-highlight">{plan.highlight}</p>
+                    <ul className="emp-plan-features">
+                      {plan.features?.map((f, i) => (
+                        <li key={i} style={{ color: plan.card_text_color || '#374151' }}>
+                          <span className="emp-check" style={{ color: plan.card_text_color === '#ffffff' ? '#22c55e' : '#005CFF' }}>✓</span> {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <a href={`https://api.whatsapp.com/send?phone=559830420030&text=${encodeURIComponent(plan.whatsapp_msg || `Olá! Quero saber mais sobre ${plan.name}.`)}`}
+                      target="_blank" rel="noreferrer" className="emp-plan-btn"
+                      style={{ backgroundColor: plan.button_bg_color || '#005CFF', color: plan.button_text_color || '#fff' }}>
+                      {plan.button_text || 'CONSULTAR'}
+                    </a>
                   </div>
-                  <p className="emp-plan-highlight">{plan.highlight}</p>
-                  <ul className="emp-plan-features">
-                    {plan.features?.map((f, i) => (
-                      <li key={i} style={{ color: plan.card_text_color || '#374151' }}>
-                        <span className="emp-check" style={{ color: plan.card_text_color === '#ffffff' ? '#22c55e' : '#005CFF' }}>✓</span> {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <a href={`https://api.whatsapp.com/send?phone=559830420030&text=${encodeURIComponent(plan.whatsapp_msg || `Olá! Quero saber mais sobre ${plan.name}.`)}`}
-                    target="_blank" rel="noreferrer" className="emp-plan-btn"
-                    style={{ backgroundColor: plan.button_bg_color || '#005CFF', color: plan.button_text_color || '#fff' }}>
-                    {plan.button_text || 'CONSULTAR'}
-                  </a>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="emp-plans-empty">
+                <p style={{ color: g('emp_plans_title_color', '#1a0533'), fontSize: 17, margin: '0 0 20px' }}>
+                  {g('emp_plans_empty_text', 'Em dúvida do plano ideal ou gostaria de personalizar seu plano?')}
+                </p>
+                <a href={g('emp_plans_empty_btn_link', 'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20planos%20empresariais.')}
+                  target="_blank" rel="noreferrer" className="emp-btn"
+                  style={{ backgroundColor: g('emp_plans_empty_btn_bg', '#005CFF'), color: g('emp_plans_empty_btn_color', '#fff') }}>
+                  {g('emp_plans_empty_btn_text', 'Consultar um especialista')}
+                </a>
+              </div>
+            )}
           </div>
         </section>
       )}
 
       {/* Benefícios - lado a lado */}
-      <section className="emp-benefits" style={{ backgroundColor: g('emp_benefits_bg', '#ffffff') }}>
+      <section className="emp-benefits" style={g('emp_benefits_bg') ? { backgroundColor: g('emp_benefits_bg') } : undefined}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_benefits_title_color', '#1a0533') }}>{g('emp_benefits_title', 'Benefícios e vantagens para sua empresa')}</h2>
           <div className="emp-benefits-grid">
@@ -122,7 +137,7 @@ export const ParaEmpresas = () => {
       </section>
 
       {/* Serviços - lado a lado */}
-      <section className="emp-services" style={{ backgroundColor: g('emp_services_bg', '#f0f4ff') }}>
+      <section className="emp-services" style={g('emp_services_bg') ? { backgroundColor: g('emp_services_bg') } : undefined}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_services_title_color', '#1a0533') }}>{g('emp_services_title', 'Serviços dedicados e exclusivos')}</h2>
           <p className="emp-section-sub" style={{ color: g('emp_services_subtitle_color', '#64748b') }}>{g('emp_services_subtitle', 'Serviços disponíveis em nossos planos empresariais')}</p>
@@ -139,7 +154,7 @@ export const ParaEmpresas = () => {
       </section>
 
       {/* CTA Final */}
-      <section className="emp-cta" style={{ backgroundColor: g('emp_cta_bg', '#1a0533') }}>
+      <section className="emp-cta" style={g('emp_cta_bg') ? { backgroundColor: g('emp_cta_bg') } : undefined}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_cta_title_color', '#fff') }}>{g('emp_cta_title', 'Faça parte deste movimento, assine um plano empresarial!')}</h2>
           <p style={{ color: g('emp_cta_desc_color', '#a1a1aa') }}>{g('emp_cta_desc', 'Soluções completas em conectividade para impulsionar o seu negócio.')}</p>
