@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
 
 interface Plan {
-  id: number;
+  id?: number;
   name: string;
   speed: string;
   price: string;
