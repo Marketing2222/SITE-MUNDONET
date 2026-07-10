@@ -194,7 +194,9 @@ export const ParaEmpresas = () => {
         ...(g('emp_cta_bg') && !g('emp_cta_image') ? { backgroundColor: g('emp_cta_bg') } : {}),
         ...(g('emp_cta_padding') ? { padding: g('emp_cta_padding') + 'px 0' } : {}),
       }}>
-        {g('emp_cta_image') && <div className="emp-cta-overlay" style={{ backgroundColor: g('emp_cta_bg', '#0a1628') }}></div>}
+        {g('emp_cta_image') && g('emp_cta_overlay', 'true') === 'true' && (
+          <div className="emp-cta-overlay" style={{ backgroundColor: g('emp_cta_bg', '#0a1628'), opacity: Number(g('emp_cta_overlay_opacity') || 75) / 100 }}></div>
+        )}
         <div className="emp-container" style={{ position: 'relative', zIndex: 2 }}>
           <h2 style={{ color: g('emp_cta_title_color', '#fff') }}>{g('emp_cta_title', 'Faça parte deste movimento, assine um plano empresarial!')}</h2>
           <p style={{ color: g('emp_cta_desc_color', '#a1a1aa') }}>{g('emp_cta_desc', 'Soluções completas em conectividade para impulsionar o seu negócio.')}</p>
