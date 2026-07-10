@@ -69,7 +69,10 @@ export const ParaEmpresas = () => {
 
       {/* Planos */}
       {g('emp_plans_enabled', 'true') !== 'false' && (
-        <section id="emp-planos" className="emp-plans" style={g('emp_plans_bg') ? { backgroundColor: g('emp_plans_bg') } : undefined}>
+        <section id="emp-planos" className="emp-plans" style={{
+          ...(g('emp_plans_bg') ? { backgroundColor: g('emp_plans_bg') } : {}),
+          ...(g('emp_plans_padding') ? { padding: g('emp_plans_padding') + 'px 0' } : {}),
+        }}>
           <div className="emp-container">
             <h2 style={{ color: g('emp_plans_title_color', '#1a0533') }}>{g('emp_plans_title', 'Planos sob medida para sua empresa')}</h2>
             <p className="emp-section-sub" style={{ color: g('emp_plans_subtitle_color', '#64748b') }}>{g('emp_plans_subtitle', 'Temos soluções para qualquer que seja sua necessidade')}</p>
@@ -121,7 +124,10 @@ export const ParaEmpresas = () => {
       )}
 
       {/* Benefícios - lado a lado */}
-      <section className="emp-benefits" style={g('emp_benefits_bg') ? { backgroundColor: g('emp_benefits_bg') } : undefined}>
+      <section className="emp-benefits" style={{
+        ...(g('emp_benefits_bg') ? { backgroundColor: g('emp_benefits_bg') } : {}),
+        ...(g('emp_benefits_padding') ? { padding: g('emp_benefits_padding') + 'px 0' } : {}),
+      }}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_benefits_title_color', '#1a0533') }}>{g('emp_benefits_title', 'Benefícios e vantagens para sua empresa')}</h2>
           <div className="emp-benefits-grid">
@@ -137,7 +143,10 @@ export const ParaEmpresas = () => {
       </section>
 
       {/* Serviços - lado a lado */}
-      <section className="emp-services" style={g('emp_services_bg') ? { backgroundColor: g('emp_services_bg') } : undefined}>
+      <section className="emp-services" style={{
+        ...(g('emp_services_bg') ? { backgroundColor: g('emp_services_bg') } : {}),
+        ...(g('emp_services_padding') ? { padding: g('emp_services_padding') + 'px 0' } : {}),
+      }}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_services_title_color', '#1a0533') }}>{g('emp_services_title', 'Serviços dedicados e exclusivos')}</h2>
           <p className="emp-section-sub" style={{ color: g('emp_services_subtitle_color', '#64748b') }}>{g('emp_services_subtitle', 'Serviços disponíveis em nossos planos empresariais')}</p>
@@ -154,7 +163,10 @@ export const ParaEmpresas = () => {
       </section>
 
       {/* CTA Final */}
-      <section className="emp-cta" style={g('emp_cta_bg') ? { backgroundColor: g('emp_cta_bg') } : undefined}>
+      <section className="emp-cta" style={{
+        ...(g('emp_cta_bg') ? { backgroundColor: g('emp_cta_bg') } : {}),
+        ...(g('emp_cta_padding') ? { padding: g('emp_cta_padding') + 'px 0' } : {}),
+      }}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_cta_title_color', '#fff') }}>{g('emp_cta_title', 'Faça parte deste movimento, assine um plano empresarial!')}</h2>
           <p style={{ color: g('emp_cta_desc_color', '#a1a1aa') }}>{g('emp_cta_desc', 'Soluções completas em conectividade para impulsionar o seu negócio.')}</p>
