@@ -105,9 +105,8 @@
 .emp-service-card-h p { font-size: 13px; line-height: 1.5; margin: 0; }
 
 /* CTA */
-.emp-cta { padding: 100px 0; text-align: center; }
-.emp-cta-banner { width: 100%; margin-bottom: 40px; }
-.emp-cta-banner img { width: 100%; height: auto; display: block; max-height: 300px; object-fit: cover; }
+.emp-cta { padding: 100px 0; text-align: center; position: relative; background-size: cover; background-position: center; }
+.emp-cta-overlay { position: absolute; inset: 0; z-index: 1; opacity: 0.75; }
 .emp-cta h2 { font-size: 36px; font-weight: 800; margin: 0 0 14px; }
 .emp-cta p { font-size: 17px; margin: 0 0 36px; }
 

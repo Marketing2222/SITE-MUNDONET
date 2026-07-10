@@ -186,15 +186,16 @@ export const ParaEmpresas = () => {
 
       {/* CTA Final */}
       <section className="emp-cta" style={{
-        ...(g('emp_cta_bg') ? { backgroundColor: g('emp_cta_bg') } : {}),
+        ...(g('emp_cta_image') ? {
+          backgroundImage: `url(${g('emp_cta_image')})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        } : {}),
+        ...(g('emp_cta_bg') && !g('emp_cta_image') ? { backgroundColor: g('emp_cta_bg') } : {}),
         ...(g('emp_cta_padding') ? { padding: g('emp_cta_padding') + 'px 0' } : {}),
       }}>
-        {g('emp_cta_image') && (
-          <div className="emp-cta-banner">
-            <img src={g('emp_cta_image')} alt="CTA Banner" />
-          </div>
-        )}
-        <div className="emp-container">
+        {g('emp_cta_image') && <div className="emp-cta-overlay" style={{ backgroundColor: g('emp_cta_bg', '#0a1628') }}></div>}
+        <div className="emp-container" style={{ position: 'relative', zIndex: 2 }}>
           <h2 style={{ color: g('emp_cta_title_color', '#fff') }}>{g('emp_cta_title', 'Faça parte deste movimento, assine um plano empresarial!')}</h2>
           <p style={{ color: g('emp_cta_desc_color', '#a1a1aa') }}>{g('emp_cta_desc', 'Soluções completas em conectividade para impulsionar o seu negócio.')}</p>
           <a href={g('emp_cta_btn_link', 'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20contratar%20um%20plano%20empresarial.')}
