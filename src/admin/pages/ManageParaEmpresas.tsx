@@ -196,7 +196,6 @@ export const ManageParaEmpresas = () => {
   const renderDynamicList = (
     items: ListItem[],
     setItems: React.Dispatch<React.SetStateAction<ListItem[]>>,
-    prefix: string,
     defaults: { icon: string; title: string; desc: string }[]
   ) => (
     <div>
@@ -286,7 +285,7 @@ export const ManageParaEmpresas = () => {
               {FIELDS[activeSection].fields.map(renderField)}
               <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
                 <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens do Benefícios (lado a lado na página)</label>
-                {renderDynamicList(benefits, setBenefits, 'emp_benefit', [
+                {renderDynamicList(benefits, setBenefits, [
                   { icon: '📈', title: 'Planos flexíveis', desc: 'Opções que crescem com seu negócio.' },
                   { icon: '🌐', title: 'Conectividade total', desc: 'Alta performance para toda a empresa.' },
                   { icon: '🛡️', title: 'Suporte 24/7', desc: 'Atendimento especializado.' },
@@ -299,7 +298,7 @@ export const ManageParaEmpresas = () => {
               {FIELDS[activeSection].fields.map(renderField)}
               <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
                 <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens dos Serviços (lado a lado na página)</label>
-                {renderDynamicList(services, setServices, 'emp_service', [
+                {renderDynamicList(services, setServices, [
                   { icon: '📥', title: 'Download/Upload garantido', desc: 'Velocidade simétrica garantida.' },
                   { icon: '🌐', title: 'IP Dedicado', desc: 'IP exclusivo para sua empresa.' },
                   { icon: '🛡️', title: 'Segurança de Rede', desc: 'Firewall e proteção avançada.' },
