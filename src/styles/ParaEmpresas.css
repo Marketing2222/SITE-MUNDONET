@@ -5,17 +5,18 @@
 
 /* Hero full-width */
 .emp-hero-full {
-  position: relative; display: flex; align-items: center; justify-content: center;
-  min-height: 600px; padding: 120px 24px 80px;
+  position: relative; display: flex; align-items: center;
+  min-height: 600px; padding: 120px 0 80px;
 }
 .emp-hero-overlay {
   position: absolute; inset: 0; z-index: 1; opacity: 0.6;
 }
 .emp-hero-full-content {
-  position: relative; z-index: 2; max-width: 700px; text-align: left;
+  position: relative; z-index: 2; width: 100%; max-width: 1200px;
+  margin: 0 auto; padding: 0 24px; text-align: left;
 }
 .emp-hero-full-content h1 { font-size: 44px; font-weight: 800; line-height: 1.15; margin: 0 0 20px; }
-.emp-hero-full-content p { font-size: 17px; line-height: 1.7; margin: 0 0 36px; }
+.emp-hero-full-content p { font-size: 17px; line-height: 1.7; margin: 0 0 36px; max-width: 550px; }
 .emp-hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
 
 /* Buttons */
@@ -106,7 +107,7 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .emp-hero-full { padding: 100px 24px 60px; }
+  .emp-hero-full { padding: 100px 0 60px; }
   .emp-hero-full-content h1 { font-size: 30px; }
   .emp-hero-buttons { justify-content: center; }
   .emp-benefits-grid { grid-template-columns: 1fr; }
