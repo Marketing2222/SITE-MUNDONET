@@ -54,6 +54,7 @@ function PublicSite() {
   const [bubbleVisible, setBubbleVisible] = useState(true);
   const [sectionOrder, setSectionOrder] = useState<string[] | null>(null);
   const [sectionsActive, setSectionsActive] = useState<Record<string, boolean> | null>(null);
+  const [sectionsMobile, setSectionsMobile] = useState<Record<string, boolean> | null>(null);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings`)
@@ -80,6 +81,12 @@ function PublicSite() {
           try {
             const parsed = JSON.parse(data.sections_active.value);
             if (typeof parsed === 'object' && parsed !== null) setSectionsActive(parsed);
+          } catch { /* use default */ }
+        }
+        if (data.sections_mobile_active?.value) {
+          try {
+            const parsed = JSON.parse(data.sections_mobile_active.value);
+            if (typeof parsed === 'object' && parsed !== null) setSectionsMobile(parsed);
           } catch { /* use default */ }
         }
       })
@@ -118,7 +125,10 @@ function PublicSite() {
         {order.map(id => {
           if (sectionsActive && sectionsActive[id] === false) return null;
           const Component = componentMap[id];
-          return Component ? <React.Fragment key={id}>{Component}</React.Fragment> : null;
+          const hideMobile = sectionsMobile && sectionsMobile[id] === false;
+          return Component ? (
+            <div key={id} className={hideMobile ? 'hide-mobile' : ''}>{Component}</div>
+          ) : null;
         })}
       </main>
       <Footer />

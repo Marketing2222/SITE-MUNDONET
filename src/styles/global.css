@@ -308,3 +308,10 @@ img {
   height: 32px;
   fill: currentColor;
 }
+
+/* Esconder seção no mobile */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}

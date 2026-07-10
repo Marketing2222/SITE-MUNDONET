@@ -172,6 +172,7 @@ export const ManageHomeSections = () => {
   const [activeTab, setActiveTab] = useState<string>(Object.keys(SECTIONS)[0]);
   const [sectionOrder, setSectionOrder] = useState<string[]>(DEFAULT_ORDER);
   const [sectionsActive, setSectionsActive] = useState<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
+  const [sectionsMobile, setSectionsMobile] = useState<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
   const [popupCards, setPopupCards] = useState<{ id: number; title: string; description: string; link: string; icon_type: string }[]>([]);
 
   const load = async () => {
@@ -198,6 +199,12 @@ export const ManageHomeSections = () => {
         try {
           const parsed = JSON.parse(data.sections_active.value);
           if (typeof parsed === 'object' && parsed !== null) setSectionsActive({ ...DEFAULT_ACTIVE, ...parsed });
+        } catch { /* use default */ }
+      }
+      if (data.sections_mobile_active?.value) {
+        try {
+          const parsed = JSON.parse(data.sections_mobile_active.value);
+          if (typeof parsed === 'object' && parsed !== null) setSectionsMobile({ ...DEFAULT_ACTIVE, ...parsed });
         } catch { /* use default */ }
       }
       if (data.exit_popup_cards?.value) {
@@ -236,9 +243,13 @@ export const ManageHomeSections = () => {
         apiFetch('/settings/sections_active', {
           method: 'PUT',
           body: JSON.stringify({ value: JSON.stringify(sectionsActive), label: 'Seções Ativas' })
+        }),
+        apiFetch('/settings/sections_mobile_active', {
+          method: 'PUT',
+          body: JSON.stringify({ value: JSON.stringify(sectionsMobile), label: 'Seções Ativas no Mobile' })
         })
       ]);
-      setMsg('Ordem e visibilidade salvas com sucesso!');
+      setMsg('Ordem, visibilidade e mobile salvos com sucesso!');
       setTimeout(() => setMsg(''), 3000);
     } catch (e: unknown) {
       setMsg(e instanceof Error ? e.message : 'Erro ao salvar');
@@ -524,6 +535,11 @@ export const ManageHomeSections = () => {
                   <input type="checkbox" checked={active} onChange={() => toggleActive(id)}
                     style={{ width:16, height:16, cursor:'pointer' }} />
                   {active ? 'Ativo' : 'Inativo'}
+                </label>
+                <label style={{ display:'flex', alignItems:'center', gap:6, cursor:'pointer', fontSize:13, color: sectionsMobile[id] !== false ? '#16a34a' : '#94a3b8' }}
+                  title={sectionsMobile[id] !== false ? 'Visível no mobile' : 'Oculto no mobile'}
+                  onClick={() => setSectionsMobile(prev => ({ ...prev, [id]: prev[id] === false ? true : false }))}>
+                  📱 {sectionsMobile[id] !== false ? 'Sim' : 'Não'}
                 </label>
                 <button className="admin-btn ghost" style={{ padding: '4px 8px', fontSize: 13, lineHeight: 1 }}
                   disabled={i === 0} onClick={() => moveSection(i, -1)} title="Mover para cima">▲</button>

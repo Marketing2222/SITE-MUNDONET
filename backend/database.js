@@ -650,6 +650,17 @@ export async function initDB() {
     }
   }
 
+  // ── Migração: sections_mobile_active ────────────────────────────
+  if (!db.data.site_settings.find(x => x.key === 'sections_mobile_active')) {
+    const mobileDefault = { hero:true, quicklinks:true, plans:true, benefits:true, app:true, specialties:true, entertainment:true, cta:true, support:true, contact:true };
+    db.data.site_settings.push({
+      id: db.nextId('site_settings'),
+      key: 'sections_mobile_active',
+      value: JSON.stringify(mobileDefault),
+      label: 'Seções Ativas no Mobile'
+    });
+  }
+
   await db.write();
   console.log('✅ Banco de dados pronto (mundonet-db.json)');
   return db;
