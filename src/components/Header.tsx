@@ -147,7 +147,7 @@ export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       <div className="navbar" style={{ backgroundColor: headerBg }}>
         <div className="container navbar-container" style={{ gap: portalPosition === 'navbar_left' ? 32 : undefined }}>
           <a href="#" className="logo">
-            <img src={s?.logo_url?.value || 'https://mundonetbandalarga.com.br/wp-content/uploads/2023/10/logo-mundonet.png'} alt="Mundonet Telecom" />
+            <img src={g('logo_url') || 'https://mundonetbandalarga.com.br/wp-content/uploads/2023/10/logo-mundonet.png'} alt="Mundonet Telecom" />
           </a>
           
           {portalPosition === 'navbar_left' && renderPortalBtn('nav-cta-wrapper', { marginLeft: 0, marginRight: 'auto' })}

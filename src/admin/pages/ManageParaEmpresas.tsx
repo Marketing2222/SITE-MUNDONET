@@ -4,6 +4,7 @@ import { ImageUpload } from '../components/ImageUpload';
 
 interface Setting { key: string; value: string; label: string; }
 interface ListItem { icon: string; title: string; desc: string; }
+interface FieldDef { key: string; label: string; type: string; hint?: string; options?: { value: string; label: string }[]; }
 
 const EMPTY_ITEM: ListItem = { icon: '', title: '', desc: '' };
 
@@ -90,26 +91,45 @@ const FIELDS = [
     { key: 'emp_cta_btn_color', label: 'Cor Texto Botão', type: 'color' },
   ]},
   { section: 'Cabeçalho', fields: [
+    { key: 'emp_logo_url', label: 'Logo URL', type: 'image' },
     { key: 'emp_header_bg_color', label: 'Cor Fundo Navbar', type: 'color' },
     { key: 'emp_header_text_color', label: 'Cor Texto Navbar', type: 'color' },
     { key: 'emp_header_topbar_bg', label: 'Cor Fundo Top Bar', type: 'color' },
     { key: 'emp_header_topbar_text', label: 'Cor Texto Top Bar', type: 'color' },
+    { key: 'emp_header_font', label: 'Fonte do Header', type: 'text', hint: 'Montserrat' },
+    { key: 'emp_header_height', label: 'Altura Navbar (px)', type: 'number', hint: '80' },
     { key: 'emp_header_portal_text', label: 'Texto Botão Portal', type: 'text' },
     { key: 'emp_header_portal_url', label: 'Link Botão Portal', type: 'url' },
     { key: 'emp_header_portal_bg', label: 'Cor Fundo Botão Portal', type: 'color' },
     { key: 'emp_header_portal_text_color', label: 'Cor Texto Botão Portal', type: 'color' },
+    { key: 'emp_header_portal_position', label: 'Posição Botão Portal', type: 'select', options: [
+      { value: 'navbar_right', label: 'Navbar Direita' },
+      { value: 'navbar_left', label: 'Navbar Esquerda' },
+      { value: 'topbar_right', label: 'Top Bar Direita' },
+      { value: 'topbar_left', label: 'Top Bar Esquerda' },
+    ]},
+    { key: 'emp_nav_item_gap', label: 'Espaço Itens Menu', type: 'text', hint: '28px' },
+    { key: 'emp_nav_item_padding', label: 'Padding Itens Menu', type: 'text', hint: '8px 12px' },
+    { key: 'emp_nav_dropdown_width', label: 'Largura Dropdown', type: 'text', hint: '220px' },
+    { key: 'emp_nav_dropdown_padding', label: 'Padding Dropdown', type: 'text', hint: '8px 0' },
+    { key: 'emp_nav_subitem_padding', label: 'Padding Sub-itens', type: 'text', hint: '10px 20px' },
+    { key: 'emp_nav_font_size', label: 'Tamanho Fonte Menu', type: 'text', hint: '0.9rem' },
   ]},
   { section: 'Rodapé', fields: [
+    { key: 'emp_footer_logo_url', label: 'Logo Rodapé URL', type: 'image' },
     { key: 'emp_footer_bg_color', label: 'Cor Fundo Rodapé', type: 'color' },
     { key: 'emp_footer_text_color', label: 'Cor Texto', type: 'color' },
     { key: 'emp_footer_heading_color', label: 'Cor Títulos', type: 'color' },
     { key: 'emp_footer_link_color', label: 'Cor Links', type: 'color' },
+    { key: 'emp_footer_font', label: 'Fonte do Rodapé', type: 'text', hint: 'Montserrat' },
+    { key: 'emp_footer_padding', label: 'Padding Rodapé', type: 'text', hint: '60px 0' },
     { key: 'emp_footer_about_text', label: 'Texto Sobre', type: 'text' },
     { key: 'emp_footer_col2_title', label: 'Título Coluna 2', type: 'text' },
     { key: 'emp_footer_col3_title', label: 'Título Coluna 3', type: 'text' },
     { key: 'emp_footer_col4_title', label: 'Título Coluna 4', type: 'text' },
     { key: 'emp_footer_subbar_bg', label: 'Cor Fundo Sub Bar', type: 'color' },
     { key: 'emp_footer_subbar_text', label: 'Cor Texto Sub Bar', type: 'color' },
+    { key: 'emp_footer_anatel_logo_url', label: 'Logo ANATEL URL', type: 'image' },
     { key: 'emp_footer_cnpj', label: 'CNPJ', type: 'text' },
     { key: 'emp_footer_anatel', label: 'ANATEL', type: 'text' },
   ]},
@@ -175,7 +195,7 @@ export const ManageParaEmpresas = () => {
     }
   };
 
-  const renderField = (fd: { key: string; label: string; type: string; hint?: string }) => {
+  const renderField = (fd: FieldDef) => {
     const val = settings[fd.key]?.value || '';
     switch (fd.type) {
       case 'image':
@@ -203,6 +223,16 @@ export const ManageParaEmpresas = () => {
             <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
             <input type="number" value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder={fd.hint}
               style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+          </div>
+        );
+      case 'select':
+        return (
+          <div key={fd.key}>
+            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <select value={val} onChange={e => set(fd.key, e.target.value, fd.label)}
+              style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }}>
+              {fd.options?.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            </select>
           </div>
         );
       case 'toggle':
