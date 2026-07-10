@@ -83,7 +83,7 @@ export const ManageEnterprisePlans = () => {
     [next[index], next[target]] = [next[target], next[index]];
     next.forEach((p, i) => { p.sort_order = i; });
     setPlans(next);
-    Promise.all(next.map(p =>
+    Promise.all(next.filter(p => p.id).map(p =>
       apiFetch(`/enterprise-plans/${p.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: p.sort_order }) })
     ));
   };
@@ -123,7 +123,7 @@ export const ManageEnterprisePlans = () => {
                     <button className="admin-btn ghost" disabled={i === 0} onClick={() => move(i, -1)}>▲</button>
                     <button className="admin-btn ghost" disabled={i === plans.length - 1} onClick={() => move(i, 1)}>▼</button>
                     <button className="admin-btn ghost" onClick={() => setEdit(p)}>✏️</button>
-                    <button className="admin-btn ghost" style={{ color: '#ef4444' }} onClick={() => remove(p.id)}>🗑️</button>
+                    <button className="admin-btn ghost" style={{ color: '#ef4444' }} onClick={() => p.id && remove(p.id)}>🗑️</button>
                   </div>
                 </td>
               </tr>
