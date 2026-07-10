@@ -76,6 +76,7 @@ export async function initDB() {
   }
 
   // ── Seed: enterprise_plans ────────────────────────────────────────
+  if (!db.data.enterprise_plans) db.data.enterprise_plans = [];
   if (db.data.enterprise_plans.length === 0) {
     const plans = [
       { name:'LINK DEDICADO 50MB', speed:'50', price:'Sob Consulta', highlight:'Conexão dedicada para sua empresa', highlight_icon:'🏢', button_text:'CONSULTAR', whatsapp_msg:'Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Link%20Dedicado%2050MB.', features:['Banda garantida 100%','Upload e download simétricos','IP fixo incluso','SLA 24/7/365'], popular:false, active:true, sort_order:0, card_bg_color:'', card_text_color:'', button_bg_color:'#005CFF', button_text_color:'#ffffff' },

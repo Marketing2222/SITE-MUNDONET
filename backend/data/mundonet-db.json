@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Administrador",
       "email": "admin@mundonet.com.br",
-      "password": "$2a$10$1pazn/sP7cxyQFEa5O9bo.MfppxmCMHW2fCLbwf9lEULhFJ.ERMkq",
+      "password": "$2a$10$UbwzW3toOMgdrL4NZyC.9OQKucucEB2mFlBsBLQPF9S9y/x4tsmWW",
       "created_at": "2026-07-06T18:42:07.887Z"
     }
   ],
@@ -1047,6 +1047,1212 @@
       "key": "favicon_url",
       "value": "/favicon.svg",
       "label": "URL do Favicon"
+    },
+    {
+      "id": 101,
+      "key": "lp_hero_title",
+      "value": "Na MUNDONET você tem o",
+      "label": "LP: Título Hero"
+    },
+    {
+      "id": 102,
+      "key": "lp_hero_highlight",
+      "value": "melhor do entretenimento do MUNDO!",
+      "label": "LP: Destaque Hero"
+    },
+    {
+      "id": 103,
+      "key": "lp_hero_subtitle",
+      "value": "Internet 100% Fibra Óptica, alta velocidade e estabilidade garantida para navegar, jogar e assistir sem limites.",
+      "label": "LP: Subtítulo Hero"
+    },
+    {
+      "id": 104,
+      "key": "lp_hero_image",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png",
+      "label": "LP: Imagem Hero"
+    },
+    {
+      "id": 105,
+      "key": "lp_hero_bg_color",
+      "value": "#1a0533",
+      "label": "LP: Cor Fundo Hero"
+    },
+    {
+      "id": 106,
+      "key": "lp_hero_text_color",
+      "value": "#ffffff",
+      "label": "LP: Cor Texto Hero"
+    },
+    {
+      "id": 107,
+      "key": "lp_hero_highlight_color",
+      "value": "#22c55e",
+      "label": "LP: Cor Destaque Hero"
+    },
+    {
+      "id": 108,
+      "key": "lp_plan_name",
+      "value": "700 MEGA",
+      "label": "LP: Nome do Plano"
+    },
+    {
+      "id": 109,
+      "key": "lp_plan_speed",
+      "value": "700",
+      "label": "LP: Velocidade"
+    },
+    {
+      "id": 110,
+      "key": "lp_plan_price",
+      "value": "39,90",
+      "label": "LP: Preço"
+    },
+    {
+      "id": 111,
+      "key": "lp_plan_badge_text",
+      "value": "MEGA",
+      "label": "LP: Badge Texto"
+    },
+    {
+      "id": 112,
+      "key": "lp_plan_period",
+      "value": "POR APENAS",
+      "label": "LP: Texto Acima Preço"
+    },
+    {
+      "id": 113,
+      "key": "lp_plan_installment",
+      "value": "39,90",
+      "label": "LP: Instalação"
+    },
+    {
+      "id": 114,
+      "key": "lp_plan_original_price",
+      "value": "129,90",
+      "label": "LP: Preço Original"
+    },
+    {
+      "id": 115,
+      "key": "lp_plan_highlight_text",
+      "value": "1 APP DA ÁREA STANDARD A MAIS PARA VOCÊ UTILIZAR",
+      "label": "LP: Texto Destaque"
+    },
+    {
+      "id": 116,
+      "key": "lp_plan_apps",
+      "value": "Deezer,Globoplay,Sky,Apple TV",
+      "label": "LP: Apps (vírgula)"
+    },
+    {
+      "id": 117,
+      "key": "lp_plan_card_bg",
+      "value": "#ffffff",
+      "label": "LP: Cor Fundo Card"
+    },
+    {
+      "id": 118,
+      "key": "lp_plan_price_color",
+      "value": "#16a34a",
+      "label": "LP: Cor Preço"
+    },
+    {
+      "id": 119,
+      "key": "lp_plan_btn_text",
+      "value": "CONTRATAR AGORA",
+      "label": "LP: Texto Botão"
+    },
+    {
+      "id": 120,
+      "key": "lp_plan_btn_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20landing%20page%20e%20quero%20contratar%20o%20plano%20de%20700%20MEGA.",
+      "label": "LP: Link Botão"
+    },
+    {
+      "id": 121,
+      "key": "lp_plan_btn_color",
+      "value": "#16a34a",
+      "label": "LP: Cor Fundo Botão"
+    },
+    {
+      "id": 122,
+      "key": "lp_plan_btn_text_color",
+      "value": "#ffffff",
+      "label": "LP: Cor Texto Botão"
+    },
+    {
+      "id": 123,
+      "key": "lp_features_title",
+      "value": "Por que escolher a Mundonet?",
+      "label": "LP: Título Benefícios"
+    },
+    {
+      "id": 124,
+      "key": "lp_features",
+      "value": "Internet 100% Fibra Óptica,Wi-Fi 6 incluso,40 canais de TV grátis,Filmes e E-Books inclusos,Instalação em até 48 horas,Suporte técnico rápido",
+      "label": "LP: Benefícios (vírgula)"
+    },
+    {
+      "id": 125,
+      "key": "lp_cta_title",
+      "value": "Não perca essa oportunidade!",
+      "label": "LP: Título CTA"
+    },
+    {
+      "id": 126,
+      "key": "lp_cta_desc",
+      "value": "Fale com nosso time e garanta seu plano com o melhor preço da região.",
+      "label": "LP: Descrição CTA"
+    },
+    {
+      "id": 127,
+      "key": "lp_cta_btn_text",
+      "value": "Falar com Atendente",
+      "label": "LP: Texto Botão CTA"
+    },
+    {
+      "id": 128,
+      "key": "lp_cta_btn_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20landing%20page%20e%20quero%20contratar%20a%20internet.",
+      "label": "LP: Link Botão CTA"
+    },
+    {
+      "id": 129,
+      "key": "lp_cta_bg_color",
+      "value": "#16a34a",
+      "label": "LP: Cor Fundo CTA"
+    },
+    {
+      "id": 130,
+      "key": "lp_cta_text_color",
+      "value": "#ffffff",
+      "label": "LP: Cor Texto CTA"
+    },
+    {
+      "id": 131,
+      "key": "lp_cta_btn_color",
+      "value": "#ffffff",
+      "label": "LP: Cor Fundo Botão CTA"
+    },
+    {
+      "id": 132,
+      "key": "lp_cta_btn_text_color",
+      "value": "#16a34a",
+      "label": "LP: Cor Texto Botão CTA"
+    },
+    {
+      "id": 133,
+      "key": "lp_footer_text",
+      "value": "© 2026 Mundonet Telecom. Todos os direitos reservados.",
+      "label": "LP: Texto Rodapé"
+    },
+    {
+      "id": 134,
+      "key": "lp_footer_bg_color",
+      "value": "#1a0533",
+      "label": "LP: Cor Fundo Rodapé"
+    },
+    {
+      "id": 135,
+      "key": "lp_footer_text_color",
+      "value": "#a1a1aa",
+      "label": "LP: Cor Texto Rodapé"
+    },
+    {
+      "id": 136,
+      "key": "ig_badge_text",
+      "value": "INDIQUE E GANHE",
+      "label": "IG: Texto Badge"
+    },
+    {
+      "id": 137,
+      "key": "ig_badge_bg",
+      "value": "#22c55e",
+      "label": "IG: Cor Badge"
+    },
+    {
+      "id": 138,
+      "key": "ig_badge_text_color",
+      "value": "#ffffff",
+      "label": "IG: Cor Texto Badge"
+    },
+    {
+      "id": 139,
+      "key": "ig_hero_title",
+      "value": "Indique a",
+      "label": "IG: Título Hero (parte 1)"
+    },
+    {
+      "id": 140,
+      "key": "ig_hero_highlight",
+      "value": "Mundonet",
+      "label": "IG: Destaque Hero"
+    },
+    {
+      "id": 141,
+      "key": "ig_hero_title_suffix",
+      "value": "e ganhe recompensas!",
+      "label": "IG: Título Hero (parte 2)"
+    },
+    {
+      "id": 142,
+      "key": "ig_hero_subtitle",
+      "value": "Livres seus amigos da burocracia e da lentidão dos provedores tradicionais indicando a internet 100% fibra óptica da Mundonet!",
+      "label": "IG: Subtítulo Hero"
+    },
+    {
+      "id": 143,
+      "key": "ig_hero_image",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png",
+      "label": "IG: Imagem Hero"
+    },
+    {
+      "id": 144,
+      "key": "ig_hero_bg",
+      "value": "#1a0533",
+      "label": "IG: Cor Fundo Hero"
+    },
+    {
+      "id": 145,
+      "key": "ig_hero_title_color",
+      "value": "#ffffff",
+      "label": "IG: Cor Título Hero"
+    },
+    {
+      "id": 146,
+      "key": "ig_hero_highlight_color",
+      "value": "#22c55e",
+      "label": "IG: Cor Destaque Hero"
+    },
+    {
+      "id": 147,
+      "key": "ig_hero_subtitle_color",
+      "value": "#a1a1aa",
+      "label": "IG: Cor Subtítulo Hero"
+    },
+    {
+      "id": 148,
+      "key": "ig_hero_btn_text",
+      "value": "Comece a Indicar",
+      "label": "IG: Texto Botão Hero"
+    },
+    {
+      "id": 149,
+      "key": "ig_hero_btn_link",
+      "value": "#como-funciona",
+      "label": "IG: Link Botão Hero"
+    },
+    {
+      "id": 150,
+      "key": "ig_hero_btn_bg",
+      "value": "#22c55e",
+      "label": "IG: Cor Fundo Botão Hero"
+    },
+    {
+      "id": 151,
+      "key": "ig_hero_btn_color",
+      "value": "#ffffff",
+      "label": "IG: Cor Texto Botão Hero"
+    },
+    {
+      "id": 152,
+      "key": "ig_steps_title",
+      "value": "Veja como é fácil indicar",
+      "label": "IG: Título Como Funciona"
+    },
+    {
+      "id": 153,
+      "key": "ig_steps_subtitle",
+      "value": "Em apenas 3 passos simples você começa a ganhar recompensas",
+      "label": "IG: Subtítulo Como Funciona"
+    },
+    {
+      "id": 154,
+      "key": "ig_steps_bg",
+      "value": "#ffffff",
+      "label": "IG: Cor Fundo Como Funciona"
+    },
+    {
+      "id": 155,
+      "key": "ig_steps_title_color",
+      "value": "#1a0533",
+      "label": "IG: Cor Título Como Funciona"
+    },
+    {
+      "id": 156,
+      "key": "ig_steps_subtitle_color",
+      "value": "#64748b",
+      "label": "IG: Cor Subtítulo Como Funciona"
+    },
+    {
+      "id": 157,
+      "key": "ig_step_card_bg",
+      "value": "#f8fafc",
+      "label": "IG: Cor Fundo Cards Passos"
+    },
+    {
+      "id": 158,
+      "key": "ig_step_card_border",
+      "value": "#e2e8f0",
+      "label": "IG: Cor Borda Cards Passos"
+    },
+    {
+      "id": 159,
+      "key": "ig_step_icon_bg",
+      "value": "#22c55e20",
+      "label": "IG: Cor Fundo Ícones Passos"
+    },
+    {
+      "id": 160,
+      "key": "ig_step_icon_color",
+      "value": "#22c55e",
+      "label": "IG: Cor Ícones Passos"
+    },
+    {
+      "id": 161,
+      "key": "ig_step_num_color",
+      "value": "#22c55e",
+      "label": "IG: Cor Números Passos"
+    },
+    {
+      "id": 162,
+      "key": "ig_step_title_color",
+      "value": "#1a0533",
+      "label": "IG: Cor Títulos Passos"
+    },
+    {
+      "id": 163,
+      "key": "ig_step_desc_color",
+      "value": "#64748b",
+      "label": "IG: Cor Descrições Passos"
+    },
+    {
+      "id": 164,
+      "key": "ig_step1_icon",
+      "value": "🔗",
+      "label": "IG: Ícone Passo 1"
+    },
+    {
+      "id": 165,
+      "key": "ig_step1_title",
+      "value": "Crie seu link",
+      "label": "IG: Título Passo 1"
+    },
+    {
+      "id": 166,
+      "key": "ig_step1_desc",
+      "value": "Acesse a área do Indique e Ganhe no app ou site da Mundonet e crie seu link personalizado.",
+      "label": "IG: Descrição Passo 1"
+    },
+    {
+      "id": 167,
+      "key": "ig_step2_icon",
+      "value": "📤",
+      "label": "IG: Ícone Passo 2"
+    },
+    {
+      "id": 168,
+      "key": "ig_step2_title",
+      "value": "Compartilhe",
+      "label": "IG: Título Passo 2"
+    },
+    {
+      "id": 169,
+      "key": "ig_step2_desc",
+      "value": "Envie seu link para amigos, familiares e conhecidos pelo WhatsApp, redes sociais ou qualquer canal.",
+      "label": "IG: Descrição Passo 2"
+    },
+    {
+      "id": 170,
+      "key": "ig_step3_icon",
+      "value": "🎁",
+      "label": "IG: Ícone Passo 3"
+    },
+    {
+      "id": 171,
+      "key": "ig_step3_title",
+      "value": "Ganhe recompensas",
+      "label": "IG: Título Passo 3"
+    },
+    {
+      "id": 172,
+      "key": "ig_step3_desc",
+      "value": "Quando seu indicado contratar, vocês dois ganham benefícios! É simples assim.",
+      "label": "IG: Descrição Passo 3"
+    },
+    {
+      "id": 173,
+      "key": "ig_benefits_title",
+      "value": "Por que indicar a Mundonet?",
+      "label": "IG: Título Benefícios"
+    },
+    {
+      "id": 174,
+      "key": "ig_benefits_bg",
+      "value": "#f0fdf4",
+      "label": "IG: Cor Fundo Benefícios"
+    },
+    {
+      "id": 175,
+      "key": "ig_benefits_title_color",
+      "value": "#1a0533",
+      "label": "IG: Cor Título Benefícios"
+    },
+    {
+      "id": 176,
+      "key": "ig_benefit_card_bg",
+      "value": "#ffffff",
+      "label": "IG: Cor Fundo Cards Benefícios"
+    },
+    {
+      "id": 177,
+      "key": "ig_benefit_card_border",
+      "value": "#dcfce7",
+      "label": "IG: Cor Borda Cards Benefícios"
+    },
+    {
+      "id": 178,
+      "key": "ig_benefit_icon_bg",
+      "value": "#22c55e20",
+      "label": "IG: Cor Fundo Ícones Benefícios"
+    },
+    {
+      "id": 179,
+      "key": "ig_benefit_icon_color",
+      "value": "#22c55e",
+      "label": "IG: Cor Ícones Benefícios"
+    },
+    {
+      "id": 180,
+      "key": "ig_benefit_title_color",
+      "value": "#1a0533",
+      "label": "IG: Cor Títulos Benefícios"
+    },
+    {
+      "id": 181,
+      "key": "ig_benefit_desc_color",
+      "value": "#64748b",
+      "label": "IG: Cor Descrições Benefícios"
+    },
+    {
+      "id": 182,
+      "key": "ig_benefit1_icon",
+      "value": "🌐",
+      "label": "IG: Ícone Benefício 1"
+    },
+    {
+      "id": 183,
+      "key": "ig_benefit1_title",
+      "value": "Internet de Verdade",
+      "label": "IG: Título Benefício 1"
+    },
+    {
+      "id": 184,
+      "key": "ig_benefit1_desc",
+      "value": "Fibra óptica 100% com velocidade real e estabilidade garantida.",
+      "label": "IG: Descrição Benefício 1"
+    },
+    {
+      "id": 185,
+      "key": "ig_benefit2_icon",
+      "value": "💰",
+      "label": "IG: Ícone Benefício 2"
+    },
+    {
+      "id": 186,
+      "key": "ig_benefit2_title",
+      "value": "Preço Justo",
+      "label": "IG: Título Benefício 2"
+    },
+    {
+      "id": 187,
+      "key": "ig_benefit2_desc",
+      "value": "Planos a partir de R$ 39,90 sem taxas ocultas e sem surpresas na conta.",
+      "label": "IG: Descrição Benefício 2"
+    },
+    {
+      "id": 188,
+      "key": "ig_benefit3_icon",
+      "value": "⚡",
+      "label": "IG: Ícone Benefício 3"
+    },
+    {
+      "id": 189,
+      "key": "ig_benefit3_title",
+      "value": "Instalação Rápida",
+      "label": "IG: Título Benefício 3"
+    },
+    {
+      "id": 190,
+      "key": "ig_benefit3_desc",
+      "value": "Instalação em até 48 horas com equipe técnica profissional.",
+      "label": "IG: Descrição Benefício 3"
+    },
+    {
+      "id": 191,
+      "key": "ig_benefit4_icon",
+      "value": "🎯",
+      "label": "IG: Ícone Benefício 4"
+    },
+    {
+      "id": 192,
+      "key": "ig_benefit4_title",
+      "value": "Suporte Dedicado",
+      "label": "IG: Título Benefício 4"
+    },
+    {
+      "id": 193,
+      "key": "ig_benefit4_desc",
+      "value": "Suporte técnico rápido e eficiente quando você precisar.",
+      "label": "IG: Descrição Benefício 4"
+    },
+    {
+      "id": 194,
+      "key": "ig_rewards_title",
+      "value": "O que você ganha ao indicar?",
+      "label": "IG: Título Recompensas"
+    },
+    {
+      "id": 195,
+      "key": "ig_rewards_desc",
+      "value": "A cada amigo que contratar nossa internet, você acumula benefícios exclusivos. Quanto mais indicar, mais ganha!",
+      "label": "IG: Descrição Recompensas"
+    },
+    {
+      "id": 196,
+      "key": "ig_rewards_image",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/globoplay1.png",
+      "label": "IG: Imagem Recompensas"
+    },
+    {
+      "id": 197,
+      "key": "ig_rewards_bg",
+      "value": "#ffffff",
+      "label": "IG: Cor Fundo Recompensas"
+    },
+    {
+      "id": 198,
+      "key": "ig_rewards_title_color",
+      "value": "#1a0533",
+      "label": "IG: Cor Título Recompensas"
+    },
+    {
+      "id": 199,
+      "key": "ig_rewards_desc_color",
+      "value": "#64748b",
+      "label": "IG: Cor Descrição Recompensas"
+    },
+    {
+      "id": 200,
+      "key": "ig_rewards_item_color",
+      "value": "#374151",
+      "label": "IG: Cor Itens Recompensas"
+    },
+    {
+      "id": 201,
+      "key": "ig_rewards_check_color",
+      "value": "#22c55e",
+      "label": "IG: Cor Check Recompensas"
+    },
+    {
+      "id": 202,
+      "key": "ig_rewards_item1",
+      "value": "Descontos progressivos na mensalidade",
+      "label": "IG: Benefício Recompensa 1"
+    },
+    {
+      "id": 203,
+      "key": "ig_rewards_item2",
+      "value": "Acesso a apps de streaming exclusivos",
+      "label": "IG: Benefício Recompensa 2"
+    },
+    {
+      "id": 204,
+      "key": "ig_rewards_item3",
+      "value": "Upgrade de plano sem custo adicional",
+      "label": "IG: Benefício Recompensa 3"
+    },
+    {
+      "id": 205,
+      "key": "ig_rewards_item4",
+      "value": "Suporte prioritário 24/7",
+      "label": "IG: Benefício Recompensa 4"
+    },
+    {
+      "id": 206,
+      "key": "ig_rewards_item5",
+      "value": "Brindes exclusivos a cada indicação",
+      "label": "IG: Benefício Recompensa 5"
+    },
+    {
+      "id": 207,
+      "key": "ig_rewards_btn_text",
+      "value": "Quero Participar",
+      "label": "IG: Texto Botão Recompensas"
+    },
+    {
+      "id": 208,
+      "key": "ig_rewards_btn_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Quero%20saber%20mais%20sobre%20o%20Indique%20e%20Ganhe%20da%20Mundonet.",
+      "label": "IG: Link Botão Recompensas"
+    },
+    {
+      "id": 209,
+      "key": "ig_rewards_btn_bg",
+      "value": "#22c55e",
+      "label": "IG: Cor Fundo Botão Recompensas"
+    },
+    {
+      "id": 210,
+      "key": "ig_rewards_btn_color",
+      "value": "#ffffff",
+      "label": "IG: Cor Texto Botão Recompensas"
+    },
+    {
+      "id": 211,
+      "key": "ig_cta_title",
+      "value": "Comece a indicar agora mesmo!",
+      "label": "IG: Título CTA"
+    },
+    {
+      "id": 212,
+      "key": "ig_cta_desc",
+      "value": "Junte-se a milhares de clientes que já estão ganhando com o Indique e Ganhe da Mundonet.",
+      "label": "IG: Descrição CTA"
+    },
+    {
+      "id": 213,
+      "key": "ig_cta_bg",
+      "value": "#1a0533",
+      "label": "IG: Cor Fundo CTA"
+    },
+    {
+      "id": 214,
+      "key": "ig_cta_title_color",
+      "value": "#ffffff",
+      "label": "IG: Cor Título CTA"
+    },
+    {
+      "id": 215,
+      "key": "ig_cta_desc_color",
+      "value": "#a1a1aa",
+      "label": "IG: Cor Descrição CTA"
+    },
+    {
+      "id": 216,
+      "key": "ig_cta_btn_text",
+      "value": "Indique e Ganhe Agora",
+      "label": "IG: Texto Botão CTA"
+    },
+    {
+      "id": 217,
+      "key": "ig_cta_btn_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Quero%20participar%20do%20Indique%20e%20Ganhe%20da%20Mundonet.",
+      "label": "IG: Link Botão CTA"
+    },
+    {
+      "id": 218,
+      "key": "ig_cta_btn_bg",
+      "value": "#22c55e",
+      "label": "IG: Cor Fundo Botão CTA"
+    },
+    {
+      "id": 219,
+      "key": "ig_cta_btn_color",
+      "value": "#ffffff",
+      "label": "IG: Cor Texto Botão CTA"
+    },
+    {
+      "id": 220,
+      "key": "app_playstore_image",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/play_store.png",
+      "label": "App: Imagem Botão Google Play"
+    },
+    {
+      "id": 221,
+      "key": "app_appstore_image",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/apple_store.png",
+      "label": "App: Imagem Botão App Store"
+    },
+    {
+      "id": 222,
+      "key": "sections_mobile_active",
+      "value": "{\"hero\":true,\"quicklinks\":true,\"plans\":true,\"benefits\":true,\"app\":true,\"specialties\":true,\"entertainment\":true,\"cta\":true,\"support\":true,\"contact\":true}",
+      "label": "Seções Ativas no Mobile"
+    },
+    {
+      "id": 223,
+      "key": "emp_hero_bg",
+      "value": "#1a0533",
+      "label": "Emp: Fundo Hero"
+    },
+    {
+      "id": 224,
+      "key": "emp_hero_title",
+      "value": "Conectividade corporativa de alto nível",
+      "label": "Emp: Título Hero"
+    },
+    {
+      "id": 225,
+      "key": "emp_hero_subtitle",
+      "value": "Soluções de internet dedicadas para empresas que precisam de performance, segurança e suporte especializado.",
+      "label": "Emp: Subtítulo Hero"
+    },
+    {
+      "id": 226,
+      "key": "emp_hero_image",
+      "value": "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png",
+      "label": "Emp: Imagem Hero"
+    },
+    {
+      "id": 227,
+      "key": "emp_hero_btn1_text",
+      "value": "Fale Conosco",
+      "label": "Emp: Texto Botão 1"
+    },
+    {
+      "id": 228,
+      "key": "emp_hero_btn1_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20mais%20informações.",
+      "label": "Emp: Link Botão 1"
+    },
+    {
+      "id": 229,
+      "key": "emp_hero_btn1_bg",
+      "value": "#22c55e",
+      "label": "Emp: Cor Botão 1"
+    },
+    {
+      "id": 230,
+      "key": "emp_hero_btn1_color",
+      "value": "#ffffff",
+      "label": "Emp: Cor Texto Botão 1"
+    },
+    {
+      "id": 231,
+      "key": "emp_hero_btn2_text",
+      "value": "Ver Planos",
+      "label": "Emp: Texto Botão 2"
+    },
+    {
+      "id": 232,
+      "key": "emp_hero_btn2_link",
+      "value": "#emp-planos",
+      "label": "Emp: Link Botão 2"
+    },
+    {
+      "id": 233,
+      "key": "emp_hero_btn2_bg",
+      "value": "rgba(255,255,255,0.15)",
+      "label": "Emp: Cor Botão 2"
+    },
+    {
+      "id": 234,
+      "key": "emp_hero_btn2_color",
+      "value": "#ffffff",
+      "label": "Emp: Cor Texto Botão 2"
+    },
+    {
+      "id": 235,
+      "key": "emp_hero_title_color",
+      "value": "#ffffff",
+      "label": "Emp: Cor Título Hero"
+    },
+    {
+      "id": 236,
+      "key": "emp_hero_subtitle_color",
+      "value": "#a1a1aa",
+      "label": "Emp: Cor Subtítulo Hero"
+    },
+    {
+      "id": 237,
+      "key": "emp_plans_enabled",
+      "value": "true",
+      "label": "Emp: Ativar Seção Planos"
+    },
+    {
+      "id": 238,
+      "key": "emp_plans_title",
+      "value": "Planos sob medida para sua empresa",
+      "label": "Emp: Título Planos"
+    },
+    {
+      "id": 239,
+      "key": "emp_plans_subtitle",
+      "value": "Temos soluções para qualquer que seja sua necessidade",
+      "label": "Emp: Subtítulo Planos"
+    },
+    {
+      "id": 240,
+      "key": "emp_plans_bg",
+      "value": "#f8fafc",
+      "label": "Emp: Fundo Planos"
+    },
+    {
+      "id": 241,
+      "key": "emp_plans_title_color",
+      "value": "#1a0533",
+      "label": "Emp: Cor Título Planos"
+    },
+    {
+      "id": 242,
+      "key": "emp_plans_subtitle_color",
+      "value": "#64748b",
+      "label": "Emp: Cor Subtítulo Planos"
+    },
+    {
+      "id": 243,
+      "key": "emp_benefits_title",
+      "value": "Benefícios e vantagens para sua empresa",
+      "label": "Emp: Título Benefícios"
+    },
+    {
+      "id": 244,
+      "key": "emp_benefits_bg",
+      "value": "#ffffff",
+      "label": "Emp: Fundo Benefícios"
+    },
+    {
+      "id": 245,
+      "key": "emp_benefits_title_color",
+      "value": "#1a0533",
+      "label": "Emp: Cor Título Benefícios"
+    },
+    {
+      "id": 246,
+      "key": "emp_benefit1_icon",
+      "value": "📈",
+      "label": "Emp: Ícone Benefício 1"
+    },
+    {
+      "id": 247,
+      "key": "emp_benefit1_title",
+      "value": "Planos flexíveis e escaláveis",
+      "label": "Emp: Título Benefício 1"
+    },
+    {
+      "id": 248,
+      "key": "emp_benefit1_desc",
+      "value": "Opções que crescem junto com o seu negócio, sem complicações.",
+      "label": "Emp: Descrição Benefício 1"
+    },
+    {
+      "id": 249,
+      "key": "emp_benefit2_icon",
+      "value": "🌐",
+      "label": "Emp: Ícone Benefício 2"
+    },
+    {
+      "id": 250,
+      "key": "emp_benefit2_title",
+      "value": "Conectividade para todos",
+      "label": "Emp: Título Benefício 2"
+    },
+    {
+      "id": 251,
+      "key": "emp_benefit2_desc",
+      "value": "Planos exclusivos para empresas, garantindo maior desempenho.",
+      "label": "Emp: Descrição Benefício 2"
+    },
+    {
+      "id": 252,
+      "key": "emp_benefit3_icon",
+      "value": "🛡️",
+      "label": "Emp: Ícone Benefício 3"
+    },
+    {
+      "id": 253,
+      "key": "emp_benefit3_title",
+      "value": "Suporte Prioritário 24/7",
+      "label": "Emp: Título Benefício 3"
+    },
+    {
+      "id": 254,
+      "key": "emp_benefit3_desc",
+      "value": "Atendimento especializado para resolver qualquer necessidade.",
+      "label": "Emp: Descrição Benefício 3"
+    },
+    {
+      "id": 255,
+      "key": "emp_benefit4_icon",
+      "value": "🔒",
+      "label": "Emp: Ícone Benefício 4"
+    },
+    {
+      "id": 256,
+      "key": "emp_benefit4_title",
+      "value": "Segurança reforçada",
+      "label": "Emp: Título Benefício 4"
+    },
+    {
+      "id": 257,
+      "key": "emp_benefit4_desc",
+      "value": "Proteção contra ataques e segurança extra para os dados da sua empresa.",
+      "label": "Emp: Descrição Benefício 4"
+    },
+    {
+      "id": 258,
+      "key": "emp_benefit_card_bg",
+      "value": "#ffffff",
+      "label": "Emp: Fundo Cards Benefícios"
+    },
+    {
+      "id": 259,
+      "key": "emp_benefit_card_border",
+      "value": "#e2e8f0",
+      "label": "Emp: Borda Cards Benefícios"
+    },
+    {
+      "id": 260,
+      "key": "emp_benefit_icon_bg",
+      "value": "#005CFF20",
+      "label": "Emp: Fundo Ícones Benefícios"
+    },
+    {
+      "id": 261,
+      "key": "emp_benefit_icon_color",
+      "value": "#005CFF",
+      "label": "Emp: Cor Ícones Benefícios"
+    },
+    {
+      "id": 262,
+      "key": "emp_benefit_title_color",
+      "value": "#1a0533",
+      "label": "Emp: Cor Título Benefícios Cards"
+    },
+    {
+      "id": 263,
+      "key": "emp_benefit_desc_color",
+      "value": "#64748b",
+      "label": "Emp: Cor Descrição Benefícios"
+    },
+    {
+      "id": 264,
+      "key": "emp_services_title",
+      "value": "Serviços dedicados e exclusivos",
+      "label": "Emp: Título Serviços"
+    },
+    {
+      "id": 265,
+      "key": "emp_services_subtitle",
+      "value": "Serviços disponíveis em nossos planos empresariais",
+      "label": "Emp: Subtítulo Serviços"
+    },
+    {
+      "id": 266,
+      "key": "emp_services_bg",
+      "value": "#f0f4ff",
+      "label": "Emp: Fundo Serviços"
+    },
+    {
+      "id": 267,
+      "key": "emp_services_title_color",
+      "value": "#1a0533",
+      "label": "Emp: Cor Título Serviços"
+    },
+    {
+      "id": 268,
+      "key": "emp_services_subtitle_color",
+      "value": "#64748b",
+      "label": "Emp: Cor Subtítulo Serviços"
+    },
+    {
+      "id": 269,
+      "key": "emp_service1_icon",
+      "value": "📥",
+      "label": "Emp: Ícone Serviço 1"
+    },
+    {
+      "id": 270,
+      "key": "emp_service1_title",
+      "value": "Download e upload garantidos",
+      "label": "Emp: Título Serviço 1"
+    },
+    {
+      "id": 271,
+      "key": "emp_service1_desc",
+      "value": "Contrate o plano desejado e tenha garantia de download e upload simétricos.",
+      "label": "Emp: Descrição Serviço 1"
+    },
+    {
+      "id": 272,
+      "key": "emp_service2_icon",
+      "value": "🌐",
+      "label": "Emp: Ícone Serviço 2"
+    },
+    {
+      "id": 273,
+      "key": "emp_service2_title",
+      "value": "IP Dedicado",
+      "label": "Emp: Título Serviço 2"
+    },
+    {
+      "id": 274,
+      "key": "emp_service2_desc",
+      "value": "Tenha um IP exclusivo, garantindo melhor desempenho, segurança e controle sobre a sua rede.",
+      "label": "Emp: Descrição Serviço 2"
+    },
+    {
+      "id": 275,
+      "key": "emp_service3_icon",
+      "value": "🛡️",
+      "label": "Emp: Ícone Serviço 3"
+    },
+    {
+      "id": 276,
+      "key": "emp_service3_title",
+      "value": "Segurança de Rede",
+      "label": "Emp: Título Serviço 3"
+    },
+    {
+      "id": 277,
+      "key": "emp_service3_desc",
+      "value": "Proteção contra ameaças digitais com firewall e sistemas de segurança avançados.",
+      "label": "Emp: Descrição Serviço 3"
+    },
+    {
+      "id": 278,
+      "key": "emp_service4_icon",
+      "value": "🔗",
+      "label": "Emp: Ícone Serviço 4"
+    },
+    {
+      "id": 279,
+      "key": "emp_service4_title",
+      "value": "Intranet Corporativa",
+      "label": "Emp: Título Serviço 4"
+    },
+    {
+      "id": 280,
+      "key": "emp_service4_desc",
+      "value": "Rede interna exclusiva para sua empresa com alta velocidade e privacidade.",
+      "label": "Emp: Descrição Serviço 4"
+    },
+    {
+      "id": 281,
+      "key": "emp_service5_icon",
+      "value": "🔐",
+      "label": "Emp: Ícone Serviço 5"
+    },
+    {
+      "id": 282,
+      "key": "emp_service5_title",
+      "value": "VPN Corporativa",
+      "label": "Emp: Título Serviço 5"
+    },
+    {
+      "id": 283,
+      "key": "emp_service5_desc",
+      "value": "Conexão segura e criptografada garantindo privacidade e proteção dos dados.",
+      "label": "Emp: Descrição Serviço 5"
+    },
+    {
+      "id": 284,
+      "key": "emp_service6_icon",
+      "value": "☁️",
+      "label": "Emp: Ícone Serviço 6"
+    },
+    {
+      "id": 285,
+      "key": "emp_service6_title",
+      "value": "Backup em Nuvem",
+      "label": "Emp: Título Serviço 6"
+    },
+    {
+      "id": 286,
+      "key": "emp_service6_desc",
+      "value": "Solução escalável e confiável para manter a continuidade dos seus negócios.",
+      "label": "Emp: Descrição Serviço 6"
+    },
+    {
+      "id": 287,
+      "key": "emp_service_card_bg",
+      "value": "#ffffff",
+      "label": "Emp: Fundo Cards Serviços"
+    },
+    {
+      "id": 288,
+      "key": "emp_service_card_border",
+      "value": "#dbeafe",
+      "label": "Emp: Borda Cards Serviços"
+    },
+    {
+      "id": 289,
+      "key": "emp_service_icon_bg",
+      "value": "#005CFF20",
+      "label": "Emp: Fundo Ícones Serviços"
+    },
+    {
+      "id": 290,
+      "key": "emp_service_icon_color",
+      "value": "#005CFF",
+      "label": "Emp: Cor Ícones Serviços"
+    },
+    {
+      "id": 291,
+      "key": "emp_service_title_color",
+      "value": "#1a0533",
+      "label": "Emp: Cor Título Serviços Cards"
+    },
+    {
+      "id": 292,
+      "key": "emp_service_desc_color",
+      "value": "#64748b",
+      "label": "Emp: Cor Descrição Serviços"
+    },
+    {
+      "id": 293,
+      "key": "emp_cta_bg",
+      "value": "#1a0533",
+      "label": "Emp: Fundo CTA"
+    },
+    {
+      "id": 294,
+      "key": "emp_cta_title",
+      "value": "Faça parte deste movimento, assine um plano empresarial!",
+      "label": "Emp: Título CTA"
+    },
+    {
+      "id": 295,
+      "key": "emp_cta_desc",
+      "value": "Soluções completas em conectividade para impulsionar o seu negócio.",
+      "label": "Emp: Descrição CTA"
+    },
+    {
+      "id": 296,
+      "key": "emp_cta_title_color",
+      "value": "#ffffff",
+      "label": "Emp: Cor Título CTA"
+    },
+    {
+      "id": 297,
+      "key": "emp_cta_desc_color",
+      "value": "#a1a1aa",
+      "label": "Emp: Cor Descrição CTA"
+    },
+    {
+      "id": 298,
+      "key": "emp_cta_btn_text",
+      "value": "Fale com nosso time",
+      "label": "Emp: Texto Botão CTA"
+    },
+    {
+      "id": 299,
+      "key": "emp_cta_btn_link",
+      "value": "https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20contratar%20um%20plano%20empresarial.",
+      "label": "Emp: Link Botão CTA"
+    },
+    {
+      "id": 300,
+      "key": "emp_cta_btn_bg",
+      "value": "#22c55e",
+      "label": "Emp: Cor Botão CTA"
+    },
+    {
+      "id": 301,
+      "key": "emp_cta_btn_color",
+      "value": "#ffffff",
+      "label": "Emp: Cor Texto Botão CTA"
     }
   ],
   "app_library": [],
@@ -1156,5 +2362,102 @@
     "ent": 0,
     "app_lib": 0,
     "benefits": 0
-  }
+  },
+  "enterprise_plans": [
+    {
+      "id": 1,
+      "name": "LINK DEDICADO 50MB",
+      "speed": "50",
+      "price": "Sob Consulta",
+      "highlight": "Conexão dedicada para sua empresa",
+      "highlight_icon": "🏢",
+      "button_text": "CONSULTAR",
+      "whatsapp_msg": "Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Link%20Dedicado%2050MB.",
+      "features": [
+        "Banda garantida 100%",
+        "Upload e download simétricos",
+        "IP fixo incluso",
+        "SLA 24/7/365"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 0,
+      "card_bg_color": "",
+      "card_text_color": "",
+      "button_bg_color": "#005CFF",
+      "button_text_color": "#ffffff"
+    },
+    {
+      "id": 2,
+      "name": "LINK DEDICADO 100MB",
+      "speed": "100",
+      "price": "Sob Consulta",
+      "highlight": "Performance máxima para sua empresa",
+      "highlight_icon": "🚀",
+      "button_text": "CONSULTAR",
+      "whatsapp_msg": "Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Link%20Dedicado%20100MB.",
+      "features": [
+        "Banda garantida 100%",
+        "Upload e download simétricos",
+        "IP fixo incluso",
+        "SLA 24/7/365",
+        "Monitoramento em tempo real"
+      ],
+      "popular": true,
+      "active": true,
+      "sort_order": 1,
+      "card_bg_color": "",
+      "card_text_color": "",
+      "button_bg_color": "#005CFF",
+      "button_text_color": "#ffffff"
+    },
+    {
+      "id": 3,
+      "name": "FIBRA EMPRESARIAL 200MB",
+      "speed": "200",
+      "price": "199,90",
+      "highlight": "Internet de alta velocidade para PMEs",
+      "highlight_icon": "📶",
+      "button_text": "CONTRATAR",
+      "whatsapp_msg": "Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20contratar%20a%20Fibra%20Empresarial%20200MB.",
+      "features": [
+        "Internet 100% Fibra Óptica",
+        "Wi-Fi 6 empresarial",
+        "IP fixo incluso",
+        "Suporte prioritário",
+        "Instalação prioritária"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 2,
+      "card_bg_color": "",
+      "card_text_color": "",
+      "button_bg_color": "#005CFF",
+      "button_text_color": "#ffffff"
+    },
+    {
+      "id": 4,
+      "name": "PLANO PERSONALIZADO",
+      "speed": "—",
+      "price": "Sob Consulta",
+      "highlight": "Sob medida para o seu negócio",
+      "highlight_icon": "🎯",
+      "button_text": "FALAR CONOSCO",
+      "whatsapp_msg": "Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20um%20plano%20personalizado%20para%20minha%20empresa.",
+      "features": [
+        "Projeto personalizado",
+        "Contrato flexível",
+        "Suporte 24/7 dedicado",
+        "Equipamentos inclusos",
+        "Garantia de disponibilidade"
+      ],
+      "popular": false,
+      "active": true,
+      "sort_order": 3,
+      "card_bg_color": "#1e0a3c",
+      "card_text_color": "#ffffff",
+      "button_bg_color": "#22c55e",
+      "button_text_color": "#ffffff"
+    }
+  ]
 }
