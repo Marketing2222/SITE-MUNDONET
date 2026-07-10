@@ -19,6 +19,7 @@ import ExitPopup from './components/ExitPopup';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
 import IndiqueGanhe from './components/IndiqueGanhe';
+import ParaEmpresas from './components/ParaEmpresas';
 
 // Admin components
 import AdminLogin from './admin/AdminLogin';
@@ -33,6 +34,8 @@ import ManageHeaderFooter from './admin/pages/ManageHeaderFooter';
 import ManageHomeSections from './admin/pages/ManageHomeSections';
 import { ManageSiteCustomization } from './admin/pages/ManageSiteCustomization';
 import ManageIndiqueGanhe from './admin/pages/ManageIndiqueGanhe';
+import ManageParaEmpresas from './admin/pages/ManageParaEmpresas';
+import ManageEnterprisePlans from './admin/pages/ManageEnterprisePlans';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -272,6 +275,7 @@ function App() {
       <Route path="/" element={<PublicSite />} />
       <Route path="/vem-pra-mundonet" element={<LandingPage />} />
       <Route path="/indique-e-ganhe" element={<IndiqueGanhe />} />
+      <Route path="/para-empresas" element={<ParaEmpresas />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
@@ -285,6 +289,8 @@ function App() {
         <Route path="header-footer" element={<ManageHeaderFooter />} />
         <Route path="home-sections" element={<ManageHomeSections />} />
         <Route path="indique-ganhe" element={<ManageIndiqueGanhe />} />
+        <Route path="para-empresas" element={<ManageParaEmpresas />} />
+        <Route path="enterprise-plans" element={<ManageEnterprisePlans />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -88,12 +88,26 @@ export const Header: React.FC = () => {
   const navDropdownPadding = s?.nav_dropdown_padding?.value || '8px 0';
   const navSubitemPadding = s?.nav_subitem_padding?.value || '10px 20px';
   const navFontSize = s?.nav_font_size?.value || '0.9rem';
+  const currentPath = window.location.pathname;
 
   return (
     <header
       className={`site-header ${isScrolled ? 'sticky' : ''}`}
       style={{ fontFamily: headerFont || undefined, '--header-height': headerHeight + 'px' } as React.CSSProperties}
     >
+      {/* Segment bar: Para você | Para empresas */}
+      <div className="segment-bar" style={{ backgroundColor: '#0d0d2b' }}>
+        <div className="container segment-bar-container">
+          <a href="/" className={`segment-link ${currentPath === '/' || currentPath.startsWith('/admin') ? 'active' : ''}`}
+            style={{ color: currentPath === '/' || currentPath.startsWith('/admin') ? '#fff' : 'rgba(255,255,255,0.5)' }}>
+            Para você
+          </a>
+          <a href="/para-empresas" className={`segment-link ${currentPath === '/para-empresas' ? 'active' : ''}`}
+            style={{ color: currentPath === '/para-empresas' ? '#fff' : 'rgba(255,255,255,0.5)' }}>
+            Para empresas
+          </a>
+        </div>
+      </div>
       <div className="top-bar" style={{ backgroundColor: topbarBg, color: topbarText }}>
         <div className="container top-bar-container">
           <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>

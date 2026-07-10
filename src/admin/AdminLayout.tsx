@@ -13,6 +13,8 @@ const NAV = [
   { to: '/admin/settings', icon: '⚙️', label: 'Configurações Gerais' },
   { to: '/admin/site-settings', icon: '🎨', label: 'Personalização Global' },
   { to: '/admin/indique-ganhe', icon: '🎁', label: 'Indique e Ganhe' },
+  { to: '/admin/para-empresas', icon: '🏢', label: 'Para Empresas' },
+  { to: '/admin/enterprise-plans', icon: '📊', label: 'Planos Empresariais' },
 ];
 
 export const AdminLayout = () => {

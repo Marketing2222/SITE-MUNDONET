@@ -1,0 +1,100 @@
+.emp-page { font-family: 'Montserrat', sans-serif; }
+
+.emp-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.emp-section-sub { font-size: 17px; text-align: center; margin: -8px 0 48px; }
+
+/* Hero */
+.emp-hero {
+  display: flex; align-items: center; justify-content: center; gap: 60px;
+  padding: 120px 24px 80px; min-height: 80vh;
+}
+.emp-hero-content { flex: 1; max-width: 600px; }
+.emp-hero-content h1 { font-size: 44px; font-weight: 800; line-height: 1.15; margin: 0 0 20px; }
+.emp-hero-content p { font-size: 17px; line-height: 1.7; margin: 0 0 36px; }
+.emp-hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+.emp-hero-image { flex: 1; max-width: 500px; }
+.emp-hero-image img { width: 100%; height: auto; animation: empFloat 3s ease-in-out infinite; }
+@keyframes empFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* Buttons */
+.emp-btn {
+  display: inline-block; padding: 14px 32px; border-radius: 12px; font-size: 15px;
+  font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+}
+.emp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.emp-btn-large { padding: 18px 44px; font-size: 17px; border-radius: 14px; }
+.emp-btn-outline { backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); }
+
+/* Planos */
+.emp-plans { padding: 100px 0; text-align: center; }
+.emp-plans h2 { font-size: 34px; font-weight: 800; margin: 0 0 12px; }
+.emp-plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+.emp-plan-card {
+  border-radius: 20px; padding: 36px 28px; text-align: center; position: relative;
+  border: 1px solid rgba(0,0,0,0.06); transition: all 0.3s;
+}
+.emp-plan-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+.emp-plan-badge {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: #f59e0b; color: #fff; padding: 4px 16px; border-radius: 20px;
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.emp-plan-icon { font-size: 40px; margin-bottom: 12px; }
+.emp-plan-card h3 { font-size: 20px; font-weight: 800; margin: 0 0 4px; }
+.emp-plan-speed { font-size: 13px; opacity: 0.6; margin-bottom: 12px; }
+.emp-plan-price { font-size: 28px; font-weight: 800; margin: 8px 0; }
+.emp-plan-highlight { font-size: 14px; opacity: 0.7; margin: 0 0 20px; }
+.emp-plan-features { list-style: none; padding: 0; margin: 0 0 24px; text-align: left; }
+.emp-plan-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.04); }
+.emp-check { font-weight: 700; font-size: 16px; }
+.emp-plan-btn {
+  display: block; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 14px;
+  text-decoration: none; transition: all 0.2s;
+}
+.emp-plan-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+/* Benefícios */
+.emp-benefits { padding: 100px 0; }
+.emp-benefits h2 { font-size: 34px; font-weight: 800; text-align: center; margin: 0 0 48px; }
+.emp-benefits-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.emp-benefit-card {
+  border: 1px solid; border-radius: 20px; padding: 32px; transition: all 0.3s;
+}
+.emp-benefit-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.emp-benefit-icon {
+  width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center;
+  justify-content: center; font-size: 26px; margin-bottom: 18px;
+}
+.emp-benefit-card h3 { font-size: 18px; font-weight: 700; margin: 0 0 8px; }
+.emp-benefit-card p { font-size: 14px; line-height: 1.6; margin: 0; }
+
+/* Serviços */
+.emp-services { padding: 100px 0; text-align: center; }
+.emp-services h2 { font-size: 34px; font-weight: 800; margin: 0 0 8px; }
+.emp-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.emp-service-card {
+  border: 1px solid; border-radius: 20px; padding: 32px 24px; text-align: center; transition: all 0.3s;
+}
+.emp-service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.emp-service-icon {
+  width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center;
+  justify-content: center; font-size: 28px; margin: 0 auto 16px;
+}
+.emp-service-card h3 { font-size: 17px; font-weight: 700; margin: 0 0 8px; }
+.emp-service-card p { font-size: 14px; line-height: 1.5; margin: 0; }
+
+/* CTA */
+.emp-cta { padding: 100px 0; text-align: center; }
+.emp-cta h2 { font-size: 36px; font-weight: 800; margin: 0 0 14px; }
+.emp-cta p { font-size: 17px; margin: 0 0 36px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .emp-hero { flex-direction: column; text-align: center; padding: 100px 24px 60px; }
+  .emp-hero-content h1 { font-size: 30px; }
+  .emp-hero-buttons { justify-content: center; }
+  .emp-benefits-grid { grid-template-columns: 1fr; }
+  .emp-services-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+  .emp-plans-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+  .emp-cta h2 { font-size: 26px; }
+}

@@ -20,7 +20,8 @@ const defaultData = {
   benefits: [],
   file_uploads: [],
   badge_library: [],
-  _counters: { users:0, hero:0, plans:0, ql:0, ent:0, app_lib:0, benefits:0, file_uploads:0, badge_library:0 }
+  enterprise_plans: [],
+  _counters: { users:0, hero:0, plans:0, ql:0, ent:0, app_lib:0, benefits:0, file_uploads:0, badge_library:0, enterprise_plans:0 }
 };
 
 let db;
@@ -72,6 +73,17 @@ export async function initDB() {
       { name:'LINK DEDICADO', speed:'DED', price:'Sob Consulta', highlight:'Conexão exclusiva para empresas', highlight_icon:'🏢', button_text:'CONSULTAR', whatsapp_msg:'Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações%20sobre%20o%20Link%20Dedicado.', included_apps:[{name:'IP Fixo',color:'#1D4ED8',textColor:'#fff',abbr:'IP'},{name:'SLA 24h',color:'#065F46',textColor:'#fff',abbr:'SLA'},{name:'Simétrico',color:'#7C3AED',textColor:'#fff',abbr:'Sim'}], bonus_app:{name:'Suporte VIP',color:'#991B1B',textColor:'#fff',abbr:'VIP'}, details:['Banda garantida 100%','Upload e download simétricos','IP fixo incluso','Suporte SLA 24/7/365','Monitoramento em tempo real','Proposta personalizada'], popular:false, active:true, sort_order:3 },
     ];
     plans.forEach((p, i) => db.data.plans.push({ id: i+1, ...p }));
+  }
+
+  // ── Seed: enterprise_plans ────────────────────────────────────────
+  if (db.data.enterprise_plans.length === 0) {
+    const plans = [
+      { name:'LINK DEDICADO 50MB', speed:'50', price:'Sob Consulta', highlight:'Conexão dedicada para sua empresa', highlight_icon:'🏢', button_text:'CONSULTAR', whatsapp_msg:'Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Link%20Dedicado%2050MB.', features:['Banda garantida 100%','Upload e download simétricos','IP fixo incluso','SLA 24/7/365'], popular:false, active:true, sort_order:0, card_bg_color:'', card_text_color:'', button_bg_color:'#005CFF', button_text_color:'#ffffff' },
+      { name:'LINK DEDICADO 100MB', speed:'100', price:'Sob Consulta', highlight:'Performance máxima para sua empresa', highlight_icon:'🚀', button_text:'CONSULTAR', whatsapp_msg:'Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Link%20Dedicado%20100MB.', features:['Banda garantida 100%','Upload e download simétricos','IP fixo incluso','SLA 24/7/365','Monitoramento em tempo real'], popular:true, active:true, sort_order:1, card_bg_color:'', card_text_color:'', button_bg_color:'#005CFF', button_text_color:'#ffffff' },
+      { name:'FIBRA EMPRESARIAL 200MB', speed:'200', price:'199,90', highlight:'Internet de alta velocidade para PMEs', highlight_icon:'📶', button_text:'CONTRATAR', whatsapp_msg:'Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20contratar%20a%20Fibra%20Empresarial%20200MB.', features:['Internet 100% Fibra Óptica','Wi-Fi 6 empresarial','IP fixo incluso','Suporte prioritário','Instalação prioritária'], popular:false, active:true, sort_order:2, card_bg_color:'', card_text_color:'', button_bg_color:'#005CFF', button_text_color:'#ffffff' },
+      { name:'PLANO PERSONALIZADO', speed:'—', price:'Sob Consulta', highlight:'Sob medida para o seu negócio', highlight_icon:'🎯', button_text:'FALAR CONOSCO', whatsapp_msg:'Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20um%20plano%20personalizado%20para%20minha%20empresa.', features:['Projeto personalizado','Contrato flexível','Suporte 24/7 dedicado','Equipamentos inclusos','Garantia de disponibilidade'], popular:false, active:true, sort_order:3, card_bg_color:'#1e0a3c', card_text_color:'#ffffff', button_bg_color:'#22c55e', button_text_color:'#ffffff' },
+    ];
+    plans.forEach((p, i) => db.data.enterprise_plans.push({ id: i+1, ...p }));
   }
 
   // ── Seed: quick_links ────────────────────────────────────────────
@@ -659,6 +671,99 @@ export async function initDB() {
       value: JSON.stringify(mobileDefault),
       label: 'Seções Ativas no Mobile'
     });
+  }
+
+  // ── Migração: Empresas (Para Empresas) ──────────────────────────
+  const empSettings = [
+    // Hero
+    { key:'emp_hero_bg', value:'#1a0533', label:'Emp: Fundo Hero' },
+    { key:'emp_hero_title', value:'Conectividade corporativa de alto nível', label:'Emp: Título Hero' },
+    { key:'emp_hero_subtitle', value:'Soluções de internet dedicadas para empresas que precisam de performance, segurança e suporte especializado.', label:'Emp: Subtítulo Hero' },
+    { key:'emp_hero_image', value:'https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png', label:'Emp: Imagem Hero' },
+    { key:'emp_hero_btn1_text', value:'Fale Conosco', label:'Emp: Texto Botão 1' },
+    { key:'emp_hero_btn1_link', value:'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20mais%20informações.', label:'Emp: Link Botão 1' },
+    { key:'emp_hero_btn1_bg', value:'#22c55e', label:'Emp: Cor Botão 1' },
+    { key:'emp_hero_btn1_color', value:'#ffffff', label:'Emp: Cor Texto Botão 1' },
+    { key:'emp_hero_btn2_text', value:'Ver Planos', label:'Emp: Texto Botão 2' },
+    { key:'emp_hero_btn2_link', value:'#emp-planos', label:'Emp: Link Botão 2' },
+    { key:'emp_hero_btn2_bg', value:'rgba(255,255,255,0.15)', label:'Emp: Cor Botão 2' },
+    { key:'emp_hero_btn2_color', value:'#ffffff', label:'Emp: Cor Texto Botão 2' },
+    { key:'emp_hero_title_color', value:'#ffffff', label:'Emp: Cor Título Hero' },
+    { key:'emp_hero_subtitle_color', value:'#a1a1aa', label:'Emp: Cor Subtítulo Hero' },
+    // Planos
+    { key:'emp_plans_enabled', value:'true', label:'Emp: Ativar Seção Planos' },
+    { key:'emp_plans_title', value:'Planos sob medida para sua empresa', label:'Emp: Título Planos' },
+    { key:'emp_plans_subtitle', value:'Temos soluções para qualquer que seja sua necessidade', label:'Emp: Subtítulo Planos' },
+    { key:'emp_plans_bg', value:'#f8fafc', label:'Emp: Fundo Planos' },
+    { key:'emp_plans_title_color', value:'#1a0533', label:'Emp: Cor Título Planos' },
+    { key:'emp_plans_subtitle_color', value:'#64748b', label:'Emp: Cor Subtítulo Planos' },
+    // Benefícios
+    { key:'emp_benefits_title', value:'Benefícios e vantagens para sua empresa', label:'Emp: Título Benefícios' },
+    { key:'emp_benefits_bg', value:'#ffffff', label:'Emp: Fundo Benefícios' },
+    { key:'emp_benefits_title_color', value:'#1a0533', label:'Emp: Cor Título Benefícios' },
+    { key:'emp_benefit1_icon', value:'📈', label:'Emp: Ícone Benefício 1' },
+    { key:'emp_benefit1_title', value:'Planos flexíveis e escaláveis', label:'Emp: Título Benefício 1' },
+    { key:'emp_benefit1_desc', value:'Opções que crescem junto com o seu negócio, sem complicações.', label:'Emp: Descrição Benefício 1' },
+    { key:'emp_benefit2_icon', value:'🌐', label:'Emp: Ícone Benefício 2' },
+    { key:'emp_benefit2_title', value:'Conectividade para todos', label:'Emp: Título Benefício 2' },
+    { key:'emp_benefit2_desc', value:'Planos exclusivos para empresas, garantindo maior desempenho.', label:'Emp: Descrição Benefício 2' },
+    { key:'emp_benefit3_icon', value:'🛡️', label:'Emp: Ícone Benefício 3' },
+    { key:'emp_benefit3_title', value:'Suporte Prioritário 24/7', label:'Emp: Título Benefício 3' },
+    { key:'emp_benefit3_desc', value:'Atendimento especializado para resolver qualquer necessidade.', label:'Emp: Descrição Benefício 3' },
+    { key:'emp_benefit4_icon', value:'🔒', label:'Emp: Ícone Benefício 4' },
+    { key:'emp_benefit4_title', value:'Segurança reforçada', label:'Emp: Título Benefício 4' },
+    { key:'emp_benefit4_desc', value:'Proteção contra ataques e segurança extra para os dados da sua empresa.', label:'Emp: Descrição Benefício 4' },
+    { key:'emp_benefit_card_bg', value:'#ffffff', label:'Emp: Fundo Cards Benefícios' },
+    { key:'emp_benefit_card_border', value:'#e2e8f0', label:'Emp: Borda Cards Benefícios' },
+    { key:'emp_benefit_icon_bg', value:'#005CFF20', label:'Emp: Fundo Ícones Benefícios' },
+    { key:'emp_benefit_icon_color', value:'#005CFF', label:'Emp: Cor Ícones Benefícios' },
+    { key:'emp_benefit_title_color', value:'#1a0533', label:'Emp: Cor Título Benefícios Cards' },
+    { key:'emp_benefit_desc_color', value:'#64748b', label:'Emp: Cor Descrição Benefícios' },
+    // Serviços
+    { key:'emp_services_title', value:'Serviços dedicados e exclusivos', label:'Emp: Título Serviços' },
+    { key:'emp_services_subtitle', value:'Serviços disponíveis em nossos planos empresariais', label:'Emp: Subtítulo Serviços' },
+    { key:'emp_services_bg', value:'#f0f4ff', label:'Emp: Fundo Serviços' },
+    { key:'emp_services_title_color', value:'#1a0533', label:'Emp: Cor Título Serviços' },
+    { key:'emp_services_subtitle_color', value:'#64748b', label:'Emp: Cor Subtítulo Serviços' },
+    { key:'emp_service1_icon', value:'📥', label:'Emp: Ícone Serviço 1' },
+    { key:'emp_service1_title', value:'Download e upload garantidos', label:'Emp: Título Serviço 1' },
+    { key:'emp_service1_desc', value:'Contrate o plano desejado e tenha garantia de download e upload simétricos.', label:'Emp: Descrição Serviço 1' },
+    { key:'emp_service2_icon', value:'🌐', label:'Emp: Ícone Serviço 2' },
+    { key:'emp_service2_title', value:'IP Dedicado', label:'Emp: Título Serviço 2' },
+    { key:'emp_service2_desc', value:'Tenha um IP exclusivo, garantindo melhor desempenho, segurança e controle sobre a sua rede.', label:'Emp: Descrição Serviço 2' },
+    { key:'emp_service3_icon', value:'🛡️', label:'Emp: Ícone Serviço 3' },
+    { key:'emp_service3_title', value:'Segurança de Rede', label:'Emp: Título Serviço 3' },
+    { key:'emp_service3_desc', value:'Proteção contra ameaças digitais com firewall e sistemas de segurança avançados.', label:'Emp: Descrição Serviço 3' },
+    { key:'emp_service4_icon', value:'🔗', label:'Emp: Ícone Serviço 4' },
+    { key:'emp_service4_title', value:'Intranet Corporativa', label:'Emp: Título Serviço 4' },
+    { key:'emp_service4_desc', value:'Rede interna exclusiva para sua empresa com alta velocidade e privacidade.', label:'Emp: Descrição Serviço 4' },
+    { key:'emp_service5_icon', value:'🔐', label:'Emp: Ícone Serviço 5' },
+    { key:'emp_service5_title', value:'VPN Corporativa', label:'Emp: Título Serviço 5' },
+    { key:'emp_service5_desc', value:'Conexão segura e criptografada garantindo privacidade e proteção dos dados.', label:'Emp: Descrição Serviço 5' },
+    { key:'emp_service6_icon', value:'☁️', label:'Emp: Ícone Serviço 6' },
+    { key:'emp_service6_title', value:'Backup em Nuvem', label:'Emp: Título Serviço 6' },
+    { key:'emp_service6_desc', value:'Solução escalável e confiável para manter a continuidade dos seus negócios.', label:'Emp: Descrição Serviço 6' },
+    { key:'emp_service_card_bg', value:'#ffffff', label:'Emp: Fundo Cards Serviços' },
+    { key:'emp_service_card_border', value:'#dbeafe', label:'Emp: Borda Cards Serviços' },
+    { key:'emp_service_icon_bg', value:'#005CFF20', label:'Emp: Fundo Ícones Serviços' },
+    { key:'emp_service_icon_color', value:'#005CFF', label:'Emp: Cor Ícones Serviços' },
+    { key:'emp_service_title_color', value:'#1a0533', label:'Emp: Cor Título Serviços Cards' },
+    { key:'emp_service_desc_color', value:'#64748b', label:'Emp: Cor Descrição Serviços' },
+    // CTA
+    { key:'emp_cta_bg', value:'#1a0533', label:'Emp: Fundo CTA' },
+    { key:'emp_cta_title', value:'Faça parte deste movimento, assine um plano empresarial!', label:'Emp: Título CTA' },
+    { key:'emp_cta_desc', value:'Soluções completas em conectividade para impulsionar o seu negócio.', label:'Emp: Descrição CTA' },
+    { key:'emp_cta_title_color', value:'#ffffff', label:'Emp: Cor Título CTA' },
+    { key:'emp_cta_desc_color', value:'#a1a1aa', label:'Emp: Cor Descrição CTA' },
+    { key:'emp_cta_btn_text', value:'Fale com nosso time', label:'Emp: Texto Botão CTA' },
+    { key:'emp_cta_btn_link', value:'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20contratar%20um%20plano%20empresarial.', label:'Emp: Link Botão CTA' },
+    { key:'emp_cta_btn_bg', value:'#22c55e', label:'Emp: Cor Botão CTA' },
+    { key:'emp_cta_btn_color', value:'#ffffff', label:'Emp: Cor Texto Botão CTA' },
+  ];
+  for (const s of empSettings) {
+    if (!db.data.site_settings.find(x => x.key === s.key)) {
+      db.data.site_settings.push({ id: db.nextId('site_settings'), ...s });
+    }
   }
 
   await db.write();
