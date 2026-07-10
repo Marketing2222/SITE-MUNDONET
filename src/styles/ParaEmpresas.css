@@ -7,17 +7,23 @@
 .emp-hero-full {
   position: relative; display: flex; align-items: center;
   min-height: 600px; padding: 120px 0 80px;
+  background-size: cover; background-position: center;
 }
 .emp-hero-overlay {
-  position: absolute; inset: 0; z-index: 1; opacity: 0.6;
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 40%, transparent 70%);
+}
+.emp-hero-overlay-solid {
+  position: absolute; inset: 0; z-index: 1; opacity: 0.5;
 }
 .emp-hero-full-content {
   position: relative; z-index: 2; width: 100%; max-width: 1200px;
   margin: 0 auto; padding: 0 24px; text-align: left;
 }
-.emp-hero-full-content h1 { font-size: 44px; font-weight: 800; line-height: 1.15; margin: 0 0 20px; }
-.emp-hero-full-content p { font-size: 17px; line-height: 1.7; margin: 0 0 36px; max-width: 550px; }
+.emp-hero-full-content h1 { font-size: 44px; font-weight: 800; line-height: 1.15; margin: 0 0 20px; max-width: 520px; }
+.emp-hero-full-content p { font-size: 17px; line-height: 1.7; margin: 0 0 36px; max-width: 480px; opacity: 0.85; }
 .emp-hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+.emp-hero-buttons .emp-btn-outline { border: 1px solid rgba(255,255,255,0.5); }
 
 /* Buttons */
 .emp-btn {

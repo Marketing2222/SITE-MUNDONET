@@ -56,8 +56,9 @@ export const ParaEmpresas = () => {
         backgroundPosition: 'center',
         minHeight: heroHeight + 'px',
       }}>
+        {g('emp_hero_image') && <div className="emp-hero-overlay"></div>}
         {g('emp_hero_overlay', 'false') === 'true' && (
-          <div className="emp-hero-overlay" style={{ backgroundColor: g('emp_hero_overlay_color', '#000000') }}></div>
+          <div className="emp-hero-overlay-solid" style={{ backgroundColor: g('emp_hero_overlay_color', '#000000') }}></div>
         )}
         <div className="emp-hero-full-content">
           <h1 style={{ color: g('emp_hero_title_color', '#fff') }}>{g('emp_hero_title', 'Conectividade corporativa de alto nível')}</h1>
