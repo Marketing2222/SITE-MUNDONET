@@ -3,7 +3,29 @@ import { API_BASE_URL } from '../config/api';
 import '../styles/ParaEmpresas.css';
 
 interface Settings { [key: string]: { value: string; label: string } }
-interface Plan { id: number; name: string; speed: string; price: string; highlight: string; highlight_icon: string; button_text: string; whatsapp_msg: string; features: string[]; popular: boolean; active: boolean; sort_order: number; card_bg_color: string; card_text_color: string; button_bg_color: string; button_text_color: string; }
+interface Plan { id?: number; name: string; speed: string; price: string; highlight: string; highlight_icon: string; button_text: string; whatsapp_msg: string; features: string[]; popular: boolean; active: boolean; sort_order: number; card_bg_color: string; card_text_color: string; button_bg_color: string; button_text_color: string; }
+interface ListItem { icon: string; title: string; desc: string; }
+
+const parseList = (val: string): ListItem[] => {
+  if (!val) return [];
+  try { const arr = JSON.parse(val); return Array.isArray(arr) ? arr : []; } catch { return []; }
+};
+
+const DEFAULT_BENEFITS: ListItem[] = [
+  { icon: '📈', title: 'Planos flexíveis', desc: 'Opções que crescem com seu negócio.' },
+  { icon: '🌐', title: 'Conectividade total', desc: 'Alta performance para toda a empresa.' },
+  { icon: '🛡️', title: 'Suporte 24/7', desc: 'Atendimento especializado.' },
+  { icon: '🔒', title: 'Segurança', desc: 'Proteção dos dados corporativos.' },
+];
+
+const DEFAULT_SERVICES: ListItem[] = [
+  { icon: '📥', title: 'Download/Upload garantido', desc: 'Velocidade simétrica garantida.' },
+  { icon: '🌐', title: 'IP Dedicado', desc: 'IP exclusivo para sua empresa.' },
+  { icon: '🛡️', title: 'Segurança de Rede', desc: 'Firewall e proteção avançada.' },
+  { icon: '🔗', title: 'Intranet', desc: 'Rede interna exclusiva.' },
+  { icon: '🔐', title: 'VPN Corporativa', desc: 'Conexão criptografada e segura.' },
+  { icon: '☁️', title: 'Backup em Nuvem', desc: 'Solução escalável e confiável.' },
+];
 
 export const ParaEmpresas = () => {
   const [s, setS] = useState<Settings>({});
@@ -16,10 +38,17 @@ export const ParaEmpresas = () => {
 
   const g = (key: string, fallback = '') => s[key]?.value || fallback;
 
+  const benefits = parseList(g('emp_benefits_items', '[]'));
+  const benefitsList = benefits.length > 0 ? benefits : DEFAULT_BENEFITS;
+  const services = parseList(g('emp_services_items', '[]'));
+  const servicesList = services.length > 0 ? services : DEFAULT_SERVICES;
+  const heroHeight = g('emp_hero_height', '600');
+  const pageBg = g('emp_page_bg', '');
+
   return (
-    <div className="emp-page">
+    <div className="emp-page" style={pageBg ? { backgroundColor: pageBg } : undefined}>
       {/* Hero */}
-      <section className="emp-hero" style={{ backgroundColor: g('emp_hero_bg', '#1a0533') }}>
+      <section className="emp-hero" style={{ backgroundColor: g('emp_hero_bg', '#1a0533'), minHeight: heroHeight + 'px' }}>
         <div className="emp-hero-content">
           <h1 style={{ color: g('emp_hero_title_color', '#fff') }}>{g('emp_hero_title', 'Conectividade corporativa de alto nível')}</h1>
           <p style={{ color: g('emp_hero_subtitle_color', '#a1a1aa') }}>{g('emp_hero_subtitle', 'Soluções de internet dedicadas para empresas que precisam de performance, segurança e suporte especializado.')}</p>
@@ -76,17 +105,12 @@ export const ParaEmpresas = () => {
         </section>
       )}
 
-      {/* Benefícios */}
+      {/* Benefícios - lado a lado */}
       <section className="emp-benefits" style={{ backgroundColor: g('emp_benefits_bg', '#ffffff') }}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_benefits_title_color', '#1a0533') }}>{g('emp_benefits_title', 'Benefícios e vantagens para sua empresa')}</h2>
           <div className="emp-benefits-grid">
-            {[
-              { icon: g('emp_benefit1_icon', '📈'), title: g('emp_benefit1_title', 'Planos flexíveis'), desc: g('emp_benefit1_desc', 'Opções que crescem com seu negócio.') },
-              { icon: g('emp_benefit2_icon', '🌐'), title: g('emp_benefit2_title', 'Conectividade total'), desc: g('emp_benefit2_desc', 'Alta performance para toda a empresa.') },
-              { icon: g('emp_benefit3_icon', '🛡️'), title: g('emp_benefit3_title', 'Suporte 24/7'), desc: g('emp_benefit3_desc', 'Atendimento especializado.') },
-              { icon: g('emp_benefit4_icon', '🔒'), title: g('emp_benefit4_title', 'Segurança'), desc: g('emp_benefit4_desc', 'Proteção dos dados corporativos.') },
-            ].map((b, i) => (
+            {benefitsList.map((b, i) => (
               <div key={i} className="emp-benefit-card" style={{ backgroundColor: g('emp_benefit_card_bg', '#ffffff'), borderColor: g('emp_benefit_card_border', '#e2e8f0') }}>
                 <div className="emp-benefit-icon" style={{ backgroundColor: g('emp_benefit_icon_bg', '#005CFF20'), color: g('emp_benefit_icon_color', '#005CFF') }}>{b.icon}</div>
                 <h3 style={{ color: g('emp_benefit_title_color', '#1a0533') }}>{b.title}</h3>
@@ -97,20 +121,13 @@ export const ParaEmpresas = () => {
         </div>
       </section>
 
-      {/* Serviços */}
+      {/* Serviços - lado a lado */}
       <section className="emp-services" style={{ backgroundColor: g('emp_services_bg', '#f0f4ff') }}>
         <div className="emp-container">
           <h2 style={{ color: g('emp_services_title_color', '#1a0533') }}>{g('emp_services_title', 'Serviços dedicados e exclusivos')}</h2>
           <p className="emp-section-sub" style={{ color: g('emp_services_subtitle_color', '#64748b') }}>{g('emp_services_subtitle', 'Serviços disponíveis em nossos planos empresariais')}</p>
           <div className="emp-services-grid">
-            {[
-              { icon: g('emp_service1_icon', '📥'), title: g('emp_service1_title', 'Download/Upload garantido'), desc: g('emp_service1_desc', 'Velocidade simétrica garantida.') },
-              { icon: g('emp_service2_icon', '🌐'), title: g('emp_service2_title', 'IP Dedicado'), desc: g('emp_service2_desc', 'IP exclusivo para sua empresa.') },
-              { icon: g('emp_service3_icon', '🛡️'), title: g('emp_service3_title', 'Segurança de Rede'), desc: g('emp_service3_desc', 'Firewall e proteção avançada.') },
-              { icon: g('emp_service4_icon', '🔗'), title: g('emp_service4_title', 'Intranet'), desc: g('emp_service4_desc', 'Rede interna exclusiva.') },
-              { icon: g('emp_service5_icon', '🔐'), title: g('emp_service5_title', 'VPN Corporativa'), desc: g('emp_service5_desc', 'Conexão criptografada e segura.') },
-              { icon: g('emp_service6_icon', '☁️'), title: g('emp_service6_title', 'Backup em Nuvem'), desc: g('emp_service6_desc', 'Solução escalável e confiável.') },
-            ].map((svc, i) => (
+            {servicesList.map((svc, i) => (
               <div key={i} className="emp-service-card" style={{ backgroundColor: g('emp_service_card_bg', '#ffffff'), borderColor: g('emp_service_card_border', '#dbeafe') }}>
                 <div className="emp-service-icon" style={{ backgroundColor: g('emp_service_icon_bg', '#005CFF20'), color: g('emp_service_icon_color', '#005CFF') }}>{svc.icon}</div>
                 <h3 style={{ color: g('emp_service_title_color', '#1a0533') }}>{svc.title}</h3>

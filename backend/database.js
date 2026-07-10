@@ -678,6 +678,8 @@ export async function initDB() {
   const empSettings = [
     // Hero
     { key:'emp_hero_bg', value:'#1a0533', label:'Emp: Fundo Hero' },
+    { key:'emp_page_bg', value:'', label:'Emp: Cor Fundo Página' },
+    { key:'emp_hero_height', value:'600', label:'Emp: Altura Hero (px)' },
     { key:'emp_hero_title', value:'Conectividade corporativa de alto nível', label:'Emp: Título Hero' },
     { key:'emp_hero_subtitle', value:'Soluções de internet dedicadas para empresas que precisam de performance, segurança e suporte especializado.', label:'Emp: Subtítulo Hero' },
     { key:'emp_hero_image', value:'https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png', label:'Emp: Imagem Hero' },
@@ -700,6 +702,7 @@ export async function initDB() {
     { key:'emp_plans_subtitle_color', value:'#64748b', label:'Emp: Cor Subtítulo Planos' },
     // Benefícios
     { key:'emp_benefits_title', value:'Benefícios e vantagens para sua empresa', label:'Emp: Título Benefícios' },
+    { key:'emp_benefits_items', value:'[{"icon":"📈","title":"Planos flexíveis e escaláveis","desc":"Opções que crescem junto com o seu negócio, sem complicações."},{"icon":"🌐","title":"Conectividade para todos","desc":"Planos exclusivos para empresas, garantindo maior desempenho."},{"icon":"🛡️","title":"Suporte Prioritário 24/7","desc":"Atendimento especializado para resolver qualquer necessidade."},{"icon":"🔒","title":"Segurança reforçada","desc":"Proteção contra ataques e segurança extra para os dados da sua empresa."}]', label:'Emp: Itens Benefícios' },
     { key:'emp_benefits_bg', value:'#ffffff', label:'Emp: Fundo Benefícios' },
     { key:'emp_benefits_title_color', value:'#1a0533', label:'Emp: Cor Título Benefícios' },
     { key:'emp_benefit1_icon', value:'📈', label:'Emp: Ícone Benefício 1' },
@@ -722,6 +725,7 @@ export async function initDB() {
     { key:'emp_benefit_desc_color', value:'#64748b', label:'Emp: Cor Descrição Benefícios' },
     // Serviços
     { key:'emp_services_title', value:'Serviços dedicados e exclusivos', label:'Emp: Título Serviços' },
+    { key:'emp_services_items', value:'[{"icon":"📥","title":"Download e upload garantidos","desc":"Contrate o plano desejado e tenha garantia de download e upload simétricos."},{"icon":"🌐","title":"IP Dedicado","desc":"Tenha um IP exclusivo, garantindo melhor desempenho, segurança e controle sobre a sua rede."},{"icon":"🛡️","title":"Segurança de Rede","desc":"Proteção contra ameaças digitais com firewall e sistemas de segurança avançados."},{"icon":"🔗","title":"Intranet Corporativa","desc":"Rede interna exclusiva para sua empresa com alta velocidade e privacidade."},{"icon":"🔐","title":"VPN Corporativa","desc":"Conexão segura e criptografada para acesso remoto aos sistemas da empresa."},{"icon":"☁️","title":"Backup em Nuvem","desc":"Armazenamento seguro e escalável para proteger os dados da sua empresa."}]', label:'Emp: Itens Serviços' },
     { key:'emp_services_subtitle', value:'Serviços disponíveis em nossos planos empresariais', label:'Emp: Subtítulo Serviços' },
     { key:'emp_services_bg', value:'#f0f4ff', label:'Emp: Fundo Serviços' },
     { key:'emp_services_title_color', value:'#1a0533', label:'Emp: Cor Título Serviços' },

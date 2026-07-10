@@ -3,10 +3,15 @@ import { apiFetch } from '../hooks/useAuth';
 import { ImageUpload } from '../components/ImageUpload';
 
 interface Setting { key: string; value: string; label: string; }
+interface ListItem { icon: string; title: string; desc: string; }
+
+const EMPTY_ITEM: ListItem = { icon: '', title: '', desc: '' };
 
 const FIELDS = [
   { section: 'Hero', fields: [
-    { key: 'emp_hero_bg', label: 'Cor Fundo', type: 'color' },
+    { key: 'emp_hero_bg', label: 'Cor Fundo Hero', type: 'color' },
+    { key: 'emp_page_bg', label: 'Cor Fundo da Página', type: 'color' },
+    { key: 'emp_hero_height', label: 'Altura Hero (px)', type: 'number', hint: '600' },
     { key: 'emp_hero_title', label: 'Título', type: 'text' },
     { key: 'emp_hero_subtitle', label: 'Subtítulo', type: 'text' },
     { key: 'emp_hero_image', label: 'Imagem', type: 'image' },
@@ -39,18 +44,6 @@ const FIELDS = [
     { key: 'emp_benefit_icon_color', label: 'Cor Ícones', type: 'color' },
     { key: 'emp_benefit_title_color', label: 'Cor Títulos', type: 'color' },
     { key: 'emp_benefit_desc_color', label: 'Cor Descrições', type: 'color' },
-    { key: 'emp_benefit1_icon', label: 'Ícone 1', type: 'text', hint: '📈' },
-    { key: 'emp_benefit1_title', label: 'Título 1', type: 'text' },
-    { key: 'emp_benefit1_desc', label: 'Descrição 1', type: 'text' },
-    { key: 'emp_benefit2_icon', label: 'Ícone 2', type: 'text', hint: '🌐' },
-    { key: 'emp_benefit2_title', label: 'Título 2', type: 'text' },
-    { key: 'emp_benefit2_desc', label: 'Descrição 2', type: 'text' },
-    { key: 'emp_benefit3_icon', label: 'Ícone 3', type: 'text', hint: '🛡️' },
-    { key: 'emp_benefit3_title', label: 'Título 3', type: 'text' },
-    { key: 'emp_benefit3_desc', label: 'Descrição 3', type: 'text' },
-    { key: 'emp_benefit4_icon', label: 'Ícone 4', type: 'text', hint: '🔒' },
-    { key: 'emp_benefit4_title', label: 'Título 4', type: 'text' },
-    { key: 'emp_benefit4_desc', label: 'Descrição 4', type: 'text' },
   ]},
   { section: 'Serviços', fields: [
     { key: 'emp_services_title', label: 'Título', type: 'text' },
@@ -64,24 +57,6 @@ const FIELDS = [
     { key: 'emp_service_icon_color', label: 'Cor Ícones', type: 'color' },
     { key: 'emp_service_title_color', label: 'Cor Títulos', type: 'color' },
     { key: 'emp_service_desc_color', label: 'Cor Descrições', type: 'color' },
-    { key: 'emp_service1_icon', label: 'Ícone Serviço 1', type: 'text', hint: '📥' },
-    { key: 'emp_service1_title', label: 'Título Serviço 1', type: 'text' },
-    { key: 'emp_service1_desc', label: 'Descrição Serviço 1', type: 'text' },
-    { key: 'emp_service2_icon', label: 'Ícone Serviço 2', type: 'text', hint: '🌐' },
-    { key: 'emp_service2_title', label: 'Título Serviço 2', type: 'text' },
-    { key: 'emp_service2_desc', label: 'Descrição Serviço 2', type: 'text' },
-    { key: 'emp_service3_icon', label: 'Ícone Serviço 3', type: 'text', hint: '🛡️' },
-    { key: 'emp_service3_title', label: 'Título Serviço 3', type: 'text' },
-    { key: 'emp_service3_desc', label: 'Descrição Serviço 3', type: 'text' },
-    { key: 'emp_service4_icon', label: 'Ícone Serviço 4', type: 'text', hint: '🔗' },
-    { key: 'emp_service4_title', label: 'Título Serviço 4', type: 'text' },
-    { key: 'emp_service4_desc', label: 'Descrição Serviço 4', type: 'text' },
-    { key: 'emp_service5_icon', label: 'Ícone Serviço 5', type: 'text', hint: '🔐' },
-    { key: 'emp_service5_title', label: 'Título Serviço 5', type: 'text' },
-    { key: 'emp_service5_desc', label: 'Descrição Serviço 5', type: 'text' },
-    { key: 'emp_service6_icon', label: 'Ícone Serviço 6', type: 'text', hint: '☁️' },
-    { key: 'emp_service6_title', label: 'Título Serviço 6', type: 'text' },
-    { key: 'emp_service6_desc', label: 'Descrição Serviço 6', type: 'text' },
   ]},
   { section: 'CTA Final', fields: [
     { key: 'emp_cta_bg', label: 'Cor Fundo', type: 'color' },
@@ -96,11 +71,19 @@ const FIELDS = [
   ]},
 ];
 
+const parseList = (val: string): ListItem[] => {
+  if (!val) return [];
+  try { const arr = JSON.parse(val); return Array.isArray(arr) ? arr : []; } catch { return []; }
+};
+const serializeList = (items: ListItem[]): string => JSON.stringify(items.filter(i => i.title.trim()));
+
 export const ManageParaEmpresas = () => {
   const [settings, setSettings] = useState<Record<string, Setting>>({});
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const [activeSection, setActiveSection] = useState(0);
+  const [benefits, setBenefits] = useState<ListItem[]>([]);
+  const [services, setServices] = useState<ListItem[]>([]);
 
   useEffect(() => {
     apiFetch('/settings').then((data: Record<string, { value: string; label: string }>) => {
@@ -109,6 +92,8 @@ export const ManageParaEmpresas = () => {
         map[key] = { key, value: obj.value, label: obj.label };
       }
       setSettings(map);
+      setBenefits(parseList(data.emp_benefits_items?.value || '[]'));
+      setServices(parseList(data.emp_services_items?.value || '[]'));
     }).catch(() => {});
   }, []);
 
@@ -120,15 +105,23 @@ export const ManageParaEmpresas = () => {
     setSaving(true);
     setMsg('');
     try {
-      const updates = FIELDS.flatMap(s => s.fields).filter(f => settings[f.key]);
-      await Promise.all(
-        updates.map(f =>
+      const allUpdates = [
+        ...FIELDS.flatMap(s => s.fields).filter(f => settings[f.key]).map(f =>
           apiFetch(`/settings/${f.key}`, {
             method: 'PUT',
             body: JSON.stringify({ value: settings[f.key].value, label: f.label })
           })
-        )
-      );
+        ),
+        apiFetch('/settings/emp_benefits_items', {
+          method: 'PUT',
+          body: JSON.stringify({ value: serializeList(benefits), label: 'Itens Benefícios' })
+        }),
+        apiFetch('/settings/emp_services_items', {
+          method: 'PUT',
+          body: JSON.stringify({ value: serializeList(services), label: 'Itens Serviços' })
+        }),
+      ];
+      await Promise.all(allUpdates);
       setMsg('Configurações salvas!');
       setTimeout(() => setMsg(''), 3000);
     } catch (e: unknown) {
@@ -158,6 +151,14 @@ export const ManageParaEmpresas = () => {
               <input type="text" value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder={fd.hint}
                 style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
             </div>
+          </div>
+        );
+      case 'number':
+        return (
+          <div key={fd.key}>
+            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <input type="number" value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder={fd.hint}
+              style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
           </div>
         );
       case 'toggle':
@@ -191,6 +192,57 @@ export const ManageParaEmpresas = () => {
         );
     }
   };
+
+  const renderDynamicList = (
+    items: ListItem[],
+    setItems: React.Dispatch<React.SetStateAction<ListItem[]>>,
+    prefix: string,
+    defaults: { icon: string; title: string; desc: string }[]
+  ) => (
+    <div>
+      {items.map((item, idx) => (
+        <div key={idx} style={{
+          background: '#1a1a2e', borderRadius: 10, padding: 16, marginBottom: 12,
+          border: '1px solid #333', position: 'relative'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <span style={{ fontSize: 13, color: '#9ca3af', fontWeight: 600 }}>#{idx + 1}</span>
+            <button onClick={() => setItems(items.filter((_, i) => i !== idx))}
+              style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: 18 }}>
+              🗑️
+            </button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr', gap: 10 }}>
+            <div>
+              <label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 3 }}>Ícone</label>
+              <input value={item.icon} onChange={e => {
+                const next = [...items]; next[idx] = { ...next[idx], icon: e.target.value }; setItems(next);
+              }} placeholder={defaults[idx]?.icon || '📌'}
+                style={{ width: '100%', padding: '8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 18, textAlign: 'center' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 3 }}>Título</label>
+              <input value={item.title} onChange={e => {
+                const next = [...items]; next[idx] = { ...next[idx], title: e.target.value }; setItems(next);
+              }} placeholder={defaults[idx]?.title || 'Título'}
+                style={{ width: '100%', padding: '8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+            </div>
+          </div>
+          <div style={{ marginTop: 8 }}>
+            <label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 3 }}>Descrição</label>
+            <input value={item.desc} onChange={e => {
+              const next = [...items]; next[idx] = { ...next[idx], desc: e.target.value }; setItems(next);
+            }} placeholder={defaults[idx]?.desc || 'Descrição'}
+              style={{ width: '100%', padding: '8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+          </div>
+        </div>
+      ))}
+      <button onClick={() => setItems([...items, { ...EMPTY_ITEM }])}
+        style={{ width: '100%', padding: '10px', background: 'transparent', border: '2px dashed #333', borderRadius: 10, color: '#9ca3af', cursor: 'pointer', fontSize: 13 }}>
+        + Adicionar Item
+      </button>
+    </div>
+  );
 
   return (
     <div>
@@ -228,9 +280,40 @@ export const ManageParaEmpresas = () => {
           <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333' }}>
             {FIELDS[activeSection].section}
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            {FIELDS[activeSection].fields.map(renderField)}
-          </div>
+
+          {FIELDS[activeSection].section === 'Benefícios' ? (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              {FIELDS[activeSection].fields.map(renderField)}
+              <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
+                <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens do Benefícios (lado a lado na página)</label>
+                {renderDynamicList(benefits, setBenefits, 'emp_benefit', [
+                  { icon: '📈', title: 'Planos flexíveis', desc: 'Opções que crescem com seu negócio.' },
+                  { icon: '🌐', title: 'Conectividade total', desc: 'Alta performance para toda a empresa.' },
+                  { icon: '🛡️', title: 'Suporte 24/7', desc: 'Atendimento especializado.' },
+                  { icon: '🔒', title: 'Segurança', desc: 'Proteção dos dados corporativos.' },
+                ])}
+              </div>
+            </div>
+          ) : FIELDS[activeSection].section === 'Serviços' ? (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              {FIELDS[activeSection].fields.map(renderField)}
+              <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
+                <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens dos Serviços (lado a lado na página)</label>
+                {renderDynamicList(services, setServices, 'emp_service', [
+                  { icon: '📥', title: 'Download/Upload garantido', desc: 'Velocidade simétrica garantida.' },
+                  { icon: '🌐', title: 'IP Dedicado', desc: 'IP exclusivo para sua empresa.' },
+                  { icon: '🛡️', title: 'Segurança de Rede', desc: 'Firewall e proteção avançada.' },
+                  { icon: '🔗', title: 'Intranet', desc: 'Rede interna exclusiva.' },
+                  { icon: '🔐', title: 'VPN Corporativa', desc: 'Conexão criptografada e segura.' },
+                  { icon: '☁️', title: 'Backup em Nuvem', desc: 'Solução escalável e confiável.' },
+                ])}
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              {FIELDS[activeSection].fields.map(renderField)}
+            </div>
+          )}
         </div>
       </div>
     </div>
