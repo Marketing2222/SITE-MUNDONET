@@ -142,22 +142,37 @@ export const ParaEmpresas = () => {
         </div>
       </section>
 
-      {/* Serviços - lado a lado */}
+      {/* Serviços - layout dividido */}
       <section className="emp-services" style={{
         ...(g('emp_services_bg') ? { backgroundColor: g('emp_services_bg') } : {}),
         ...(g('emp_services_padding') ? { padding: g('emp_services_padding') + 'px 0' } : {}),
       }}>
         <div className="emp-container">
-          <h2 style={{ color: g('emp_services_title_color', '#1a0533') }}>{g('emp_services_title', 'Serviços dedicados e exclusivos')}</h2>
-          <p className="emp-section-sub" style={{ color: g('emp_services_subtitle_color', '#64748b') }}>{g('emp_services_subtitle', 'Serviços disponíveis em nossos planos empresariais')}</p>
-          <div className="emp-services-grid">
-            {servicesList.map((svc, i) => (
-              <div key={i} className="emp-service-card" style={{ backgroundColor: g('emp_service_card_bg', '#ffffff'), borderColor: g('emp_service_card_border', '#dbeafe') }}>
-                <div className="emp-service-icon" style={{ backgroundColor: g('emp_service_icon_bg', '#005CFF20'), color: g('emp_service_icon_color', '#005CFF') }}>{svc.icon}</div>
-                <h3 style={{ color: g('emp_service_title_color', '#1a0533') }}>{svc.title}</h3>
-                <p style={{ color: g('emp_service_desc_color', '#64748b') }}>{svc.desc}</p>
+          <div className="emp-services-layout">
+            <div className="emp-services-left">
+              <span className="emp-services-label" style={{ color: g('emp_services_label_color', '#a78bfa') }}>{g('emp_services_label', 'Serviços dedicados e exclusivos')}</span>
+              <h2 style={{ color: g('emp_services_title_color', '#1a0533') }}>{g('emp_services_title', 'Serviços disponíveis em nossos planos')}</h2>
+              <p style={{ color: g('emp_services_desc_color', '#64748b') }}>{g('emp_services_desc', 'Conheça alguns serviços que sua empresa pode ter a disposição em nossos planos.')}</p>
+              <a href={g('emp_services_btn_link', 'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20serviços%20empresariais.')}
+                target="_blank" rel="noreferrer" className="emp-btn"
+                style={{ backgroundColor: g('emp_services_btn_bg', '#7c3aed'), color: g('emp_services_btn_color', '#fff') }}>
+                {g('emp_services_btn_text', 'Entre em contato')}
+              </a>
+              <p className="emp-services-note" style={{ color: g('emp_services_desc_color', '#64748b') }}>* {g('emp_services_note', 'Consulte disponibilidade dos serviços.')}</p>
+            </div>
+            <div className="emp-services-right">
+              <div className="emp-services-grid-2col">
+                {servicesList.map((svc, i) => (
+                  <div key={i} className="emp-service-card-h" style={{ backgroundColor: g('emp_service_card_bg', '#ffffff'), borderColor: g('emp_service_card_border', '#e2e8f0') }}>
+                    <div className="emp-service-icon-sm" style={{ backgroundColor: g('emp_service_icon_bg', '#7c3aed15'), color: g('emp_service_icon_color', '#7c3aed') }}>{svc.icon}</div>
+                    <div>
+                      <h3 style={{ color: g('emp_service_title_color', '#1a0533') }}>{svc.title}</h3>
+                      <p style={{ color: g('emp_service_desc_color', '#64748b') }}>{svc.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
