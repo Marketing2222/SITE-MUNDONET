@@ -639,6 +639,17 @@ export async function initDB() {
     }
   }
 
+  // ── Migração: imagens das lojas (Google Play / App Store) ────────
+  const appStoreImageSettings = [
+    { key:'app_playstore_image', value:'https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/play_store.png', label:'App: Imagem Botão Google Play' },
+    { key:'app_appstore_image', value:'https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/apple_store.png', label:'App: Imagem Botão App Store' },
+  ];
+  for (const s of appStoreImageSettings) {
+    if (!db.data.site_settings.find(x => x.key === s.key)) {
+      db.data.site_settings.push({ id: db.nextId('site_settings'), ...s });
+    }
+  }
+
   await db.write();
   console.log('✅ Banco de dados pronto (mundonet-db.json)');
   return db;

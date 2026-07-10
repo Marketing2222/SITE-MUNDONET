@@ -276,6 +276,7 @@ function App() {
         <Route path="header-footer" element={<ManageHeaderFooter />} />
         <Route path="home-sections" element={<ManageHomeSections />} />
         <Route path="landing-page" element={<ManageLandingPage />} />
+        <Route path="indique-ganhe" element={<ManageIndiqueGanhe />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
