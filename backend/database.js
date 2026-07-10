@@ -680,6 +680,9 @@ export async function initDB() {
     { key:'emp_hero_bg', value:'#1a0533', label:'Emp: Fundo Hero' },
     { key:'emp_page_bg', value:'', label:'Emp: Cor Fundo Página' },
     { key:'emp_hero_height', value:'600', label:'Emp: Altura Hero (px)' },
+    { key:'emp_hero_overlay', value:'false', label:'Emp: Ativar Overlay Hero' },
+    { key:'emp_hero_overlay_color', value:'#000000', label:'Emp: Cor Overlay Hero' },
+    { key:'emp_whatsapp_link', value:'', label:'Emp: Link WhatsApp Float' },
     { key:'emp_hero_title', value:'Conectividade corporativa de alto nível', label:'Emp: Título Hero' },
     { key:'emp_hero_subtitle', value:'Soluções de internet dedicadas para empresas que precisam de performance, segurança e suporte especializado.', label:'Emp: Subtítulo Hero' },
     { key:'emp_hero_image', value:'https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png', label:'Emp: Imagem Hero' },
@@ -783,6 +786,28 @@ export async function initDB() {
     { key:'emp_cta_btn_link', value:'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pela%20página%20de%20empresas%20e%20gostaria%20de%20contratar%20um%20plano%20empresarial.', label:'Emp: Link Botão CTA' },
     { key:'emp_cta_btn_bg', value:'#22c55e', label:'Emp: Cor Botão CTA' },
     { key:'emp_cta_btn_color', value:'#ffffff', label:'Emp: Cor Texto Botão CTA' },
+    // Header Empresas
+    { key:'emp_header_bg_color', value:'#002D72', label:'Emp: Cor Fundo Navbar' },
+    { key:'emp_header_text_color', value:'#ffffff', label:'Emp: Cor Texto Navbar' },
+    { key:'emp_header_topbar_bg', value:'#001a4d', label:'Emp: Cor Fundo Top Bar' },
+    { key:'emp_header_topbar_text', value:'#ffffff', label:'Emp: Cor Texto Top Bar' },
+    { key:'emp_header_portal_text', value:'Central do Assinante', label:'Emp: Texto Botão Portal' },
+    { key:'emp_header_portal_url', value:'https://ixc.mundonetbandalarga.com.br/central_assinante_web/login', label:'Emp: Link Botão Portal' },
+    { key:'emp_header_portal_bg', value:'#4f46e5', label:'Emp: Cor Fundo Botão Portal' },
+    { key:'emp_header_portal_text_color', value:'#ffffff', label:'Emp: Cor Texto Botão Portal' },
+    // Footer Empresas
+    { key:'emp_footer_bg_color', value:'#002D72', label:'Emp: Cor Fundo Rodapé' },
+    { key:'emp_footer_text_color', value:'#cbd5e1', label:'Emp: Cor Texto Rodapé' },
+    { key:'emp_footer_heading_color', value:'#ffffff', label:'Emp: Cor Títulos Rodapé' },
+    { key:'emp_footer_link_color', value:'#93c5fd', label:'Emp: Cor Links Rodapé' },
+    { key:'emp_footer_about_text', value:'Conectando você com o mundo através de conexões de ultravelocidade 100% fibra óptica com tecnologia Wi-Fi 6 de ponta.', label:'Emp: Texto Sobre Rodapé' },
+    { key:'emp_footer_col2_title', value:'CONTATO', label:'Emp: Título Coluna 2 Rodapé' },
+    { key:'emp_footer_col3_title', value:'ATALHOS', label:'Emp: Título Coluna 3 Rodapé' },
+    { key:'emp_footer_col4_title', value:'ONDE NOS ENCONTRAR', label:'Emp: Título Coluna 4 Rodapé' },
+    { key:'emp_footer_subbar_bg', value:'#001240', label:'Emp: Cor Fundo Sub Bar Rodapé' },
+    { key:'emp_footer_subbar_text', value:'#94a3b8', label:'Emp: Cor Texto Sub Bar Rodapé' },
+    { key:'emp_footer_cnpj', value:'', label:'Emp: CNPJ Rodapé' },
+    { key:'emp_footer_anatel', value:'', label:'Emp: ANATEL Rodapé' },
   ];
   for (const s of empSettings) {
     if (!db.data.site_settings.find(x => x.key === s.key)) {

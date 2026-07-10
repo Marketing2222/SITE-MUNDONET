@@ -5,7 +5,7 @@ import { API_BASE_URL } from '../config/api';
 type Settings = Record<string, { value: string; label: string }>;
 type ContactInfo = Record<string, { value: string; label: string }>;
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
   const [settings, setSettings] = useState<Settings | null>(null);
   const [contacts, setContacts] = useState<ContactInfo | null>(null);
 
@@ -16,11 +16,11 @@ export const Footer: React.FC = () => {
     ]).then(([settingsData, contactsData]) => {
       setSettings(settingsData);
       setContacts(contactsData);
-      // Load footer font if set
-      if (settingsData?.footer_font?.value) {
+      const gk = (key: string) => settingsData?.[prefix + key]?.value;
+      if (gk('footer_font')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = `https://fonts.googleapis.com/css2?family=${settingsData.footer_font.value.replace(/ /g, '+')}:wght@400;600;700&display=swap`;
+        link.href = `https://fonts.googleapis.com/css2?family=${gk('footer_font')!.replace(/ /g, '+')}:wght@400;600;700&display=swap`;
         document.head.appendChild(link);
       }
     }).catch(console.error);
@@ -29,26 +29,27 @@ export const Footer: React.FC = () => {
   if (!settings || !contacts) return null;
 
   const s = settings;
-  const footerBg = s.footer_bg_color?.value || '#002D72';
-  const footerText = s.footer_text_color?.value || '#cbd5e1';
-  const footerHeading = s.footer_heading_color?.value || '#ffffff';
-  const footerLink = s.footer_link_color?.value || '#93c5fd';
-  const footerAbout = s.footer_about_text?.value || 'Conectando você com o mundo através de conexões de ultravelocidade 100% fibra óptica com tecnologia Wi-Fi 6 de ponta.';
-  const col2Title = s.footer_col2_title?.value || 'CONTATO';
-  const col3Title = s.footer_col3_title?.value || 'ATALHOS';
-  const col4Title = s.footer_col4_title?.value || 'ONDE NOS ENCONTRAR';
-  const subbarBg = s.footer_subbar_bg?.value || '#001240';
-  const subbarText = s.footer_subbar_text?.value || '#94a3b8';
-  const anatelLogo = s.footer_anatel_logo_url?.value || 'https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/anatel-logo-1024x248.png';
-  const footerFont = s.footer_font?.value || '';
-  const footerPadding = s.footer_padding?.value || '60px 0';
+  const g = (key: string) => s[prefix + key]?.value;
+  const footerBg = g('footer_bg_color') || '#002D72';
+  const footerText = g('footer_text_color') || '#cbd5e1';
+  const footerHeading = g('footer_heading_color') || '#ffffff';
+  const footerLink = g('footer_link_color') || '#93c5fd';
+  const footerAbout = g('footer_about_text') || 'Conectando você com o mundo através de conexões de ultravelocidade 100% fibra óptica com tecnologia Wi-Fi 6 de ponta.';
+  const col2Title = g('footer_col2_title') || 'CONTATO';
+  const col3Title = g('footer_col3_title') || 'ATALHOS';
+  const col4Title = g('footer_col4_title') || 'ONDE NOS ENCONTRAR';
+  const subbarBg = g('footer_subbar_bg') || '#001240';
+  const subbarText = g('footer_subbar_text') || '#94a3b8';
+  const anatelLogo = g('footer_anatel_logo_url') || 'https://mundonetbandalarga.com.br/wp-content/uploads/2025/01/anatel-logo-1024x248.png';
+  const footerFont = g('footer_font') || '';
+  const footerPadding = g('footer_padding') || '60px 0';
 
   return (
     <footer className="site-footer" style={{ backgroundColor: footerBg, fontFamily: footerFont || undefined, padding: footerPadding } as React.CSSProperties}>
       <div className="container footer-grid">
         <div className="footer-col branding-col">
           <a href="#" className="footer-logo">
-            <img src={s.footer_logo_url?.value || s.logo_url?.value || 'https://mundonetbandalarga.com.br/wp-content/uploads/2023/10/logo-mundonet.png'} alt="Mundonet Telecom Logo" />
+            <img src={g('footer_logo_url') || g('logo_url') || 'https://mundonetbandalarga.com.br/wp-content/uploads/2023/10/logo-mundonet.png'} alt="Mundonet Telecom Logo" />
           </a>
           <p className="footer-about" style={{ color: footerText }}>
             {footerAbout}
@@ -99,8 +100,8 @@ export const Footer: React.FC = () => {
 
       <div className="footer-sub-bar" style={{ backgroundColor: subbarBg }}>
         <div className="container sub-bar-container">
-          <p className="cnpj-info" style={{ color: subbarText }}>{s.site_name?.value} | CNPJ {s.footer_cnpj?.value}</p>
-          <p className="copyright-info" style={{ color: subbarText }}>© {new Date().getFullYear()} Mundonet Telecom. Todos os direitos reservados. Anatel: {s.footer_anatel?.value}</p>
+          <p className="cnpj-info" style={{ color: subbarText }}>{g('site_name') || 'Mundonet Telecom'} | CNPJ {g('footer_cnpj')}</p>
+          <p className="copyright-info" style={{ color: subbarText }}>© {new Date().getFullYear()} Mundonet Telecom. Todos os direitos reservados. Anatel: {g('footer_anatel')}</p>
         </div>
       </div>
     </footer>

@@ -17,7 +17,7 @@ const DEFAULT_NAV: NavItem[] = [
   { id: 'mais', label: 'MAIS', href: '#mais', target: '_self', hasDropdown: true, items: [{ id: 'm1', label: 'Contrato', href: 'https://drive.google.com/file/d/1t5XomND_mju6X07q1I3HFfQpdb81PXwJ/view?usp=sharing', target: '_blank' }, { id: 'm2', label: 'Contato', href: '#contact', target: '_self' }] },
 ];
 
-export const Header: React.FC = () => {
+export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -32,21 +32,21 @@ export const Header: React.FC = () => {
     ]).then(([settingsData, contactsData]: [Settings, ContactInfo]) => {
       setSettings(settingsData);
       setContacts(contactsData);
-      if (settingsData?.primary_color?.value) {
-        document.documentElement.style.setProperty('--primary', settingsData.primary_color.value);
+      const gk = (key: string) => settingsData?.[prefix + key]?.value;
+      if (gk('primary_color')) {
+        document.documentElement.style.setProperty('--primary', gk('primary_color')!);
       }
-      if (settingsData?.header_font?.value) {
+      if (gk('header_font')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = `https://fonts.googleapis.com/css2?family=${settingsData.header_font.value.replace(/ /g, '+')}:wght@400;600;700;800&display=swap`;
+        link.href = `https://fonts.googleapis.com/css2?family=${gk('header_font')!.replace(/ /g, '+')}:wght@400;600;700;800&display=swap`;
         document.head.appendChild(link);
       }
-      if (settingsData?.header_height?.value) {
-        document.documentElement.style.setProperty('--header-height', settingsData.header_height.value + 'px');
+      if (gk('header_height')) {
+        document.documentElement.style.setProperty('--header-height', gk('header_height')! + 'px');
       }
-      // Load nav menu
-      if (settingsData?.nav_menu?.value) {
-        try { setNavItems(JSON.parse(settingsData.nav_menu.value)); } catch { /* use default */ }
+      if (gk('nav_menu')) {
+        try { setNavItems(JSON.parse(gk('nav_menu')!)); } catch { /* use default */ }
       }
     }).catch(console.error);
 
@@ -60,17 +60,18 @@ export const Header: React.FC = () => {
   };
 
   const s = settings;
-  const headerBg = s?.header_bg_color?.value || '#002D72';
-  const headerText = s?.header_text_color?.value || '#ffffff';
-  const topbarBg = s?.header_topbar_bg?.value || '#001a4d';
-  const topbarText = s?.header_topbar_text?.value || '#ffffff';
-  const headerFont = s?.header_font?.value || '';
-  const headerHeight = s?.header_height?.value || '80';
-  const portalUrl = s?.header_portal_url?.value || 'https://ixc.mundonetbandalarga.com.br/central_assinante_web/login';
-  const portalText = s?.header_portal_text?.value || 'Portal do Assinante';
-  const portalBg = s?.header_portal_bg?.value || '#4f46e5';
-  const portalTextColor = s?.header_portal_text_color?.value || '#ffffff';
-  const portalPosition = s?.header_portal_position?.value || 'navbar_right';
+  const g = (key: string) => s?.[prefix + key]?.value;
+  const headerBg = g('header_bg_color') || '#002D72';
+  const headerText = g('header_text_color') || '#ffffff';
+  const topbarBg = g('header_topbar_bg') || '#001a4d';
+  const topbarText = g('header_topbar_text') || '#ffffff';
+  const headerFont = g('header_font') || '';
+  const headerHeight = g('header_height') || '80';
+  const portalUrl = g('header_portal_url') || 'https://ixc.mundonetbandalarga.com.br/central_assinante_web/login';
+  const portalText = g('header_portal_text') || 'Portal do Assinante';
+  const portalBg = g('header_portal_bg') || '#4f46e5';
+  const portalTextColor = g('header_portal_text_color') || '#ffffff';
+  const portalPosition = g('header_portal_position') || 'navbar_right';
 
   const renderPortalBtn = (wrapperClass: string, extraStyle?: React.CSSProperties) => (
     <div className={wrapperClass} style={extraStyle}>
@@ -82,12 +83,12 @@ export const Header: React.FC = () => {
   );
 
   // Nav spacing from settings
-  const navGap = s?.nav_item_gap?.value || '8px';
-  const navItemPadding = s?.nav_item_padding?.value || '8px 12px';
-  const navDropdownWidth = s?.nav_dropdown_width?.value || '220px';
-  const navDropdownPadding = s?.nav_dropdown_padding?.value || '8px 0';
-  const navSubitemPadding = s?.nav_subitem_padding?.value || '10px 20px';
-  const navFontSize = s?.nav_font_size?.value || '0.9rem';
+  const navGap = g('nav_item_gap') || '8px';
+  const navItemPadding = g('nav_item_padding') || '8px 12px';
+  const navDropdownWidth = g('nav_dropdown_width') || '220px';
+  const navDropdownPadding = g('nav_dropdown_padding') || '8px 0';
+  const navSubitemPadding = g('nav_subitem_padding') || '10px 20px';
+  const navFontSize = g('nav_font_size') || '0.9rem';
   const currentPath = window.location.pathname;
 
   return (

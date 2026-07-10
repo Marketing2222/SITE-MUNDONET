@@ -3,18 +3,20 @@
 .emp-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .emp-section-sub { font-size: 17px; text-align: center; margin: -8px 0 48px; }
 
-/* Hero */
-.emp-hero {
-  display: flex; align-items: center; justify-content: center; gap: 60px;
-  padding: 120px 24px 80px; min-height: 600px;
+/* Hero full-width */
+.emp-hero-full {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  min-height: 600px; padding: 120px 24px 80px;
 }
-.emp-hero-content { flex: 1; max-width: 600px; }
-.emp-hero-content h1 { font-size: 44px; font-weight: 800; line-height: 1.15; margin: 0 0 20px; }
-.emp-hero-content p { font-size: 17px; line-height: 1.7; margin: 0 0 36px; }
-.emp-hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
-.emp-hero-image { flex: 1; max-width: 500px; }
-.emp-hero-image img { width: 100%; height: auto; animation: empFloat 3s ease-in-out infinite; }
-@keyframes empFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.emp-hero-overlay {
+  position: absolute; inset: 0; z-index: 1; opacity: 0.6;
+}
+.emp-hero-full-content {
+  position: relative; z-index: 2; max-width: 700px; text-align: center;
+}
+.emp-hero-full-content h1 { font-size: 44px; font-weight: 800; line-height: 1.15; margin: 0 0 20px; }
+.emp-hero-full-content p { font-size: 17px; line-height: 1.7; margin: 0 0 36px; }
+.emp-hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
 
 /* Buttons */
 .emp-btn {
@@ -104,8 +106,8 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .emp-hero { flex-direction: column; text-align: center; padding: 100px 24px 60px; }
-  .emp-hero-content h1 { font-size: 30px; }
+  .emp-hero-full { padding: 100px 24px 60px; }
+  .emp-hero-full-content h1 { font-size: 30px; }
   .emp-hero-buttons { justify-content: center; }
   .emp-benefits-grid { grid-template-columns: 1fr; }
   .emp-services-layout { grid-template-columns: 1fr; gap: 32px; }
@@ -113,3 +115,12 @@
   .emp-plans-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
   .emp-cta h2 { font-size: 26px; }
 }
+
+/* WhatsApp Float Empresas */
+.emp-whatsapp-float {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25d366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.4); transition: transform 0.2s;
+}
+.emp-whatsapp-float:hover { transform: scale(1.1); }
