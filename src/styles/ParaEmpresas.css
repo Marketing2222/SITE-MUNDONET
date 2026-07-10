@@ -97,6 +97,8 @@
 
 /* CTA */
 .emp-cta { padding: 100px 0; text-align: center; }
+.emp-cta-banner { width: 100%; margin-bottom: 40px; }
+.emp-cta-banner img { width: 100%; height: auto; display: block; max-height: 300px; object-fit: cover; }
 .emp-cta h2 { font-size: 36px; font-weight: 800; margin: 0 0 14px; }
 .emp-cta p { font-size: 17px; margin: 0 0 36px; }
 

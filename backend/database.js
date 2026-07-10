@@ -773,6 +773,7 @@ export async function initDB() {
     { key:'emp_service_desc_color', value:'#64748b', label:'Emp: Cor Descrição Serviços' },
     // CTA
     { key:'emp_cta_bg', value:'#1a0533', label:'Emp: Fundo CTA' },
+    { key:'emp_cta_image', value:'', label:'Emp: Imagem Banner CTA' },
     { key:'emp_cta_padding', value:'', label:'Emp: Espaçamento CTA (px)' },
     { key:'emp_cta_title', value:'Faça parte deste movimento, assine um plano empresarial!', label:'Emp: Título CTA' },
     { key:'emp_cta_desc', value:'Soluções completas em conectividade para impulsionar o seu negócio.', label:'Emp: Descrição CTA' },

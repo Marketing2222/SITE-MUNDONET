@@ -75,6 +75,7 @@ const FIELDS = [
   ]},
   { section: 'CTA Final', fields: [
     { key: 'emp_cta_bg', label: 'Cor Fundo', type: 'color' },
+    { key: 'emp_cta_image', label: 'Imagem Banner', type: 'image' },
     { key: 'emp_cta_title', label: 'Título', type: 'text' },
     { key: 'emp_cta_desc', label: 'Descrição', type: 'text' },
     { key: 'emp_cta_title_color', label: 'Cor Título', type: 'color' },

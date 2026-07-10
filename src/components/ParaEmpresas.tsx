@@ -182,6 +182,11 @@ export const ParaEmpresas = () => {
         ...(g('emp_cta_bg') ? { backgroundColor: g('emp_cta_bg') } : {}),
         ...(g('emp_cta_padding') ? { padding: g('emp_cta_padding') + 'px 0' } : {}),
       }}>
+        {g('emp_cta_image') && (
+          <div className="emp-cta-banner">
+            <img src={g('emp_cta_image')} alt="CTA Banner" />
+          </div>
+        )}
         <div className="emp-container">
           <h2 style={{ color: g('emp_cta_title_color', '#fff') }}>{g('emp_cta_title', 'Faça parte deste movimento, assine um plano empresarial!')}</h2>
           <p style={{ color: g('emp_cta_desc_color', '#a1a1aa') }}>{g('emp_cta_desc', 'Soluções completas em conectividade para impulsionar o seu negócio.')}</p>
