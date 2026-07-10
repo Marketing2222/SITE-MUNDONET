@@ -12,7 +12,6 @@ const NAV = [
   { to: '/admin/header-footer', icon: '🎨', label: 'Cabeçalho & Rodapé' },
   { to: '/admin/settings', icon: '⚙️', label: 'Configurações Gerais' },
   { to: '/admin/site-settings', icon: '🎨', label: 'Personalização Global' },
-  { to: '/admin/landing-page', icon: '🚀', label: 'Landing Page' },
   { to: '/admin/indique-ganhe', icon: '🎁', label: 'Indique e Ganhe' },
 ];
 

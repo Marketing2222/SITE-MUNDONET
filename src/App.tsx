@@ -32,7 +32,6 @@ import ManageSettings from './admin/pages/ManageSettings';
 import ManageHeaderFooter from './admin/pages/ManageHeaderFooter';
 import ManageHomeSections from './admin/pages/ManageHomeSections';
 import { ManageSiteCustomization } from './admin/pages/ManageSiteCustomization';
-import ManageLandingPage from './admin/pages/ManageLandingPage';
 import ManageIndiqueGanhe from './admin/pages/ManageIndiqueGanhe';
 
 // Protected route wrapper
@@ -285,7 +284,6 @@ function App() {
         <Route path="site-settings" element={<ManageSiteCustomization />} />
         <Route path="header-footer" element={<ManageHeaderFooter />} />
         <Route path="home-sections" element={<ManageHomeSections />} />
-        <Route path="landing-page" element={<ManageLandingPage />} />
         <Route path="indique-ganhe" element={<ManageIndiqueGanhe />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
