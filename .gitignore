@@ -31,3 +31,4 @@ dist-ssr
 # Banco de dados local (em produção fica no volume Docker)
 backend/mundonet-db.json
 backend/mundonet-db.backup.json
+backend/data/
