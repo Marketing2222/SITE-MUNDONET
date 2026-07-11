@@ -136,8 +136,9 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'wa_bubble_font_size', label: 'Tamanho da Fonte do Balão', type: 'spacing', hint: 'Padrão: 14px' },
   ],
   'Banner CTA': [
-    { key: 'cta_bg_image', label: 'Imagem de Fundo', type: 'image', hint: 'Imagem de fundo do banner' },
-    { key: 'cta_bg_color', label: 'Cor de Fundo', type: 'color', hint: 'Padrão: #1a0a2e' },
+    { key: 'cta_section_bg_color', label: 'Cor de Fundo da Seção', type: 'color', hint: 'Padrão: transparente' },
+    { key: 'cta_bg_image', label: 'Imagem de Fundo do Banner', type: 'image', hint: 'Imagem de fundo do banner' },
+    { key: 'cta_bg_color', label: 'Cor de Fundo do Banner', type: 'color', hint: 'Padrão: #1a0a2e' },
     { key: 'cta_title', label: 'Título', type: 'text', hint: 'Procurando um plano para sua empresa?' },
     { key: 'cta_desc', label: 'Descrição', type: 'text', hint: 'Planos de internet para empresas...' },
     { key: 'cta_text_color', label: 'Cor do Título', type: 'color', hint: 'Padrão: #ffffff' },

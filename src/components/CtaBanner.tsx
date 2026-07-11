@@ -18,6 +18,7 @@ export const CtaBanner: React.FC = () => {
       .catch(console.error);
   }, []);
 
+  const sectionBgColor = s.cta_section_bg_color || '';
   const bg = s.cta_bg_color || '#1a0a2e';
   const title = s.cta_title || 'Procurando um plano para sua empresa?';
   const desc = s.cta_desc || 'Planos de internet para empresas que impulsionam a produtividade e conectividade.';
@@ -61,7 +62,7 @@ export const CtaBanner: React.FC = () => {
   };
 
   return (
-    <section className="cta-banner-section">
+    <section className="cta-banner-section" style={{ backgroundColor: sectionBgColor || undefined }}>
       <div className="container">
         <div style={containerStyle}>
           <div style={contentStyle}>
