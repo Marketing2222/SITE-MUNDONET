@@ -80,7 +80,7 @@ export const Plans = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setVisible(window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3);
+      setVisible(window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 4);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -97,7 +97,7 @@ export const Plans = () => {
   const cardGapPx = 20;
   const totalTrackWidth = plans.length * (cardWidthPx + cardGapPx) - cardGapPx;
   // If plans fit: center them by adding symmetric padding
-  const containerWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth - 48, 1200) : 1200;
+  const containerWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth - 48, 1280) : 1280;
   const centeringOffset = !needsScroll ? Math.max(0, (containerWidth - totalTrackWidth) / 2) : 0;
 
   const prev = () => setCurrentIndex((i) => Math.max(0, i - 1));

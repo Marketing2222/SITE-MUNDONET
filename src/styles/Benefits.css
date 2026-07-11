@@ -172,7 +172,12 @@
   }
 
   .benefits-scroll-btn {
-    display: none;
+    width: 32px;
+    height: 32px;
+  }
+  .benefits-scroll-btn svg {
+    width: 14px;
+    height: 14px;
   }
 
   .benefits-scroll-wrapper {
