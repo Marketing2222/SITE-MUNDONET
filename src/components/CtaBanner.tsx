@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/CtaBanner.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -31,7 +31,7 @@ export const CtaBanner: React.FC = () => {
   const bgImage = s.cta_bg_image || '';
 
   const containerStyle: React.CSSProperties = {
-    background: bgImage ? `url(${bgImage}) center/cover no-repeat` : `linear-gradient(135deg, ${bg} 0%, ${bg}dd 100%)`,
+    background: bgImage ? `linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, transparent 85%), url(${bgImage}) center/cover no-repeat` : `linear-gradient(135deg, ${bg} 0%, ${bg}dd 100%)`,
     backgroundColor: bgImage ? bg : undefined,
     borderRadius: '16px',
     padding: '60px 50px',
