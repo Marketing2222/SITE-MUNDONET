@@ -48,6 +48,11 @@ interface Plan {
   badges?: Badge[];
   modal_label_color?: string;
   modal_title_color?: string;
+  offer_tag_enabled?: boolean;
+  offer_tag_text?: string;
+  offer_tag_color?: string;
+  offer_tag_text_color?: string;
+  offer_tag_icon?: string;
 }
 
 export const Plans = () => {
