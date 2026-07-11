@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/AppSection.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -34,7 +34,7 @@ export const AppSection: React.FC = () => {
   };
 
   return (
-    <section id="app" className="app-section section-padding">
+    <section id="app" className="app-section section-padding" style={s.app_bg_color ? { backgroundColor: s.app_bg_color } : undefined}>
       <div className="container app-grid">
         <div className="app-content animate-slide-up">
           <span className="subtitle-badge" style={alignStyle('app_subtitle_align')}>{s.app_subtitle || 'Aplicativo Móvel'}</span>

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/Benefits.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -24,7 +24,7 @@ const renderIcon = (type: string) => {
     case 'chat': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>;
     case 'shield': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>;
     case 'gift': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.4l3.38 4.6L17 10.83 14.92 8H20v6z"/></svg>;
-    case 'wifi': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>;
+    case 'wifi': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M12.01 21.49L23.64 7c-3.45-3.19-8.84-5.12-11.62-5.12S3.83 3.81.38 7l11.63 14.49.01-.01z"/></svg>;
     case 'dollar': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>;
     case 'signal': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M2 22h20V2z" opacity=".3"/><path fill="currentColor" d="M2 22h20V2L2 22zm18-2H6.83L20 6.83V20z"/></svg>;
     case 'wrench': return <svg viewBox="0 0 24 24" className={s}><path fill="currentColor" d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>;
@@ -53,6 +53,7 @@ const ArrowRight = () => (
 export const Benefits: React.FC = () => {
   const [items, setItems] = useState<Benefit[]>([]);
   const [title, setTitle] = useState('Benefícios e vantagens de ser cliente Mundonet');
+  const [bgColor, setBgColor] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,6 +66,7 @@ export const Benefits: React.FC = () => {
       .then(res => res.json())
       .then(data => {
         if (data.benefits_title?.value) setTitle(data.benefits_title.value);
+        if (data.benefits_bg_color?.value) setBgColor(data.benefits_bg_color.value);
       })
       .catch(console.error);
   }, []);
@@ -97,7 +99,7 @@ export const Benefits: React.FC = () => {
   if (items.length === 0) return null;
 
   return (
-    <section className="benefits-section">
+    <section className="benefits-section" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="container">
         <h2 className="site-section-title text-center">{title}</h2>
         <div className="benefits-scroll-container">

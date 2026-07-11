@@ -128,7 +128,7 @@ export const Plans = () => {
   };
 
   return (
-    <section id="internet" className="plans-section">
+    <section id="internet" className="plans-section" style={sectionColors.plans_bg_color ? { backgroundColor: sectionColors.plans_bg_color } : undefined}>
       <div className="plans-wrapper">
         <div className="plans-header">
           <span className="plans-eyebrow" style={{ color: sectionColors.plans_eyebrow_color || undefined, backgroundColor: sectionColors.plans_eyebrow_bg || undefined }}>Nossos Planos</span>

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/QuickLinks.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -37,6 +37,7 @@ const renderIcon = (type: string) => {
 export const QuickLinks: React.FC = () => {
   const [links, setLinks] = useState<QuickLink[]>([]);
   const [title, setTitle] = useState('Como podemos te ajudar hoje?');
+  const [bgColor, setBgColor] = useState('');
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/quicklinks`)
@@ -50,6 +51,7 @@ export const QuickLinks: React.FC = () => {
         if (data.quicklinks_title?.value) {
           setTitle(data.quicklinks_title.value);
         }
+        if (data.quicklinks_bg_color?.value) setBgColor(data.quicklinks_bg_color.value);
       })
       .catch(console.error);
   }, []);
@@ -57,7 +59,7 @@ export const QuickLinks: React.FC = () => {
   if (links.length === 0) return null;
 
   return (
-    <section className="quicklinks-section">
+    <section className="quicklinks-section" style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="container">
         <h2 className="site-section-title text-center">{title}</h2>
         <div className="quicklinks-grid">

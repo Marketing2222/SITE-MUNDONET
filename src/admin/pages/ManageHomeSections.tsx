@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
 import ManageQuickLinks from './ManageQuickLinks';
 import ManageBenefits from './ManageBenefits';
@@ -19,12 +19,15 @@ interface FieldDef {
 
 const SECTIONS: Record<string, FieldDef[]> = {
   'Links Rápidos (Ajuda)': [
+    { key: 'quicklinks_bg_color', label: 'Cor de Fundo da Seção', type: 'color' },
     { key: 'quicklinks_title', label: 'Título Principal', type: 'text', hint: 'Padrão: Como podemos te ajudar hoje?' },
   ],
   'Benefícios': [
+    { key: 'benefits_bg_color', label: 'Cor de Fundo da Seção', type: 'color' },
     { key: 'benefits_title', label: 'Título Principal', type: 'text', hint: 'Padrão: Benefícios e vantagens de ser cliente Mundonet' },
   ],
   'Aplicativo Móvel': [
+    { key: 'app_bg_color', label: 'Cor de Fundo da Seção', type: 'color' },
     { key: 'app_subtitle', label: 'Subtítulo', type: 'text', hint: 'Padrão: Aplicativo Móvel' },
     { key: 'app_subtitle_align', label: 'Alinhamento', type: 'align' },
     { key: 'app_title', label: 'Título Principal', type: 'text', hint: 'Padrão: O app que conecta você a tudo da Mundonet' },
@@ -40,6 +43,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'app_image_size', label: 'Tamanho da Imagem', type: 'spacing', hint: 'Ex: 100%, 80%, 500px' },
   ],
   'Especialidades': [
+    { key: 'corp_bg_color', label: 'Cor de Fundo da Seção (Link Dedicado)', type: 'color' },
     { key: 'corp_subtitle', label: 'Subtítulo Link Dedicado', type: 'text', hint: 'Padrão: Soluções Corporativas' },
     { key: 'corp_subtitle_align', label: 'Alinhamento do Subtítulo', type: 'align' },
     { key: 'corp_title', label: 'Título Link Dedicado', type: 'text', hint: 'Padrão: Link Dedicado para sua Empresa' },
@@ -57,6 +61,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'corp_speed_desc', label: 'Texto do Gráfico', type: 'text' },
     { key: 'corp_btn_text', label: 'Texto do Botão Link Dedicado', type: 'text' },
     { key: 'corp_btn_link', label: 'Link do Botão Link Dedicado', type: 'url' },
+    { key: 'wifi_bg_color', label: 'Cor de Fundo da Seção (Wi-Fi 6)', type: 'color' },
     { key: 'wifi_subtitle', label: 'Subtítulo Wi-Fi 6', type: 'text', hint: 'Padrão: Ultra Wi-Fi 6' },
     { key: 'wifi_subtitle_align', label: 'Alinhamento do Subtítulo Wi-Fi 6', type: 'align' },
     { key: 'wifi_title', label: 'Título Wi-Fi 6', type: 'text', hint: 'Padrão: Experimente o máximo desempenho com nossos equipamentos' },
@@ -97,6 +102,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'ent_carousel_bg', label: 'Cor de Fundo do Carrossel', type: 'color', hint: 'Padrão: #ffffff' },
   ],
   'Planos': [
+    { key: 'plans_bg_color', label: 'Cor de Fundo da Seção', type: 'color' },
     { key: 'plans_eyebrow_color', label: 'Cor do Subtítulo ("Nossos Planos")', type: 'color', hint: 'Padrão: #7c3aed' },
     { key: 'plans_eyebrow_bg', label: 'Fundo do Subtítulo ("Nossos Planos")', type: 'color', hint: 'Padrão: #f3e8ff' },
     { key: 'plans_title_color', label: 'Cor do Título Principal', type: 'color', hint: 'Padrão: #1e1b4b' },

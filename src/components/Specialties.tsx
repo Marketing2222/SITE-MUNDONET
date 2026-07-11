@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/Specialties.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -29,7 +29,7 @@ export const Specialties: React.FC = () => {
   return (
     <section id="aplicativos" className="specialties-section">
       {/* Link Dedicado Area */}
-      <div className="dedicated-bar section-padding">
+      <div className="dedicated-bar section-padding" style={s.corp_bg_color ? { backgroundColor: s.corp_bg_color } : undefined}>
         <div className="container dedicated-grid">
           <div className="dedicated-content animate-slide-up">
             <span className="specialty-badge">{s.corp_subtitle || 'Soluções Corporativas'}</span>
@@ -86,7 +86,7 @@ export const Specialties: React.FC = () => {
       </div>
 
       {/* Wi-Fi 6 ZTE AX3000 Section */}
-      <div className="wifi-bar section-padding">
+      <div className="wifi-bar section-padding" style={s.wifi_bg_color ? { backgroundColor: s.wifi_bg_color } : undefined}>
         <div className="container wifi-grid">
           <div className="wifi-image animate-fade-in">
             <img 
