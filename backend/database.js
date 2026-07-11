@@ -645,6 +645,51 @@ export async function initDB() {
     { key:'ig_cta_btn_link', value:'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Quero%20participar%20do%20Indique%20e%20Ganhe%20da%20Mundonet.', label:'IG: Link Botão CTA' },
     { key:'ig_cta_btn_bg', value:'#22c55e', label:'IG: Cor Fundo Botão CTA' },
     { key:'ig_cta_btn_color', value:'#ffffff', label:'IG: Cor Texto Botão CTA' },
+    // IG: Hero extras
+    { key:'ig_hero_amount', value:'150', label:'IG: Valor por Indicação' },
+    { key:'ig_hero_discount', value:'10%', label:'IG: Desconto' },
+    { key:'ig_hero_footnote', value:'R$ 150 em Gift-Card para gastar em diversas lojas como Netshoes, Shopee, McDonalds, Uber, 99, Shell, Carrefour, Zé Delivery etc.', label:'IG: Nota Rodapé Hero' },
+    // IG: Marcas
+    { key:'ig_brands_items', value:'[]', label:'IG: Marcas (JSON)' },
+    // IG: Passos (dinâmico)
+    { key:'ig_steps_items', value:'[{"icon":"🔗","title":"Gere seu link","desc":"Em poucos cliques, crie seu link de indicação para compartilhar com sua rede."},{"icon":"📤","title":"Compartilhe","desc":"Envie seu link para amigos, familiares e conhecidos pelo WhatsApp ou redes sociais."},{"icon":"🎁","title":"Receba seu prêmio","desc":"A cada nova contratação, você recebe R$ 150 em Gift-Card."}]', label:'IG: Passos (JSON)' },
+    // IG: Calculadora
+    { key:'ig_calc_title', value:'Quanto eu posso ganhar?', label:'IG: Título Calculadora' },
+    { key:'ig_calc_value_per', value:'150', label:'IG: Valor por Indicação' },
+    { key:'ig_calc_note', value:'Gift-Card para gastar em diversas lojas como Netshoes, Shopee, McDonalds, Uber, 99, Shell, Carrefour, Zé Delivery etc.', label:'IG: Nota Calculadora' },
+    // IG: Benefícios (dinâmico)
+    { key:'ig_benefits_items', value:'[{"icon":"🌐","title":"Internet Fibra 100%","desc":"Velocidade real e estabilidade garantida."},{"icon":"💰","title":"Preço Justo","desc":"Planos sem taxas ocultas e sem surpresas."},{"icon":"⚡","title":"Instalação Rápida","desc":"Em até 48 horas com equipe profissional."},{"icon":"🎯","title":"Suporte Dedicado","desc":"Suporte técnico rápido e eficiente."},{"icon":"📱","title":"App Exclusivo","desc":"Gerencie tudo pelo app Mundonet+."},{"icon":"🏆","title":"Indicação Premiada","desc":"Ganhe R$ 150 por cada amigo indicado."}]', label:'IG: Benefícios (JSON)' },
+    // IG: Depoimentos (dinâmico)
+    { key:'ig_testimonials_items', value:'[{"photo":"","name":"Maria Silva","company":"Cliente Mundonet","text":"Indiquei meus vizinhos e já ganhei R$ 300 em Gift-Cards! O processo é muito simples e rápido."},{"photo":"","name":"João Santos","company":"Cliente Mundonet","text":"A internet da Mundonet é excelente, e o programa de indicação é um bônus incrível. Recomendo para todos!"}]', label:'IG: Depoimentos (JSON)' },
+    // IG: FAQ (dinâmico)
+    { key:'ig_faq_items', value:'[{"question":"Como funciona o programa Indique e Ganhe?","answer":"Você gera seu link de indicação, compartilha com amigos e familiares, e a cada nova contratação você ganha R$ 150 em Gift-Card."},{"question":"Preciso ser cliente para indicar?","answer":"Sim, você precisa ser cliente ativo da Mundonet para participar do programa."},{"question":"Quanto tempo leva para receber?","answer":"O Gift-Card é enviado por e-mail em até 30 dias após a confirmação da contratação."},{"question":"Posso indicar quantas pessoas quiser?","answer":"Sim! Não há limite de indicações. Quanto mais indicar, mais ganha."},{"question":"Onde posso usar o Gift-Card?","answer":"Em diversas lojas como Netshoes, Shopee, McDonalds, Uber, 99, Shell, Carrefour, Zé Delivery e muitas outras."}]', label:'IG: FAQ (JSON)' },
+    // IG: CTA extras
+    { key:'ig_cta_overlay', value:'true', label:'IG: Ativar Overlay CTA' },
+    { key:'ig_cta_image', value:'', label:'IG: Imagem Fundo CTA' },
+    // IG: Header
+    { key:'ig_logo_url', value:'', label:'IG: Logo URL' },
+    { key:'ig_header_bg_color', value:'#002D72', label:'IG: Cor Fundo Navbar' },
+    { key:'ig_header_text_color', value:'#ffffff', label:'IG: Cor Texto Navbar' },
+    { key:'ig_header_topbar_bg', value:'#001a4d', label:'IG: Cor Fundo Top Bar' },
+    { key:'ig_header_topbar_text', value:'#ffffff', label:'IG: Cor Texto Top Bar' },
+    { key:'ig_header_portal_text', value:'Central do Assinante', label:'IG: Texto Botão Portal' },
+    { key:'ig_header_portal_url', value:'https://ixc.mundonetbandalarga.com.br/central_assinante_web/login', label:'IG: Link Botão Portal' },
+    { key:'ig_header_portal_bg', value:'#4f46e5', label:'IG: Cor Fundo Botão Portal' },
+    { key:'ig_header_portal_text_color', value:'#ffffff', label:'IG: Cor Texto Botão Portal' },
+    // IG: Footer
+    { key:'ig_footer_logo_url', value:'', label:'IG: Logo Rodapé URL' },
+    { key:'ig_footer_bg_color', value:'#002D72', label:'IG: Cor Fundo Rodapé' },
+    { key:'ig_footer_text_color', value:'#cbd5e1', label:'IG: Cor Texto Rodapé' },
+    { key:'ig_footer_heading_color', value:'#ffffff', label:'IG: Cor Títulos Rodapé' },
+    { key:'ig_footer_link_color', value:'#93c5fd', label:'IG: Cor Links Rodapé' },
+    { key:'ig_footer_about_text', value:'Conectando você com o mundo através de conexões de ultravelocidade 100% fibra óptica com tecnologia Wi-Fi 6 de ponta.', label:'IG: Texto Sobre Rodapé' },
+    { key:'ig_footer_col2_title', value:'CONTATO', label:'IG: Título Coluna 2 Rodapé' },
+    { key:'ig_footer_col3_title', value:'ATALHOS', label:'IG: Título Coluna 3 Rodapé' },
+    { key:'ig_footer_col4_title', value:'ONDE NOS ENCONTRAR', label:'IG: Título Coluna 4 Rodapé' },
+    { key:'ig_footer_subbar_bg', value:'#001240', label:'IG: Cor Fundo Sub Bar Rodapé' },
+    { key:'ig_footer_subbar_text', value:'#94a3b8', label:'IG: Cor Texto Sub Bar Rodapé' },
+    { key:'ig_footer_cnpj', value:'', label:'IG: CNPJ Rodapé' },
+    { key:'ig_footer_anatel', value:'', label:'IG: ANATEL Rodapé' },
   ];
   for (const s of igSettings) {
     if (!db.data.site_settings.find(x => x.key === s.key)) {

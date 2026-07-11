@@ -274,7 +274,7 @@ function App() {
     <Routes>
       <Route path="/" element={<PublicSite />} />
       <Route path="/vem-pra-mundonet" element={<LandingPage />} />
-      <Route path="/indique-e-ganhe" element={<IndiqueGanhe />} />
+      <Route path="/indique-e-ganhe" element={<><Header prefix="ig_" /><IndiqueGanhe /><Footer prefix="ig_" /></>} />
       <Route path="/para-empresas" element={<><Header prefix="emp_" /><ParaEmpresas /><Footer prefix="emp_" /></>} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>

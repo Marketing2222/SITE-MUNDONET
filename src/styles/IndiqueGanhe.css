@@ -9,7 +9,34 @@
   padding: 0 24px;
 }
 
-/* Hero */
+.ig-section-subtitle {
+  font-size: 18px;
+  margin: 0 0 60px;
+}
+
+.ig-btn {
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.ig-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.ig-btn-large {
+  padding: 20px 48px;
+  font-size: 18px;
+  border-radius: 14px;
+}
+
 .ig-hero {
   display: flex;
   align-items: center;
@@ -36,16 +63,30 @@
 }
 
 .ig-hero-content h1 {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 800;
-  line-height: 1.15;
-  margin: 0 0 20px;
+  line-height: 1.1;
+  margin: 0 0 16px;
 }
 
-.ig-hero-content p {
+.ig-hero-subtitle {
   font-size: 18px;
   line-height: 1.7;
-  margin: 0 0 36px;
+  margin: 0 0 32px;
+}
+
+.ig-hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ig-hero-footnote {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.8;
 }
 
 .ig-hero-image {
@@ -64,36 +105,50 @@
   50% { transform: translateY(-12px); }
 }
 
-/* Buttons */
-.ig-btn {
-  display: inline-block;
-  padding: 16px 36px;
-  border-radius: 12px;
+.ig-brands {
+  overflow: hidden;
+  padding: 40px 0;
+  background: #f8fafc;
+  white-space: nowrap;
+}
+
+.ig-brands-track {
+  display: inline-flex;
+  gap: 60px;
+  animation: ig-scroll 30s linear infinite;
+}
+
+.ig-brand-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px;
+}
+
+.ig-brand-item img {
+  height: 32px;
+  width: auto;
+  opacity: 0.6;
+  filter: grayscale(1);
+  transition: all 0.3s;
+}
+
+.ig-brand-item img:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.ig-brand-item span {
   font-size: 16px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s;
-  cursor: pointer;
-  border: none;
+  font-weight: 600;
+  color: #64748b;
 }
 
-.ig-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+@keyframes ig-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-.ig-btn-primary {
-  background-color: #22c55e;
-  color: #fff;
-}
-
-.ig-btn-large {
-  padding: 20px 48px;
-  font-size: 18px;
-  border-radius: 14px;
-}
-
-/* Steps */
 .ig-steps {
   padding: 100px 0;
   text-align: center;
@@ -105,11 +160,6 @@
   margin: 0 0 12px;
 }
 
-.ig-steps-subtitle {
-  font-size: 18px;
-  margin: 0 0 60px;
-}
-
 .ig-steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -117,7 +167,7 @@
 }
 
 .ig-step-card {
-  border: 1px solid #e2e8f0;
+  border: 1px solid;
   border-radius: 20px;
   padding: 40px 30px;
   text-align: center;
@@ -163,7 +213,123 @@
   margin: 0;
 }
 
-/* Benefits */
+.ig-calculator {
+  padding: 100px 0;
+  text-align: center;
+}
+
+.ig-calc-inner h2 {
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 48px;
+  color: #1a0533;
+}
+
+.ig-calc-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.ig-calc-slider-area {
+  flex: 1;
+  text-align: left;
+}
+
+.ig-calc-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a0533;
+  margin: 0 0 20px;
+}
+
+.ig-calc-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  outline: none;
+  margin-bottom: 16px;
+}
+
+.ig-calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #22c55e;
+  cursor: pointer;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+.ig-calc-slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #22c55e;
+  cursor: pointer;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+.ig-calc-value-display {
+  text-align: center;
+}
+
+.ig-calc-indications {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a0533;
+}
+
+.ig-calc-result {
+  text-align: center;
+  padding: 24px 40px;
+  background: #22c55e;
+  border-radius: 16px;
+  min-width: 200px;
+}
+
+.ig-calc-result-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 4px;
+}
+
+.ig-calc-result-value {
+  display: block;
+  font-size: 36px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.ig-calc-result-note {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4px;
+}
+
+.ig-calc-note {
+  font-size: 14px;
+  margin: 24px 0 0;
+  opacity: 0.7;
+}
+
 .ig-benefits {
   padding: 100px 0;
 }
@@ -177,15 +343,16 @@
 
 .ig-benefits-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 28px;
 }
 
 .ig-benefit-card {
-  border: 1px solid #dcfce7;
+  border: 1px solid;
   border-radius: 20px;
   padding: 36px;
   transition: all 0.3s;
+  text-align: left;
 }
 
 .ig-benefit-card:hover {
@@ -216,82 +383,174 @@
   margin: 0;
 }
 
-/* Rewards */
-.ig-rewards {
+.ig-testimonials {
   padding: 100px 0;
 }
 
-.ig-rewards-content {
-  display: flex;
-  align-items: center;
-  gap: 80px;
-}
-
-.ig-rewards-text {
-  flex: 1;
-}
-
-.ig-rewards-text h2 {
+.ig-testimonials h2 {
   font-size: 36px;
   font-weight: 800;
-  margin: 0 0 16px;
+  text-align: center;
+  margin: 0 0 60px;
+  color: #1a0533;
 }
 
-.ig-rewards-text > p {
-  font-size: 17px;
-  line-height: 1.7;
-  margin: 0 0 32px;
+.ig-testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.ig-rewards-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 36px;
+.ig-testimonial-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.3s;
 }
 
-.ig-rewards-list li {
+.ig-testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.ig-testimonial-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 16px;
-  padding: 10px 0;
-  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 16px;
 }
 
-.ig-check {
+.ig-testimonial-header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.ig-testimonial-photo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ig-testimonial-photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #22c55e;
+  color: #fff;
   font-size: 20px;
   font-weight: 700;
 }
 
-.ig-rewards-image {
-  flex: 1;
-  max-width: 450px;
+.ig-testimonial-card p {
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+  font-style: italic;
 }
 
-.ig-rewards-image img {
+.ig-faq {
+  padding: 100px 0;
+}
+
+.ig-faq h2 {
+  font-size: 36px;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 48px;
+}
+
+.ig-faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ig-faq-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  transition: all 0.3s;
+}
+
+.ig-faq-item:hover {
+  border-color: #22c55e;
+}
+
+.ig-faq-question {
   width: 100%;
-  height: auto;
-  border-radius: 20px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a0533;
+  text-align: left;
 }
 
-/* CTA */
+.ig-faq-icon {
+  font-size: 24px;
+  color: #22c55e;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-left: 16px;
+  transition: transform 0.2s;
+}
+
+.ig-faq-open .ig-faq-icon {
+  transform: rotate(180deg);
+}
+
+.ig-faq-answer {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.ig-faq-answer p {
+  padding: 0 24px 20px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #64748b;
+}
+
 .ig-cta {
   padding: 100px 0;
   text-align: center;
+  position: relative;
 }
 
-.ig-cta h2 {
+.ig-cta-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.75;
+}
+
+.ig-cta-content {
+  position: relative;
+  z-index: 1;
+}
+
+.ig-cta-content h2 {
   font-size: 40px;
   font-weight: 800;
   margin: 0 0 16px;
 }
 
-.ig-cta p {
+.ig-cta-content p {
   font-size: 18px;
   margin: 0 0 40px;
+  opacity: 0.9;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
   .ig-hero {
     flex-direction: column;
@@ -303,10 +562,24 @@
     font-size: 32px;
   }
 
+  .ig-hero-actions {
+    justify-content: center;
+  }
+
   .ig-steps-grid {
     grid-template-columns: 1fr;
     max-width: 400px;
     margin: 0 auto;
+  }
+
+  .ig-calc-box {
+    flex-direction: column;
+    gap: 32px;
+    padding: 24px;
+  }
+
+  .ig-calc-result {
+    width: 100%;
   }
 
   .ig-benefits-grid {
@@ -315,16 +588,15 @@
     margin: 0 auto;
   }
 
-  .ig-rewards-content {
-    flex-direction: column;
-    text-align: center;
+  .ig-testimonials-grid {
+    grid-template-columns: 1fr;
   }
 
-  .ig-rewards-list li {
-    justify-content: center;
-  }
-
-  .ig-cta h2 {
+  .ig-cta-content h2 {
     font-size: 28px;
+  }
+
+  .ig-brands-track {
+    gap: 40px;
   }
 }
