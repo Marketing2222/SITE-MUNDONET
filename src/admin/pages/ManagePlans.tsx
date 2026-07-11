@@ -17,6 +17,11 @@ interface Plan {
   accent_color?: string;
   modal_label_color?: string;
   modal_title_color?: string;
+  offer_tag_enabled?: boolean;
+  offer_tag_text?: string;
+  offer_tag_color?: string;
+  offer_tag_text_color?: string;
+  offer_tag_icon?: string;
 }
 
 const EMPTY_PLAN: Omit<Plan, 'id'> = {
@@ -28,7 +33,8 @@ const EMPTY_PLAN: Omit<Plan, 'id'> = {
   card_bg_color: '', card_text_color: '', button_bg_color: '',
   button_text_color: '', plan_font: '', label_included: 'Incluso no plano:',
   label_bonus: 'Na assinatura, adicione mais um benefício:', label_details: 'Mais detalhes do plano',
-  label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151', modal_title_color: ''
+  label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151', modal_title_color: '',
+  offer_tag_enabled: false, offer_tag_text: 'OFERTA EXCLUSIVA', offer_tag_color: '#6b21a8', offer_tag_text_color: '#ffffff', offer_tag_icon: '⚡'
 };
 
 interface LibraryApp {
@@ -581,6 +587,23 @@ export const ManagePlans = () => {
                   <div className="admin-field"><label>Texto "Mais benefício"</label><input value={form.label_bonus ?? ''} onChange={e=>setForm({...form,label_bonus:e.target.value})} placeholder="Ex: Na assinatura, adicione mais um benefício:" /></div>
                   <div className="admin-field"><label>Texto "Detalhes"</label><input value={form.label_details ?? ''} onChange={e=>setForm({...form,label_details:e.target.value})} placeholder="Ex: Mais detalhes do plano" /></div>
                 </div>
+              </div>
+
+              {/* Offer Tag */}
+              <div className="admin-field" style={{marginTop: 16, borderTop: '1px solid #333', paddingTop: 16}}>
+                <h4>🏷️ Tag de Oferta Superior</h4>
+                <div style={{display:'flex', alignItems:'center', gap: 10, marginBottom: 8}}>
+                  <input type="checkbox" id="chk-offer-tag" checked={form.offer_tag_enabled} onChange={e=>setForm({...form,offer_tag_enabled:e.target.checked})} />
+                  <label htmlFor="chk-offer-tag" style={{textTransform:'none',letterSpacing:0, margin:0, fontWeight:'bold', color:'#fff'}}>Habilitar Tag de Oferta</label>
+                </div>
+                {form.offer_tag_enabled && (
+                  <div className="admin-form-row">
+                    <div className="admin-field"><label>Texto da Tag</label><input value={form.offer_tag_text ?? ''} onChange={e=>setForm({...form,offer_tag_text:e.target.value})} placeholder="Ex: OFERTA EXCLUSIVA" /></div>
+                    <div className="admin-field"><label>Ícone/Emoji</label><input value={form.offer_tag_icon ?? ''} onChange={e=>setForm({...form,offer_tag_icon:e.target.value})} placeholder="Ex: ⚡" /></div>
+                    <div className="admin-field"><label>Cor Fundo Tag</label><div style={{display:'flex',gap:6}}><input type="color" value={form.offer_tag_color || '#6b21a8'} onChange={e=>setForm({...form,offer_tag_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,offer_tag_color:'#6b21a8'})}>Padrão</button></div></div>
+                    <div className="admin-field"><label>Cor Texto Tag</label><div style={{display:'flex',gap:6}}><input type="color" value={form.offer_tag_text_color || '#ffffff'} onChange={e=>setForm({...form,offer_tag_text_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,offer_tag_text_color:'#ffffff'})}>Padrão</button></div></div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="admin-modal-footer">

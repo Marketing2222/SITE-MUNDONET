@@ -164,6 +164,18 @@ export const Plans = () => {
                   fontFamily: plan.plan_font || undefined
                 } as React.CSSProperties}
               >
+                {plan.offer_tag_enabled && (
+                  <div 
+                    className="offer-tag-ribbon"
+                    style={{
+                      backgroundColor: plan.offer_tag_color || '#6b21a8',
+                      color: plan.offer_tag_text_color || '#fff'
+                    }}
+                  >
+                    <span>{plan.offer_tag_text}</span>
+                    {plan.offer_tag_icon && <span className="offer-tag-icon">{plan.offer_tag_icon}</span>}
+                  </div>
+                )}
                 {plan.popular && <div className="popular-ribbon">Mais Popular</div>}
 
                 <div className="plan-card-top">

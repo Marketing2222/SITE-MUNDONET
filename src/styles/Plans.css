@@ -110,6 +110,27 @@
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
 
+.offer-tag-ribbon {
+  position: absolute;
+  top: -1px;
+  left: 20px;
+  padding: 5px 14px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.offer-tag-ribbon .offer-tag-icon {
+  font-size: 0.85rem;
+}
+
 /* ---------- Card Top ---------- */
 .plan-card-top {
   margin-bottom: 20px;
