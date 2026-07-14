@@ -49,24 +49,26 @@ export const IndiqueGanhe = () => {
         backgroundColor: g('ig_hero_bg', '#1a0533'),
         padding: secP('ig_hero_padding', '120px 24px 100px'),
       }}>
-        <div className="ig-hero-content ig-hero-content-centered">
-          <span className="ig-badge" style={{ backgroundColor: g('ig_badge_bg', '#22c55e'), color: g('ig_badge_text_color', '#fff') }}>
-            {g('ig_badge_text', 'INDIQUE E GANHE')}
-          </span>
-          <h1 style={{ color: g('ig_hero_title_color', '#fff') }}>
-            {g('ig_hero_title', 'Indique e Ganhe R$ 150')}
-          </h1>
-          <p className="ig-hero-subtitle" style={{ color: g('ig_hero_subtitle_color', '#a1a1aa') }}>
-            {g('ig_hero_subtitle', 'Indique a Mundonet para seus amigos e ganhe R$ 150 em Gift-Card a cada nova contratação!')}
-          </p>
-          <div className="ig-hero-actions">
-            <a href={g('ig_hero_btn_link', '#como-funciona')} className="ig-btn ig-btn-primary" style={{ backgroundColor: g('ig_hero_btn_bg', '#22c55e'), color: g('ig_hero_btn_color', '#fff') }}>
-              {g('ig_hero_btn_text', 'Indique Agora')}
-            </a>
+        <div className="ig-container">
+          <div className="ig-hero-content-left">
+            <span className="ig-badge" style={{ backgroundColor: g('ig_badge_bg', '#22c55e'), color: g('ig_badge_text_color', '#fff') }}>
+              {g('ig_badge_text', 'INDIQUE E GANHE')}
+            </span>
+            <h1 style={{ color: g('ig_hero_title_color', '#fff') }}>
+              {g('ig_hero_title', 'Indique e Ganhe R$ 150')}
+            </h1>
+            <p className="ig-hero-subtitle" style={{ color: g('ig_hero_subtitle_color', '#a1a1aa') }}>
+              {g('ig_hero_subtitle', 'Indique a Mundonet para seus amigos e ganhe R$ 150 em Gift-Card a cada nova contratação!')}
+            </p>
+            <div className="ig-hero-actions">
+              <a href={g('ig_hero_btn_link', '#como-funciona')} className="ig-btn ig-btn-primary" style={{ backgroundColor: g('ig_hero_btn_bg', '#22c55e'), color: g('ig_hero_btn_color', '#fff') }}>
+                {g('ig_hero_btn_text', 'Indique Agora')}
+              </a>
+            </div>
+            <p className="ig-hero-footnote" style={{ color: g('ig_hero_subtitle_color', '#a1a1aa') }}>
+              {g('ig_hero_footnote', '* R$ 150 em Gift-Card para gastar em diversas lojas')}
+            </p>
           </div>
-          <p className="ig-hero-footnote" style={{ color: g('ig_hero_subtitle_color', '#a1a1aa') }}>
-            {g('ig_hero_footnote', '* R$ 150 em Gift-Card para gastar em diversas lojas')}
-          </p>
         </div>
       </section>
 

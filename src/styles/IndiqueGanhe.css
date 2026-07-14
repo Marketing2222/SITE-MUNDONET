@@ -42,9 +42,8 @@
   text-align: left;
 }
 
-.ig-hero-content-centered {
+.ig-hero-content-left {
   max-width: 720px;
-  margin: 0;
 }
 
 .ig-badge {
@@ -530,7 +529,7 @@
 }
 
 @media (max-width: 900px) {
-  .ig-hero-content-centered h1 {
+  .ig-hero-content-left h1 {
     font-size: 32px;
   }
 
