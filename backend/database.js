@@ -718,6 +718,13 @@ export async function initDB() {
     { key:'ig_benefits_padding', value:'', label:'IG: Espaçamento Benefícios (px)' },
     { key:'ig_testimonials_padding', value:'', label:'IG: Espaçamento Depoimentos (px)' },
     { key:'ig_faq_padding', value:'', label:'IG: Espaçamento FAQ (px)' },
+    { key:'ig_faq_title_color', value:'#1a0533', label:'IG: Cor Título FAQ' },
+    { key:'ig_faq_bg', value:'#f8fafc', label:'IG: Cor Fundo FAQ' },
+    { key:'ig_faq_card_bg', value:'#ffffff', label:'IG: Cor Fundo Cards FAQ' },
+    { key:'ig_faq_question_color', value:'#1a0533', label:'IG: Cor Pergunta' },
+    { key:'ig_faq_answer_color', value:'#64748b', label:'IG: Cor Resposta' },
+    { key:'ig_faq_icon_color', value:'#22c55e', label:'IG: Cor Ícone' },
+    { key:'ig_faq_border', value:'', label:'IG: Cor Borda Cards FAQ' },
     { key:'ig_cta_padding', value:'', label:'IG: Espaçamento CTA (px)' },
     // IG: Visibilidade das seções
     { key:'ig_vis_hero', value:'true', label:'IG: Hero Visível' },

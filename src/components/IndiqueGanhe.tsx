@@ -244,18 +244,18 @@ export const IndiqueGanhe = () => {
       )}
 
       {show('faq') && faq.length > 0 && (
-        <section className="ig-faq" style={{ backgroundColor: useGradient ? 'transparent' : '#f8fafc', padding: secP('ig_faq_padding', '100px 0') }}>
+        <section className="ig-faq" style={{ backgroundColor: useGradient ? 'transparent' : g('ig_faq_bg', '#f8fafc'), padding: secP('ig_faq_padding', '100px 0') }}>
           <div className="ig-container">
-            <h2>Dúvidas Frequentes</h2>
+            <h2 style={{ color: g('ig_faq_title_color', '#1a0533') }}>Dúvidas Frequentes</h2>
             <div className="ig-faq-grid">
               {faq.map((item, i) => (
-                <div key={i} className={`ig-faq-item ${openFaq === i ? 'ig-faq-open' : ''}`}>
-                  <button className="ig-faq-question" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                <div key={i} className={`ig-faq-item ${openFaq === i ? 'ig-faq-open' : ''}`} style={{ backgroundColor: g('ig_faq_card_bg', '#fff'), borderColor: g('ig_faq_border') || undefined }}>
+                  <button className="ig-faq-question" style={{ color: g('ig_faq_question_color', '#1a0533') }} onClick={() => setOpenFaq(openFaq === i ? null : i)}>
                     <span>{item.question}</span>
-                    <span className="ig-faq-icon">{openFaq === i ? '−' : '+'}</span>
+                    <span className="ig-faq-icon" style={{ color: g('ig_faq_icon_color', '#22c55e') }}>{openFaq === i ? '−' : '+'}</span>
                   </button>
                   <div className="ig-faq-answer" style={{ maxHeight: openFaq === i ? 500 : 0 }}>
-                    <p>{item.answer}</p>
+                    <p style={{ color: g('ig_faq_answer_color', '#64748b') }}>{item.answer}</p>
                   </div>
                 </div>
               ))}

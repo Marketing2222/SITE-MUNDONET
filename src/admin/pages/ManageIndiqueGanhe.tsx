@@ -63,6 +63,16 @@ const FIELD_CONFIG: Record<string, ({ key: string; label: string; type?: string;
     { key: 'ig_step_desc_color', label: 'Cor Descrições', type: 'color' },
     { key: 'ig_steps_padding', label: 'Espaçamento (px)' },
   ],
+  faq: [
+    { key: 'ig_faq_title_color', label: 'Cor Título', type: 'color' },
+    { key: 'ig_faq_bg', label: 'Cor Fundo Seção', type: 'color' },
+    { key: 'ig_faq_card_bg', label: 'Cor Fundo Cards', type: 'color' },
+    { key: 'ig_faq_question_color', label: 'Cor Perguntas', type: 'color' },
+    { key: 'ig_faq_answer_color', label: 'Cor Respostas', type: 'color' },
+    { key: 'ig_faq_icon_color', label: 'Cor Ícones (+/-)', type: 'color' },
+    { key: 'ig_faq_border', label: 'Cor Borda Cards', type: 'color' },
+    { key: 'ig_faq_padding', label: 'Espaçamento (px)' },
+  ],
   calculadora: [
     { key: 'ig_calc_title', label: 'Título' },
     { key: 'ig_calc_subtitle', label: 'Subtítulo' },
@@ -304,6 +314,7 @@ export const ManageIndiqueGanhe = () => {
       VIS_FIELDS.forEach(vf => { allKeys.push(vf.visKey, vf.mobKey); });
       allKeys.push('ig_page_gradient', 'ig_page_gradient_color1', 'ig_page_gradient_color2', 'ig_page_gradient_color3', 'ig_page_gradient_angle');
       allKeys.push('ig_hero_overlay', 'ig_hero_overlay_color', 'ig_hero_show_text', 'ig_hero_height');
+      allKeys.push('ig_faq_title_color', 'ig_faq_bg', 'ig_faq_card_bg', 'ig_faq_question_color', 'ig_faq_answer_color', 'ig_faq_icon_color', 'ig_faq_border');
       ['ig_brands_items', 'ig_steps_items', 'ig_benefits_items', 'ig_testimonials_items', 'ig_faq_items'].forEach(k => allKeys.push(k));
       const toSave = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
         if (k === 'ig_nav_menu') return apiFetch('/settings/ig_nav_menu', { method: 'PUT', body: JSON.stringify({ value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' }) });
@@ -394,7 +405,14 @@ export const ManageIndiqueGanhe = () => {
             </div>
           )}
           {currentTab === 'depoimentos' && <DynamicListEditor settings={settings} set={set} label="Depoimentos" storageKey="ig_testimonials_items" fields={[{ key: 'photo', label: 'URL da Foto', type: 'image' }, { key: 'name', label: 'Nome' }, { key: 'company', label: 'Empresa / Cargo' }, { key: 'text', label: 'Depoimento', type: 'textarea' }]} />}
-          {currentTab === 'faq' && <DynamicListEditor settings={settings} set={set} label="Perguntas Frequentes" storageKey="ig_faq_items" fields={[{ key: 'question', label: 'Pergunta', type: 'textarea' }, { key: 'answer', label: 'Resposta', type: 'textarea' }]} />}
+          {currentTab === 'faq' && (
+            <div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+                {(FIELD_CONFIG.faq || []).map(fd => renderField(fd, settings[fd.key]?.value || '', v => set(fd.key, v, fd.label)))}
+              </div>
+              <DynamicListEditor settings={settings} set={set} label="Perguntas Frequentes" storageKey="ig_faq_items" fields={[{ key: 'question', label: 'Pergunta', type: 'textarea' }, { key: 'answer', label: 'Resposta', type: 'textarea' }]} />
+            </div>
+          )}
           {currentTab === 'menu' && (
             <div>
               <div style={{ border: '1px solid #333', borderRadius: 8, padding: 16, marginBottom: 16 }}>
