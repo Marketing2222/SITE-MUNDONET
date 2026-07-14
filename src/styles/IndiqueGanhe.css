@@ -38,17 +38,13 @@
 }
 
 .ig-hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
-  padding: 100px 24px 80px;
-  min-height: 85vh;
+  width: 100%;
+  text-align: center;
 }
 
-.ig-hero-content {
-  flex: 1;
-  max-width: 600px;
+.ig-hero-content-centered {
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .ig-badge {
@@ -62,7 +58,7 @@
   margin-bottom: 24px;
 }
 
-.ig-hero-content h1 {
+.ig-hero-content-centered h1 {
   font-size: 52px;
   font-weight: 800;
   line-height: 1.1;
@@ -73,12 +69,16 @@
   font-size: 18px;
   line-height: 1.7;
   margin: 0 0 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ig-hero-actions {
   display: flex;
   gap: 16px;
   align-items: center;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
@@ -87,22 +87,6 @@
   line-height: 1.5;
   margin: 0;
   opacity: 0.8;
-}
-
-.ig-hero-image {
-  flex: 1;
-  max-width: 500px;
-}
-
-.ig-hero-image img {
-  width: 100%;
-  height: auto;
-  animation: ig-float 3s ease-in-out infinite;
-}
-
-@keyframes ig-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
 }
 
 .ig-brands {
@@ -150,7 +134,6 @@
 }
 
 .ig-steps {
-  padding: 100px 0;
   text-align: center;
 }
 
@@ -214,8 +197,8 @@
 }
 
 .ig-calculator {
-  padding: 100px 0;
   text-align: center;
+  background: #f0fdf4;
 }
 
 .ig-calc-inner h2 {
@@ -331,7 +314,7 @@
 }
 
 .ig-benefits {
-  padding: 100px 0;
+  text-align: left;
 }
 
 .ig-benefits h2 {
@@ -352,7 +335,6 @@
   border-radius: 20px;
   padding: 36px;
   transition: all 0.3s;
-  text-align: left;
 }
 
 .ig-benefit-card:hover {
@@ -384,7 +366,7 @@
 }
 
 .ig-testimonials {
-  padding: 100px 0;
+  background: #ffffff;
 }
 
 .ig-testimonials h2 {
@@ -453,7 +435,7 @@
 }
 
 .ig-faq {
-  padding: 100px 0;
+  background: #f8fafc;
 }
 
 .ig-faq h2 {
@@ -523,7 +505,6 @@
 }
 
 .ig-cta {
-  padding: 100px 0;
   text-align: center;
   position: relative;
 }
@@ -552,18 +533,8 @@
 }
 
 @media (max-width: 900px) {
-  .ig-hero {
-    flex-direction: column;
-    text-align: center;
-    padding: 80px 24px 60px;
-  }
-
-  .ig-hero-content h1 {
+  .ig-hero-content-centered h1 {
     font-size: 32px;
-  }
-
-  .ig-hero-actions {
-    justify-content: center;
   }
 
   .ig-steps-grid {

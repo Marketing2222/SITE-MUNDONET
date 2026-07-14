@@ -690,6 +690,30 @@ export async function initDB() {
     { key:'ig_footer_subbar_text', value:'#94a3b8', label:'IG: Cor Texto Sub Bar Rodapé' },
     { key:'ig_footer_cnpj', value:'', label:'IG: CNPJ Rodapé' },
     { key:'ig_footer_anatel', value:'', label:'IG: ANATEL Rodapé' },
+    // IG: Header extras
+    { key:'ig_header_font', value:'', label:'IG: Fonte Header (Google Fonts)' },
+    { key:'ig_header_height', value:'80', label:'IG: Altura Header (px)' },
+    { key:'ig_header_portal_position', value:'navbar_right', label:'IG: Posição Botão Portal' },
+    // IG: Menu de navegação
+    { key:'ig_nav_menu', value:'[{"id":"ig-home","label":"Início","href":"/indique-e-ganhe","target":"_self","hasDropdown":false,"items":[]},{"id":"ig-como","label":"Como Funciona","href":"#como-funciona","target":"_self","hasDropdown":false,"items":[]},{"id":"ig-indicar","label":"Indique Agora","href":"#","target":"_self","hasDropdown":false,"items":[]}]', label:'IG: Menu de Navegação (JSON)' },
+    { key:'ig_nav_item_gap', value:'', label:'IG: Gap Itens Menu' },
+    { key:'ig_nav_item_padding', value:'', label:'IG: Padding Itens Menu' },
+    { key:'ig_nav_dropdown_width', value:'', label:'IG: Largura Dropdown' },
+    { key:'ig_nav_dropdown_padding', value:'', label:'IG: Padding Dropdown' },
+    { key:'ig_nav_subitem_padding', value:'', label:'IG: Padding Sub-itens' },
+    { key:'ig_nav_font_size', value:'', label:'IG: Tamanho Fonte Menu' },
+    // IG: Footer extras
+    { key:'ig_footer_font', value:'', label:'IG: Fonte Footer (Google Fonts)' },
+    { key:'ig_footer_padding', value:'', label:'IG: Padding Footer' },
+    { key:'ig_footer_anatel_logo_url', value:'', label:'IG: URL Logo Anatel' },
+    // IG: Espaçamento entre seções
+    { key:'ig_hero_padding', value:'', label:'IG: Espaçamento Hero (px)' },
+    { key:'ig_steps_padding', value:'', label:'IG: Espaçamento Como Funciona (px)' },
+    { key:'ig_calc_padding', value:'', label:'IG: Espaçamento Calculadora (px)' },
+    { key:'ig_benefits_padding', value:'', label:'IG: Espaçamento Benefícios (px)' },
+    { key:'ig_testimonials_padding', value:'', label:'IG: Espaçamento Depoimentos (px)' },
+    { key:'ig_faq_padding', value:'', label:'IG: Espaçamento FAQ (px)' },
+    { key:'ig_cta_padding', value:'', label:'IG: Espaçamento CTA (px)' },
   ];
   for (const s of igSettings) {
     if (!db.data.site_settings.find(x => x.key === s.key)) {

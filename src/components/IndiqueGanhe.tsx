@@ -36,14 +36,20 @@ export const IndiqueGanhe = () => {
   const amountPer = parseInt(g('ig_calc_value_per', '150'));
   const total = calcValue * amountPer;
 
-  const sectionStyle = (bgKey: string) => ({
-    backgroundColor: g(bgKey, 'transparent'),
-  });
+  const secP = (key: string, fallback = '') => {
+    const val = g(key, '');
+    if (val) return `${val}px 0`;
+    return fallback;
+  };
 
   return (
     <div className="ig-page">
-      <section className="ig-hero" style={{ backgroundColor: g('ig_hero_bg', '#1a0533') }}>
-        <div className="ig-hero-content">
+      {/* Hero - full-width */}
+      <section className="ig-hero" style={{
+        backgroundColor: g('ig_hero_bg', '#1a0533'),
+        padding: secP('ig_hero_padding', '120px 24px 100px'),
+      }}>
+        <div className="ig-hero-content ig-hero-content-centered">
           <span className="ig-badge" style={{ backgroundColor: g('ig_badge_bg', '#22c55e'), color: g('ig_badge_text_color', '#fff') }}>
             {g('ig_badge_text', 'INDIQUE E GANHE')}
           </span>
@@ -62,9 +68,6 @@ export const IndiqueGanhe = () => {
             {g('ig_hero_footnote', '* R$ 150 em Gift-Card para gastar em diversas lojas')}
           </p>
         </div>
-        <div className="ig-hero-image">
-          <img src={g('ig_hero_image', 'https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/area-top_700.png')} alt="Indique e Ganhe" />
-        </div>
       </section>
 
       {brands.length > 0 && (
@@ -79,7 +82,10 @@ export const IndiqueGanhe = () => {
         </section>
       )}
 
-      <section id="como-funciona" className="ig-steps" style={sectionStyle('ig_steps_bg')}>
+      <section id="como-funciona" className="ig-steps" style={{
+        backgroundColor: g('ig_steps_bg', '#ffffff'),
+        padding: secP('ig_steps_padding', '100px 0'),
+      }}>
         <div className="ig-container">
           <h2 style={{ color: g('ig_steps_title_color', '#1a0533') }}>{g('ig_steps_title', 'Veja como é fácil indicar')}</h2>
           <p className="ig-section-subtitle" style={{ color: g('ig_steps_subtitle_color', '#64748b') }}>
@@ -100,7 +106,7 @@ export const IndiqueGanhe = () => {
         </div>
       </section>
 
-      <section className="ig-calculator" style={{ backgroundColor: '#f0fdf4' }}>
+      <section className="ig-calculator" style={{ padding: secP('ig_calc_padding', '100px 0') }}>
         <div className="ig-container ig-calc-inner">
           <h2 style={{ color: '#1a0533' }}>{g('ig_calc_title', 'Quanto eu posso ganhar?')}</h2>
           <div className="ig-calc-box">
@@ -125,7 +131,10 @@ export const IndiqueGanhe = () => {
       </section>
 
       {benefits.length > 0 && (
-        <section className="ig-benefits" style={sectionStyle('ig_benefits_bg')}>
+        <section className="ig-benefits" style={{
+          backgroundColor: g('ig_benefits_bg', '#f0fdf4'),
+          padding: secP('ig_benefits_padding', '100px 0'),
+        }}>
           <div className="ig-container">
             <h2 style={{ color: g('ig_benefits_title_color', '#1a0533') }}>{g('ig_benefits_title', 'Por que indicar a Mundonet?')}</h2>
             <div className="ig-benefits-grid">
@@ -144,7 +153,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {testimonials.length > 0 && (
-        <section className="ig-testimonials" style={{ backgroundColor: '#ffffff' }}>
+        <section className="ig-testimonials" style={{ padding: secP('ig_testimonials_padding', '100px 0') }}>
           <div className="ig-container">
             <h2 style={{ color: '#1a0533' }}>O que dizem nossos indicadores</h2>
             <div className="ig-testimonials-grid">
@@ -172,7 +181,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {faq.length > 0 && (
-        <section className="ig-faq" style={{ backgroundColor: '#f8fafc' }}>
+        <section className="ig-faq" style={{ padding: secP('ig_faq_padding', '100px 0') }}>
           <div className="ig-container">
             <h2 style={{ color: '#1a0533' }}>Perguntas Frequentes</h2>
             <div className="ig-faq-list">
@@ -194,7 +203,8 @@ export const IndiqueGanhe = () => {
 
       <section className="ig-cta" style={{
         background: g('ig_cta_image') ? `url(${g('ig_cta_image')}) center/cover no-repeat` : g('ig_cta_bg', '#1a0533'),
-        position: 'relative'
+        padding: secP('ig_cta_padding', '100px 0'),
+        position: 'relative',
       }}>
         {g('ig_cta_overlay', 'true') === 'true' && (
           <div className="ig-cta-overlay" style={{ backgroundColor: g('ig_cta_bg', '#1a0533') }} />
