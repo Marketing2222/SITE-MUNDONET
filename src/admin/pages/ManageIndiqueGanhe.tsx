@@ -297,7 +297,7 @@ export const ManageIndiqueGanhe = () => {
       const allKeys = Object.keys(FIELD_CONFIG).flatMap(k => FIELD_CONFIG[k].map(f => f.key));
       allKeys.push('ig_nav_menu');
       VIS_FIELDS.forEach(vf => { allKeys.push(vf.visKey, vf.mobKey); });
-      allKeys.push('ig_page_gradient', 'ig_page_gradient_css');
+      allKeys.push('ig_page_gradient', 'ig_page_gradient_color1', 'ig_page_gradient_color2', 'ig_page_gradient_color3', 'ig_page_gradient_angle');
       ['ig_brands_items', 'ig_steps_items', 'ig_benefits_items', 'ig_testimonials_items', 'ig_faq_items'].forEach(k => allKeys.push(k));
       const toSave = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
         if (k === 'ig_nav_menu') return apiFetch('/settings/ig_nav_menu', { method: 'PUT', body: JSON.stringify({ value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' }) });
@@ -444,16 +444,51 @@ export const ManageIndiqueGanhe = () => {
           {currentTab === 'visibilidade' && (
             <div>
               <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Gradiente Global da Página</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-                <Toggle label="Ativar gradiente azul/branco no fundo" valKey="ig_page_gradient" />
+              <div style={{ marginBottom: 20 }}>
+                <Toggle label="Ativar gradiente de fundo em todas as seções" valKey="ig_page_gradient" />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 16, alignItems: 'end', marginBottom: 20 }}>
                 <div>
-                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>CSS do Gradiente</label>
-                  <input type="text" value={settings['ig_page_gradient_css']?.value || ''} onChange={e => set('ig_page_gradient_css', e.target.value, 'CSS Gradiente')}
-                    style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12, fontFamily: 'monospace' }}
-                    placeholder="linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)" />
+                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Cor Início</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input type="color" value={settings['ig_page_gradient_color1']?.value || '#e3f8ff'} onChange={e => set('ig_page_gradient_color1', e.target.value, 'Cor 1')}
+                      style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
+                    <input type="text" value={settings['ig_page_gradient_color1']?.value || '#e3f8ff'} onChange={e => set('ig_page_gradient_color1', e.target.value, 'Cor 1')}
+                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Cor Meio</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input type="color" value={settings['ig_page_gradient_color2']?.value || '#ffffff'} onChange={e => set('ig_page_gradient_color2', e.target.value, 'Cor 2')}
+                      style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
+                    <input type="text" value={settings['ig_page_gradient_color2']?.value || '#ffffff'} onChange={e => set('ig_page_gradient_color2', e.target.value, 'Cor 2')}
+                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Cor Fim</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input type="color" value={settings['ig_page_gradient_color3']?.value || '#f0f9ff'} onChange={e => set('ig_page_gradient_color3', e.target.value, 'Cor 3')}
+                      style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
+                    <input type="text" value={settings['ig_page_gradient_color3']?.value || '#f0f9ff'} onChange={e => set('ig_page_gradient_color3', e.target.value, 'Cor 3')}
+                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Direção</label>
+                  <select value={settings['ig_page_gradient_angle']?.value || '180'} onChange={e => set('ig_page_gradient_angle', e.target.value, 'Ângulo')}
+                    style={{ padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }}>
+                    <option value="180">↓ Cima → Baixo</option>
+                    <option value="0">↓ Baixo → Cima</option>
+                    <option value="90">→ Esquerda → Direita</option>
+                    <option value="270">← Direita → Esquerda</option>
+                    <option value="135">↘ Diagonal</option>
+                    <option value="45">↗ Diagonal Inversa</option>
+                  </select>
                 </div>
               </div>
-              <div style={{ height: 60, borderRadius: 12, background: settings['ig_page_gradient_css']?.value || 'linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)', marginBottom: 32, border: '1px solid #333' }} />
+              <div style={{ height: 80, borderRadius: 16, background: `linear-gradient(${settings['ig_page_gradient_angle']?.value || '180'}deg, ${settings['ig_page_gradient_color1']?.value || '#e3f8ff'} 0%, ${settings['ig_page_gradient_color2']?.value || '#ffffff'} 50%, ${settings['ig_page_gradient_color3']?.value || '#f0f9ff'} 100%)`, border: '1px solid #333', marginBottom: 32 }} />
 
               <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Visibilidade das Seções</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0 }}>

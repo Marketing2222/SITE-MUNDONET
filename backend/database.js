@@ -762,7 +762,10 @@ export async function initDB() {
     { key:'ig_about_desc_color', value:'#374151', label:'IG: Cor Descrição Sobre' },
     // IG: Gradiente global da página
     { key:'ig_page_gradient', value:'false', label:'IG: Ativar Gradiente Global' },
-    { key:'ig_page_gradient_css', value:'linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)', label:'IG: CSS Gradiente Global' },
+    { key:'ig_page_gradient_color1', value:'#e3f8ff', label:'IG: Gradiente Cor 1' },
+    { key:'ig_page_gradient_color2', value:'#ffffff', label:'IG: Gradiente Cor 2' },
+    { key:'ig_page_gradient_color3', value:'#f0f9ff', label:'IG: Gradiente Cor 3' },
+    { key:'ig_page_gradient_angle', value:'180', label:'IG: Gradiente Ângulo (graus)' },
   ];
   for (const s of igSettings) {
     if (!db.data.site_settings.find(x => x.key === s.key)) {

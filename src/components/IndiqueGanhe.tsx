@@ -90,10 +90,15 @@ export const IndiqueGanhe = () => {
   const show = (section: string) => vis(section, isMobile);
 
   const useGradient = g('ig_page_gradient', 'false') === 'true';
-  const gradientCss = g('ig_page_gradient_css', 'linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)');
+  const gradAngle = g('ig_page_gradient_angle', '180');
+  const gradC1 = g('ig_page_gradient_color1', '#e3f8ff');
+  const gradC2 = g('ig_page_gradient_color2', '#ffffff');
+  const gradC3 = g('ig_page_gradient_color3', '#f0f9ff');
+  const gradCss = useGradient ? `linear-gradient(${gradAngle}deg, ${gradC1} 0%, ${gradC2} 50%, ${gradC3} 100%)` : undefined;
+  const secBg = (ownColor: string) => useGradient ? 'transparent' : ownColor;
 
   return (
-    <div className="ig-page" style={useGradient ? { background: gradientCss, minHeight: '100vh' } : undefined}>
+    <div className="ig-page" style={useGradient ? { background: gradCss, minHeight: '100vh' } : undefined}>
       {show('hero') && (
         <section className="ig-hero" style={{ backgroundColor: g('ig_hero_bg', '#1a0533'), padding: secP('ig_hero_padding', '120px 24px 100px') }}>
           <div className="ig-container">
@@ -111,7 +116,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {show('brands') && brands.length > 0 && (
-        <section className="ig-brands">
+        <section className="ig-brands" style={useGradient ? { background: 'transparent' } : undefined}>
           <div className="ig-brands-track">
             {[...brands, ...brands].map((brand, i) => (
               <div key={i} className="ig-brand-item">
@@ -123,7 +128,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {show('steps') && (
-        <section id="como-funciona" className="ig-steps" style={{ backgroundColor: g('ig_steps_bg', '#ffffff'), padding: secP('ig_steps_padding', '100px 0') }}>
+        <section id="como-funciona" className="ig-steps" style={{ backgroundColor: secBg(g('ig_steps_bg', '#ffffff')), padding: secP('ig_steps_padding', '100px 0') }}>
           <div className="ig-container">
             <h2 style={{ color: g('ig_steps_title_color', '#1a0533') }}>{g('ig_steps_title', 'Veja como é fácil indicar')}</h2>
             <p className="ig-section-subtitle" style={{ color: g('ig_steps_subtitle_color', '#64748b') }}>{g('ig_steps_subtitle', 'Em apenas 3 passos simples você começa a ganhar')}</p>
@@ -167,7 +172,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {show('about') && (
-        <section className="ig-about" style={{ background: g('ig_about_bg', 'linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%)') }}>
+        <section className="ig-about" style={{ background: useGradient ? 'transparent' : g('ig_about_bg', 'linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%)') }}>
           <div className="ig-container">
             <h2 className="ig-about-title">{g('ig_about_title', 'Ainda não conhece a Mundonet?')}</h2>
             <p className="ig-about-desc" style={{ color: g('ig_about_desc_color', '#374151') }}>{g('ig_about_desc', 'Somos uma empresa de internet fibra óptica com tecnologia Wi-Fi 6 de ponta, conectando você ao mundo com velocidade real.')}</p>
@@ -189,7 +194,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {show('benefits') && benefits.length > 0 && (
-        <section className="ig-benefits" style={{ backgroundColor: g('ig_benefits_bg', '#f0fdf4'), padding: secP('ig_benefits_padding', '100px 0') }}>
+        <section className="ig-benefits" style={{ backgroundColor: secBg(g('ig_benefits_bg', '#f0fdf4')), padding: secP('ig_benefits_padding', '100px 0') }}>
           <div className="ig-container">
             <h2 style={{ color: g('ig_benefits_title_color', '#1a0533') }}>{g('ig_benefits_title', 'Por que indicar a Mundonet?')}</h2>
             <div className="ig-benefits-grid">
@@ -206,7 +211,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {show('testimonials') && testimonials.length > 0 && (
-        <section className="ig-testimonials" style={{ padding: secP('ig_testimonials_padding', '100px 0') }}>
+        <section className="ig-testimonials" style={{ backgroundColor: useGradient ? 'transparent' : '#ffffff', padding: secP('ig_testimonials_padding', '100px 0') }}>
           <div className="ig-container">
             <h2>O que dizem nossos indicadores</h2>
             <div className="ig-testimonials-grid">
@@ -225,7 +230,7 @@ export const IndiqueGanhe = () => {
       )}
 
       {show('faq') && faq.length > 0 && (
-        <section className="ig-faq" style={{ padding: secP('ig_faq_padding', '100px 0') }}>
+        <section className="ig-faq" style={{ backgroundColor: useGradient ? 'transparent' : '#f8fafc', padding: secP('ig_faq_padding', '100px 0') }}>
           <div className="ig-container">
             <h2>Dúvidas Frequentes</h2>
             <div className="ig-faq-grid">
