@@ -297,6 +297,7 @@ export const ManageIndiqueGanhe = () => {
       const allKeys = Object.keys(FIELD_CONFIG).flatMap(k => FIELD_CONFIG[k].map(f => f.key));
       allKeys.push('ig_nav_menu');
       VIS_FIELDS.forEach(vf => { allKeys.push(vf.visKey, vf.mobKey); });
+      allKeys.push('ig_page_gradient', 'ig_page_gradient_css');
       ['ig_brands_items', 'ig_steps_items', 'ig_benefits_items', 'ig_testimonials_items', 'ig_faq_items'].forEach(k => allKeys.push(k));
       const toSave = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
         if (k === 'ig_nav_menu') return apiFetch('/settings/ig_nav_menu', { method: 'PUT', body: JSON.stringify({ value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' }) });
@@ -442,6 +443,18 @@ export const ManageIndiqueGanhe = () => {
           )}
           {currentTab === 'visibilidade' && (
             <div>
+              <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Gradiente Global da Página</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+                <Toggle label="Ativar gradiente azul/branco no fundo" valKey="ig_page_gradient" />
+                <div>
+                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>CSS do Gradiente</label>
+                  <input type="text" value={settings['ig_page_gradient_css']?.value || ''} onChange={e => set('ig_page_gradient_css', e.target.value, 'CSS Gradiente')}
+                    style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12, fontFamily: 'monospace' }}
+                    placeholder="linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)" />
+                </div>
+              </div>
+              <div style={{ height: 60, borderRadius: 12, background: settings['ig_page_gradient_css']?.value || 'linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)', marginBottom: 32, border: '1px solid #333' }} />
+
               <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Visibilidade das Seções</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0 }}>
                 <div style={{ padding: '8px 16px', borderBottom: '1px solid #333', fontWeight: 600, fontSize: 13, color: '#9ca3af' }}>Seção</div>

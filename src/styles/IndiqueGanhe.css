@@ -407,15 +407,16 @@
 
 .ig-benefits-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
 }
 
 .ig-benefit-card {
   border: 1px solid;
-  border-radius: 20px;
-  padding: 36px;
+  border-radius: 16px;
+  padding: 24px 16px;
   transition: all 0.3s;
+  text-align: center;
 }
 
 .ig-benefit-card:hover {
@@ -424,25 +425,25 @@
 }
 
 .ig-benefit-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 24px;
+  margin: 0 auto 14px;
 }
 
 .ig-benefit-card h3 {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 700;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .ig-benefit-card p {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.5;
   margin: 0;
 }
 

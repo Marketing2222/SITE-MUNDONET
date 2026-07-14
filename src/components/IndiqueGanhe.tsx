@@ -89,8 +89,11 @@ export const IndiqueGanhe = () => {
 
   const show = (section: string) => vis(section, isMobile);
 
+  const useGradient = g('ig_page_gradient', 'false') === 'true';
+  const gradientCss = g('ig_page_gradient_css', 'linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)');
+
   return (
-    <div className="ig-page">
+    <div className="ig-page" style={useGradient ? { background: gradientCss, minHeight: '100vh' } : undefined}>
       {show('hero') && (
         <section className="ig-hero" style={{ backgroundColor: g('ig_hero_bg', '#1a0533'), padding: secP('ig_hero_padding', '120px 24px 100px') }}>
           <div className="ig-container">

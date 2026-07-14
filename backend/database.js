@@ -760,6 +760,9 @@ export async function initDB() {
     { key:'ig_about_bg', value:'linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%)', label:'IG: Cor Fundo Seção Sobre' },
     { key:'ig_about_stat_color', value:'#007DFF', label:'IG: Cor Estatísticas' },
     { key:'ig_about_desc_color', value:'#374151', label:'IG: Cor Descrição Sobre' },
+    // IG: Gradiente global da página
+    { key:'ig_page_gradient', value:'false', label:'IG: Ativar Gradiente Global' },
+    { key:'ig_page_gradient_css', value:'linear-gradient(180deg, #e3f8ff 0%, #ffffff 50%, #f0f9ff 100%)', label:'IG: CSS Gradiente Global' },
   ];
   for (const s of igSettings) {
     if (!db.data.site_settings.find(x => x.key === s.key)) {
