@@ -106,6 +106,7 @@ export const IndiqueGanhe = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: secP('ig_hero_padding', '120px 24px 100px'),
+          minHeight: g('ig_hero_height') || undefined,
         }}>
           {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
             <div className="ig-hero-overlay" style={{
