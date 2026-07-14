@@ -649,6 +649,7 @@ export async function initDB() {
     { key:'ig_hero_amount', value:'150', label:'IG: Valor por Indicação' },
     { key:'ig_hero_discount', value:'10%', label:'IG: Desconto' },
     { key:'ig_hero_footnote', value:'R$ 150 em Gift-Card para gastar em diversas lojas como Netshoes, Shopee, McDonalds, Uber, 99, Shell, Carrefour, Zé Delivery etc.', label:'IG: Nota Rodapé Hero' },
+    { key:'ig_hero_banner', value:'', label:'IG: Banner Hero (upload)' },
     // IG: Marcas
     { key:'ig_brands_items', value:'[]', label:'IG: Marcas (JSON)' },
     // IG: Passos (dinâmico)

@@ -100,7 +100,13 @@ export const IndiqueGanhe = () => {
   return (
     <div className="ig-page" style={useGradient ? { background: gradCss, minHeight: '100vh' } : undefined}>
       {show('hero') && (
-        <section className="ig-hero" style={{ backgroundColor: g('ig_hero_bg', '#1a0533'), padding: secP('ig_hero_padding', '120px 24px 100px') }}>
+        <section className="ig-hero" style={{
+          backgroundColor: g('ig_hero_bg', '#1a0533'),
+          backgroundImage: g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: secP('ig_hero_padding', '120px 24px 100px'),
+        }}>
           <div className="ig-container">
             <div className="ig-hero-content-left">
               <span className="ig-badge" style={{ backgroundColor: g('ig_badge_bg', '#22c55e'), color: g('ig_badge_text_color', '#fff') }}>{g('ig_badge_text', 'INDIQUE E GANHE')}</span>

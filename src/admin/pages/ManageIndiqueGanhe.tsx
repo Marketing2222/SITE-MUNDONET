@@ -40,6 +40,7 @@ const FIELD_CONFIG: Record<string, ({ key: string; label: string; type?: string;
     { key: 'ig_hero_amount', label: 'Valor por Indicação (R$)' },
     { key: 'ig_hero_discount', label: 'Desconto (%)' },
     { key: 'ig_hero_footnote', label: 'Nota Rodapé', type: 'textarea' },
+    { key: 'ig_hero_banner', label: 'Banner Hero (imagem full)', type: 'image' },
     { key: 'ig_hero_padding', label: 'Espaçamento (px)' },
   ],
   marcas: [],
