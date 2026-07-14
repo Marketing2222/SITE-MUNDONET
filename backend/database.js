@@ -652,6 +652,7 @@ export async function initDB() {
     { key:'ig_hero_banner', value:'', label:'IG: Banner Hero (upload)' },
     { key:'ig_hero_overlay', value:'true', label:'IG: Ativar Overlay Hero' },
     { key:'ig_hero_overlay_color', value:'rgba(0,20,60,0.7)', label:'IG: Cor Overlay Hero' },
+    { key:'ig_hero_show_text', value:'true', label:'IG: Hero Mostrar Textos' },
     // IG: Marcas
     { key:'ig_brands_items', value:'[]', label:'IG: Marcas (JSON)' },
     // IG: Passos (dinâmico)

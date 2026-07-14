@@ -113,6 +113,7 @@ export const IndiqueGanhe = () => {
             }} />
           )}
           <div className="ig-container">
+            {g('ig_hero_show_text', 'true') === 'true' && (
             <div className="ig-hero-content-left">
               <span className="ig-badge" style={{ backgroundColor: g('ig_badge_bg', '#22c55e'), color: g('ig_badge_text_color', '#fff') }}>{g('ig_badge_text', 'INDIQUE E GANHE')}</span>
               <h1 style={{ color: g('ig_hero_title_color', '#fff') }}>{g('ig_hero_title', 'Indique e Ganhe R$ 150')}</h1>
@@ -122,6 +123,7 @@ export const IndiqueGanhe = () => {
               </div>
               <p className="ig-hero-footnote" style={{ color: g('ig_hero_subtitle_color', '#a1a1aa') }}>{g('ig_hero_footnote', '* R$ 150 em Gift-Card para gastar em diversas lojas')}</p>
             </div>
+            )}
           </div>
         </section>
       )}

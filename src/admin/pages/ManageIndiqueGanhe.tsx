@@ -43,6 +43,7 @@ const FIELD_CONFIG: Record<string, ({ key: string; label: string; type?: string;
     { key: 'ig_hero_banner', label: 'Banner Hero (imagem full)', type: 'image' },
     { key: 'ig_hero_overlay', label: 'Ativar Overlay', type: 'select', options: [{ value: 'true', label: 'Sim' }, { value: 'false', label: 'Não' }] },
     { key: 'ig_hero_overlay_color', label: 'Cor Overlay', hint: 'rgba(0,20,60,0.7) ou #000000' },
+    { key: 'ig_hero_show_text', label: 'Mostrar Textos e Botão', type: 'select', options: [{ value: 'true', label: 'Sim' }, { value: 'false', label: 'Não' }] },
     { key: 'ig_hero_padding', label: 'Espaçamento (px)' },
   ],
   marcas: [],
@@ -301,7 +302,7 @@ export const ManageIndiqueGanhe = () => {
       allKeys.push('ig_nav_menu');
       VIS_FIELDS.forEach(vf => { allKeys.push(vf.visKey, vf.mobKey); });
       allKeys.push('ig_page_gradient', 'ig_page_gradient_color1', 'ig_page_gradient_color2', 'ig_page_gradient_color3', 'ig_page_gradient_angle');
-      allKeys.push('ig_hero_overlay', 'ig_hero_overlay_color');
+      allKeys.push('ig_hero_overlay', 'ig_hero_overlay_color', 'ig_hero_show_text');
       ['ig_brands_items', 'ig_steps_items', 'ig_benefits_items', 'ig_testimonials_items', 'ig_faq_items'].forEach(k => allKeys.push(k));
       const toSave = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
         if (k === 'ig_nav_menu') return apiFetch('/settings/ig_nav_menu', { method: 'PUT', body: JSON.stringify({ value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' }) });
