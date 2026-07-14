@@ -39,12 +39,12 @@
 
 .ig-hero {
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
 
 .ig-hero-content-centered {
   max-width: 720px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .ig-badge {
@@ -69,16 +69,13 @@
   font-size: 18px;
   line-height: 1.7;
   margin: 0 0 32px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .ig-hero-actions {
   display: flex;
   gap: 16px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 20px;
 }
 
