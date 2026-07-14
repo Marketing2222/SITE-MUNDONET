@@ -41,6 +41,19 @@
 .ig-hero {
   width: 100%;
   text-align: left;
+  position: relative;
+}
+
+.ig-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ig-hero .ig-container {
+  position: relative;
+  z-index: 2;
 }
 
 .ig-hero-content-left {
