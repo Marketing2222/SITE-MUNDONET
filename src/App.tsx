@@ -85,7 +85,17 @@ function PublicSite() {
             if (typeof parsed === 'object' && parsed !== null) setSectionsActive(parsed);
           } catch { /* use default */ }
         }
-        if (data.site_name?.value) document.title = data.site_name.value;
+        if (data.site_name?.value) {
+          document.title = data.site_name.value;
+          const setMeta = (attr: string, key: string, content: string) => {
+            let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement;
+            if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
+            el.content = content;
+          };
+          setMeta('property', 'og:site_name', data.site_name.value);
+          setMeta('property', 'og:title', data.site_name.value);
+          setMeta('name', 'title', data.site_name.value);
+        }
         if (data.sections_mobile_active?.value) {
           try {
             const parsed = JSON.parse(data.sections_mobile_active.value);
