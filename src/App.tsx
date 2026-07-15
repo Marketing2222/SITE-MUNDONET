@@ -85,6 +85,7 @@ function PublicSite() {
             if (typeof parsed === 'object' && parsed !== null) setSectionsActive(parsed);
           } catch { /* use default */ }
         }
+        if (data.site_name?.value) document.title = data.site_name.value;
         if (data.sections_mobile_active?.value) {
           try {
             const parsed = JSON.parse(data.sections_mobile_active.value);
