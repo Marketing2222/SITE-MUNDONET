@@ -695,68 +695,67 @@
 
 /* ─── Mobile 768px ─── */
 @media (max-width: 768px) {
-  .ig-hero {
-    position: relative !important;
-    min-height: auto !important;
-    padding: 0 !important;
-    background: none !important;
-  }
-  .ig-hero-mobile-img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  .ig-hero .ig-container {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    padding: 20px 16px;
-  }
   .ig-hero-content-left {
     max-width: 100%;
   }
   .ig-hero-content-left h1 {
-    font-size: 22px !important;
+    font-size: 24px !important;
   }
   .ig-hero-subtitle {
-    font-size: 12px !important;
-    margin-bottom: 16px !important;
+    font-size: 13px !important;
+    margin-bottom: 12px !important;
   }
   .ig-hero-actions {
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     width: 100%;
   }
   .ig-hero-actions .ig-btn {
     width: 100%;
     text-align: center;
-    padding: 11px 16px;
-    font-size: 13px;
+    padding: 14px 24px;
+    font-size: 15px;
   }
   .ig-hero-footnote {
-    font-size: 10px !important;
+    font-size: 11px !important;
+    margin-top: 8px;
   }
   .ig-badge {
-    font-size: 10px;
-    padding: 5px 12px;
-    margin-bottom: 8px;
+    font-size: 11px;
+    padding: 6px 14px;
+    margin-bottom: 10px;
   }
 
   .ig-steps, .ig-calc-section, .ig-about, .ig-benefits, .ig-testimonials, .ig-faq, .ig-cta {
-    padding: 40px 0 !important;
+    padding: 48px 0 !important;
   }
 
   .ig-steps h2, .ig-about-title, .ig-benefits h2, .ig-testimonials h2, .ig-faq h2 {
     font-size: 22px !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 16px !important;
   }
   .ig-section-subtitle {
-    font-size: 14px;
-    margin-bottom: 32px;
+    font-size: 13px;
+    margin-bottom: 20px;
   }
 
+  /* Steps — scroll horizontal */
+  .ig-steps-grid {
+    display: flex !important;
+    overflow-x: auto;
+    gap: 12px !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
   .ig-step-card {
+    min-width: 240px;
+    max-width: 260px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
     padding: 20px 16px;
   }
   .ig-step-num {
@@ -765,16 +764,16 @@
     right: 16px;
   }
   .ig-step-icon {
-    width: 56px;
-    height: 56px;
-    font-size: 24px;
-    margin-bottom: 14px;
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+    margin-bottom: 12px;
   }
   .ig-step-card h3 {
-    font-size: 16px;
+    font-size: 15px;
   }
   .ig-step-card p {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .ig-calc-wrapper {
@@ -818,21 +817,33 @@
     margin-bottom: 30px;
   }
 
+  /* Benefits — scroll horizontal */
   .ig-benefits-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    display: flex !important;
+    overflow-x: auto;
+    gap: 12px !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
   .ig-benefit-card {
-    padding: 12px 8px;
+    min-width: 160px;
+    max-width: 180px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 16px 12px;
   }
   .ig-benefit-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-    margin-bottom: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    margin-bottom: 10px;
   }
   .ig-benefit-card h3 {
-    font-size: 12px;
+    font-size: 13px;
   }
   .ig-benefit-card p {
     font-size: 11px;
