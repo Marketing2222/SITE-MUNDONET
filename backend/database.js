@@ -718,6 +718,7 @@ export async function initDB() {
     { key:'ig_benefits_padding', value:'', label:'IG: Espaçamento Benefícios (px)' },
     { key:'ig_testimonials_padding', value:'', label:'IG: Espaçamento Depoimentos (px)' },
     { key:'ig_faq_padding', value:'', label:'IG: Espaçamento FAQ (px)' },
+    { key:'ig_mobile_section_spacing', value:'80', label:'IG: Espaçamento Seções Mobile (px)' },
     { key:'ig_faq_title_color', value:'#1a0533', label:'IG: Cor Título FAQ' },
     { key:'ig_faq_bg', value:'#f8fafc', label:'IG: Cor Fundo FAQ' },
     { key:'ig_faq_card_bg', value:'#ffffff', label:'IG: Cor Fundo Cards FAQ' },

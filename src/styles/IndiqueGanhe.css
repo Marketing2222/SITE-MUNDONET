@@ -746,7 +746,7 @@
   }
 
   .ig-steps, .ig-calc-section, .ig-about, .ig-benefits, .ig-testimonials, .ig-faq, .ig-cta {
-    padding: 60px 0 !important;
+    padding: var(--ig-mobile-spacing, 80px) 0 !important;
   }
 
   .ig-steps h2, .ig-about-title, .ig-benefits h2, .ig-testimonials h2, .ig-faq h2 {

@@ -101,9 +101,10 @@ export const IndiqueGanhe = () => {
   const gradC3 = g('ig_page_gradient_color3', '#f0f9ff');
   const gradCss = useGradient ? `linear-gradient(${gradAngle}deg, ${gradC1} 0%, ${gradC2} 50%, ${gradC3} 100%)` : undefined;
   const secBg = (ownColor: string) => useGradient ? 'transparent' : ownColor;
+  const mobileSpacing = g('ig_mobile_section_spacing', '80');
 
   return (
-    <div className="ig-page" style={useGradient ? { background: gradCss, minHeight: '100vh' } : undefined}>
+    <div className="ig-page" style={{ ...(useGradient ? { background: gradCss, minHeight: '100vh' } : {}), '--ig-mobile-spacing': `${mobileSpacing}px` } as React.CSSProperties}>
       {show('hero') && (
         <section className="ig-hero" style={{
           backgroundColor: g('ig_hero_bg', '#1a0533'),

@@ -21,6 +21,7 @@ const TABS = [
   { id: 'cabecalho', label: 'Cabeçalho' },
   { id: 'menu', label: 'Menu' },
   { id: 'rodape', label: 'Rodapé' },
+  { id: 'mobile', label: 'Mobile' },
 ];
 
 const FIELD_CONFIG: Record<string, ({ key: string; label: string; type?: string; hint?: string; options?: { value: string; label: string }[]; gridColumn?: string })[]> = {
@@ -72,6 +73,9 @@ const FIELD_CONFIG: Record<string, ({ key: string; label: string; type?: string;
     { key: 'ig_faq_icon_color', label: 'Cor Ícones (+/-)', type: 'color' },
     { key: 'ig_faq_border', label: 'Cor Borda Cards', type: 'color' },
     { key: 'ig_faq_padding', label: 'Espaçamento (px)' },
+  ],
+  mobile: [
+    { key: 'ig_mobile_section_spacing', label: 'Espaçamento Seções (px)', hint: 'Espaçamento vertical entre seções no mobile' },
   ],
   calculadora: [
     { key: 'ig_calc_title', label: 'Título' },
@@ -315,6 +319,7 @@ export const ManageIndiqueGanhe = () => {
       allKeys.push('ig_page_gradient', 'ig_page_gradient_color1', 'ig_page_gradient_color2', 'ig_page_gradient_color3', 'ig_page_gradient_angle');
       allKeys.push('ig_hero_overlay', 'ig_hero_overlay_color', 'ig_hero_show_text', 'ig_hero_height');
       allKeys.push('ig_faq_title_color', 'ig_faq_bg', 'ig_faq_card_bg', 'ig_faq_question_color', 'ig_faq_answer_color', 'ig_faq_icon_color', 'ig_faq_border');
+      allKeys.push('ig_mobile_section_spacing');
       ['ig_brands_items', 'ig_steps_items', 'ig_benefits_items', 'ig_testimonials_items', 'ig_faq_items'].forEach(k => allKeys.push(k));
       const toSave = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
         if (k === 'ig_nav_menu') return apiFetch('/settings/ig_nav_menu', { method: 'PUT', body: JSON.stringify({ value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' }) });
@@ -411,6 +416,13 @@ export const ManageIndiqueGanhe = () => {
                 {(FIELD_CONFIG.faq || []).map(fd => renderField(fd, settings[fd.key]?.value || '', v => set(fd.key, v, fd.label)))}
               </div>
               <DynamicListEditor settings={settings} set={set} label="Perguntas Frequentes" storageKey="ig_faq_items" fields={[{ key: 'question', label: 'Pergunta', type: 'textarea' }, { key: 'answer', label: 'Resposta', type: 'textarea' }]} />
+            </div>
+          )}
+          {currentTab === 'mobile' && (
+            <div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                {(FIELD_CONFIG.mobile || []).map(fd => renderField(fd, settings[fd.key]?.value || '', v => set(fd.key, v, fd.label)))}
+              </div>
             </div>
           )}
           {currentTab === 'menu' && (
