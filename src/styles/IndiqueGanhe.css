@@ -695,23 +695,28 @@
 
 /* ─── Mobile 768px ─── */
 @media (max-width: 768px) {
-  /* Hero mobile — img full, text overlay */
+  /* Hero mobile — img full, text abaixo, overlay só na img */
   .ig-hero {
-    position: relative !important;
     min-height: auto !important;
     padding: 0 !important;
+  }
+  .ig-hero-image-wrap {
+    position: relative;
+    line-height: 0;
   }
   .ig-hero-mobile-img {
     display: block;
     width: 100%;
     height: auto;
   }
-  .ig-hero .ig-container {
+  .ig-hero-image-wrap .ig-hero-overlay {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    padding: 20px 16px;
+    z-index: 1;
+  }
+  .ig-hero .ig-container {
+    position: relative !important;
+    padding: 24px 16px !important;
   }
   .ig-hero-content-left {
     max-width: 100%;
