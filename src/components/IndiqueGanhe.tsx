@@ -113,6 +113,9 @@ export const IndiqueGanhe = () => {
           padding: secP('ig_hero_padding', '120px 24px 100px'),
           minHeight: g('ig_hero_height') || undefined,
         }}>
+          {g('ig_hero_banner') && (
+            <img src={g('ig_hero_banner')} alt="" className="ig-hero-banner-img" />
+          )}
           {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
             <div className="ig-hero-overlay" style={{
               background: `linear-gradient(to right, ${g('ig_hero_overlay_color', 'rgba(0,20,60,0.7)')} 0%, transparent 100%)`,
