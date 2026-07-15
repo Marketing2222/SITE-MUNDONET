@@ -100,15 +100,15 @@ export const IndiqueGanhe = () => {
   return (
     <div className="ig-page" style={useGradient ? { background: gradCss, minHeight: '100vh' } : undefined}>
       {show('hero') && (
-        <section className={`ig-hero ${isMobile && g('ig_hero_banner') ? 'ig-hero-mobile' : ''}`} style={{
+        <section className="ig-hero" style={{
           backgroundColor: g('ig_hero_bg', '#1a0533'),
-          backgroundImage: !(isMobile && g('ig_hero_banner')) && g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
+          backgroundImage: g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: secP('ig_hero_padding', '120px 24px 100px'),
           minHeight: g('ig_hero_height') || undefined,
         }}>
-          {isMobile && g('ig_hero_banner') && (
+          {g('ig_hero_banner') && (
             <img src={g('ig_hero_banner')} alt="" className="ig-hero-mobile-img" />
           )}
           {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (

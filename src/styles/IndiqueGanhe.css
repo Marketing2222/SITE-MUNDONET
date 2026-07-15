@@ -699,20 +699,21 @@
 
 /* ─── Mobile 768px ─── */
 @media (max-width: 768px) {
-  /* Hero mobile — img full, sem crop, sem overlay */
-  .ig-hero-mobile {
+  /* Hero mobile — CSS controla tudo */
+  .ig-hero {
     padding: 0 !important;
     min-height: auto !important;
-  }
-  .ig-hero-mobile .ig-hero-overlay {
-    display: none;
+    background-image: none !important;
   }
   .ig-hero-mobile-img {
     display: block !important;
     width: 100%;
     height: auto;
   }
-  .ig-hero-mobile .ig-container {
+  .ig-hero-overlay {
+    display: none !important;
+  }
+  .ig-hero .ig-container {
     padding: 24px 16px !important;
   }
   .ig-hero-content-left {
