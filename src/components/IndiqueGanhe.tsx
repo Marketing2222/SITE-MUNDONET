@@ -102,13 +102,13 @@ export const IndiqueGanhe = () => {
       {show('hero') && (
         <section className="ig-hero" style={{
           backgroundColor: g('ig_hero_bg', '#1a0533'),
-          backgroundImage: !isMobile && g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
-          backgroundSize: !isMobile ? 'cover' : undefined,
-          backgroundPosition: !isMobile ? 'center' : undefined,
-          padding: isMobile && g('ig_hero_banner') ? '0' : secP('ig_hero_padding', '120px 24px 100px'),
-          minHeight: isMobile ? undefined : (g('ig_hero_height') || undefined),
+          backgroundImage: g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: secP('ig_hero_padding', '120px 24px 100px'),
+          minHeight: g('ig_hero_height') || undefined,
         }}>
-          {isMobile && g('ig_hero_banner') && (
+          {g('ig_hero_banner') && (
             <div className="ig-hero-image-wrap">
               <img src={g('ig_hero_banner')} alt="" className="ig-hero-mobile-img" />
               {g('ig_hero_overlay', 'true') === 'true' && (
@@ -118,8 +118,8 @@ export const IndiqueGanhe = () => {
               )}
             </div>
           )}
-          {!isMobile && g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
-            <div className="ig-hero-overlay" style={{
+          {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
+            <div className="ig-hero-overlay ig-hero-overlay-desktop" style={{
               background: `linear-gradient(to right, ${g('ig_hero_overlay_color', 'rgba(0,20,60,0.7)')} 0%, transparent 100%)`,
             }} />
           )}

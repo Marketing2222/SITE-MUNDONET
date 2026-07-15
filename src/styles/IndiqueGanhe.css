@@ -44,6 +44,14 @@
   position: relative;
 }
 
+.ig-hero-image-wrap {
+  display: none;
+}
+
+.ig-hero-mobile-img {
+  display: none;
+}
+
 .ig-hero-overlay {
   position: absolute;
   inset: 0;
@@ -695,19 +703,24 @@
 
 /* ─── Mobile 768px ─── */
 @media (max-width: 768px) {
-  /* Hero mobile — img full, text abaixo, overlay só na img */
+  /* Hero mobile — img full, sem crop */
   .ig-hero {
     min-height: auto !important;
     padding: 0 !important;
+    background-image: none !important;
   }
   .ig-hero-image-wrap {
+    display: block !important;
     position: relative;
     line-height: 0;
   }
   .ig-hero-mobile-img {
-    display: block;
+    display: block !important;
     width: 100%;
     height: auto;
+  }
+  .ig-hero-overlay-desktop {
+    display: none !important;
   }
   .ig-hero-image-wrap .ig-hero-overlay {
     position: absolute;
