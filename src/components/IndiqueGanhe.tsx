@@ -84,8 +84,13 @@ export const IndiqueGanhe = () => {
 
   const secP = (key: string, fallback = '') => { const val = g(key, ''); return val ? `${val}px 0` : fallback; };
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  useEffect(() => { const h = () => setIsMobile(window.innerWidth <= 768); window.addEventListener('resize', h); return () => window.removeEventListener('resize', h); }, []);
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    const h = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', h);
+    return () => mq.removeEventListener('change', h);
+  }, []);
 
   const show = (section: string) => vis(section, isMobile);
 
@@ -102,16 +107,16 @@ export const IndiqueGanhe = () => {
       {show('hero') && (
         <section className="ig-hero" style={{
           backgroundColor: g('ig_hero_bg', '#1a0533'),
-          backgroundImage: g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundImage: !isMobile && g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
+          backgroundSize: isMobile ? undefined : 'cover',
+          backgroundPosition: isMobile ? undefined : 'center',
           padding: secP('ig_hero_padding', '120px 24px 100px'),
           minHeight: g('ig_hero_height') || undefined,
         }}>
           {g('ig_hero_banner') && (
             <img src={g('ig_hero_banner')} alt="" className="ig-hero-mobile-img" />
           )}
-          {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
+          {!isMobile && g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
             <div className="ig-hero-overlay" style={{
               background: `linear-gradient(to right, ${g('ig_hero_overlay_color', 'rgba(0,20,60,0.7)')} 0%, transparent 100%)`,
             }} />
