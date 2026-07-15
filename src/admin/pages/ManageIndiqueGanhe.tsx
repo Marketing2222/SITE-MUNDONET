@@ -75,7 +75,15 @@ const FIELD_CONFIG: Record<string, ({ key: string; label: string; type?: string;
     { key: 'ig_faq_padding', label: 'Espaçamento (px)' },
   ],
   mobile: [
-    { key: 'ig_mobile_section_spacing', label: 'Espaçamento Seções (px)', hint: 'Espaçamento vertical entre seções no mobile' },
+    { key: 'ig_hero_mobile_padding', label: 'Hero (px)' },
+    { key: 'ig_brands_mobile_padding', label: 'Marcas (px)' },
+    { key: 'ig_steps_mobile_padding', label: 'Como Funciona (px)' },
+    { key: 'ig_calc_mobile_padding', label: 'Calculadora (px)' },
+    { key: 'ig_about_mobile_padding', label: 'Sobre (px)' },
+    { key: 'ig_benefits_mobile_padding', label: 'Benefícios (px)' },
+    { key: 'ig_testimonials_mobile_padding', label: 'Depoimentos (px)' },
+    { key: 'ig_faq_mobile_padding', label: 'FAQ (px)' },
+    { key: 'ig_cta_mobile_padding', label: 'CTA Final (px)' },
   ],
   calculadora: [
     { key: 'ig_calc_title', label: 'Título' },
@@ -319,7 +327,7 @@ export const ManageIndiqueGanhe = () => {
       allKeys.push('ig_page_gradient', 'ig_page_gradient_color1', 'ig_page_gradient_color2', 'ig_page_gradient_color3', 'ig_page_gradient_angle');
       allKeys.push('ig_hero_overlay', 'ig_hero_overlay_color', 'ig_hero_show_text', 'ig_hero_height');
       allKeys.push('ig_faq_title_color', 'ig_faq_bg', 'ig_faq_card_bg', 'ig_faq_question_color', 'ig_faq_answer_color', 'ig_faq_icon_color', 'ig_faq_border');
-      allKeys.push('ig_mobile_section_spacing');
+      allKeys.push('ig_mobile_section_spacing', 'ig_hero_mobile_padding', 'ig_brands_mobile_padding', 'ig_steps_mobile_padding', 'ig_calc_mobile_padding', 'ig_about_mobile_padding', 'ig_benefits_mobile_padding', 'ig_testimonials_mobile_padding', 'ig_faq_mobile_padding', 'ig_cta_mobile_padding');
       ['ig_brands_items', 'ig_steps_items', 'ig_benefits_items', 'ig_testimonials_items', 'ig_faq_items'].forEach(k => allKeys.push(k));
       const toSave = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
         if (k === 'ig_nav_menu') return apiFetch('/settings/ig_nav_menu', { method: 'PUT', body: JSON.stringify({ value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' }) });

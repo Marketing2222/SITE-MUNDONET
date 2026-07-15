@@ -101,10 +101,22 @@ export const IndiqueGanhe = () => {
   const gradC3 = g('ig_page_gradient_color3', '#f0f9ff');
   const gradCss = useGradient ? `linear-gradient(${gradAngle}deg, ${gradC1} 0%, ${gradC2} 50%, ${gradC3} 100%)` : undefined;
   const secBg = (ownColor: string) => useGradient ? 'transparent' : ownColor;
-  const mobileSpacing = g('ig_mobile_section_spacing', '80');
+  const mv = (key: string, def: string) => g(key, '') || def;
+  const mobileVars = {
+    '--ig-mobile-spacing': `${mv('ig_mobile_section_spacing', '80')}px`,
+    '--ig-hero-mobile': g('ig_hero_mobile_padding', '') ? `${g('ig_hero_mobile_padding')}px` : undefined,
+    '--ig-brands-mobile': g('ig_brands_mobile_padding', '') ? `${g('ig_brands_mobile_padding')}px` : undefined,
+    '--ig-steps-mobile': g('ig_steps_mobile_padding', '') ? `${g('ig_steps_mobile_padding')}px` : undefined,
+    '--ig-calc-mobile': g('ig_calc_mobile_padding', '') ? `${g('ig_calc_mobile_padding')}px` : undefined,
+    '--ig-about-mobile': g('ig_about_mobile_padding', '') ? `${g('ig_about_mobile_padding')}px` : undefined,
+    '--ig-benefits-mobile': g('ig_benefits_mobile_padding', '') ? `${g('ig_benefits_mobile_padding')}px` : undefined,
+    '--ig-testimonials-mobile': g('ig_testimonials_mobile_padding', '') ? `${g('ig_testimonials_mobile_padding')}px` : undefined,
+    '--ig-faq-mobile': g('ig_faq_mobile_padding', '') ? `${g('ig_faq_mobile_padding')}px` : undefined,
+    '--ig-cta-mobile': g('ig_cta_mobile_padding', '') ? `${g('ig_cta_mobile_padding')}px` : undefined,
+  } as React.CSSProperties;
 
   return (
-    <div className="ig-page" style={{ ...(useGradient ? { background: gradCss, minHeight: '100vh' } : {}), '--ig-mobile-spacing': `${mobileSpacing}px` } as React.CSSProperties}>
+    <div className="ig-page" style={{ ...(useGradient ? { background: gradCss, minHeight: '100vh' } : {}), ...mobileVars }}>
       {show('hero') && (
         <section className="ig-hero" style={{
           backgroundColor: g('ig_hero_bg', '#1a0533'),

@@ -745,8 +745,32 @@
     margin-bottom: 10px;
   }
 
-  .ig-steps, .ig-calc-section, .ig-about, .ig-benefits, .ig-testimonials, .ig-faq, .ig-cta {
-    padding: var(--ig-mobile-spacing, 80px) 0 !important;
+  .ig-hero {
+    padding: var(--ig-hero-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-brands {
+    padding: var(--ig-brands-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-steps {
+    padding: var(--ig-steps-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-calc-section {
+    padding: var(--ig-calc-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-about {
+    padding: var(--ig-about-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-benefits {
+    padding: var(--ig-benefits-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-testimonials {
+    padding: var(--ig-testimonials-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-faq {
+    padding: var(--ig-faq-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
+  }
+  .ig-cta {
+    padding: var(--ig-cta-mobile, var(--ig-mobile-spacing, 80px)) 0 !important;
   }
 
   .ig-steps h2, .ig-about-title, .ig-benefits h2, .ig-testimonials h2, .ig-faq h2 {
