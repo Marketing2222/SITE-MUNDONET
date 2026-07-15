@@ -102,13 +102,15 @@ export const IndiqueGanhe = () => {
       {show('hero') && (
         <section className="ig-hero" style={{
           backgroundColor: g('ig_hero_bg', '#1a0533'),
-          backgroundImage: g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
-          backgroundSize: isMobile ? '100% auto' : 'cover',
-          backgroundPosition: 'top center',
-          backgroundRepeat: 'no-repeat',
-          padding: isMobile ? '80px 16px 40px' : secP('ig_hero_padding', '120px 24px 100px'),
+          backgroundImage: !isMobile && g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
+          backgroundSize: !isMobile ? 'cover' : undefined,
+          backgroundPosition: !isMobile ? 'center' : undefined,
+          padding: isMobile ? '0' : secP('ig_hero_padding', '120px 24px 100px'),
           minHeight: isMobile ? undefined : (g('ig_hero_height') || undefined),
         }}>
+          {isMobile && g('ig_hero_banner') && (
+            <img src={g('ig_hero_banner')} alt="" className="ig-hero-mobile-img" />
+          )}
           {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
             <div className="ig-hero-overlay" style={{
               background: `linear-gradient(to right, ${g('ig_hero_overlay_color', 'rgba(0,20,60,0.7)')} 0%, transparent 100%)`,
@@ -147,7 +149,8 @@ export const IndiqueGanhe = () => {
           <div className="ig-container">
             <h2 style={{ color: g('ig_steps_title_color', '#1a0533') }}>{g('ig_steps_title', 'Veja como é fácil indicar')}</h2>
             <p className="ig-section-subtitle" style={{ color: g('ig_steps_subtitle_color', '#64748b') }}>{g('ig_steps_subtitle', 'Em apenas 3 passos simples você começa a ganhar')}</p>
-            <div className="ig-steps-grid">
+            <div className="ig-steps-grid-wrap">
+              <div className="ig-steps-grid">
               {steps.map((step, i) => (
                 <div key={i} className="ig-step-card" style={{ backgroundColor: g('ig_step_card_bg', '#f8fafc'), borderColor: g('ig_step_card_border', '#e2e8f0') }}>
                   <div className="ig-step-icon" style={{ backgroundColor: g('ig_step_icon_bg', '#22c55e20'), color: g('ig_step_icon_color', '#22c55e') }}>{step.icon}</div>
@@ -156,6 +159,7 @@ export const IndiqueGanhe = () => {
                   <p style={{ color: g('ig_step_desc_color', '#64748b') }}>{step.desc}</p>
                 </div>
               ))}
+              </div>
             </div>
           </div>
         </section>
@@ -212,7 +216,8 @@ export const IndiqueGanhe = () => {
         <section className="ig-benefits" style={{ backgroundColor: secBg(g('ig_benefits_bg', '#f0fdf4')), padding: secP('ig_benefits_padding', '100px 0') }}>
           <div className="ig-container">
             <h2 style={{ color: g('ig_benefits_title_color', '#1a0533') }}>{g('ig_benefits_title', 'Por que indicar a Mundonet?')}</h2>
-            <div className="ig-benefits-grid">
+            <div className="ig-benefits-grid-wrap">
+              <div className="ig-benefits-grid">
               {benefits.map((b, i) => (
                 <div key={i} className="ig-benefit-card" style={{ backgroundColor: g('ig_benefit_card_bg', '#ffffff'), borderColor: g('ig_benefit_card_border', '#dcfce7') }}>
                   <div className="ig-benefit-icon" style={{ backgroundColor: g('ig_benefit_icon_bg', '#22c55e20'), color: g('ig_benefit_icon_color', '#22c55e') }}>{b.icon}</div>
@@ -220,6 +225,7 @@ export const IndiqueGanhe = () => {
                   <p style={{ color: g('ig_benefit_desc_color', '#64748b') }}>{b.desc}</p>
                 </div>
               ))}
+              </div>
             </div>
           </div>
         </section>

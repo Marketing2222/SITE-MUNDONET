@@ -695,6 +695,24 @@
 
 /* ─── Mobile 768px ─── */
 @media (max-width: 768px) {
+  /* Hero mobile — img full, text overlay */
+  .ig-hero {
+    position: relative !important;
+    min-height: auto !important;
+    padding: 0 !important;
+  }
+  .ig-hero-mobile-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ig-hero .ig-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 20px 16px;
+  }
   .ig-hero-content-left {
     max-width: 100%;
   }
@@ -739,7 +757,24 @@
     margin-bottom: 20px;
   }
 
-  /* Steps — scroll horizontal */
+  /* Steps — scroll horizontal, sem barrinha, com seta */
+  .ig-steps-grid-wrap {
+    position: relative;
+    overflow: visible;
+  }
+  .ig-steps-grid-wrap::after {
+    content: '→';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-weight: 700;
+    color: #94a3b8;
+    pointer-events: none;
+    z-index: 2;
+    animation: ig-arrow-slide 1.5s ease-in-out infinite;
+  }
   .ig-steps-grid {
     display: flex !important;
     overflow-x: auto;
@@ -750,6 +785,10 @@
     margin: 0 -24px;
     padding-left: 24px;
     padding-right: 24px;
+    scrollbar-width: none;
+  }
+  .ig-steps-grid::-webkit-scrollbar {
+    display: none;
   }
   .ig-step-card {
     min-width: 240px;
@@ -817,7 +856,24 @@
     margin-bottom: 30px;
   }
 
-  /* Benefits — scroll horizontal */
+  /* Benefits — scroll horizontal, sem barrinha, com seta */
+  .ig-benefits-grid-wrap {
+    position: relative;
+    overflow: visible;
+  }
+  .ig-benefits-grid-wrap::after {
+    content: '→';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-weight: 700;
+    color: #94a3b8;
+    pointer-events: none;
+    z-index: 2;
+    animation: ig-arrow-slide 1.5s ease-in-out infinite;
+  }
   .ig-benefits-grid {
     display: flex !important;
     overflow-x: auto;
@@ -828,6 +884,10 @@
     margin: 0 -24px;
     padding-left: 24px;
     padding-right: 24px;
+    scrollbar-width: none;
+  }
+  .ig-benefits-grid::-webkit-scrollbar {
+    display: none;
   }
   .ig-benefit-card {
     min-width: 160px;
@@ -894,4 +954,9 @@
   .ig-brand-item img {
     height: 20px;
   }
+}
+
+@keyframes ig-arrow-slide {
+  0%, 100% { transform: translateY(-50%) translateX(0); opacity: 0.5; }
+  50% { transform: translateY(-50%) translateX(6px); opacity: 1; }
 }
