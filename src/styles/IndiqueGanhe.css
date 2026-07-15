@@ -44,10 +44,6 @@
   position: relative;
 }
 
-.ig-hero-mobile-img {
-  display: none;
-}
-
 .ig-hero-overlay {
   position: absolute;
   inset: 0;
@@ -699,23 +695,6 @@
 
 /* ─── Mobile 768px ─── */
 @media (max-width: 768px) {
-  /* Hero mobile — CSS controla tudo */
-  .ig-hero {
-    padding: 0 !important;
-    min-height: auto !important;
-    background-image: none !important;
-  }
-  .ig-hero-mobile-img {
-    display: block !important;
-    width: 100%;
-    height: auto;
-  }
-  .ig-hero-overlay {
-    display: none !important;
-  }
-  .ig-hero .ig-container {
-    padding: 24px 16px !important;
-  }
   .ig-hero-content-left {
     max-width: 100%;
   }
