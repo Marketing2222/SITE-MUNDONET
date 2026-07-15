@@ -100,26 +100,19 @@ export const IndiqueGanhe = () => {
   return (
     <div className="ig-page" style={useGradient ? { background: gradCss, minHeight: '100vh' } : undefined}>
       {show('hero') && (
-        <section className="ig-hero" style={{
+        <section className={`ig-hero ${isMobile && g('ig_hero_banner') ? 'ig-hero-mobile' : ''}`} style={{
           backgroundColor: g('ig_hero_bg', '#1a0533'),
-          backgroundImage: g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
+          backgroundImage: !(isMobile && g('ig_hero_banner')) && g('ig_hero_banner') ? `url(${g('ig_hero_banner')})` : undefined,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: secP('ig_hero_padding', '120px 24px 100px'),
           minHeight: g('ig_hero_height') || undefined,
         }}>
-          {g('ig_hero_banner') && (
-            <div className="ig-hero-image-wrap">
-              <img src={g('ig_hero_banner')} alt="" className="ig-hero-mobile-img" />
-              {g('ig_hero_overlay', 'true') === 'true' && (
-                <div className="ig-hero-overlay" style={{
-                  background: `linear-gradient(to right, ${g('ig_hero_overlay_color', 'rgba(0,20,60,0.7)')} 0%, transparent 100%)`,
-                }} />
-              )}
-            </div>
+          {isMobile && g('ig_hero_banner') && (
+            <img src={g('ig_hero_banner')} alt="" className="ig-hero-mobile-img" />
           )}
           {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
-            <div className="ig-hero-overlay ig-hero-overlay-desktop" style={{
+            <div className="ig-hero-overlay" style={{
               background: `linear-gradient(to right, ${g('ig_hero_overlay_color', 'rgba(0,20,60,0.7)')} 0%, transparent 100%)`,
             }} />
           )}

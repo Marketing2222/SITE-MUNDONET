@@ -44,10 +44,6 @@
   position: relative;
 }
 
-.ig-hero-image-wrap {
-  display: none;
-}
-
 .ig-hero-mobile-img {
   display: none;
 }
@@ -703,32 +699,20 @@
 
 /* ─── Mobile 768px ─── */
 @media (max-width: 768px) {
-  /* Hero mobile — img full, sem crop */
-  .ig-hero {
-    min-height: auto !important;
+  /* Hero mobile — img full, sem crop, sem overlay */
+  .ig-hero-mobile {
     padding: 0 !important;
-    background-image: none !important;
+    min-height: auto !important;
   }
-  .ig-hero-image-wrap {
-    display: block !important;
-    position: relative;
-    line-height: 0;
+  .ig-hero-mobile .ig-hero-overlay {
+    display: none;
   }
   .ig-hero-mobile-img {
     display: block !important;
     width: 100%;
     height: auto;
   }
-  .ig-hero-overlay-desktop {
-    display: none !important;
-  }
-  .ig-hero-image-wrap .ig-hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
-  .ig-hero .ig-container {
-    position: relative !important;
+  .ig-hero-mobile .ig-container {
     padding: 24px 16px !important;
   }
   .ig-hero-content-left {
