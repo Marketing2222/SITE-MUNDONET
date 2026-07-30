@@ -189,7 +189,18 @@ export const Plans = () => {
                   </div>
 
                   <div className="plan-price-block">
-                    <span className="plan-name plan-name-speed">{plan.name}</span>
+                    {(() => {
+                      const match = plan.name.match(/^(\d+)\s*(.*)$/);
+                      if (match) {
+                        return (
+                          <>
+                            <span className="plan-speed-number">{match[1]}</span>
+                            <span className="plan-speed-unit">{match[2]}</span>
+                          </>
+                        );
+                      }
+                      return <span className="plan-name plan-name-speed">{plan.name}</span>;
+                    })()}
                   </div>
 
                   <div className="plan-highlight">
