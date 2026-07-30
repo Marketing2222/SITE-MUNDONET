@@ -3,6 +3,8 @@ import { apiFetch } from '../hooks/useAuth';
 import ManageQuickLinks from './ManageQuickLinks';
 import ManageBenefits from './ManageBenefits';
 import { RichTextField } from '../components/RichTextField';
+import { ToggleSwitch } from '../components/ToggleSwitch';
+import { ColorPicker } from '../components/ColorPicker';
 import { API_BASE_URL } from '../../config/api';
 
 interface Setting { key: string; value: string; label: string; }
@@ -371,12 +373,7 @@ export const ManageHomeSections = () => {
         return (
           <div className="admin-field" key={fd.key}>
             <label>{fd.label}</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <input type="color" value={val || '#000000'} onChange={e => set(fd.key, e.target.value, fd.label)}
-                style={{ width: 40, height: 36, padding: 0, border: '1px solid var(--adm-border)', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
-              <input type="text" value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder={fd.hint}
-                style={{ flex: 1, fontFamily: 'monospace', fontSize: 13 }} />
-            </div>
+            <ColorPicker value={val || '#000000'} onChange={v => set(fd.key, v, fd.label)} />
             {fd.hint && <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>{fd.hint}</small>}
           </div>
         );
@@ -385,21 +382,11 @@ export const ManageHomeSections = () => {
         return (
           <div className="admin-field" key={fd.key}>
             <label>{fd.label}</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <label style={{ position: 'relative', display: 'inline-block', width: 44, height: 24, cursor: 'pointer' }}>
-                <input type="checkbox" checked={isActive} onChange={e => set(fd.key, e.target.checked ? 'true' : 'false', fd.label)}
-                  style={{ display: 'none' }} />
-                <span style={{
-                  position: 'absolute', inset: 0, borderRadius: 12, transition: 'background 0.2s',
-                  background: isActive ? 'var(--adm-primary, #2563EB)' : '#ccc'
-                }} />
-                <span style={{
-                  position: 'absolute', top: 2, left: isActive ? 22 : 2, width: 20, height: 20,
-                  borderRadius: '50%', background: '#fff', transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
-                }} />
-              </label>
-              <span style={{ fontSize: 13, color: 'var(--adm-text2)' }}>{isActive ? 'Ativo' : 'Inativo'}</span>
-            </div>
+            <ToggleSwitch
+              value={isActive}
+              onChange={v => set(fd.key, v ? 'true' : 'false', fd.label)}
+              label={isActive ? 'Ativo' : 'Inativo'}
+            />
           </div>
         );
       case 'font':
@@ -538,12 +525,8 @@ export const ManageHomeSections = () => {
               }}>
                 <span style={{ fontSize: 18 }}>{def?.icon || '?'}</span>
                 <span style={{ flex: 1 }}>{def?.label || id}</span>
-                <label style={{ display:'flex', alignItems:'center', gap:6, cursor:'pointer', fontSize:13, color:'var(--adm-text2)' }}>
-                  <input type="checkbox" checked={active} onChange={() => toggleActive(id)}
-                    style={{ width:16, height:16, cursor:'pointer' }} />
-                  {active ? 'Ativo' : 'Inativo'}
-                </label>
-                <label style={{ display:'flex', alignItems:'center', gap:6, cursor:'pointer', fontSize:13, color: sectionsMobile[id] !== false ? '#16a34a' : '#94a3b8' }}
+                <ToggleSwitch value={active} onChange={() => toggleActive(id)} />
+                <label style={{ display:'flex', alignItems:'center', gap:6, cursor:'pointer', fontSize:13, color: sectionsMobile[id] !== false ? 'var(--adm-success)' : 'var(--adm-text2)' }}
                   title={sectionsMobile[id] !== false ? 'Visível no mobile' : 'Oculto no mobile'}
                   onClick={() => setSectionsMobile(prev => ({ ...prev, [id]: prev[id] === false ? true : false }))}>
                   📱 {sectionsMobile[id] !== false ? 'Sim' : 'Não'}
@@ -573,15 +556,15 @@ export const ManageHomeSections = () => {
       {/* Toggle de ativar/desativar seção */}
       <div className="admin-card" style={{ marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 18 }}>{SECTION_DEFS.find(s => s.id === Object.keys(SECTIONS).find(k => k === activeTab))?.icon || '📋'}</span>
           <span style={{ fontWeight: 600, fontSize: 14 }}>Seção {activeTab}</span>
         </div>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 14 }}>
-          <span style={{ color: sectionsActive[Object.keys(SECTIONS).find(k => k === activeTab) || ''] !== false ? '#16a34a' : '#94a3b8', fontWeight: 500 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ color: sectionsActive[Object.keys(SECTIONS).find(k => k === activeTab) || ''] !== false ? 'var(--adm-green)' : 'var(--adm-text2)', fontWeight: 500, fontSize: 13 }}>
             {sectionsActive[Object.keys(SECTIONS).find(k => k === activeTab) || ''] !== false ? 'Visível no site' : 'Oculta no site'}
           </span>
-          <div
-            onClick={async () => {
+          <ToggleSwitch
+            value={sectionsActive[sectionOrder.find(id => SECTION_DEFS.find(s => s.id === id)?.label === activeTab) || ''] !== false}
+            onChange={async () => {
               const tabId = sectionOrder.find(id => SECTION_DEFS.find(s => s.id === id)?.label === activeTab);
               if (tabId) {
                 const nextActive = { ...sectionsActive, [tabId]: sectionsActive[tabId] === false ? true : false };
@@ -594,19 +577,8 @@ export const ManageHomeSections = () => {
                 } catch (e) { console.error(e); }
               }
             }}
-            style={{
-              width: 44, height: 24, borderRadius: 12, cursor: 'pointer', position: 'relative',
-              background: sectionsActive[sectionOrder.find(id => SECTION_DEFS.find(s => s.id === id)?.label === activeTab) || ''] !== false ? '#16a34a' : '#cbd5e1',
-              transition: 'background 0.2s'
-            }}
-          >
-            <div style={{
-              width: 20, height: 20, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: 2,
-              transition: 'transform 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-              transform: sectionsActive[sectionOrder.find(id => SECTION_DEFS.find(s => s.id === id)?.label === activeTab) || ''] !== false ? 'translateX(20px)' : 'translateX(0)'
-            }} />
-          </div>
-        </label>
+          />
+        </div>
       </div>
 
       {activeTab === 'Links Rápidos (Ajuda)' ? (
@@ -740,7 +712,7 @@ export const ManageHomeSections = () => {
             {/* Coluna Esquerda */}
             <div className="admin-card">
               <h3 style={{ margin: '0 0 16px', paddingBottom: 10, borderBottom: '1px solid var(--adm-border)', fontSize: 15, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ background: '#7c3aed', color: '#fff', borderRadius: 6, padding: '2px 8px', fontSize: 11 }}>ESQUERDA</span>
+                <span style={{ background: 'var(--adm-accent)', color: '#fff', borderRadius: 6, padding: '2px 8px', fontSize: 11 }}>ESQUERDA</span>
                 Sobre a Empresa
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -788,7 +760,7 @@ export const ManageHomeSections = () => {
             {/* Coluna Direita */}
             <div className="admin-card">
               <h3 style={{ margin: '0 0 16px', paddingBottom: 10, borderBottom: '1px solid var(--adm-border)', fontSize: 15, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ background: '#7c3aed', color: '#fff', borderRadius: 6, padding: '2px 8px', fontSize: 11 }}>DIREITA</span>
+                <span style={{ background: 'var(--adm-accent)', color: '#fff', borderRadius: 6, padding: '2px 8px', fontSize: 11 }}>DIREITA</span>
                 Canais de Atendimento
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

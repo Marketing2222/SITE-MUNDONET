@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { apiFetch } from '../hooks/useAuth';
 import { ImageUpload } from '../components/ImageUpload';
+import { ToggleSwitch } from '../components/ToggleSwitch';
+import { ColorPicker } from '../components/ColorPicker';
 
 interface Setting { key: string; value: string; label: string; }
 interface ListItem { icon: string; title: string; desc: string; }
@@ -203,36 +205,31 @@ export const ManageParaEmpresas = () => {
       case 'image':
         return (
           <div key={fd.key} style={{ gridColumn: '1 / -1' }}>
-            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
             <ImageUpload value={val} onChange={v => set(fd.key, v, fd.label)} />
           </div>
         );
       case 'color':
         return (
           <div key={fd.key}>
-            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <input type="color" value={val || '#000000'} onChange={e => set(fd.key, e.target.value, fd.label)}
-                style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
-              <input type="text" value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder={fd.hint}
-                style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
-            </div>
+            <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <ColorPicker value={val || '#000000'} onChange={v => set(fd.key, v, fd.label)} />
           </div>
         );
       case 'number':
         return (
           <div key={fd.key}>
-            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
             <input type="number" value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder={fd.hint}
-              style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+              style={{ width: '100%', padding: '8px 12px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }} />
           </div>
         );
       case 'select':
         return (
           <div key={fd.key}>
-            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
             <select value={val} onChange={e => set(fd.key, e.target.value, fd.label)}
-              style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }}>
+              style={{ width: '100%', padding: '8px 12px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }}>
               {fd.options?.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
             </select>
           </div>
@@ -241,29 +238,20 @@ export const ManageParaEmpresas = () => {
         const isActive = val === 'true' || val === '';
         return (
           <div key={fd.key}>
-            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-              <div style={{
-                width: 44, height: 24, borderRadius: 12, position: 'relative', transition: 'background 0.2s',
-                background: isActive ? '#22c55e' : '#555'
-              }}>
-                <div style={{
-                  width: 20, height: 20, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2,
-                  left: isActive ? 22 : 2, transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
-                }} />
-              </div>
-              <input type="checkbox" checked={isActive} onChange={e => set(fd.key, e.target.checked ? 'true' : 'false', fd.label)}
-                style={{ display: 'none' }} />
-              <span style={{ fontSize: 13, color: isActive ? '#16a34a' : '#94a3b8' }}>{isActive ? 'Ativo' : 'Inativo'}</span>
-            </label>
+            <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <ToggleSwitch
+              value={isActive}
+              onChange={v => set(fd.key, v ? 'true' : 'false', fd.label)}
+              label={isActive ? 'Ativo' : 'Inativo'}
+            />
           </div>
         );
       default:
         return (
           <div key={fd.key}>
-            <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+            <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
             <input type="text" value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder={fd.hint}
-              style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+              style={{ width: '100%', padding: '8px 12px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }} />
           </div>
         );
     }
@@ -277,11 +265,11 @@ export const ManageParaEmpresas = () => {
     <div>
       {items.map((item, idx) => (
         <div key={idx} style={{
-          background: '#1a1a2e', borderRadius: 10, padding: 16, marginBottom: 12,
-          border: '1px solid #333', position: 'relative'
+          background: 'var(--adm-surface)', borderRadius: 10, padding: 16, marginBottom: 12,
+          border: '1px solid var(--adm-border)', position: 'relative'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-            <span style={{ fontSize: 13, color: '#9ca3af', fontWeight: 600 }}>#{idx + 1}</span>
+            <span style={{ fontSize: 13, color: 'var(--adm-text2)', fontWeight: 600 }}>#{idx + 1}</span>
             <button onClick={() => setItems(items.filter((_, i) => i !== idx))}
               style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: 18 }}>
               🗑️
@@ -289,31 +277,31 @@ export const ManageParaEmpresas = () => {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr', gap: 10 }}>
             <div>
-              <label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 3 }}>Ícone</label>
+              <label style={{ fontSize: 11, color: 'var(--adm-text2)', display: 'block', marginBottom: 3 }}>Ícone</label>
               <input value={item.icon} onChange={e => {
                 const next = [...items]; next[idx] = { ...next[idx], icon: e.target.value }; setItems(next);
               }} placeholder={defaults[idx]?.icon || '📌'}
-                style={{ width: '100%', padding: '8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 18, textAlign: 'center' }} />
+                style={{ width: '100%', padding: '8px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 18, textAlign: 'center' }} />
             </div>
             <div>
-              <label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 3 }}>Título</label>
+              <label style={{ fontSize: 11, color: 'var(--adm-text2)', display: 'block', marginBottom: 3 }}>Título</label>
               <input value={item.title} onChange={e => {
                 const next = [...items]; next[idx] = { ...next[idx], title: e.target.value }; setItems(next);
               }} placeholder={defaults[idx]?.title || 'Título'}
-                style={{ width: '100%', padding: '8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+                style={{ width: '100%', padding: '8px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }} />
             </div>
           </div>
           <div style={{ marginTop: 8 }}>
-            <label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 3 }}>Descrição</label>
+            <label style={{ fontSize: 11, color: 'var(--adm-text2)', display: 'block', marginBottom: 3 }}>Descrição</label>
             <input value={item.desc} onChange={e => {
               const next = [...items]; next[idx] = { ...next[idx], desc: e.target.value }; setItems(next);
             }} placeholder={defaults[idx]?.desc || 'Descrição'}
-              style={{ width: '100%', padding: '8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+              style={{ width: '100%', padding: '8px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }} />
           </div>
         </div>
       ))}
       <button onClick={() => setItems([...items, { ...EMPTY_ITEM }])}
-        style={{ width: '100%', padding: '10px', background: 'transparent', border: '2px dashed #333', borderRadius: 10, color: '#9ca3af', cursor: 'pointer', fontSize: 13 }}>
+        style={{ width: '100%', padding: '10px', background: 'transparent', border: '2px dashed var(--adm-border)', borderRadius: 10, color: 'var(--adm-text2)', cursor: 'pointer', fontSize: 13 }}>
         + Adicionar Item
       </button>
     </div>
@@ -342,8 +330,8 @@ export const ManageParaEmpresas = () => {
             <button key={i} onClick={() => setActiveSection(i)}
               style={{
                 display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', marginBottom: 4,
-                background: activeSection === i ? '#005CFF' : 'transparent',
-                color: activeSection === i ? '#fff' : '#9ca3af',
+                background: activeSection === i ? 'var(--adm-accent)' : 'transparent',
+                color: activeSection === i ? '#fff' : 'var(--adm-text2)',
                 border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 13, fontWeight: activeSection === i ? 600 : 400,
               }}>
               {s.section}
@@ -352,7 +340,7 @@ export const ManageParaEmpresas = () => {
         </div>
 
         <div className="admin-card" style={{ flex: 1 }}>
-          <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333' }}>
+          <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid var(--adm-border)' }}>
             {FIELDS[activeSection].section}
           </h3>
 
@@ -360,7 +348,7 @@ export const ManageParaEmpresas = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {FIELDS[activeSection].fields.map(renderField)}
               <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
-                <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens do Benefícios (lado a lado na página)</label>
+                <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens do Benefícios (lado a lado na página)</label>
                 {renderDynamicList(benefits, setBenefits, [
                   { icon: '📈', title: 'Planos flexíveis', desc: 'Opções que crescem com seu negócio.' },
                   { icon: '🌐', title: 'Conectividade total', desc: 'Alta performance para toda a empresa.' },
@@ -373,7 +361,7 @@ export const ManageParaEmpresas = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {FIELDS[activeSection].fields.map(renderField)}
               <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
-                <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens dos Serviços (lado a lado na página)</label>
+                <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 8, display: 'block', fontWeight: 600 }}>Itens dos Serviços (lado a lado na página)</label>
                 {renderDynamicList(services, setServices, [
                   { icon: '📥', title: 'Download/Upload garantido', desc: 'Velocidade simétrica garantida.' },
                   { icon: '🌐', title: 'IP Dedicado', desc: 'IP exclusivo para sua empresa.' },

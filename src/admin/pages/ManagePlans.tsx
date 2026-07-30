@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
 import { API_BASE_URL } from '../../config/api';
+import { ToggleSwitch } from '../components/ToggleSwitch';
 
 interface Plan {
   id: number; name: string; speed: string; price: string; highlight: string;
@@ -60,11 +61,14 @@ export const ManagePlans = () => {
   const [editingBadgeIdx, setEditingBadgeIdx] = useState<number | null>(null);
   const [appLibrary, setAppLibrary] = useState<LibraryApp[]>([]);
   const [badgeLibrary, setBadgeLibrary] = useState<{id:number;text:string;icon_url:string;icon_emoji:string;bg_color:string;text_color:string}[]>([]);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basic: true });
 
   const load = async () => setPlans(await apiFetch('/plans/all'));
   const loadLibrary = async () => { try { setAppLibrary(await apiFetch('/app-library')); } catch { /* silently fail */ } };
   const loadBadgeLibrary = async () => { try { setBadgeLibrary(await apiFetch('/badge-library')); } catch { /* silently fail */ } };
   useEffect(() => { load(); loadLibrary(); loadBadgeLibrary(); }, []);
+
+  const toggleSection = (key: string) => setOpenSections(prev => ({ ...prev, [key]: !prev[key] }));
 
   const openNew = () => { setEditing(null); setForm(EMPTY_PLAN); setModal(true); setMsg(''); };
   const openEdit = (p: Plan) => { 
@@ -337,143 +341,107 @@ export const ManagePlans = () => {
 
       {modal && (
         <div className="admin-modal-overlay" onClick={e => e.target === e.currentTarget && setModal(false)}>
-          <div className="admin-modal">
+          <div className="admin-modal" style={{ maxWidth: 700 }}>
             <div className="admin-modal-header">
               <h3>{editing ? `Editar: ${editing.name}` : 'Novo Plano'}</h3>
-              <button className="admin-modal-close" onClick={() => setModal(false)}>×</button>
+              <button className="admin-modal-close" onClick={() => setModal(false)}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
             </div>
             {msg && <div className="admin-alert error">{msg}</div>}
             <div className="admin-form">
-              <div className="admin-form-row">
-                <div className="admin-field"><label>Nome do Plano</label><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Ex: 700 MEGA" /></div>
-                <div className="admin-field"><label>Velocidade</label><input value={form.speed} onChange={e=>setForm({...form,speed:e.target.value})} placeholder="Ex: 700" /></div>
-              </div>
-              <div className="admin-form-row">
-                <div className="admin-field"><label>Preço (R$)</label><input value={form.price} onChange={e=>setForm({...form,price:e.target.value})} placeholder="Ex: 89,90" /></div>
-                <div className="admin-field"><label>Ícone destaque</label><input value={form.highlight_icon} onChange={e=>setForm({...form,highlight_icon:e.target.value})} placeholder="Ex: 📡" /></div>
-              </div>
-              <div className="admin-field"><label>Texto destaque</label><input value={form.highlight} onChange={e=>setForm({...form,highlight:e.target.value})} placeholder="Ex: Vários dispositivos conectados" /></div>
-              <div className="admin-form-row">
-                <div className="admin-field"><label>Texto do botão</label><input value={form.button_text} onChange={e=>setForm({...form,button_text:e.target.value})} /></div>
-                <div className="admin-field"><label>Mensagem WhatsApp</label><input value={form.whatsapp_msg} onChange={e=>setForm({...form,whatsapp_msg:e.target.value})} /></div>
-              </div>
 
-              {/* Badges do Pop-up */}
-              <div className="admin-field">
-                <label>Chips de destaque (Pop-up) <span style={{fontSize:'0.78rem',color:'#888',fontWeight:'normal'}}>— aparecem no topo do pop-up, estilo pílula</span></label>
-                {badgeLibrary.length > 0 && (
-                  <div style={{marginBottom:10}}>
-                    <label style={{fontSize:'0.78rem',color:'#9ca3af',marginBottom:4,display:'block'}}>📚 Selecionar da Biblioteca:</label>
-                    <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
-                      {badgeLibrary.map(libBadge => (
-                        <button key={libBadge.id} className="admin-btn ghost small" onClick={() => selectFromBadgeLibrary(libBadge)} style={{display:'flex',alignItems:'center',gap:4,fontSize:'0.75rem',padding:'4px 8px',borderLeft:`3px solid ${libBadge.bg_color}`}}>
-                          {libBadge.icon_emoji && <span>{libBadge.icon_emoji}</span>}
-                          {libBadge.icon_url && <img src={libBadge.icon_url} style={{width:16,height:16,borderRadius:3,objectFit:'contain'}} />}
-                          <span style={{color:libBadge.text_color}}>{libBadge.text}</span>
-                        </button>
-                      ))}
+              {/* Seção: Dados Básicos */}
+              <div className="admin-section">
+                <div className="admin-section-header" onClick={() => toggleSection('basic')}>
+                  <span className="admin-section-title">Dados Básicos</span>
+                  <svg className={`admin-section-arrow ${openSections.basic ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                {openSections.basic && (
+                  <div className="admin-section-body">
+                    <div className="admin-form-row">
+                      <div className="admin-field"><label>Nome do Plano</label><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Ex: 700 MEGA" /></div>
+                      <div className="admin-field"><label>Velocidade</label><input value={form.speed} onChange={e=>setForm({...form,speed:e.target.value})} placeholder="Ex: 700" /></div>
+                    </div>
+                    <div className="admin-form-row">
+                      <div className="admin-field"><label>Preço (R$)</label><input value={form.price} onChange={e=>setForm({...form,price:e.target.value})} placeholder="Ex: 89,90" /></div>
+                      <div className="admin-field"><label>Ícone destaque</label><input value={form.highlight_icon} onChange={e=>setForm({...form,highlight_icon:e.target.value})} placeholder="Ex: 📡" /></div>
+                    </div>
+                    <div className="admin-field"><label>Texto destaque</label><input value={form.highlight} onChange={e=>setForm({...form,highlight:e.target.value})} placeholder="Ex: Vários dispositivos conectados" /></div>
+                    <div className="admin-form-row">
+                      <div className="admin-field"><label>Texto do botão</label><input value={form.button_text} onChange={e=>setForm({...form,button_text:e.target.value})} /></div>
+                      <div className="admin-field"><label>Mensagem WhatsApp</label><input value={form.whatsapp_msg} onChange={e=>setForm({...form,whatsapp_msg:e.target.value})} /></div>
                     </div>
                   </div>
                 )}
-                <div className="tags-list">
-                  {(form.badges || []).map((b,i) => (
-                    <div key={i} className="tag-chip" style={{borderLeft:`3px solid ${b.bg_color}`, alignItems:'center'}}>
-                      <span style={{marginRight:4}}>{b.icon_emoji || ''}</span>
-                      {b.icon_url ? <img src={b.icon_url} alt="icon" style={{height:18, width:18, objectFit:'contain', marginRight:4, borderRadius:3}} /> : null}
-                      <span>{b.text}</span>
-                      <button title="Mover esquerda" onClick={() => moveBadge(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>◀</button>
-                      <button title="Mover direita" onClick={() => moveBadge(i,'right')} disabled={i===(form.badges||[]).length-1} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>▶</button>
-                      <button title="Editar" onClick={() => editBadge(i)} style={{background:'none',border:'none',cursor:'pointer',color:'#6d9eeb',padding:'0 2px'}}>✏️</button>
-                      <button onClick={() => removeBadge(i)}>×</button>
-                    </div>
-                  ))}
-                </div>
-                {editingBadgeIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'#2a2a3d',borderRadius:6,fontSize:'0.78rem',color:'#a0c4ff'}}>✏️ Editando chip #{editingBadgeIdx+1} — clique em + para salvar</div>}
-                <div style={{display:'grid',gridTemplateColumns:'1fr 80px 1fr 1fr auto auto auto',gap:6,marginTop:8,alignItems:'center'}}>
-                  <input placeholder="Texto (ex: Instalação Grátis)" value={newBadge.text} onChange={e=>setNewBadge({...newBadge,text:e.target.value})} />
-                  <input placeholder="Emoji" value={newBadge.icon_emoji || ''} onChange={e=>setNewBadge({...newBadge,icon_emoji:e.target.value})} title="Ícone Emoji (ex: ⚙️)" />
-                  <input type="color" title="Cor de Fundo" value={newBadge.bg_color} onChange={e=>setNewBadge({...newBadge,bg_color:e.target.value})} style={{height:38}} />
-                  <input type="color" title="Cor do Texto" value={newBadge.text_color} onChange={e=>setNewBadge({...newBadge,text_color:e.target.value})} style={{height:38}} />
-                  <label className="admin-btn ghost small" style={{display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',margin:0}}>
-                    {newBadge.icon_url ? '📷 OK' : '📷'}
-                    <input type="file" accept="image/*" onChange={e => handleUpload(e, 'newBadge')} style={{display:'none'}} />
-                  </label>
-                  <button className="admin-btn ghost small" onClick={addBadge} title={editingBadgeIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingBadgeIdx !== null ? '✔' : '+'}</button>
-                </div>
               </div>
 
-              {/* Apps inclusos */}
-              <div className="admin-field">
-                <label>Apps inclusos no plano</label>
-                <input 
-                  placeholder="Texto do título (ex: Aplicativos inclusos no plano:)" 
-                  value={form.label_included || ''} 
-                  onChange={e => setForm({...form, label_included: e.target.value})} 
-                  style={{marginBottom: 12}}
-                />
-                {appLibrary.length > 0 && (
-                  <div style={{marginBottom:10}}>
-                    <label style={{fontSize:'0.78rem',color:'#9ca3af',marginBottom:4,display:'block'}}>📚 Selecionar da Biblioteca:</label>
-                    <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
-                      {appLibrary.map(libApp => (
-                        <button key={libApp.id} className="admin-btn ghost small" onClick={() => selectFromLibrary(libApp, 'included')} style={{display:'flex',alignItems:'center',gap:4,fontSize:'0.75rem',padding:'4px 8px'}} title={libApp.description || libApp.name}>
-                          {libApp.icon_url ? <img src={libApp.icon_url} style={{width:16,height:16,borderRadius:3,objectFit:'contain'}} /> : <span style={{background:libApp.color,color:libApp.textColor,borderRadius:3,padding:'0 3px',fontSize:'0.65rem',fontWeight:800}}>{libApp.abbr}</span>}
-                          {libApp.name}
-                        </button>
+              {/* Seção: Chips de Destaque (Pop-up) */}
+              <div className="admin-section">
+                <div className="admin-section-header" onClick={() => toggleSection('badges')}>
+                  <span className="admin-section-title">Chips de Destaque (Pop-up)</span>
+                  <svg className={`admin-section-arrow ${openSections.badges ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                {openSections.badges && (
+                  <div className="admin-section-body">
+                    {badgeLibrary.length > 0 && (
+                      <div>
+                        <label style={{fontSize:'0.78rem',color:'var(--adm-text2)',marginBottom:4,display:'block'}}>Biblioteca de Badges:</label>
+                        <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+                          {badgeLibrary.map(libBadge => (
+                            <button key={libBadge.id} className="admin-btn ghost small" onClick={() => selectFromBadgeLibrary(libBadge)} style={{display:'flex',alignItems:'center',gap:4,fontSize:'0.75rem',padding:'4px 8px',borderLeft:`3px solid ${libBadge.bg_color}`}}>
+                              {libBadge.icon_emoji && <span>{libBadge.icon_emoji}</span>}
+                              {libBadge.icon_url && <img src={libBadge.icon_url} style={{width:16,height:16,borderRadius:3,objectFit:'contain'}} />}
+                              <span style={{color:libBadge.text_color}}>{libBadge.text}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="tags-list">
+                      {(form.badges || []).map((b,i) => (
+                        <div key={i} className="tag-chip" style={{borderLeft:`3px solid ${b.bg_color}`, alignItems:'center'}}>
+                          <span style={{marginRight:4}}>{b.icon_emoji || ''}</span>
+                          {b.icon_url ? <img src={b.icon_url} alt="icon" style={{height:18, width:18, objectFit:'contain', marginRight:4, borderRadius:3}} /> : null}
+                          <span>{b.text}</span>
+                          <button title="Mover esquerda" onClick={() => moveBadge(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>◀</button>
+                          <button title="Mover direita" onClick={() => moveBadge(i,'right')} disabled={i===(form.badges||[]).length-1} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>▶</button>
+                          <button title="Editar" onClick={() => editBadge(i)} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-accent)',padding:'0 2px'}}>✏️</button>
+                          <button onClick={() => removeBadge(i)}>×</button>
+                        </div>
                       ))}
+                    </div>
+                    {editingBadgeIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'var(--adm-accent-light)',borderRadius:6,fontSize:'0.78rem',color:'var(--adm-accent)'}}>Editando chip #{editingBadgeIdx+1} — clique em + para salvar</div>}
+                    <div style={{display:'grid',gridTemplateColumns:'1fr 80px 1fr 1fr auto auto auto',gap:6,marginTop:8,alignItems:'center'}}>
+                      <input placeholder="Texto (ex: Instalação Grátis)" value={newBadge.text} onChange={e=>setNewBadge({...newBadge,text:e.target.value})} />
+                      <input placeholder="Emoji" value={newBadge.icon_emoji || ''} onChange={e=>setNewBadge({...newBadge,icon_emoji:e.target.value})} title="Ícone Emoji" />
+                      <input type="color" title="Cor de Fundo" value={newBadge.bg_color} onChange={e=>setNewBadge({...newBadge,bg_color:e.target.value})} style={{height:38}} />
+                      <input type="color" title="Cor do Texto" value={newBadge.text_color} onChange={e=>setNewBadge({...newBadge,text_color:e.target.value})} style={{height:38}} />
+                      <label className="admin-btn ghost small" style={{display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',margin:0}}>
+                        {newBadge.icon_url ? '📷 OK' : '📷'}
+                        <input type="file" accept="image/*" onChange={e => handleUpload(e, 'newBadge')} style={{display:'none'}} />
+                      </label>
+                      <button className="admin-btn ghost small" onClick={addBadge} title={editingBadgeIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingBadgeIdx !== null ? '✔' : '+'}</button>
                     </div>
                   </div>
                 )}
-                <div className="tags-list">
-                  {form.included_apps.map((app,i) => (
-                    <div key={i} className="tag-chip" style={app.icon_url ? {borderLeft:'3px solid var(--adm-accent)', paddingLeft:4} : {borderLeft:`3px solid ${app.color}`}}>
-                      {app.icon_url ? <img src={app.icon_url} alt="icon" style={{height:18, width:18, objectFit:'contain', marginRight:4, borderRadius:4}} /> : null}
-                      <span>{app.abbr || 'App'} — {app.name}</span>
-                      <button title="Mover esquerda" onClick={() => moveApp(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>◀</button>
-                      <button title="Mover direita" onClick={() => moveApp(i,'right')} disabled={i===form.included_apps.length-1} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>▶</button>
-                      <button title="Editar" onClick={() => editApp(i)} style={{background:'none',border:'none',cursor:'pointer',color:'#6d9eeb',padding:'0 2px'}}>✏️</button>
-                      <button onClick={() => removeApp(i)}>×</button>
-                    </div>
-                  ))}
-                </div>
-                {editingAppIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'#2a2a3d',borderRadius:6,fontSize:'0.78rem',color:'#a0c4ff'}}>✏️ Editando app #{editingAppIdx+1} — clique em + para salvar</div>}
-                <div style={{display:'flex', flexDirection:'column', gap:6, marginTop:8}}>
-                  <div style={{display:'grid',gridTemplateColumns:'1.5fr 1fr 1fr 1fr auto auto',gap:6}}>
-                    <input placeholder="Nome" value={newApp.name} onChange={e=>setNewApp({...newApp,name:e.target.value})} />
-                    <input placeholder="Sigla" value={newApp.abbr} onChange={e=>setNewApp({...newApp,abbr:e.target.value})} />
-                    <input type="color" title="Cor de Fundo" value={newApp.color} onChange={e=>setNewApp({...newApp,color:e.target.value})} style={{height:38}} />
-                    <input type="color" title="Cor do Texto" value={newApp.textColor} onChange={e=>setNewApp({...newApp,textColor:e.target.value})} style={{height:38}} />
-                    <label className="admin-btn ghost small" style={{display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',margin:0}}>
-                      {newApp.icon_url ? '📷 OK' : '📷'}
-                      <input type="file" accept="image/*" onChange={e => handleUpload(e, 'newApp')} style={{display:'none'}} />
-                    </label>
-                    <button className="admin-btn ghost small" onClick={addApp} title={editingAppIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingAppIdx !== null ? '✔' : '+'}</button>
-                  </div>
-                  <input placeholder="Descrição detalhada (exibida no pop-up)" value={newApp.description || ''} onChange={e=>setNewApp({...newApp,description:e.target.value})} />
-                </div>
               </div>
 
-              {/* Bonus app */}
-              <div className="admin-field">
-                <div style={{display:'flex', alignItems:'center', gap: 10, marginBottom: 8}}>
-                  <input type="checkbox" id="chk-enable-bonus" checked={form.enable_bonus} onChange={e=>setForm({...form,enable_bonus:e.target.checked})} />
-                  <label htmlFor="chk-enable-bonus" style={{textTransform:'none',letterSpacing:0, margin:0, fontWeight:'bold', color:'#fff'}}>Habilitar seção "App Bônus"</label>
+              {/* Seção: Apps Inclusos */}
+              <div className="admin-section">
+                <div className="admin-section-header" onClick={() => toggleSection('apps')}>
+                  <span className="admin-section-title">Apps Inclusos no Plano</span>
+                  <svg className={`admin-section-arrow ${openSections.apps ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </div>
-                {form.enable_bonus && (
-                  <>
-                    <label>Apps Bônus</label>
-                    <input 
-                      placeholder="Texto do título (ex: Na assinatura, adicione mais um benefício:)" 
-                      value={form.label_bonus || ''} 
-                      onChange={e => setForm({...form, label_bonus: e.target.value})} 
-                      style={{marginBottom: 12}}
-                    />
+                {openSections.apps && (
+                  <div className="admin-section-body">
+                    <input placeholder="Texto do título (ex: Aplicativos inclusos no plano:)" value={form.label_included || ''} onChange={e => setForm({...form, label_included: e.target.value})} />
                     {appLibrary.length > 0 && (
-                      <div style={{marginBottom:10}}>
-                        <label style={{fontSize:'0.78rem',color:'#9ca3af',marginBottom:4,display:'block'}}>📚 Selecionar da Biblioteca:</label>
+                      <div>
+                        <label style={{fontSize:'0.78rem',color:'var(--adm-text2)',marginBottom:4,display:'block'}}>Biblioteca de Apps:</label>
                         <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
                           {appLibrary.map(libApp => (
-                            <button key={libApp.id} className="admin-btn ghost small" onClick={() => selectFromLibrary(libApp, 'bonus')} style={{display:'flex',alignItems:'center',gap:4,fontSize:'0.75rem',padding:'4px 8px'}} title={libApp.description || libApp.name}>
+                            <button key={libApp.id} className="admin-btn ghost small" onClick={() => selectFromLibrary(libApp, 'included')} style={{display:'flex',alignItems:'center',gap:4,fontSize:'0.75rem',padding:'4px 8px'}} title={libApp.description || libApp.name}>
                               {libApp.icon_url ? <img src={libApp.icon_url} style={{width:16,height:16,borderRadius:3,objectFit:'contain'}} /> : <span style={{background:libApp.color,color:libApp.textColor,borderRadius:3,padding:'0 3px',fontSize:'0.65rem',fontWeight:800}}>{libApp.abbr}</span>}
                               {libApp.name}
                             </button>
@@ -482,133 +450,192 @@ export const ManagePlans = () => {
                       </div>
                     )}
                     <div className="tags-list">
-                      {(form.bonus_apps || []).map((app,i) => (
+                      {form.included_apps.map((app,i) => (
                         <div key={i} className="tag-chip" style={app.icon_url ? {borderLeft:'3px solid var(--adm-accent)', paddingLeft:4} : {borderLeft:`3px solid ${app.color}`}}>
                           {app.icon_url ? <img src={app.icon_url} alt="icon" style={{height:18, width:18, objectFit:'contain', marginRight:4, borderRadius:4}} /> : null}
-                          <span>{app.abbr || 'Bônus'} — {app.name}</span>
-                          <button title="Mover esquerda" onClick={() => moveBonus(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>◀</button>
-                          <button title="Mover direita" onClick={() => moveBonus(i,'right')} disabled={i===(form.bonus_apps||[]).length-1} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>▶</button>
-                          <button title="Editar" onClick={() => editBonus(i)} style={{background:'none',border:'none',cursor:'pointer',color:'#6d9eeb',padding:'0 2px'}}>✏️</button>
-                          <button onClick={() => removeBonus(i)}>×</button>
+                          <span>{app.abbr || 'App'} — {app.name}</span>
+                          <button title="Mover esquerda" onClick={() => moveApp(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>◀</button>
+                          <button title="Mover direita" onClick={() => moveApp(i,'right')} disabled={i===form.included_apps.length-1} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>▶</button>
+                          <button title="Editar" onClick={() => editApp(i)} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-accent)',padding:'0 2px'}}>✏️</button>
+                          <button onClick={() => removeApp(i)}>×</button>
                         </div>
                       ))}
                     </div>
-                    {editingBonusIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'#2a2a3d',borderRadius:6,fontSize:'0.78rem',color:'#a0c4ff'}}>✏️ Editando bônus #{editingBonusIdx+1} — clique em ✔ para salvar</div>}
+                    {editingAppIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'var(--adm-accent-light)',borderRadius:6,fontSize:'0.78rem',color:'var(--adm-accent)'}}>Editando app #{editingAppIdx+1} — clique em + para salvar</div>}
                     <div style={{display:'flex', flexDirection:'column', gap:6, marginTop:8}}>
                       <div style={{display:'grid',gridTemplateColumns:'1.5fr 1fr 1fr 1fr auto auto',gap:6}}>
-                        <input placeholder="Nome" value={newBonus.name} onChange={e=>setNewBonus({...newBonus,name:e.target.value})} />
-                        <input placeholder="Sigla" value={newBonus.abbr} onChange={e=>setNewBonus({...newBonus,abbr:e.target.value})} />
-                        <input type="color" title="Cor de Fundo" value={newBonus.color} onChange={e=>setNewBonus({...newBonus,color:e.target.value})} style={{height:38}} />
-                        <input type="color" title="Cor do Texto" value={newBonus.textColor} onChange={e=>setNewBonus({...newBonus,textColor:e.target.value})} style={{height:38}} />
+                        <input placeholder="Nome" value={newApp.name} onChange={e=>setNewApp({...newApp,name:e.target.value})} />
+                        <input placeholder="Sigla" value={newApp.abbr} onChange={e=>setNewApp({...newApp,abbr:e.target.value})} />
+                        <input type="color" title="Cor de Fundo" value={newApp.color} onChange={e=>setNewApp({...newApp,color:e.target.value})} style={{height:38}} />
+                        <input type="color" title="Cor do Texto" value={newApp.textColor} onChange={e=>setNewApp({...newApp,textColor:e.target.value})} style={{height:38}} />
                         <label className="admin-btn ghost small" style={{display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',margin:0}}>
-                          {newBonus.icon_url ? '📷 OK' : '📷'}
-                          <input type="file" accept="image/*" onChange={e => handleUpload(e, 'bonusApp')} style={{display:'none'}} />
+                          {newApp.icon_url ? '📷 OK' : '📷'}
+                          <input type="file" accept="image/*" onChange={e => handleUpload(e, 'newApp')} style={{display:'none'}} />
                         </label>
-                        <button className="admin-btn ghost small" onClick={addBonus} title={editingBonusIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingBonusIdx !== null ? '✔' : '+'}</button>
+                        <button className="admin-btn ghost small" onClick={addApp} title={editingAppIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingAppIdx !== null ? '✔' : '+'}</button>
                       </div>
-                      <input placeholder="Descrição detalhada (exibida no pop-up)" value={newBonus.description || ''} onChange={e=>setNewBonus({...newBonus,description:e.target.value})} />
+                      <input placeholder="Descrição detalhada (exibida no pop-up)" value={newApp.description || ''} onChange={e=>setNewApp({...newApp,description:e.target.value})} />
                     </div>
-                  </>
-                )}
-              </div>
-
-              {/* Textos da Interface (Botões e Labels) */}
-              <div className="admin-field" style={{marginTop: 16}}>
-                <label>Textos da Interface (Pop-up e Cartão)</label>
-                <div className="admin-form-row" style={{marginTop: 8}}>
-                  <input placeholder="Texto do botão (ex: Mais detalhes do plano)" value={form.label_details || ''} onChange={e=>setForm({...form,label_details:e.target.value})} />
-                  <input placeholder="Período do preço cartão (ex: por mês)" value={form.label_price_period || ''} onChange={e=>setForm({...form,label_price_period:e.target.value})} />
-                  <input placeholder="Subtítulo do preço pop-up (ex: Depois R$129,90)" value={form.modal_price_text || ''} onChange={e=>setForm({...form,modal_price_text:e.target.value})} />
-                </div>
-              </div>
-
-              {/* Detalhes */}
-              <div className="admin-field">
-                <div style={{display:'flex', alignItems:'center', gap: 10, marginBottom: 8}}>
-                  <input type="checkbox" id="chk-enable-details" checked={form.enable_details !== false} onChange={e=>setForm({...form,enable_details:e.target.checked})} />
-                  <label htmlFor="chk-enable-details" style={{textTransform:'none',letterSpacing:0, margin:0, fontWeight:'bold', color:'#fff'}}>Habilitar seção "Itens do plano (detalhes)"</label>
-                </div>
-                {form.enable_details !== false && (
-                  <>
-                    <label>Itens do plano</label>
-                    <div className="tags-list">
-                      {form.details.map((d,i) => (
-                        <div key={i} className="tag-chip" style={{alignItems:'center'}}>
-                          <span>{d}</span>
-                          <button title="Subir" onClick={() => moveDetail(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>◀</button>
-                          <button title="Descer" onClick={() => moveDetail(i,'right')} disabled={i===form.details.length-1} style={{background:'none',border:'none',cursor:'pointer',color:'#aaa',padding:'0 2px'}}>▶</button>
-                          <button title="Editar" onClick={() => editDetail(i)} style={{background:'none',border:'none',cursor:'pointer',color:'#6d9eeb',padding:'0 2px'}}>✏️</button>
-                          <button onClick={()=>removeDetail(i)}>×</button>
-                        </div>
-                      ))}
-                    </div>
-                    {editingDetailIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'#2a2a3d',borderRadius:6,fontSize:'0.78rem',color:'#a0c4ff'}}>✏️ Editando item #{editingDetailIdx+1} — clique em ✔ para salvar</div>}
-                    <div style={{display:'flex',gap:6,marginTop:8}}>
-                      <input placeholder="Ex: Wi-Fi 6 incluso" value={newDetail} onChange={e=>setNewDetail(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addDetail()} style={{flex:1}} />
-                      <button className="admin-btn ghost small" onClick={addDetail} title={editingDetailIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingDetailIdx !== null ? '✔' : '+'}</button>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <div className="admin-form-row">
-                <div className="admin-field"><label>Ordem</label><input type="number" value={form.sort_order} onChange={e=>setForm({...form,sort_order:+e.target.value})} /></div>
-                <div className="admin-field" style={{flexDirection:'row',alignItems:'center',gap:10,paddingTop:22}}>
-                  <input type="checkbox" id="chk-popular" checked={form.popular} onChange={e=>setForm({...form,popular:e.target.checked})} />
-                  <label htmlFor="chk-popular" style={{textTransform:'none',letterSpacing:0}}>Mais Popular</label>
-                  <input type="checkbox" id="chk-active" checked={form.active} onChange={e=>setForm({...form,active:e.target.checked})} style={{marginLeft:12}} />
-                  <label htmlFor="chk-active" style={{textTransform:'none',letterSpacing:0}}>Ativo</label>
-                  <input type="checkbox" id="chk-show-price" checked={form.show_price !== false} onChange={e=>setForm({...form,show_price:e.target.checked})} style={{marginLeft:12}} />
-                  <label htmlFor="chk-show-price" style={{textTransform:'none',letterSpacing:0}}>Mostrar Preço</label>
-                </div>
-              </div>
-
-              <div className="admin-field" style={{marginTop: 16, borderTop: '1px solid #333', paddingTop: 16}}>
-                <h4>🎨 Personalização Visual e Textos</h4>
-                <div className="admin-form-row">
-                  <div className="admin-field"><label>Cor Fundo Cartão</label><div style={{display:'flex',gap:6}}><input type="color" value={form.card_bg_color || '#ffffff'} onChange={e=>setForm({...form,card_bg_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,card_bg_color:''})}>Limpar</button></div></div>
-                  <div className="admin-field"><label>Cor Texto Principal</label><div style={{display:'flex',gap:6}}><input type="color" value={form.card_text_color || '#1e293b'} onChange={e=>setForm({...form,card_text_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,card_text_color:''})}>Limpar</button></div></div>
-                  <div className="admin-field"><label>Cor Fundo Botão</label><div style={{display:'flex',gap:6}}><input type="color" value={form.button_bg_color || '#a855f7'} onChange={e=>setForm({...form,button_bg_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,button_bg_color:''})}>Limpar</button></div></div>
-                  <div className="admin-field"><label>Cor Texto Botão</label><div style={{display:'flex',gap:6}}><input type="color" value={form.button_text_color || '#ffffff'} onChange={e=>setForm({...form,button_text_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,button_text_color:''})}>Limpar</button></div></div>
-                </div>
-                <div className="admin-field" style={{marginTop:8}}>
-                  <label>Fonte Customizada</label>
-                  <select value={form.plan_font || ''} onChange={e=>setForm({...form,plan_font:e.target.value})} style={{padding:8, borderRadius:4, border:'1px solid #444', backgroundColor:'#1e1e2d', color:'#fff'}}>
-                    <option value="">Padrão do Site</option>
-                    <option value="Inter, sans-serif">Inter</option>
-                    <option value="Roboto, sans-serif">Roboto</option>
-                    <option value="Poppins, sans-serif">Poppins</option>
-                    <option value="'Outfit', sans-serif">Outfit</option>
-                  </select>
-                </div>
-                <div className="admin-form-row" style={{marginTop:8}}>
-                  <div className="admin-field"><label>Cor de Acento (Lilás/Contorno)</label><div style={{display:'flex',gap:6}}><input type="color" value={form.accent_color || '#7c3aed'} onChange={e=>setForm({...form,accent_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,accent_color:'#7c3aed'})}>Padrão</button></div></div>
-                  <div className="admin-field"><label>Cor Título Pop-up</label><div style={{display:'flex',gap:6}}><input type="color" value={form.modal_title_color || '#c084fc'} onChange={e=>setForm({...form,modal_title_color:e.target.value})} style={{height:38,width:40}} title="Cor de '600 MEGA' no pop-up" /><button className="admin-btn ghost small" onClick={()=>setForm({...form,modal_title_color:''})}>Limpar</button></div></div>
-                  <div className="admin-field"><label>Cor Textos Pop-up</label><div style={{display:'flex',gap:6}}><input type="color" value={form.modal_label_color || '#4b4460'} onChange={e=>setForm({...form,modal_label_color:e.target.value})} style={{height:38,width:40}} title="Cor de '1 App da Área Standard' etc" /><button className="admin-btn ghost small" onClick={()=>setForm({...form,modal_label_color:''})}>Limpar</button></div></div>
-                </div>
-                <div className="admin-form-row" style={{marginTop:8}}>
-                  <div className="admin-field"><label>Texto "Incluso no plano"</label><input value={form.label_included ?? ''} onChange={e=>setForm({...form,label_included:e.target.value})} placeholder="Ex: Incluso no plano:" /></div>
-                  <div className="admin-field"><label>Texto "Mais benefício"</label><input value={form.label_bonus ?? ''} onChange={e=>setForm({...form,label_bonus:e.target.value})} placeholder="Ex: Na assinatura, adicione mais um benefício:" /></div>
-                  <div className="admin-field"><label>Texto "Detalhes"</label><input value={form.label_details ?? ''} onChange={e=>setForm({...form,label_details:e.target.value})} placeholder="Ex: Mais detalhes do plano" /></div>
-                </div>
-              </div>
-
-              {/* Offer Tag */}
-              <div className="admin-field" style={{marginTop: 16, borderTop: '1px solid #333', paddingTop: 16}}>
-                <h4>🏷️ Tag de Oferta Superior</h4>
-                <div style={{display:'flex', alignItems:'center', gap: 10, marginBottom: 8}}>
-                  <input type="checkbox" id="chk-offer-tag" checked={form.offer_tag_enabled} onChange={e=>setForm({...form,offer_tag_enabled:e.target.checked})} />
-                  <label htmlFor="chk-offer-tag" style={{textTransform:'none',letterSpacing:0, margin:0, fontWeight:'bold', color:'#fff'}}>Habilitar Tag de Oferta</label>
-                </div>
-                {form.offer_tag_enabled && (
-                  <div className="admin-form-row">
-                    <div className="admin-field"><label>Texto da Tag</label><input value={form.offer_tag_text ?? ''} onChange={e=>setForm({...form,offer_tag_text:e.target.value})} placeholder="Ex: OFERTA EXCLUSIVA" /></div>
-                    <div className="admin-field"><label>Ícone/Emoji</label><input value={form.offer_tag_icon ?? ''} onChange={e=>setForm({...form,offer_tag_icon:e.target.value})} placeholder="Ex: ⚡" /></div>
-                    <div className="admin-field"><label>Cor Fundo Tag</label><div style={{display:'flex',gap:6}}><input type="color" value={form.offer_tag_color || '#6b21a8'} onChange={e=>setForm({...form,offer_tag_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,offer_tag_color:'#6b21a8'})}>Padrão</button></div></div>
-                    <div className="admin-field"><label>Cor Texto Tag</label><div style={{display:'flex',gap:6}}><input type="color" value={form.offer_tag_text_color || '#ffffff'} onChange={e=>setForm({...form,offer_tag_text_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,offer_tag_text_color:'#ffffff'})}>Padrão</button></div></div>
                   </div>
                 )}
               </div>
+
+              {/* Seção: App Bônus */}
+              <div className="admin-section">
+                <div className="admin-section-header" onClick={() => toggleSection('bonus')}>
+                  <span className="admin-section-title">App Bônus</span>
+                  <svg className={`admin-section-arrow ${openSections.bonus ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                {openSections.bonus && (
+                  <div className="admin-section-body">
+                    <ToggleSwitch value={form.enable_bonus} onChange={v => setForm({...form, enable_bonus: v})} label='Habilitar seção "App Bônus"' />
+                    {form.enable_bonus && (
+                      <>
+                        <input placeholder="Texto do título (ex: Na assinatura, adicione mais um benefício:)" value={form.label_bonus || ''} onChange={e => setForm({...form, label_bonus: e.target.value})} />
+                        {appLibrary.length > 0 && (
+                          <div>
+                            <label style={{fontSize:'0.78rem',color:'var(--adm-text2)',marginBottom:4,display:'block'}}>Biblioteca de Apps:</label>
+                            <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+                              {appLibrary.map(libApp => (
+                                <button key={libApp.id} className="admin-btn ghost small" onClick={() => selectFromLibrary(libApp, 'bonus')} style={{display:'flex',alignItems:'center',gap:4,fontSize:'0.75rem',padding:'4px 8px'}} title={libApp.description || libApp.name}>
+                                  {libApp.icon_url ? <img src={libApp.icon_url} style={{width:16,height:16,borderRadius:3,objectFit:'contain'}} /> : <span style={{background:libApp.color,color:libApp.textColor,borderRadius:3,padding:'0 3px',fontSize:'0.65rem',fontWeight:800}}>{libApp.abbr}</span>}
+                                  {libApp.name}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        <div className="tags-list">
+                          {(form.bonus_apps || []).map((app,i) => (
+                            <div key={i} className="tag-chip" style={app.icon_url ? {borderLeft:'3px solid var(--adm-accent)', paddingLeft:4} : {borderLeft:`3px solid ${app.color}`}}>
+                              {app.icon_url ? <img src={app.icon_url} alt="icon" style={{height:18, width:18, objectFit:'contain', marginRight:4, borderRadius:4}} /> : null}
+                              <span>{app.abbr || 'Bônus'} — {app.name}</span>
+                              <button title="Mover esquerda" onClick={() => moveBonus(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>◀</button>
+                              <button title="Mover direita" onClick={() => moveBonus(i,'right')} disabled={i===(form.bonus_apps||[]).length-1} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>▶</button>
+                              <button title="Editar" onClick={() => editBonus(i)} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-accent)',padding:'0 2px'}}>✏️</button>
+                              <button onClick={() => removeBonus(i)}>×</button>
+                            </div>
+                          ))}
+                        </div>
+                        {editingBonusIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'var(--adm-accent-light)',borderRadius:6,fontSize:'0.78rem',color:'var(--adm-accent)'}}>Editando bônus #{editingBonusIdx+1} — clique em ✔ para salvar</div>}
+                        <div style={{display:'flex', flexDirection:'column', gap:6, marginTop:8}}>
+                          <div style={{display:'grid',gridTemplateColumns:'1.5fr 1fr 1fr 1fr auto auto',gap:6}}>
+                            <input placeholder="Nome" value={newBonus.name} onChange={e=>setNewBonus({...newBonus,name:e.target.value})} />
+                            <input placeholder="Sigla" value={newBonus.abbr} onChange={e=>setNewBonus({...newBonus,abbr:e.target.value})} />
+                            <input type="color" title="Cor de Fundo" value={newBonus.color} onChange={e=>setNewBonus({...newBonus,color:e.target.value})} style={{height:38}} />
+                            <input type="color" title="Cor do Texto" value={newBonus.textColor} onChange={e=>setNewBonus({...newBonus,textColor:e.target.value})} style={{height:38}} />
+                            <label className="admin-btn ghost small" style={{display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',margin:0}}>
+                              {newBonus.icon_url ? '📷 OK' : '📷'}
+                              <input type="file" accept="image/*" onChange={e => handleUpload(e, 'bonusApp')} style={{display:'none'}} />
+                            </label>
+                            <button className="admin-btn ghost small" onClick={addBonus} title={editingBonusIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingBonusIdx !== null ? '✔' : '+'}</button>
+                          </div>
+                          <input placeholder="Descrição detalhada (exibida no pop-up)" value={newBonus.description || ''} onChange={e=>setNewBonus({...newBonus,description:e.target.value})} />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Seção: Detalhes do Plano */}
+              <div className="admin-section">
+                <div className="admin-section-header" onClick={() => toggleSection('details')}>
+                  <span className="admin-section-title">Itens do Plano (Detalhes)</span>
+                  <svg className={`admin-section-arrow ${openSections.details ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                {openSections.details && (
+                  <div className="admin-section-body">
+                    <ToggleSwitch value={form.enable_details !== false} onChange={v => setForm({...form, enable_details: v})} label='Habilitar seção de detalhes' />
+                    {form.enable_details !== false && (
+                      <>
+                        <div className="tags-list">
+                          {form.details.map((d,i) => (
+                            <div key={i} className="tag-chip" style={{alignItems:'center'}}>
+                              <span>{d}</span>
+                              <button title="Subir" onClick={() => moveDetail(i,'left')} disabled={i===0} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>◀</button>
+                              <button title="Descer" onClick={() => moveDetail(i,'right')} disabled={i===form.details.length-1} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-text2)',padding:'0 2px'}}>▶</button>
+                              <button title="Editar" onClick={() => editDetail(i)} style={{background:'none',border:'none',cursor:'pointer',color:'var(--adm-accent)',padding:'0 2px'}}>✏️</button>
+                              <button onClick={()=>removeDetail(i)}>×</button>
+                            </div>
+                          ))}
+                        </div>
+                        {editingDetailIdx !== null && <div style={{marginTop:6,padding:'4px 8px',background:'var(--adm-accent-light)',borderRadius:6,fontSize:'0.78rem',color:'var(--adm-accent)'}}>Editando item #{editingDetailIdx+1} — clique em ✔ para salvar</div>}
+                        <div style={{display:'flex',gap:6,marginTop:8}}>
+                          <input placeholder="Ex: Wi-Fi 6 incluso" value={newDetail} onChange={e=>setNewDetail(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addDetail()} style={{flex:1}} />
+                          <button className="admin-btn ghost small" onClick={addDetail} title={editingDetailIdx !== null ? 'Salvar edição' : 'Adicionar'}>{editingDetailIdx !== null ? '✔' : '+'}</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Seção: Configurações */}
+              <div className="admin-section">
+                <div className="admin-section-header" onClick={() => toggleSection('settings')}>
+                  <span className="admin-section-title">Configurações e Aparência</span>
+                  <svg className={`admin-section-arrow ${openSections.settings ? 'open' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                {openSections.settings && (
+                  <div className="admin-section-body">
+                    <div className="admin-form-row">
+                      <div className="admin-field"><label>Ordem</label><input type="number" value={form.sort_order} onChange={e=>setForm({...form,sort_order:+e.target.value})} /></div>
+                    </div>
+                    <div style={{display:'flex',gap:16,flexWrap:'wrap'}}>
+                      <ToggleSwitch value={form.popular} onChange={v=>setForm({...form,popular:v})} label="Mais Popular" />
+                      <ToggleSwitch value={form.active} onChange={v=>setForm({...form,active:v})} label="Ativo" />
+                      <ToggleSwitch value={form.show_price !== false} onChange={v=>setForm({...form,show_price:v})} label="Mostrar Preço" />
+                    </div>
+                    <div style={{borderTop:'1px solid var(--adm-border)', paddingTop:12, marginTop:4}}>
+                      <label style={{fontSize:'0.8rem',fontWeight:600,color:'var(--adm-text2)',marginBottom:8,display:'block'}}>Textos da Interface</label>
+                      <div className="admin-form-row">
+                        <div className="admin-field"><label>Texto "Detalhes"</label><input value={form.label_details ?? ''} onChange={e=>setForm({...form,label_details:e.target.value})} placeholder="Ex: Mais detalhes do plano" /></div>
+                        <div className="admin-field"><label>Período do preço</label><input value={form.label_price_period ?? ''} onChange={e=>setForm({...form,label_price_period:e.target.value})} placeholder="Ex: por mês" /></div>
+                      </div>
+                      <div className="admin-field" style={{marginTop:8}}><label>Subtítulo do preço pop-up</label><input value={form.modal_price_text ?? ''} onChange={e=>setForm({...form,modal_price_text:e.target.value})} placeholder="Ex: Depois R$129,90" /></div>
+                    </div>
+                    <div style={{borderTop:'1px solid var(--adm-border)', paddingTop:12, marginTop:4}}>
+                      <label style={{fontSize:'0.8rem',fontWeight:600,color:'var(--adm-text2)',marginBottom:8,display:'block'}}>Personalização Visual</label>
+                      <div className="admin-form-row">
+                        <div className="admin-field"><label>Cor Fundo Cartão</label><div style={{display:'flex',gap:6}}><input type="color" value={form.card_bg_color || '#ffffff'} onChange={e=>setForm({...form,card_bg_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,card_bg_color:''})}>Limpar</button></div></div>
+                        <div className="admin-field"><label>Cor Texto</label><div style={{display:'flex',gap:6}}><input type="color" value={form.card_text_color || '#1e293b'} onChange={e=>setForm({...form,card_text_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,card_text_color:''})}>Limpar</button></div></div>
+                        <div className="admin-field"><label>Cor Fundo Botão</label><div style={{display:'flex',gap:6}}><input type="color" value={form.button_bg_color || '#a855f7'} onChange={e=>setForm({...form,button_bg_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,button_bg_color:''})}>Limpar</button></div></div>
+                        <div className="admin-field"><label>Cor Texto Botão</label><div style={{display:'flex',gap:6}}><input type="color" value={form.button_text_color || '#ffffff'} onChange={e=>setForm({...form,button_text_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,button_text_color:''})}>Limpar</button></div></div>
+                      </div>
+                      <div className="admin-field" style={{marginTop:8}}>
+                        <label>Fonte Customizada</label>
+                        <select value={form.plan_font || ''} onChange={e=>setForm({...form,plan_font:e.target.value})}>
+                          <option value="">Padrão do Site</option>
+                          <option value="Inter, sans-serif">Inter</option>
+                          <option value="Roboto, sans-serif">Roboto</option>
+                          <option value="Poppins, sans-serif">Poppins</option>
+                          <option value="'Outfit', sans-serif">Outfit</option>
+                        </select>
+                      </div>
+                      <div className="admin-form-row" style={{marginTop:8}}>
+                        <div className="admin-field"><label>Cor de Acento</label><div style={{display:'flex',gap:6}}><input type="color" value={form.accent_color || '#7c3aed'} onChange={e=>setForm({...form,accent_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,accent_color:'#7c3aed'})}>Padrão</button></div></div>
+                        <div className="admin-field"><label>Cor Título Pop-up</label><div style={{display:'flex',gap:6}}><input type="color" value={form.modal_title_color || '#c084fc'} onChange={e=>setForm({...form,modal_title_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,modal_title_color:''})}>Limpar</button></div></div>
+                        <div className="admin-field"><label>Cor Textos Pop-up</label><div style={{display:'flex',gap:6}}><input type="color" value={form.modal_label_color || '#4b4460'} onChange={e=>setForm({...form,modal_label_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,modal_label_color:''})}>Limpar</button></div></div>
+                      </div>
+                    </div>
+
+                    {/* Offer Tag */}
+                    <div style={{borderTop:'1px solid var(--adm-border)', paddingTop:12, marginTop:4}}>
+                      <ToggleSwitch value={form.offer_tag_enabled} onChange={v => setForm({...form, offer_tag_enabled: v})} label="Habilitar Tag de Oferta" />
+                      {form.offer_tag_enabled && (
+                        <div className="admin-form-row" style={{marginTop:8}}>
+                          <div className="admin-field"><label>Texto da Tag</label><input value={form.offer_tag_text ?? ''} onChange={e=>setForm({...form,offer_tag_text:e.target.value})} placeholder="Ex: OFERTA EXCLUSIVA" /></div>
+                          <div className="admin-field"><label>Ícone/Emoji</label><input value={form.offer_tag_icon ?? ''} onChange={e=>setForm({...form,offer_tag_icon:e.target.value})} placeholder="Ex: ⚡" /></div>
+                          <div className="admin-field"><label>Cor Fundo Tag</label><div style={{display:'flex',gap:6}}><input type="color" value={form.offer_tag_color || '#6b21a8'} onChange={e=>setForm({...form,offer_tag_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,offer_tag_color:'#6b21a8'})}>Padrão</button></div></div>
+                          <div className="admin-field"><label>Cor Texto Tag</label><div style={{display:'flex',gap:6}}><input type="color" value={form.offer_tag_text_color || '#ffffff'} onChange={e=>setForm({...form,offer_tag_text_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,offer_tag_text_color:'#ffffff'})}>Padrão</button></div></div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
             </div>
             <div className="admin-modal-footer">
               <button className="admin-btn ghost" onClick={() => setModal(false)}>Cancelar</button>

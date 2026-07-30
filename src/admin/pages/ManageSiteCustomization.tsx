@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { ColorPicker } from '../components/ColorPicker';
 
 interface SiteSettings {
   customization_enabled: boolean;
@@ -36,10 +37,7 @@ interface SiteSettings {
 const ColorField = ({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) => (
   <div className="admin-field">
     <label>{label}</label>
-    <div style={{ display: 'flex', gap: 10 }}>
-      <input type="color" value={value} onChange={e => onChange(e.target.value)} style={{ height: 38, width: 60 }} />
-      <input type="text" value={value} onChange={e => onChange(e.target.value)} />
-    </div>
+    <ColorPicker value={value || '#000000'} onChange={onChange} />
   </div>
 );
 
@@ -121,7 +119,7 @@ export const ManageSiteCustomization = () => {
         </button>
       </header>
 
-      {msg && <div style={{ background: '#10b981', color: '#fff', padding: '10px 16px', borderRadius: 8, marginBottom: 20 }}>{msg}</div>}
+      {msg && <div style={{ background: 'var(--adm-success, #10b981)', color: 'var(--adm-text)', padding: '10px 16px', borderRadius: 8, marginBottom: 20 }}>{msg}</div>}
 
       <div style={{
         background: 'var(--adm-surface)',
@@ -143,10 +141,10 @@ export const ManageSiteCustomization = () => {
           borderRadius: 12
         }}>
           <div>
-            <strong style={{ fontSize: '1rem', color: settings.customization_enabled ? '#10b981' : '#ef4444' }}>
+            <strong style={{ fontSize: '1rem', color: settings.customization_enabled ? 'var(--adm-success, #10b981)' : 'var(--adm-danger, #ef4444)' }}>
               {settings.customization_enabled ? 'Personalização Ativada' : 'Personalização Desativada'}
             </strong>
-            <p style={{ margin: '4px 0 0', fontSize: '0.82rem', color: '#6b7280' }}>
+            <p style={{ margin: '4px 0 0', fontSize: '0.82rem', color: 'var(--adm-text2)' }}>
               {settings.customization_enabled
                 ? 'As cores e estilos personalizados estão sendo aplicados ao site.'
                 : 'O site está usando o tema padrão. Ative para aplicar as customizações.'}
@@ -161,7 +159,7 @@ export const ManageSiteCustomization = () => {
               borderRadius: 14,
               border: 'none',
               cursor: 'pointer',
-              background: settings.customization_enabled ? '#10b981' : '#6b7280',
+              background: settings.customization_enabled ? 'var(--adm-success, #10b981)' : 'var(--adm-text2, #6b7280)',
               transition: 'background 0.2s ease',
               flexShrink: 0
             }}
@@ -173,7 +171,7 @@ export const ManageSiteCustomization = () => {
               width: 22,
               height: 22,
               borderRadius: '50%',
-              background: '#fff',
+              background: 'var(--adm-bg)',
               boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
               transition: 'left 0.2s ease'
             }} />
@@ -225,10 +223,10 @@ export const ManageSiteCustomization = () => {
             borderRadius: 10
           }}>
             <div>
-              <strong style={{ fontSize: '0.9rem', color: settings.hero_overlay_enabled ? '#10b981' : '#ef4444' }}>
+              <strong style={{ fontSize: '0.9rem', color: settings.hero_overlay_enabled ? 'var(--adm-success, #10b981)' : 'var(--adm-danger, #ef4444)' }}>
                 Overlay do Hero {settings.hero_overlay_enabled ? 'Ativado' : 'Desativado'}
               </strong>
-              <p style={{ margin: '2px 0 0', fontSize: '0.78rem', color: '#6b7280' }}>
+              <p style={{ margin: '2px 0 0', fontSize: '0.78rem', color: 'var(--adm-text2)' }}>
                 {settings.hero_overlay_enabled
                   ? 'A cor de overlay está sendo aplicada ao banner.'
                   : 'Banner sem overlay de cor personalizado.'}
@@ -243,7 +241,7 @@ export const ManageSiteCustomization = () => {
                 borderRadius: 14,
                 border: 'none',
                 cursor: 'pointer',
-                background: settings.hero_overlay_enabled ? '#10b981' : '#6b7280',
+                background: settings.hero_overlay_enabled ? 'var(--adm-success, #10b981)' : 'var(--adm-text2, #6b7280)',
                 transition: 'background 0.2s ease',
                 flexShrink: 0
               }}
@@ -255,7 +253,7 @@ export const ManageSiteCustomization = () => {
                 width: 22,
                 height: 22,
                 borderRadius: '50%',
-                background: '#fff',
+                background: 'var(--adm-bg)',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
                 transition: 'left 0.2s ease'
               }} />
@@ -269,7 +267,7 @@ export const ManageSiteCustomization = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 20 }}>
               <ColorField label="Cor do Overlay" value={settings.hero_overlay_color} onChange={v => setSettings({...settings, hero_overlay_color: v})} />
             </div>
-            <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: 8 }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 8 }}>
               Cor aplicada sobre o banner do Hero. Use formato rgba(...) ou #hex.
             </p>
           </div>
@@ -286,10 +284,10 @@ export const ManageSiteCustomization = () => {
             borderRadius: 10
           }}>
             <div>
-              <strong style={{ fontSize: '0.9rem', color: settings.hero_show_buttons ? '#10b981' : '#ef4444' }}>
+              <strong style={{ fontSize: '0.9rem', color: settings.hero_show_buttons ? 'var(--adm-success, #10b981)' : 'var(--adm-danger, #ef4444)' }}>
                 Botões no Banner {settings.hero_show_buttons ? 'Visíveis' : 'Ocultos'}
               </strong>
-              <p style={{ margin: '2px 0 0', fontSize: '0.78rem', color: '#6b7280' }}>
+              <p style={{ margin: '2px 0 0', fontSize: '0.78rem', color: 'var(--adm-text2)' }}>
                 {settings.hero_show_buttons
                   ? 'Exibir botões "Ver Planos" e "Falar com Atendente" no banner.'
                   : 'Banner sem botões de ação visíveis.'}
@@ -304,7 +302,7 @@ export const ManageSiteCustomization = () => {
                 borderRadius: 14,
                 border: 'none',
                 cursor: 'pointer',
-                background: settings.hero_show_buttons ? '#10b981' : '#6b7280',
+                background: settings.hero_show_buttons ? 'var(--adm-success, #10b981)' : 'var(--adm-text2, #6b7280)',
                 transition: 'background 0.2s ease',
                 flexShrink: 0
               }}
@@ -316,7 +314,7 @@ export const ManageSiteCustomization = () => {
                 width: 22,
                 height: 22,
                 borderRadius: '50%',
-                background: '#fff',
+                background: 'var(--adm-bg)',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
                 transition: 'left 0.2s ease'
               }} />
@@ -334,7 +332,7 @@ export const ManageSiteCustomization = () => {
                   step={10}
                   value={parseInt(settings.hero_height) || 650}
                   onChange={e => setSettings({...settings, hero_height: e.target.value})}
-                  style={{ flex: 1, accentColor: '#005CFF' }}
+                  style={{ flex: 1, accentColor: 'var(--adm-accent)' }}
                 />
                 <input
                   type="text"
@@ -343,7 +341,7 @@ export const ManageSiteCustomization = () => {
                   style={{ width: 80, textAlign: 'center' }}
                 />
               </div>
-              <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: 4 }}>Altura do banner do Hero (padrão: 650px). Valor atual: {settings.hero_height}px</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>Altura do banner do Hero (padrão: 650px). Valor atual: {settings.hero_height}px</p>
             </div>
 
             <div className="admin-field">
@@ -356,7 +354,7 @@ export const ManageSiteCustomization = () => {
                   step={10}
                   value={parseInt(settings.hero_width) || 600}
                   onChange={e => setSettings({...settings, hero_width: e.target.value})}
-                  style={{ flex: 1, accentColor: '#005CFF' }}
+                  style={{ flex: 1, accentColor: 'var(--adm-accent)' }}
                 />
                 <input
                   type="text"
@@ -365,7 +363,7 @@ export const ManageSiteCustomization = () => {
                   style={{ width: 80, textAlign: 'center' }}
                 />
               </div>
-              <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: 4 }}>Largura máxima do texto e botões no banner (padrão: 600px). Valor atual: {settings.hero_width}px</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>Largura máxima do texto e botões no banner (padrão: 600px). Valor atual: {settings.hero_width}px</p>
             </div>
 
             <div className="admin-field">
@@ -373,7 +371,7 @@ export const ManageSiteCustomization = () => {
               <select
                 value={settings.hero_transition}
                 onChange={e => setSettings({...settings, hero_transition: e.target.value})}
-                style={{ padding: '10px 14px', borderRadius: 8, background: '#111827', color: '#fff', border: '1px solid #374151' }}
+                style={{ padding: '10px 14px', borderRadius: 8, background: 'var(--adm-surface)', color: 'var(--adm-text)', border: '1px solid var(--adm-border)' }}
               >
                 <option value="fade">Fade (Suavizar)</option>
                 <option value="slide-left">Deslizar para Esquerda</option>
@@ -382,7 +380,7 @@ export const ManageSiteCustomization = () => {
                 <option value="zoom-out">Zoom Out</option>
                 <option value="none">Sem Transição</option>
               </select>
-              <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: 4 }}>Tipo de animação entre os slides do banner.</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>Tipo de animação entre os slides do banner.</p>
             </div>
           </div>
 
@@ -427,7 +425,7 @@ export const ManageSiteCustomization = () => {
           <h3 style={{ borderBottom: '1px solid var(--adm-border)', paddingBottom: 10, marginBottom: 20, marginTop: 40 }}>Tipografia</h3>
           <div className="admin-field">
             <label>Fonte do Site</label>
-            <select value={settings.primary_font} onChange={e => setSettings({...settings, primary_font: e.target.value})} style={{ padding: '10px 14px', borderRadius: 8, background: '#111827', color: '#fff', border: '1px solid #374151' }}>
+            <select value={settings.primary_font} onChange={e => setSettings({...settings, primary_font: e.target.value})} style={{ padding: '10px 14px', borderRadius: 8, background: 'var(--adm-surface)', color: 'var(--adm-text)', border: '1px solid var(--adm-border)' }}>
               <option value="'Montserrat', sans-serif">Montserrat</option>
               <option value="'Inter', sans-serif">Inter</option>
               <option value="'Roboto', sans-serif">Roboto</option>
@@ -446,12 +444,12 @@ export const ManageSiteCustomization = () => {
             <div className="admin-field">
               <label>Arredondamento Global (Padrão: 16px)</label>
               <input type="text" placeholder="Ex: 16px ou 1rem" value={settings.border_radius} onChange={e => setSettings({...settings, border_radius: e.target.value})} />
-              <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: 4 }}>Define o arredondamento de cards e componentes.</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>Define o arredondamento de cards e componentes.</p>
             </div>
             <div className="admin-field">
               <label>Espaçamento entre seções (Padrão: 80px)</label>
               <input type="text" placeholder="Ex: 80px ou 5rem" value={settings.section_spacing} onChange={e => setSettings({...settings, section_spacing: e.target.value})} />
-              <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: 4 }}>Distância no topo e embaixo de cada seção principal.</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>Distância no topo e embaixo de cada seção principal.</p>
             </div>
           </div>
         </div>

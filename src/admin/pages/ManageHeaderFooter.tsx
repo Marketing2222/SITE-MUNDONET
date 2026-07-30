@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { ColorPicker } from '../components/ColorPicker';
 import { API_BASE_URL } from '../../config/api';
 
 interface Setting { key: string; value: string; label: string; }
@@ -267,12 +268,7 @@ export const ManageHeaderFooter = () => {
         return (
           <div className="admin-field" key={fd.key}>
             <label>{fd.label}</label>
-            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-              <input type="color" value={val || '#000000'} onChange={e => set(fd.key, e.target.value)}
-                style={{ height: 42, width: 64, borderRadius: 8, border: '1px solid var(--adm-border)', cursor: 'pointer', padding: 2 }} />
-              <input value={val} onChange={e => set(fd.key, e.target.value)} placeholder="#000000" style={{ flex: 1 }} />
-              <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: val, border: '2px solid var(--adm-border)', flexShrink: 0 }} />
-            </div>
+            <ColorPicker value={val || '#000000'} onChange={v => set(fd.key, v)} />
           </div>
         );
       case 'textarea':
@@ -419,7 +415,7 @@ export const ManageHeaderFooter = () => {
                     {item.label}
                     {item.hasDropdown && <span style={{ marginLeft: 8, fontSize: '0.72rem', color: 'var(--adm-text2)', fontWeight: 400 }}>({item.items.length} sub-itens)</span>}
                   </span>
-                  <button onClick={e => { e.stopPropagation(); removeNavItem(item.id); }} style={{ ...btn(), color: '#ef4444', borderColor: '#ef4444', padding: '4px 10px' }}>🗑️</button>
+                  <button onClick={e => { e.stopPropagation(); removeNavItem(item.id); }} style={{ ...btn(), color: 'var(--adm-danger, #ef4444)', borderColor: 'var(--adm-danger, #ef4444)', padding: '4px 10px' }}>🗑️</button>
                   <span style={{ color: 'var(--adm-text2)', fontSize: '1rem' }}>{expandedNav === item.id ? '▾' : '▸'}</span>
                 </div>
 
@@ -473,7 +469,7 @@ export const ManageHeaderFooter = () => {
                             <option value="_self">Mesma aba</option>
                             <option value="_blank">Nova aba</option>
                           </select>
-                          <button onClick={() => removeSubItem(item.id, sub.id)} style={{ ...btn(), color: '#ef4444', borderColor: '#ef4444', height: 42, padding: '0 12px', alignSelf: 'end' }}>🗑️</button>
+                          <button onClick={() => removeSubItem(item.id, sub.id)} style={{ ...btn(), color: 'var(--adm-danger, #ef4444)', borderColor: 'var(--adm-danger, #ef4444)', height: 42, padding: '0 12px', alignSelf: 'end' }}>🗑️</button>
                         </div>
                       ))}
                     </div>

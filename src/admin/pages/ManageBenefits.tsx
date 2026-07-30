@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { ColorPicker } from '../components/ColorPicker';
 
 interface Benefit { id:number; title:string; description:string; icon_type:string; sort_order:number; active:number; icon_bg:string; icon_color:string; title_color:string; desc_color:string; }
 const EMPTY = { title:'', description:'', icon_type:'star', sort_order:0, active:1, icon_bg:'#2563EB20', icon_color:'#2563EB', title_color:'', desc_color:'' };
@@ -7,10 +8,7 @@ const EMPTY = { title:'', description:'', icon_type:'star', sort_order:0, active
 const ColorField = ({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) => (
   <div className="admin-field" style={{ flex: 1 }}>
     <label>{label}</label>
-    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-      <input type="color" value={value || '#ffffff'} onChange={e => onChange(e.target.value)} style={{ height: 36, width: 50 }} />
-      <input type="text" value={value} onChange={e => onChange(e.target.value)} placeholder="Ex: #2563EB" style={{ flex: 1 }} />
-    </div>
+    <ColorPicker value={value || '#ffffff'} onChange={onChange} />
   </div>
 );
 

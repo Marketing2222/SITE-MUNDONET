@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { ToggleSwitch } from '../components/ToggleSwitch';
+import { ColorPicker } from '../components/ColorPicker';
 
 interface Plan {
   id?: number;
@@ -174,28 +176,26 @@ export const ManageEnterprisePlans = () => {
             ].map(f => (
               <div key={f.k}>
                 <label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 4 }}>{f.l}</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input type="color" value={(editForm as any)[f.k] || f.d} onChange={e => setEdit({ ...editForm, [f.k]: e.target.value })}
-                    style={{ width: 36, height: 32, padding: 0, border: '1px solid var(--adm-border)', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
-                  <input value={(editForm as any)[f.k] || ''} onChange={e => setEdit({ ...editForm, [f.k]: e.target.value })}
-                    placeholder={f.d} style={{ flex: 1, padding: '6px 8px', fontSize: 12, fontFamily: 'monospace' }} />
-                </div>
+                <ColorPicker
+                  value={(editForm as any)[f.k] || f.d}
+                  onChange={v => setEdit({ ...editForm, [f.k]: v })}
+                />
               </div>
             ))}
             {/* Toggles */}
             <div>
-              <label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 4 }}>Popular</label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                <input type="checkbox" checked={editForm.popular} onChange={e => setEdit({ ...editForm, popular: e.target.checked })} />
-                <span style={{ fontSize: 13 }}>{editForm.popular ? '⭐ Destaque' : 'Normal'}</span>
-              </label>
+              <ToggleSwitch
+                value={editForm.popular}
+                onChange={v => setEdit({ ...editForm, popular: v })}
+                label="Destaque"
+              />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 4 }}>Status</label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                <input type="checkbox" checked={editForm.active} onChange={e => setEdit({ ...editForm, active: e.target.checked })} />
-                <span style={{ fontSize: 13, color: editForm.active ? '#16a34a' : '#ef4444' }}>{editForm.active ? 'Ativo' : 'Inativo'}</span>
-              </label>
+              <ToggleSwitch
+                value={editForm.active}
+                onChange={v => setEdit({ ...editForm, active: v })}
+                label="Ativo"
+              />
             </div>
           </div>
           <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>

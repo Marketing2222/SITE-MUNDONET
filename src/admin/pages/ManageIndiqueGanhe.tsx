@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '../hooks/useAuth';
 import { ImageUpload } from '../components/ImageUpload';
+import { ToggleSwitch } from '../components/ToggleSwitch';
+import { ColorPicker } from '../components/ColorPicker';
 
 interface Setting { key: string; value: string; label: string; }
 interface NavSubItem { id: string; label: string; href: string; target?: '_blank' | '_self'; }
@@ -212,36 +214,31 @@ const renderField = (
     case 'image':
       return (
         <div key={fd.key} style={{ gridColumn: '1 / -1' }}>
-          <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+          <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
           <ImageUpload value={val} onChange={onChange} />
         </div>
       );
     case 'color':
       return (
         <div key={fd.key}>
-          <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <input type="color" value={val || '#000000'} onChange={e => onChange(e.target.value)}
-              style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
-            <input type="text" value={val} onChange={e => onChange(e.target.value)} placeholder={fd.hint}
-              style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
-          </div>
+          <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+          <ColorPicker value={val || '#000000'} onChange={onChange} />
         </div>
       );
     case 'textarea':
       return (
         <div key={fd.key} style={{ gridColumn: '1 / -1' }}>
-          <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+          <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
           <textarea value={val} onChange={e => onChange(e.target.value)} placeholder={fd.hint}
-            style={{ width: '100%', minHeight: 80, padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13, resize: 'vertical' }} />
+            style={{ width: '100%', minHeight: 80, padding: '8px 12px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13, resize: 'vertical' }} />
         </div>
       );
     case 'select':
       return (
         <div key={fd.key}>
-          <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+          <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
           <select value={val || (fd.options?.[0]?.value ?? '')} onChange={e => onChange(e.target.value)}
-            style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }}>
+            style={{ width: '100%', padding: '8px 12px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }}>
             {fd.options?.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </div>
@@ -249,9 +246,9 @@ const renderField = (
     default:
       return (
         <div key={fd.key}>
-          <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>{fd.label}</label>
+          <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>{fd.label}</label>
           <input type="text" value={val} onChange={e => onChange(e.target.value)} placeholder={fd.hint}
-            style={{ width: '100%', padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+            style={{ width: '100%', padding: '8px 12px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }} />
         </div>
       );
   }
@@ -272,22 +269,22 @@ function DynamicListEditor({ settings, set, label, storageKey, fields }: {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>{label}</h3>
-        <button onClick={addItem} style={{ background: '#22c55e', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>+ Adicionar</button>
+        <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: 'var(--adm-text)' }}>{label}</h3>
+        <button onClick={addItem} className="admin-btn success small">+ Adicionar</button>
       </div>
-      {items.length === 0 && <p style={{ color: '#6b7280', fontSize: 13 }}>Nenhum item ainda.</p>}
+      {items.length === 0 && <p style={{ color: 'var(--adm-text2)', fontSize: 13 }}>Nenhum item ainda.</p>}
       {items.map((item, idx) => (
-        <div key={idx} style={{ border: '1px solid #333', borderRadius: 8, padding: 16, marginBottom: 12 }}>
+        <div key={idx} style={{ border: '1px solid var(--adm-border)', borderRadius: 8, padding: 16, marginBottom: 12 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ color: '#9ca3af', fontSize: 12, fontWeight: 600 }}>Item #{idx + 1}</span>
-            <button onClick={() => removeItem(idx)} style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>Remover</button>
+            <span style={{ color: 'var(--adm-text2)', fontSize: 12, fontWeight: 600 }}>Item #{idx + 1}</span>
+            <button onClick={() => removeItem(idx)} className="admin-btn danger small">Remover</button>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
             {fields.map(f => {
               const v = item[f.key] || '';
-              if (f.type === 'image') return <div key={f.key} style={{ gridColumn: '1 / -1' }}><label style={{ fontSize: 12, color: '#9ca3af', display: 'block', marginBottom: 2 }}>{f.label}</label><ImageUpload value={v} onChange={nv => updateItem(idx, f.key, nv)} /></div>;
-              if (f.type === 'textarea') return <div key={f.key} style={{ gridColumn: '1 / -1' }}><label style={{ fontSize: 12, color: '#9ca3af', display: 'block', marginBottom: 2 }}>{f.label}</label><textarea value={v} onChange={e => updateItem(idx, f.key, e.target.value)} style={{ width: '100%', minHeight: 60, padding: '6px 10px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12, resize: 'vertical' }} /></div>;
-              return <div key={f.key}><label style={{ fontSize: 12, color: '#9ca3af', display: 'block', marginBottom: 2 }}>{f.label}</label><input type="text" value={v} onChange={e => updateItem(idx, f.key, e.target.value)} style={{ width: '100%', padding: '6px 10px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12 }} /></div>;
+              if (f.type === 'image') return <div key={f.key} style={{ gridColumn: '1 / -1' }}><label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>{f.label}</label><ImageUpload value={v} onChange={nv => updateItem(idx, f.key, nv)} /></div>;
+              if (f.type === 'textarea') return <div key={f.key} style={{ gridColumn: '1 / -1' }}><label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>{f.label}</label><textarea value={v} onChange={e => updateItem(idx, f.key, e.target.value)} style={{ width: '100%', minHeight: 60, padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12, resize: 'vertical' }} /></div>;
+              return <div key={f.key}><label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>{f.label}</label><input type="text" value={v} onChange={e => updateItem(idx, f.key, e.target.value)} style={{ width: '100%', padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }} /></div>;
             })}
           </div>
         </div>
@@ -354,25 +351,12 @@ export const ManageIndiqueGanhe = () => {
     const fields = FIELD_CONFIG[tabId] || [];
     return (
       <div>
-        <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>
+        <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid var(--adm-border)', fontSize: 15, fontWeight: 600, color: 'var(--adm-text)' }}>
           {TABS.find(t => t.id === tabId)?.label}
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           {fields.map(fd => renderField(fd, settings[fd.key]?.value || '', v => set(fd.key, v, fd.label)))}
         </div>
-      </div>
-    );
-  };
-
-  const Toggle = ({ label, valKey }: { label: string; valKey: string }) => {
-    const val = settings[valKey]?.value || 'true';
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 0' }}>
-        <button onClick={() => set(valKey, val === 'true' ? 'false' : 'true', label)}
-          style={{ width: 44, height: 24, borderRadius: 12, border: 'none', cursor: 'pointer', position: 'relative', background: val === 'true' ? '#22c55e' : '#4b5563', transition: 'all 0.2s' }}>
-          <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#fff', position: 'absolute', top: 3, left: val === 'true' ? 23 : 3, transition: 'all 0.2s' }} />
-        </button>
-        <span style={{ fontSize: 13, color: '#e2e8f0' }}>{label}</span>
       </div>
     );
   };
@@ -394,7 +378,7 @@ export const ManageIndiqueGanhe = () => {
         <div style={{ width: 180, flexShrink: 0 }}>
           {TABS.map((tab, i) => (
             <button key={tab.id} onClick={() => setActiveTab(i)}
-              style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', marginBottom: 4, background: activeTab === i ? '#22c55e' : 'transparent', color: activeTab === i ? '#fff' : '#9ca3af', border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 13, fontWeight: activeTab === i ? 600 : 400, transition: 'all 0.15s' }}>
+              style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px', marginBottom: 4, background: activeTab === i ? 'var(--adm-accent)' : 'transparent', color: activeTab === i ? '#fff' : 'var(--adm-text2)', border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 13, fontWeight: activeTab === i ? 600 : 400, transition: 'all 0.15s' }}>
               {tab.label}
             </button>
           ))}
@@ -435,46 +419,46 @@ export const ManageIndiqueGanhe = () => {
           )}
           {currentTab === 'menu' && (
             <div>
-              <div style={{ border: '1px solid #333', borderRadius: 8, padding: 16, marginBottom: 16 }}>
-                <h3 style={{ margin: '0 0 16px', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Dimensionamento do Menu</h3>
+              <div style={{ border: '1px solid var(--adm-border)', borderRadius: 8, padding: 16, marginBottom: 16 }}>
+                <h3 style={{ margin: '0 0 16px', fontSize: 15, fontWeight: 600, color: 'var(--adm-text)' }}>Dimensionamento do Menu</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   {(FIELD_CONFIG.menu || []).map(fd => renderField(fd, settings[fd.key]?.value || '', v => set(fd.key, v, fd.label)))}
                 </div>
               </div>
-              <div style={{ border: '1px solid #333', borderRadius: 8, padding: 16 }}>
+              <div style={{ border: '1px solid var(--adm-border)', borderRadius: 8, padding: 16 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Itens do Menu</h3>
+                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: 'var(--adm-text)' }}>Itens do Menu</h3>
                   <button onClick={addNavItem} className="admin-btn primary" style={{ padding: '8px 18px', fontSize: '0.85rem' }}>+ Adicionar Item</button>
                 </div>
                 {navItems.map((item, idx) => (
-                  <div key={item.id} style={{ border: '1px solid #333', borderRadius: 8, marginBottom: 10, overflow: 'hidden' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: '#1e1e2d', cursor: 'pointer' }} onClick={() => setExpandedNav(expandedNav === item.id ? null : item.id)}>
+                  <div key={item.id} style={{ border: '1px solid var(--adm-border)', borderRadius: 8, marginBottom: 10, overflow: 'hidden' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: 'var(--adm-surface2)', cursor: 'pointer' }} onClick={() => setExpandedNav(expandedNav === item.id ? null : item.id)}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <button onClick={e => { e.stopPropagation(); moveNavItem(item.id, -1); }} style={{ padding: '2px 6px', fontSize: '0.7rem', background: '#333', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }} disabled={idx === 0}>▲</button>
-                        <button onClick={e => { e.stopPropagation(); moveNavItem(item.id, 1); }} style={{ padding: '2px 6px', fontSize: '0.7rem', background: '#333', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }} disabled={idx === navItems.length - 1}>▼</button>
+                        <button onClick={e => { e.stopPropagation(); moveNavItem(item.id, -1); }} style={{ padding: '2px 6px', fontSize: '0.7rem', background: 'var(--adm-surface2)', color: 'var(--adm-text)', border: 'none', borderRadius: 4, cursor: 'pointer' }} disabled={idx === 0}>▲</button>
+                        <button onClick={e => { e.stopPropagation(); moveNavItem(item.id, 1); }} style={{ padding: '2px 6px', fontSize: '0.7rem', background: 'var(--adm-surface2)', color: 'var(--adm-text)', border: 'none', borderRadius: 4, cursor: 'pointer' }} disabled={idx === navItems.length - 1}>▼</button>
                       </div>
-                      <span style={{ flex: 1, fontWeight: 600, color: '#e2e8f0', fontSize: '0.9rem' }}>{item.label}{item.hasDropdown && <span style={{ marginLeft: 8, fontSize: '0.72rem', color: '#6b7280', fontWeight: 400 }}>({item.items.length} sub)</span>}</span>
-                      <button onClick={e => { e.stopPropagation(); removeNavItem(item.id); }} style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
-                      <span style={{ color: '#6b7280' }}>{expandedNav === item.id ? '▾' : '▸'}</span>
+                      <span style={{ flex: 1, fontWeight: 600, color: 'var(--adm-text)', fontSize: '0.9rem' }}>{item.label}{item.hasDropdown && <span style={{ marginLeft: 8, fontSize: '0.72rem', color: 'var(--adm-text2)', fontWeight: 400 }}>({item.items.length} sub)</span>}</span>
+                      <button onClick={e => { e.stopPropagation(); removeNavItem(item.id); }} style={{ background: '#ef4444', color: 'var(--adm-text)', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
+                      <span style={{ color: 'var(--adm-text2)' }}>{expandedNav === item.id ? '▾' : '▸'}</span>
                     </div>
                     {expandedNav === item.id && (
-                      <div style={{ padding: 16, background: '#16162a', borderTop: '1px solid #333' }}>
+                      <div style={{ padding: 16, background: 'var(--adm-surface)', borderTop: '1px solid var(--adm-border)' }}>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: 12, marginBottom: 12 }}>
-                          <div><label style={{ fontSize: 12, color: '#9ca3af', display: 'block', marginBottom: 2 }}>Texto</label><input value={item.label} onChange={e => updateNavItem(item.id, { label: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12 }} /></div>
-                          <div><label style={{ fontSize: 12, color: '#9ca3af', display: 'block', marginBottom: 2 }}>Link</label><input value={item.href} onChange={e => updateNavItem(item.id, { href: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12 }} /></div>
-                          <div><label style={{ fontSize: 12, color: '#9ca3af', display: 'block', marginBottom: 2 }}>Abrir em</label><select value={item.target || '_self'} onChange={e => updateNavItem(item.id, { target: e.target.value as '_blank' | '_self' })} style={{ height: 32, padding: '0 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12 }}><option value="_self">Mesma</option><option value="_blank">Nova</option></select></div>
+                          <div><label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>Texto</label><input value={item.label} onChange={e => updateNavItem(item.id, { label: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }} /></div>
+                          <div><label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>Link</label><input value={item.href} onChange={e => updateNavItem(item.id, { href: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }} /></div>
+                          <div><label style={{ fontSize: 12, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>Abrir em</label><select value={item.target || '_self'} onChange={e => updateNavItem(item.id, { target: e.target.value as '_blank' | '_self' })} style={{ height: 32, padding: '0 8px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }}><option value="_self">Mesma</option><option value="_blank">Nova</option></select></div>
                         </div>
                         <div style={{ marginTop: 12 }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                            <label style={{ fontWeight: 600, color: '#e2e8f0', fontSize: '0.88rem' }}>{item.hasDropdown ? 'Sub-itens' : 'Sem dropdown'}</label>
-                            <button onClick={() => addSubItem(item.id)} style={{ background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>+ Sub</button>
+                            <label style={{ fontWeight: 600, color: 'var(--adm-text)', fontSize: '0.88rem' }}>{item.hasDropdown ? 'Sub-itens' : 'Sem dropdown'}</label>
+                            <button onClick={() => addSubItem(item.id)} style={{ background: 'var(--adm-surface2)', color: 'var(--adm-text)', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>+ Sub</button>
                           </div>
                           {item.items.map(sub => (
                             <div key={sub.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto auto', gap: 8, marginBottom: 8, alignItems: 'end' }}>
-                              <div><label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 2 }}>Nome</label><input value={sub.label} onChange={e => updateSubItem(item.id, sub.id, { label: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12 }} /></div>
-                              <div><label style={{ fontSize: 11, color: '#9ca3af', display: 'block', marginBottom: 2 }}>Link</label><input value={sub.href} onChange={e => updateSubItem(item.id, sub.id, { href: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 12 }} /></div>
-                              <select value={sub.target || '_self'} onChange={e => updateSubItem(item.id, sub.id, { target: e.target.value as '_blank' | '_self' })} style={{ height: 32, padding: '0 6px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 11 }}><option value="_self">Mesma</option><option value="_blank">Nova</option></select>
-                              <button onClick={() => removeSubItem(item.id, sub.id)} style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
+                              <div><label style={{ fontSize: 11, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>Nome</label><input value={sub.label} onChange={e => updateSubItem(item.id, sub.id, { label: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }} /></div>
+                              <div><label style={{ fontSize: 11, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>Link</label><input value={sub.href} onChange={e => updateSubItem(item.id, sub.id, { href: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }} /></div>
+                              <select value={sub.target || '_self'} onChange={e => updateSubItem(item.id, sub.id, { target: e.target.value as '_blank' | '_self' })} style={{ height: 32, padding: '0 6px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 11 }}><option value="_self">Mesma</option><option value="_blank">Nova</option></select>
+                              <button onClick={() => removeSubItem(item.id, sub.id)} style={{ background: '#ef4444', color: 'var(--adm-text)', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
                             </div>
                           ))}
                         </div>
@@ -487,42 +471,46 @@ export const ManageIndiqueGanhe = () => {
           )}
           {currentTab === 'visibilidade' && (
             <div>
-              <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Gradiente Global da Página</h3>
+              <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid var(--adm-border)', fontSize: 15, fontWeight: 600, color: 'var(--adm-text)' }}>Gradiente Global da Página</h3>
               <div style={{ marginBottom: 20 }}>
-                <Toggle label="Ativar gradiente de fundo em todas as seções" valKey="ig_page_gradient" />
+                <ToggleSwitch
+                  value={(settings['ig_page_gradient']?.value || 'true') === 'true'}
+                  onChange={v => set('ig_page_gradient', v ? 'true' : 'false', 'Ativar gradiente de fundo em todas as seções')}
+                  label="Ativar gradiente de fundo em todas as seções"
+                />
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 16, alignItems: 'end', marginBottom: 20 }}>
                 <div>
-                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Cor Início</label>
+                  <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>Cor Início</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <input type="color" value={settings['ig_page_gradient_color1']?.value || '#e3f8ff'} onChange={e => set('ig_page_gradient_color1', e.target.value, 'Cor 1')}
-                      style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
+                      style={{ width: 40, height: 36, padding: 0, border: '1px solid var(--adm-border)', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
                     <input type="text" value={settings['ig_page_gradient_color1']?.value || '#e3f8ff'} onChange={e => set('ig_page_gradient_color1', e.target.value, 'Cor 1')}
-                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
+                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)' }} />
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Cor Meio</label>
+                  <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>Cor Meio</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <input type="color" value={settings['ig_page_gradient_color2']?.value || '#ffffff'} onChange={e => set('ig_page_gradient_color2', e.target.value, 'Cor 2')}
-                      style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
+                      style={{ width: 40, height: 36, padding: 0, border: '1px solid var(--adm-border)', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
                     <input type="text" value={settings['ig_page_gradient_color2']?.value || '#ffffff'} onChange={e => set('ig_page_gradient_color2', e.target.value, 'Cor 2')}
-                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
+                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)' }} />
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Cor Fim</label>
+                  <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>Cor Fim</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <input type="color" value={settings['ig_page_gradient_color3']?.value || '#f0f9ff'} onChange={e => set('ig_page_gradient_color3', e.target.value, 'Cor 3')}
-                      style={{ width: 40, height: 36, padding: 0, border: '1px solid #333', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
+                      style={{ width: 40, height: 36, padding: 0, border: '1px solid var(--adm-border)', borderRadius: 6, cursor: 'pointer', background: 'none' }} />
                     <input type="text" value={settings['ig_page_gradient_color3']?.value || '#f0f9ff'} onChange={e => set('ig_page_gradient_color3', e.target.value, 'Cor 3')}
-                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff' }} />
+                      style={{ flex: 1, fontFamily: 'monospace', fontSize: 12, padding: '6px 8px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)' }} />
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: 13, color: '#9ca3af', marginBottom: 4, display: 'block' }}>Direção</label>
+                  <label style={{ fontSize: 13, color: 'var(--adm-text2)', marginBottom: 4, display: 'block' }}>Direção</label>
                   <select value={settings['ig_page_gradient_angle']?.value || '180'} onChange={e => set('ig_page_gradient_angle', e.target.value, 'Ângulo')}
-                    style={{ padding: '8px 12px', background: '#1e1e2d', border: '1px solid #333', borderRadius: 6, color: '#fff', fontSize: 13 }}>
+                    style={{ padding: '8px 12px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 13 }}>
                     <option value="180">↓ Cima → Baixo</option>
                     <option value="0">↓ Baixo → Cima</option>
                     <option value="90">→ Esquerda → Direita</option>
@@ -532,18 +520,28 @@ export const ManageIndiqueGanhe = () => {
                   </select>
                 </div>
               </div>
-              <div style={{ height: 80, borderRadius: 16, background: `linear-gradient(${settings['ig_page_gradient_angle']?.value || '180'}deg, ${settings['ig_page_gradient_color1']?.value || '#e3f8ff'} 0%, ${settings['ig_page_gradient_color2']?.value || '#ffffff'} 50%, ${settings['ig_page_gradient_color3']?.value || '#f0f9ff'} 100%)`, border: '1px solid #333', marginBottom: 32 }} />
+              <div style={{ height: 80, borderRadius: 16, background: `linear-gradient(${settings['ig_page_gradient_angle']?.value || '180'}deg, ${settings['ig_page_gradient_color1']?.value || '#e3f8ff'} 0%, ${settings['ig_page_gradient_color2']?.value || '#ffffff'} 50%, ${settings['ig_page_gradient_color3']?.value || '#f0f9ff'} 100%)`, border: '1px solid var(--adm-border)', marginBottom: 32 }} />
 
-              <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid #333', fontSize: 15, fontWeight: 600, color: '#e2e8f0' }}>Visibilidade das Seções</h3>
+              <h3 style={{ margin: '0 0 20px', paddingBottom: 12, borderBottom: '1px solid var(--adm-border)', fontSize: 15, fontWeight: 600, color: 'var(--adm-text)' }}>Visibilidade das Seções</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0 }}>
-                <div style={{ padding: '8px 16px', borderBottom: '1px solid #333', fontWeight: 600, fontSize: 13, color: '#9ca3af' }}>Seção</div>
-                <div style={{ padding: '8px 16px', borderBottom: '1px solid #333', fontWeight: 600, fontSize: 13, color: '#9ca3af', textAlign: 'center' }}>Desktop</div>
-                <div style={{ padding: '8px 16px', borderBottom: '1px solid #333', fontWeight: 600, fontSize: 13, color: '#9ca3af', textAlign: 'center' }}>Mobile</div>
+                <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--adm-border)', fontWeight: 600, fontSize: 13, color: 'var(--adm-text2)' }}>Seção</div>
+                <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--adm-border)', fontWeight: 600, fontSize: 13, color: 'var(--adm-text2)', textAlign: 'center' }}>Desktop</div>
+                <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--adm-border)', fontWeight: 600, fontSize: 13, color: 'var(--adm-text2)', textAlign: 'center' }}>Mobile</div>
                 {VIS_FIELDS.map(vf => (
                   <React.Fragment key={vf.visKey}>
-                    <div style={{ padding: '12px 16px', borderBottom: '1px solid #222', fontSize: 14, color: '#e2e8f0' }}>{vf.section}</div>
-                    <div style={{ padding: '12px 16px', borderBottom: '1px solid #222', textAlign: 'center' }}><Toggle label="" valKey={vf.visKey} /></div>
-                    <div style={{ padding: '12px 16px', borderBottom: '1px solid #222', textAlign: 'center' }}><Toggle label="" valKey={vf.mobKey} /></div>
+                    <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--adm-border)', fontSize: 14, color: 'var(--adm-text)' }}>{vf.section}</div>
+                    <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--adm-border)', textAlign: 'center' }}>
+                      <ToggleSwitch
+                        value={(settings[vf.visKey]?.value || 'true') === 'true'}
+                        onChange={v => set(vf.visKey, v ? 'true' : 'false', vf.section)}
+                      />
+                    </div>
+                    <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--adm-border)', textAlign: 'center' }}>
+                      <ToggleSwitch
+                        value={(settings[vf.mobKey]?.value || 'true') === 'true'}
+                        onChange={v => set(vf.mobKey, v ? 'true' : 'false', vf.section + ' Mobile')}
+                      />
+                    </div>
                   </React.Fragment>
                 ))}
               </div>

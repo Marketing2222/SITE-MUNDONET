@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../hooks/useAuth';
+import { ColorPicker } from '../components/ColorPicker';
 
 interface QL { id:number; title:string; description:string; url:string; button_text:string; icon_type:string; sort_order:number; active:number; card_bg:string; icon_bg:string; icon_color:string; title_color:string; title_font_size:string; desc_color:string; desc_font_size:string; btn_color:string; }
 const EMPTY = { title:'', description:'', url:'', button_text:'', icon_type:'user', sort_order:0, active:1, card_bg:'', icon_bg:'', icon_color:'', title_color:'', title_font_size:'', desc_color:'', desc_font_size:'', btn_color:'' };
@@ -7,10 +8,7 @@ const EMPTY = { title:'', description:'', url:'', button_text:'', icon_type:'use
 const ColorField = ({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) => (
   <div className="admin-field" style={{ flex: 1 }}>
     <label>{label}</label>
-    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-      <input type="color" value={value || '#ffffff'} onChange={e => onChange(e.target.value)} style={{ height: 36, width: 50 }} />
-      <input type="text" value={value} onChange={e => onChange(e.target.value)} placeholder="Ex: #2563EB" style={{ flex: 1 }} />
-    </div>
+    <ColorPicker value={value || '#ffffff'} onChange={onChange} />
   </div>
 );
 
