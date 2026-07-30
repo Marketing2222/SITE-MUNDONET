@@ -53,6 +53,7 @@ interface Plan {
   offer_tag_color?: string;
   offer_tag_text_color?: string;
   offer_tag_icon?: string;
+  show_price?: boolean;
 }
 
 export const Plans = () => {
@@ -184,10 +185,6 @@ export const Plans = () => {
                 {plan.popular && <div className="popular-ribbon">Mais Popular</div>}
 
                 <div className="plan-card-top">
-                  <div className="plan-name-row">
-                    <h3 className="plan-name">{plan.price.toLowerCase() === 'sob consulta' ? 'Sob Consulta' : `R$ ${plan.price}`}</h3>
-                  </div>
-
                   <div className="plan-price-block">
                     {(() => {
                       const match = plan.name.match(/^(\d+)\s*(.*)$/);
@@ -264,6 +261,18 @@ export const Plans = () => {
                 </div>
 
                 <div className="plan-details-footer">
+                  {plan.show_price !== false && (
+                    <div className="plan-price-bottom">
+                      {plan.price.toLowerCase() === 'sob consulta' ? (
+                        <span className="plan-price-consult">Sob Consulta</span>
+                      ) : (
+                        <>
+                          <span className="plan-price-bottom-currency">R$</span>
+                          <span className="plan-price-bottom-value">{plan.price}</span>
+                        </>
+                      )}
+                    </div>
+                  )}
                   <button
                     className="plan-details-toggle"
                     onClick={() => toggleDetails(i)}

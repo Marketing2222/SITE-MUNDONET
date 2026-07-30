@@ -365,6 +365,26 @@
   margin-top: auto;
 }
 
+.plan-price-bottom {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding-bottom: 12px;
+}
+
+.plan-price-bottom-currency {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--card-text, #1a0533);
+}
+
+.plan-price-bottom-value {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--card-text, #1a0533);
+  line-height: 1;
+}
+
 .plan-details-toggle {
   display: flex;
   justify-content: space-between;

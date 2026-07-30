@@ -22,6 +22,7 @@ interface Plan {
   offer_tag_color?: string;
   offer_tag_text_color?: string;
   offer_tag_icon?: string;
+  show_price?: boolean;
 }
 
 const EMPTY_PLAN: Omit<Plan, 'id'> = {
@@ -34,7 +35,8 @@ const EMPTY_PLAN: Omit<Plan, 'id'> = {
   button_text_color: '', plan_font: '', label_included: 'Incluso no plano:',
   label_bonus: 'Na assinatura, adicione mais um benefício:', label_details: 'Mais detalhes do plano',
   label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151', modal_title_color: '',
-  offer_tag_enabled: false, offer_tag_text: 'OFERTA EXCLUSIVA', offer_tag_color: '#6b21a8', offer_tag_text_color: '#ffffff', offer_tag_icon: '⚡'
+  offer_tag_enabled: false, offer_tag_text: 'OFERTA EXCLUSIVA', offer_tag_color: '#6b21a8', offer_tag_text_color: '#ffffff', offer_tag_icon: '⚡',
+  show_price: true
 };
 
 interface LibraryApp {
@@ -556,6 +558,8 @@ export const ManagePlans = () => {
                   <label htmlFor="chk-popular" style={{textTransform:'none',letterSpacing:0}}>Mais Popular</label>
                   <input type="checkbox" id="chk-active" checked={form.active} onChange={e=>setForm({...form,active:e.target.checked})} style={{marginLeft:12}} />
                   <label htmlFor="chk-active" style={{textTransform:'none',letterSpacing:0}}>Ativo</label>
+                  <input type="checkbox" id="chk-show-price" checked={form.show_price !== false} onChange={e=>setForm({...form,show_price:e.target.checked})} style={{marginLeft:12}} />
+                  <label htmlFor="chk-show-price" style={{textTransform:'none',letterSpacing:0}}>Mostrar Preço</label>
                 </div>
               </div>
 
