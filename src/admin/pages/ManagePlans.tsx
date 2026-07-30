@@ -488,7 +488,7 @@ export const ManagePlans = () => {
                 </div>
                 {openSections.bonus && (
                   <div className="admin-section-body">
-                    <ToggleSwitch value={form.enable_bonus} onChange={v => setForm({...form, enable_bonus: v})} label='Habilitar seção "App Bônus"' />
+                    <ToggleSwitch value={form.enable_bonus ?? false} onChange={v => setForm({...form, enable_bonus: v})} label='Habilitar seção "App Bônus"' />
                     {form.enable_bonus && (
                       <>
                         <input placeholder="Texto do título (ex: Na assinatura, adicione mais um benefício:)" value={form.label_bonus || ''} onChange={e => setForm({...form, label_bonus: e.target.value})} />
@@ -622,7 +622,7 @@ export const ManagePlans = () => {
 
                     {/* Offer Tag */}
                     <div style={{borderTop:'1px solid var(--adm-border)', paddingTop:12, marginTop:4}}>
-                      <ToggleSwitch value={form.offer_tag_enabled} onChange={v => setForm({...form, offer_tag_enabled: v})} label="Habilitar Tag de Oferta" />
+                      <ToggleSwitch value={form.offer_tag_enabled ?? false} onChange={v => setForm({...form, offer_tag_enabled: v})} label="Habilitar Tag de Oferta" />
                       {form.offer_tag_enabled && (
                         <div className="admin-form-row" style={{marginTop:8}}>
                           <div className="admin-field"><label>Texto da Tag</label><input value={form.offer_tag_text ?? ''} onChange={e=>setForm({...form,offer_tag_text:e.target.value})} placeholder="Ex: OFERTA EXCLUSIVA" /></div>

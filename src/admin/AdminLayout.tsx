@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { getUser, logout } from './hooks/useAuth';
 import './styles/Admin.css';
@@ -26,7 +26,7 @@ const Icons = {
 
 interface NavItem {
   to?: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   label: string;
   children?: { to: string; label: string }[];
 }
