@@ -152,6 +152,14 @@
   margin: 0;
 }
 
+.plan-name-price {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--card-text, #1a0533);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
 .plan-user-icon {
   width: 32px;
   height: 32px;
@@ -170,6 +178,12 @@
   gap: 2px;
   margin-bottom: 8px;
   flex-wrap: wrap;
+}
+
+.plan-price-block .plan-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--plan-name-color, #7c3aed);
 }
 
 .plan-price-currency {
