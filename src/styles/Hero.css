@@ -1,8 +1,11 @@
 .hero-section {
   position: relative;
   width: 100%;
+  max-width: 1920px;
   height: var(--hero-height, 650px);
   background-color: var(--color-dark-brand);
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .slides-container {
