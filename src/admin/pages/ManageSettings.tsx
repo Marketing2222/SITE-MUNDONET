@@ -9,6 +9,7 @@ interface Setting { key: string; value: string; label: string; }
 const GENERAL_KEYS = [
   'site_name', 'logo_url', 'favicon_url', 'primary_color',
   'whatsapp_float', 'footer_cnpj', 'footer_anatel',
+  'loading_mascot_url',
 ];
 
 export const ManageSettings = () => {
@@ -90,6 +91,13 @@ export const ManageSettings = () => {
             <div className="admin-field">
               <label>Favicon</label>
               <ImageUpload value={form.favicon_url || ''} onChange={v => set('favicon_url', v)} />
+            </div>
+            <div className="admin-field">
+              <label>Mascote da Tela de Carregamento</label>
+              <ImageUpload value={form.loading_mascot_url || ''} onChange={v => set('loading_mascot_url', v)} />
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>
+                Imagem exibida no centro da tela de carregamento ao acessar o site. Se vazio, sera exibido um spinner com a letra "M".
+              </p>
             </div>
             <div className="admin-field">
               <label>Cor Principal</label>

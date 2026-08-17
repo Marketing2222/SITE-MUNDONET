@@ -196,6 +196,15 @@ function App() {
     fetch(`${API_BASE_URL}/api/site-settings`)
       .then(res => res.json())
       .then(data => {
+        // Esconde a tela de loading e mostra o conteudo
+        const loadingScreen = document.getElementById('loading-screen');
+        const rootEl = document.getElementById('root');
+        if (loadingScreen) {
+          loadingScreen.classList.add('hidden');
+          setTimeout(() => loadingScreen.remove(), 500);
+        }
+        if (rootEl) rootEl.classList.add('loaded');
+
         if (!data || Object.keys(data).length === 0) return;
         const root = document.documentElement;
         root.style.removeProperty('--global-bg');
@@ -261,9 +270,29 @@ function App() {
         if (data.hero_btn2_bg) root.style.setProperty('--hero-btn2-bg', data.hero_btn2_bg);
         if (data.hero_btn2_text_color) root.style.setProperty('--hero-btn2-text', data.hero_btn2_text_color);
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error(err);
+        const loadingScreen = document.getElementById('loading-screen');
+        const rootEl = document.getElementById('root');
+        if (loadingScreen) {
+          loadingScreen.classList.add('hidden');
+          setTimeout(() => loadingScreen.remove(), 500);
+        }
+        if (rootEl) rootEl.classList.add('loaded');
+      });
 
-    // Carrega o favicon das configurações gerais
+    // Timeout de seguranca: esconde loading apos 3s mesmo se API nao responder
+    const loadingTimeout = setTimeout(() => {
+      const loadingScreen = document.getElementById('loading-screen');
+      const rootEl = document.getElementById('root');
+      if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+        loadingScreen.classList.add('hidden');
+        setTimeout(() => loadingScreen.remove(), 500);
+      }
+      if (rootEl && !rootEl.classList.contains('loaded')) rootEl.classList.add('loaded');
+    }, 3000);
+
+    // Carrega o favicon das configuracoes gerais
     fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
@@ -279,6 +308,8 @@ function App() {
         }
       })
       .catch(console.error);
+
+    return () => clearTimeout(loadingTimeout);
   }, []);
 
   return (
