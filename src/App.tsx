@@ -45,7 +45,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function PublicSite() {
   const [floatLink, setFloatLink] = useState('https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.');
   const [floatImage, setFloatImage] = useState('');
-  const [floatSize, setFloatSize] = useState('60px');
+  const [floatSize, setFloatSize] = useState('50px');
   const [floatColor, setFloatColor] = useState('#25D366');
   const [floatIconColor, setFloatIconColor] = useState('#ffffff');
   const [floatShadow, setFloatShadow] = useState('rgba(37,211,102,0.4)');

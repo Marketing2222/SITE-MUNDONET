@@ -32,6 +32,7 @@ interface SiteSettings {
   hero_btn2_link: string;
   hero_btn2_bg: string;
   hero_btn2_text_color: string;
+  hero_slide_interval: number;
 }
 
 const ColorField = ({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) => (
@@ -71,6 +72,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   hero_btn2_link: 'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.',
   hero_btn2_bg: 'rgba(255, 255, 255, 0.15)',
   hero_btn2_text_color: '#ffffff',
+  hero_slide_interval: 5,
 };
 
 export const ManageSiteCustomization = () => {
@@ -381,6 +383,30 @@ export const ManageSiteCustomization = () => {
                 <option value="none">Sem Transição</option>
               </select>
               <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>Tipo de animação entre os slides do banner.</p>
+            </div>
+
+            <div className="admin-field">
+              <label>Tempo de cada slide (segundos)</label>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                <input
+                  type="range"
+                  min={2}
+                  max={20}
+                  step={1}
+                  value={settings.hero_slide_interval || 5}
+                  onChange={e => setSettings({...settings, hero_slide_interval: Number(e.target.value)})}
+                  style={{ flex: 1, accentColor: 'var(--adm-accent)' }}
+                />
+                <input
+                  type="number"
+                  min={2}
+                  max={20}
+                  value={settings.hero_slide_interval || 5}
+                  onChange={e => setSettings({...settings, hero_slide_interval: Number(e.target.value)})}
+                  style={{ width: 60, textAlign: 'center' }}
+                />
+              </div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>Intervalo em segundos para troca automática dos slides (padrão: 5s). Valor atual: {settings.hero_slide_interval || 5}s</p>
             </div>
           </div>
 

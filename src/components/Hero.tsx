@@ -41,11 +41,13 @@ export const Hero: React.FC = () => {
 
   useEffect(() => {
     if (slides.length <= 1) return;
+    const interval = (siteSettings as Record<string, unknown>).hero_slide_interval;
+    const ms = typeof interval === 'number' ? interval * 1000 : 5000;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, ms);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, siteSettings]);
 
   const nextSlide = () => {
     if (slides.length > 0) setCurrentSlide((prev) => (prev + 1) % slides.length);
