@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import '../styles/Hero.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -12,6 +12,7 @@ interface Slide {
 interface SiteSettings {
   hero_show_buttons?: boolean;
   hero_transition?: string;
+  hero_slide_interval?: number;
   hero_btn1_text?: string;
   hero_btn1_link?: string;
   hero_btn1_bg?: string;
@@ -26,6 +27,7 @@ export const Hero: React.FC = () => {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({});
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/hero`)
@@ -40,14 +42,14 @@ export const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
     if (slides.length <= 1) return;
-    const interval = (siteSettings as Record<string, unknown>).hero_slide_interval;
-    const ms = typeof interval === 'number' ? interval * 1000 : 5000;
-    const timer = setInterval(() => {
+    const seconds = siteSettings.hero_slide_interval || 5;
+    timerRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, ms);
-    return () => clearInterval(timer);
-  }, [slides.length, siteSettings]);
+    }, seconds * 1000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [slides.length, siteSettings.hero_slide_interval]);
 
   const nextSlide = () => {
     if (slides.length > 0) setCurrentSlide((prev) => (prev + 1) % slides.length);

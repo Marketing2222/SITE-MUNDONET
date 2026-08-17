@@ -53,6 +53,22 @@ export const ManageHero = () => {
     load();
   };
 
+  const moveSlide = async (id: number, direction: 'up' | 'down') => {
+    const idx = slides.findIndex(s => s.id === id);
+    if (idx === -1) return;
+    const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+    if (targetIdx < 0 || targetIdx >= slides.length) return;
+    const current = slides[idx];
+    const target = slides[targetIdx];
+    const newOrder = target.sort_order;
+    const targetNewOrder = current.sort_order;
+    await Promise.all([
+      apiFetch(`/hero/${current.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: newOrder }) }),
+      apiFetch(`/hero/${target.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: targetNewOrder }) }),
+    ]);
+    load();
+  };
+
   return (
     <div>
       <div className="admin-page-header">
@@ -63,8 +79,24 @@ export const ManageHero = () => {
       {msg && <div className="admin-alert success">{msg}</div>}
 
       <div className="admin-items-list">
-        {slides.map(s => (
+        {slides.map((s, idx) => (
           <div key={s.id} className="admin-item-row">
+            <div className="admin-item-actions" style={{ flexDirection: 'column', gap: 2, marginRight: 4 }}>
+              <button
+                className="admin-btn ghost small"
+                onClick={() => moveSlide(s.id, 'up')}
+                disabled={idx === 0}
+                style={{ padding: '2px 6px', fontSize: 12, opacity: idx === 0 ? 0.3 : 1 }}
+                title="Mover para cima"
+              >▲</button>
+              <button
+                className="admin-btn ghost small"
+                onClick={() => moveSlide(s.id, 'down')}
+                disabled={idx === slides.length - 1}
+                style={{ padding: '2px 6px', fontSize: 12, opacity: idx === slides.length - 1 ? 0.3 : 1 }}
+                title="Mover para baixo"
+              >▼</button>
+            </div>
             <img src={s.url} alt={s.title} className="admin-item-thumb" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; }} />
             <div className="admin-item-info">
               <strong>{s.title}</strong>
