@@ -196,16 +196,19 @@ function App() {
     fetch(`${API_BASE_URL}/api/site-settings`)
       .then(res => res.json())
       .then(data => {
-        // Esconde a tela de loading e mostra o conteudo
-        const loadingScreen = document.getElementById('loading-screen');
-        const rootEl = document.getElementById('root');
-        if (loadingScreen) {
-          loadingScreen.classList.add('hidden');
-          setTimeout(() => loadingScreen.remove(), 500);
+        if (!data || Object.keys(data).length === 0) {
+          const loadingScreen = document.getElementById('loading-screen');
+          const rootEl = document.getElementById('root');
+          if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+            setTimeout(() => loadingScreen.remove(), 500);
+          }
+          if (rootEl) {
+            rootEl.style.visibility = 'visible';
+            rootEl.classList.add('loaded');
+          }
+          return;
         }
-        if (rootEl) rootEl.classList.add('loaded');
-
-        if (!data || Object.keys(data).length === 0) return;
         const root = document.documentElement;
         root.style.removeProperty('--global-bg');
         root.style.removeProperty('--global-text');
@@ -230,7 +233,19 @@ function App() {
         root.style.removeProperty('--hero-btn1-text');
         root.style.removeProperty('--hero-btn2-bg');
         root.style.removeProperty('--hero-btn2-text');
-        if (data.customization_enabled === false) return;
+        if (data.customization_enabled === false) {
+          const loadingScreen = document.getElementById('loading-screen');
+          const rootEl = document.getElementById('root');
+          if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+            setTimeout(() => loadingScreen.remove(), 500);
+          }
+          if (rootEl) {
+            rootEl.style.visibility = 'visible';
+            rootEl.classList.add('loaded');
+          }
+          return;
+        }
         if (data.bg_color) root.style.setProperty('--global-bg', data.bg_color);
         if (data.text_color) root.style.setProperty('--global-text', data.text_color);
         if (data.title_color) root.style.setProperty('--global-title', data.title_color);
@@ -269,6 +284,18 @@ function App() {
         if (data.hero_btn1_text_color) root.style.setProperty('--hero-btn1-text', data.hero_btn1_text_color);
         if (data.hero_btn2_bg) root.style.setProperty('--hero-btn2-bg', data.hero_btn2_bg);
         if (data.hero_btn2_text_color) root.style.setProperty('--hero-btn2-text', data.hero_btn2_text_color);
+
+        // Esconde loading SOPOS todas as cores serem aplicadas
+        const loadingScreen = document.getElementById('loading-screen');
+        const rootEl = document.getElementById('root');
+        if (loadingScreen) {
+          loadingScreen.classList.add('hidden');
+          setTimeout(() => loadingScreen.remove(), 500);
+        }
+        if (rootEl) {
+          rootEl.style.visibility = 'visible';
+          rootEl.classList.add('loaded');
+        }
       })
       .catch(err => {
         console.error(err);
@@ -278,7 +305,10 @@ function App() {
           loadingScreen.classList.add('hidden');
           setTimeout(() => loadingScreen.remove(), 500);
         }
-        if (rootEl) rootEl.classList.add('loaded');
+        if (rootEl) {
+          rootEl.style.visibility = 'visible';
+          rootEl.classList.add('loaded');
+        }
       });
 
     // Timeout de seguranca: esconde loading apos 3s mesmo se API nao responder
@@ -289,7 +319,10 @@ function App() {
         loadingScreen.classList.add('hidden');
         setTimeout(() => loadingScreen.remove(), 500);
       }
-      if (rootEl && !rootEl.classList.contains('loaded')) rootEl.classList.add('loaded');
+      if (rootEl && !rootEl.classList.contains('loaded')) {
+        rootEl.style.visibility = 'visible';
+        rootEl.classList.add('loaded');
+      }
     }, 3000);
 
     // Carrega o favicon das configuracoes gerais

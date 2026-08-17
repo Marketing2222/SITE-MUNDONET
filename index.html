@@ -16,10 +16,12 @@
       }
       #root {
         opacity: 0;
+        visibility: hidden;
       }
       #root.loaded {
         opacity: 1;
-        transition: opacity 0.4s ease;
+        visibility: visible;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
       }
       #loading-screen {
         position: fixed;
