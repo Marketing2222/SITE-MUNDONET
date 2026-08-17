@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/Hero.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -41,23 +41,32 @@ export const Hero: React.FC = () => {
       .catch(console.error);
   }, []);
 
-  useEffect(() => {
+  const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     if (slides.length <= 1) return;
-    const seconds = siteSettings.hero_slide_interval || 5;
+    const seconds = siteSettings.hero_slide_interval && siteSettings.hero_slide_interval > 0 ? siteSettings.hero_slide_interval : 5;
     timerRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, seconds * 1000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [slides.length, siteSettings.hero_slide_interval]);
 
-  const nextSlide = () => {
-    if (slides.length > 0) setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+  useEffect(() => {
+    startTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [startTimer]);
 
-  const prevSlide = () => {
-    if (slides.length > 0) setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  const goToSlide = useCallback((index: number) => {
+    setCurrentSlide(index);
+    startTimer();
+  }, [startTimer]);
+
+  const nextSlide = useCallback(() => {
+    if (slides.length > 0) goToSlide((currentSlide + 1) % slides.length);
+  }, [slides.length, currentSlide, goToSlide]);
+
+  const prevSlide = useCallback(() => {
+    if (slides.length > 0) goToSlide((currentSlide - 1 + slides.length) % slides.length);
+  }, [slides.length, currentSlide, goToSlide]);
 
   if (slides.length === 0) return null;
 
@@ -68,7 +77,7 @@ export const Hero: React.FC = () => {
   const btn1Bg = siteSettings.hero_btn1_bg || '#ff6a00';
   const btn1Color = siteSettings.hero_btn1_text_color || '#ffffff';
   const btn2Text = siteSettings.hero_btn2_text || 'Falar com Atendente';
-  const btn2Link = siteSettings.hero_btn2_link || 'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.';
+  const btn2Link = siteSettings.hero_btn2_link || 'https://api.whatsapp.com/send?phone=559830420030&text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20contratar%20a%20internet.';
   const btn2Bg = siteSettings.hero_btn2_bg || 'rgba(255, 255, 255, 0.15)';
   const btn2Color = siteSettings.hero_btn2_text_color || '#ffffff';
 
@@ -126,7 +135,7 @@ export const Hero: React.FC = () => {
               <button 
                 key={index} 
                 className={`indicator ${index === currentSlide ? 'active' : ''}`}
-                onClick={() => setCurrentSlide(index)}
+                onClick={() => goToSlide(index)}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}

@@ -18,7 +18,7 @@ export const ManageHero = () => {
 
   useEffect(() => { load(); }, []);
 
-  const openNew = () => { setEditing(null); setForm(EMPTY); setModal(true); };
+  const openNew = () => { setEditing(null); setForm({ url:'', title:'', subtitle:'', sort_order: slides.length, active: 1 }); setModal(true); };
   const openEdit = (s: Slide) => { setEditing(s); setForm({ url: s.url, title: s.title, subtitle: s.subtitle, sort_order: s.sort_order, active: s.active }); setModal(true); };
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +38,12 @@ export const ManageHero = () => {
   const save = async () => {
     setSaving(true);
     try {
-      if (editing) await apiFetch(`/hero/${editing.id}`, { method: 'PUT', body: JSON.stringify(form) });
-      else await apiFetch('/hero', { method: 'POST', body: JSON.stringify(form) });
+      if (editing) {
+        const { sort_order, ...rest } = form;
+        await apiFetch(`/hero/${editing.id}`, { method: 'PUT', body: JSON.stringify(rest) });
+      } else {
+        await apiFetch('/hero', { method: 'POST', body: JSON.stringify(form) });
+      }
       setMsg('Salvo com sucesso!');
       setModal(false);
       load();
@@ -60,10 +64,10 @@ export const ManageHero = () => {
     if (targetIdx < 0 || targetIdx >= slides.length) return;
     const current = slides[idx];
     const target = slides[targetIdx];
-    const newOrder = target.sort_order;
+    const currentNewOrder = target.sort_order;
     const targetNewOrder = current.sort_order;
     await Promise.all([
-      apiFetch(`/hero/${current.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: newOrder }) }),
+      apiFetch(`/hero/${current.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: currentNewOrder }) }),
       apiFetch(`/hero/${target.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: targetNewOrder }) }),
     ]);
     load();
@@ -72,7 +76,7 @@ export const ManageHero = () => {
   return (
     <div>
       <div className="admin-page-header">
-        <div><h2>🖼️ Banners do Hero</h2><p>Gerencie os slides do carrossel principal do site.</p></div>
+        <div><h2>Banners do Hero</h2><p>Gerencie os slides do carrossel principal do site. Use as setas para definir a ordem.</p></div>
         <button className="admin-btn primary" onClick={openNew}>+ Novo Slide</button>
       </div>
 
@@ -81,21 +85,21 @@ export const ManageHero = () => {
       <div className="admin-items-list">
         {slides.map((s, idx) => (
           <div key={s.id} className="admin-item-row">
-            <div className="admin-item-actions" style={{ flexDirection: 'column', gap: 2, marginRight: 4 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginRight: 4, minWidth: 28 }}>
               <button
                 className="admin-btn ghost small"
                 onClick={() => moveSlide(s.id, 'up')}
                 disabled={idx === 0}
-                style={{ padding: '2px 6px', fontSize: 12, opacity: idx === 0 ? 0.3 : 1 }}
+                style={{ padding: '2px 4px', fontSize: 11, opacity: idx === 0 ? 0.25 : 1, cursor: idx === 0 ? 'default' : 'pointer' }}
                 title="Mover para cima"
-              >▲</button>
+              >&#9650;</button>
               <button
                 className="admin-btn ghost small"
                 onClick={() => moveSlide(s.id, 'down')}
                 disabled={idx === slides.length - 1}
-                style={{ padding: '2px 6px', fontSize: 12, opacity: idx === slides.length - 1 ? 0.3 : 1 }}
+                style={{ padding: '2px 4px', fontSize: 11, opacity: idx === slides.length - 1 ? 0.25 : 1, cursor: idx === slides.length - 1 ? 'default' : 'pointer' }}
                 title="Mover para baixo"
-              >▼</button>
+              >&#9660;</button>
             </div>
             <img src={s.url} alt={s.title} className="admin-item-thumb" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; }} />
             <div className="admin-item-info">
@@ -104,8 +108,8 @@ export const ManageHero = () => {
             </div>
             <span className={`admin-badge ${s.active ? 'green' : 'red'}`}>{s.active ? 'Ativo' : 'Inativo'}</span>
             <div className="admin-item-actions">
-              <button className="admin-btn ghost small" onClick={() => openEdit(s)}>✏️ Editar</button>
-              <button className="admin-btn danger small" onClick={() => remove(s.id)}>🗑️</button>
+              <button className="admin-btn ghost small" onClick={() => openEdit(s)}>Editar</button>
+              <button className="admin-btn danger small" onClick={() => remove(s.id)}>&#128465;</button>
             </div>
           </div>
         ))}
@@ -116,7 +120,7 @@ export const ManageHero = () => {
           <div className="admin-modal">
             <div className="admin-modal-header">
               <h3>{editing ? 'Editar Slide' : 'Novo Slide'}</h3>
-              <button className="admin-modal-close" onClick={() => setModal(false)}>×</button>
+              <button className="admin-modal-close" onClick={() => setModal(false)}>&times;</button>
             </div>
             <div className="admin-form">
               <div className="admin-field">
@@ -124,17 +128,20 @@ export const ManageHero = () => {
                 <div style={{ display: 'flex', gap: 8 }}>
                   <input value={form.url} onChange={e => setForm({ ...form, url: e.target.value })} placeholder="https://..." style={{ flex: 1 }} />
                   <label className="admin-btn secondary small" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}>
-                    {uploading ? 'Enviando...' : '📁 Upload'}
+                    {uploading ? 'Enviando...' : 'Upload'}
                     <input type="file" accept="image/*" onChange={handleUpload} style={{ display: 'none' }} />
                   </label>
                 </div>
                 {form.url && <img src={form.url} alt="preview" style={{ marginTop: 8, borderRadius: 8, maxHeight: 120, objectFit: 'cover' }} onError={() => {}} />}
               </div>
-              <div className="admin-field"><label>Título</label><input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} /></div>
-              <div className="admin-field"><label>Subtítulo</label><textarea value={form.subtitle} onChange={e => setForm({ ...form, subtitle: e.target.value })} /></div>
-              <div className="admin-form-row">
-                <div className="admin-field"><label>Ordem</label><input type="number" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: +e.target.value })} /></div>
-                <div className="admin-field"><label>Ativo</label><select value={form.active} onChange={e => setForm({ ...form, active: +e.target.value })}><option value={1}>Sim</option><option value={0}>Não</option></select></div>
+              <div className="admin-field"><label>Titulo</label><input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} /></div>
+              <div className="admin-field"><label>Subtitulo</label><textarea value={form.subtitle} onChange={e => setForm({ ...form, subtitle: e.target.value })} /></div>
+              <div className="admin-field">
+                <label>Ativo</label>
+                <select value={form.active} onChange={e => setForm({ ...form, active: +e.target.value })}>
+                  <option value={1}>Sim</option>
+                  <option value={0}>Nao</option>
+                </select>
               </div>
             </div>
             <div className="admin-modal-footer">
