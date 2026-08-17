@@ -42,18 +42,21 @@
         pointer-events: none;
         transition: opacity 0.4s ease;
       }
-      .loading-mascot {
+      #loading-mascot-area {
+        width: 140px;
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #loading-mascot-area img {
         width: 140px;
         height: 140px;
         object-fit: contain;
         animation: loadingPulse 1.5s ease-in-out infinite;
       }
-      .loading-mascot-placeholder {
-        animation: loadingPulse 1.5s ease-in-out infinite;
-      }
-      .loading-spinner-circle {
+      #loading-mascot-area svg {
         animation: loadingSpin 1.2s linear infinite;
-        transform-origin: center;
       }
       @keyframes loadingSpin {
         0% { transform: rotate(0deg); }
@@ -109,13 +112,7 @@
   </head>
   <body>
     <div id="loading-screen">
-      <div class="loading-mascot-placeholder">
-        <svg viewBox="0 0 200 200" width="120" height="120">
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="8" />
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#005CFF" stroke-width="8" stroke-dasharray="120 380" stroke-linecap="round" class="loading-spinner-circle" />
-          <text x="100" y="110" text-anchor="middle" font-size="40" font-weight="bold" fill="#005CFF">M</text>
-        </svg>
-      </div>
+      <div id="loading-mascot-area"></div>
       <div class="loading-dots">
         <span class="loading-dot"></span>
         <span class="loading-dot"></span>
@@ -125,15 +122,34 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Tenta buscar o mascote configurado e atualizar a tela de loading
-      fetch('/api/settings').then(r => r.json()).then(data => {
-        if (data.loading_mascot_url && data.loading_mascot_url.value) {
-          var ls = document.getElementById('loading-screen');
-          if (ls) {
-            ls.innerHTML = '<img src="' + data.loading_mascot_url.value + '" alt="Mascote" class="loading-mascot" /><div class="loading-dots"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></div>';
-          }
+      // Busca o mascote configurado e insere na tela de loading
+      fetch('/api/settings').then(function(r) { return r.json(); }).then(function(data) {
+        var area = document.getElementById('loading-mascot-area');
+        if (!area) return;
+        var url = data.loading_mascot_url && data.loading_mascot_url.value;
+        if (url) {
+          var img = new Image();
+          img.src = url;
+          img.alt = 'Mascote';
+          img.className = 'loading-mascot-img';
+          img.onload = function() { area.appendChild(img); };
+          // Fallback: se a imagem nao carregar em 2s, mostra o M
+          setTimeout(function() {
+            if (!area.querySelector('img')) {
+              area.innerHTML = '<svg viewBox="0 0 200 200" width="120" height="120"><circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="8" /><circle cx="100" cy="100" r="80" fill="none" stroke="#005CFF" stroke-width="8" stroke-dasharray="120 380" stroke-linecap="round" /><text x="100" y="110" text-anchor="middle" font-size="40" font-weight="bold" fill="#005CFF">M</text></svg>';
+            }
+          }, 2000);
+        } else {
+          // Sem mascote: mostra o M animado
+          area.innerHTML = '<svg viewBox="0 0 200 200" width="120" height="120"><circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="8" /><circle cx="100" cy="100" r="80" fill="none" stroke="#005CFF" stroke-width="8" stroke-dasharray="120 380" stroke-linecap="round" /><text x="100" y="110" text-anchor="middle" font-size="40" font-weight="bold" fill="#005CFF">M</text></svg>';
         }
-      }).catch(function(){});
+      }).catch(function() {
+        // Erro: mostra o M
+        var area = document.getElementById('loading-mascot-area');
+        if (area) {
+          area.innerHTML = '<svg viewBox="0 0 200 200" width="120" height="120"><circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="8" /><circle cx="100" cy="100" r="80" fill="none" stroke="#005CFF" stroke-width="8" stroke-dasharray="120 380" stroke-linecap="round" /><text x="100" y="110" text-anchor="middle" font-size="40" font-weight="bold" fill="#005CFF">M</text></svg>';
+        }
+      });
     </script>
   </body>
 </html>
