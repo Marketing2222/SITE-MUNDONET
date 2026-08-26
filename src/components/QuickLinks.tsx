@@ -38,24 +38,20 @@ export const QuickLinks: React.FC = () => {
   const [links, setLinks] = useState<QuickLink[]>([]);
   const [title, setTitle] = useState('Como podemos te ajudar hoje?');
   const [bgColor, setBgColor] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/quicklinks`)
-      .then(res => res.json())
-      .then(data => setLinks(data))
-      .catch(console.error);
-
-    fetch(`${API_BASE_URL}/api/settings`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.quicklinks_title?.value) {
-          setTitle(data.quicklinks_title.value);
-        }
-        if (data.quicklinks_bg_color?.value) setBgColor(data.quicklinks_bg_color.value);
-      })
-      .catch(console.error);
+    Promise.all([
+      fetch(`${API_BASE_URL}/api/quicklinks`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/settings`).then(res => res.json()),
+    ]).then(([linksData, settingsData]) => {
+      setLinks(linksData);
+      if (settingsData.quicklinks_title?.value) setTitle(settingsData.quicklinks_title.value);
+      if (settingsData.quicklinks_bg_color?.value) setBgColor(settingsData.quicklinks_bg_color.value);
+    }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
+  if (loading) return null;
   if (links.length === 0) return null;
 
   return (

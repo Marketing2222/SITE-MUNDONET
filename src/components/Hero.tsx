@@ -27,18 +27,17 @@ export const Hero: React.FC = () => {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({});
+  const [loading, setLoading] = useState(true);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/hero`)
-      .then(res => res.json())
-      .then(data => setSlides(data))
-      .catch(console.error);
-
-    fetch(`${API_BASE_URL}/api/site-settings`)
-      .then(res => res.json())
-      .then(data => setSiteSettings(data))
-      .catch(console.error);
+    Promise.all([
+      fetch(`${API_BASE_URL}/api/hero`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/site-settings`).then(res => res.json()),
+    ]).then(([slidesData, settingsData]) => {
+      setSlides(slidesData);
+      setSiteSettings(settingsData);
+    }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   const startTimer = useCallback(() => {
@@ -68,6 +67,7 @@ export const Hero: React.FC = () => {
     if (slides.length > 0) goToSlide((currentSlide - 1 + slides.length) % slides.length);
   }, [slides.length, currentSlide, goToSlide]);
 
+  if (loading) return <div className="hero-section" style={{ minHeight: '500px', background: '#0a0a1a' }} />;
   if (slides.length === 0) return null;
 
   const showButtons = siteSettings.hero_show_buttons !== false;

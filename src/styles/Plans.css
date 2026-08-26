@@ -82,6 +82,7 @@
   gap: 0;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   border: 2px solid transparent;
+  overflow: hidden;
 }
 
 .plan-card:hover {
@@ -135,6 +136,45 @@
 .plan-card-top {
   margin-bottom: 20px;
   padding-top: 35px;
+  position: relative;
+  border-radius: var(--global-border-radius, 20px) var(--global-border-radius, 20px) 0 0;
+  overflow: hidden;
+}
+
+.plan-card-top.has-header-image {
+  margin: -28px -22px 20px;
+  padding: 55px 22px 20px;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.plan-card-top.has-header-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+  z-index: 0;
+}
+
+.plan-card-top.has-header-image > * {
+  position: relative;
+  z-index: 1;
+}
+
+.plan-card-top.has-header-image .plan-speed-number,
+.plan-card-top.has-header-image .plan-speed-unit {
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.plan-card-top.has-header-image .plan-highlight {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  color: #fff;
 }
 
 .plan-name-row {

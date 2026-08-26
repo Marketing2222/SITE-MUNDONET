@@ -54,6 +54,7 @@ interface Plan {
   offer_tag_text_color?: string;
   offer_tag_icon?: string;
   show_price?: boolean;
+  header_image?: string;
 }
 
 export const Plans = () => {
@@ -63,25 +64,23 @@ export const Plans = () => {
   const [selectedBonusTab, setSelectedBonusTab] = useState<number | null>(0);
   const [selectedAppTab, setSelectedAppTab] = useState<number>(0);
   const [sectionColors, setSectionColors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
 
   const [visible, setVisible] = useState(3);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/plans`)
-      .then(res => res.json())
-      .then(data => setPlans(data))
-      .catch(console.error);
-    fetch(`${API_BASE_URL}/api/settings`)
-      .then(res => res.json())
-      .then(data => {
-        const colors: Record<string, string> = {};
-        for (const [key, obj] of Object.entries(data) as [string, { value: string }][]) {
-          if (key.startsWith('plans_') && obj.value) colors[key] = obj.value;
-        }
-        setSectionColors(colors);
-      })
-      .catch(() => {});
+    Promise.all([
+      fetch(`${API_BASE_URL}/api/plans`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/settings`).then(res => res.json()),
+    ]).then(([plansData, settingsData]) => {
+      setPlans(plansData);
+      const colors: Record<string, string> = {};
+      for (const [key, obj] of Object.entries(settingsData) as [string, { value: string }][]) {
+        if (key.startsWith('plans_') && obj.value) colors[key] = obj.value;
+      }
+      setSectionColors(colors);
+    }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -93,7 +92,8 @@ export const Plans = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (plans.length === 0) return null; // ou um loading spinner
+  if (loading) return <section id="internet" className="plans-section" style={{ padding: '60px 20px', background: sectionColors.plans_bg_color || '#0a0a1a' }} />;
+  if (plans.length === 0) return null;
 
   const maxIndex = Math.max(0, plans.length - visible);
   const needsScroll = plans.length > visible;
@@ -184,7 +184,10 @@ export const Plans = () => {
                 )}
                 {plan.popular && <div className="popular-ribbon">Mais Popular</div>}
 
-                <div className="plan-card-top">
+                <div 
+                  className={`plan-card-top ${plan.header_image ? 'has-header-image' : ''}`}
+                  style={plan.header_image ? { backgroundImage: `url(${plan.header_image})` } : undefined}
+                >
                   <div className="plan-price-block">
                     {(() => {
                       const match = plan.name.match(/^(\d+)\s*(.*)$/);
@@ -263,7 +266,7 @@ export const Plans = () => {
                 <div className="plan-details-footer">
                   {plan.show_price !== false && (
                     <div className="plan-price-bottom">
-                      {plan.price.toLowerCase() === 'sob consulta' ? (
+                      {plan.price.toLowerCase().includes('sob consulta') ? (
                         <span className="plan-price-consult">Sob Consulta</span>
                       ) : (
                         <>
@@ -425,12 +428,13 @@ export const Plans = () => {
                               {selectedBonusTab !== null && (() => {
                                 const arr = selectedPlanModal.bonus_apps && selectedPlanModal.bonus_apps.length > 0 ? selectedPlanModal.bonus_apps : selectedPlanModal.bonus_app ? [selectedPlanModal.bonus_app] : [];
                                 const app = arr[selectedBonusTab];
-                                return app ? (
+                                if (!app) return null;
+                                return (
                                   <div className="plan-modal-bonus-details animate-fade-in">
                                     <h5 style={{ fontSize: '1rem', fontWeight: 700, margin: '0 0 4px', color: '#fff' }}>{app.name}</h5>
                                     <p style={{ fontSize: '0.85rem', color: '#9ca3af', margin: 0, lineHeight: 1.4 }}>{app.description || 'Benefício extra disponível para assinatura.'}</p>
                                   </div>
-                                ) : null;
+                                );
                               })()}
                             </div>
                           </>

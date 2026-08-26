@@ -18,10 +18,14 @@ export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       setContacts(contactsData);
       const gk = (key: string) => settingsData?.[prefix + key]?.value;
       if (gk('footer_font')) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = `https://fonts.googleapis.com/css2?family=${gk('footer_font')!.replace(/ /g, '+')}:wght@400;600;700&display=swap`;
-        document.head.appendChild(link);
+        const fontName = gk('footer_font')!;
+        const fontUrl = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@400;600;700&display=swap`;
+        if (!document.querySelector(`link[href="${fontUrl}"]`)) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = fontUrl;
+          document.head.appendChild(link);
+        }
       }
     }).catch(console.error);
   }, []);

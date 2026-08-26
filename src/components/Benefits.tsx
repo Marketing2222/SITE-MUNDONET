@@ -54,21 +54,18 @@ export const Benefits: React.FC = () => {
   const [items, setItems] = useState<Benefit[]>([]);
   const [title, setTitle] = useState('Benefícios e vantagens de ser cliente Mundonet');
   const [bgColor, setBgColor] = useState('');
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/benefits`)
-      .then(res => res.json())
-      .then(data => setItems(data))
-      .catch(console.error);
-
-    fetch(`${API_BASE_URL}/api/settings`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.benefits_title?.value) setTitle(data.benefits_title.value);
-        if (data.benefits_bg_color?.value) setBgColor(data.benefits_bg_color.value);
-      })
-      .catch(console.error);
+    Promise.all([
+      fetch(`${API_BASE_URL}/api/benefits`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/settings`).then(res => res.json()),
+    ]).then(([benefitsData, settingsData]) => {
+      setItems(benefitsData);
+      if (settingsData.benefits_title?.value) setTitle(settingsData.benefits_title.value);
+      if (settingsData.benefits_bg_color?.value) setBgColor(settingsData.benefits_bg_color.value);
+    }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -96,6 +93,7 @@ export const Benefits: React.FC = () => {
     el.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
   };
 
+  if (loading) return null;
   if (items.length === 0) return null;
 
   return (

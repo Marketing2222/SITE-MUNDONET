@@ -37,10 +37,14 @@ export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
         document.documentElement.style.setProperty('--primary', gk('primary_color')!);
       }
       if (gk('header_font')) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = `https://fonts.googleapis.com/css2?family=${gk('header_font')!.replace(/ /g, '+')}:wght@400;600;700;800&display=swap`;
-        document.head.appendChild(link);
+        const fontName = gk('header_font')!;
+        const fontUrl = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@400;600;700;800&display=swap`;
+        if (!document.querySelector(`link[href="${fontUrl}"]`)) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = fontUrl;
+          document.head.appendChild(link);
+        }
       }
       if (gk('header_height')) {
         document.documentElement.style.setProperty('--header-height', gk('header_height')! + 'px');
@@ -212,11 +216,9 @@ export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
                 </li>
               ))}
             </ul>
-
-            {portalPosition === 'navbar_right' 
-              ? renderPortalBtn('nav-cta-wrapper') 
-              : renderPortalBtn('nav-cta-wrapper mobile-portal-fallback')}
           </nav>
+
+          {portalPosition === 'navbar_right' && renderPortalBtn('nav-cta-wrapper mobile-portal-right')}
         </div>
       </div>
     </header>

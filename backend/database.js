@@ -49,8 +49,7 @@ export async function initDB() {
     });
     console.log('✅ Admin criado: admin@mundonet.com.br / admin123');
   } else {
-    // Garante que a senha seja sempre admin123 (útil quando o volume persiste)
-    adminUser.password = bcrypt.hashSync('admin123', 10);
+    // Admin já existe — não sobrescrever senha preservada
   }
 
   // ── Seed: hero_slides ────────────────────────────────────────────

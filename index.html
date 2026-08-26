@@ -132,19 +132,11 @@
           img.src = url;
           img.alt = 'Mascote';
           img.className = 'loading-mascot-img';
-          img.onload = function() { area.appendChild(img); };
-          // Fallback: se a imagem nao carregar em 2s, mostra o M
-          setTimeout(function() {
-            if (!area.querySelector('img')) {
-              area.innerHTML = '<svg viewBox="0 0 200 200" width="120" height="120"><circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="8" /><circle cx="100" cy="100" r="80" fill="none" stroke="#005CFF" stroke-width="8" stroke-dasharray="120 380" stroke-linecap="round" /><text x="100" y="110" text-anchor="middle" font-size="40" font-weight="bold" fill="#005CFF">M</text></svg>';
-            }
-          }, 2000);
+          area.appendChild(img);
         } else {
-          // Sem mascote: mostra o M animado
           area.innerHTML = '<svg viewBox="0 0 200 200" width="120" height="120"><circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="8" /><circle cx="100" cy="100" r="80" fill="none" stroke="#005CFF" stroke-width="8" stroke-dasharray="120 380" stroke-linecap="round" /><text x="100" y="110" text-anchor="middle" font-size="40" font-weight="bold" fill="#005CFF">M</text></svg>';
         }
       }).catch(function() {
-        // Erro: mostra o M
         var area = document.getElementById('loading-mascot-area');
         if (area) {
           area.innerHTML = '<svg viewBox="0 0 200 200" width="120" height="120"><circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="8" /><circle cx="100" cy="100" r="80" fill="none" stroke="#005CFF" stroke-width="8" stroke-dasharray="120 380" stroke-linecap="round" /><text x="100" y="110" text-anchor="middle" font-size="40" font-weight="bold" fill="#005CFF">M</text></svg>';

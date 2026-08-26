@@ -1,5 +1,6 @@
 import express from 'express';
 import { db } from '../database.js';
+import { authMiddleware } from '../auth.js';
 
 const router = express.Router();
 const THEME_KEY = '_global_theme';
@@ -10,7 +11,7 @@ router.get('/', async (req, res) => {
   res.json(settings);
 });
 
-router.put('/', async (req, res) => {
+router.put('/', authMiddleware, async (req, res) => {
   const newSettings = req.body;
   const idx = db.data.site_settings.findIndex(s => s.key === THEME_KEY);
   if (idx !== -1) {

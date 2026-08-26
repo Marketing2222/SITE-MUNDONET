@@ -1,9 +1,9 @@
 ﻿import { useEffect, useState } from 'react';
-import { apiFetch } from '../hooks/useAuth';
+import { apiFetch, getToken } from '../hooks/useAuth';
 import { API_BASE_URL } from '../../config/api';
 
-interface Slide { id: number; url: string; title: string; subtitle: string; sort_order: number; active: number; }
-const EMPTY: Omit<Slide,'id'> = { url:'', title:'', subtitle:'', sort_order:0, active:1 };
+interface Slide { id: number; url: string; title: string; subtitle: string; sort_order: number; active: boolean; }
+const EMPTY: Omit<Slide,'id'> = { url:'', title:'', subtitle:'', sort_order:0, active:true };
 
 export const ManageHero = () => {
   const [slides, setSlides] = useState<Slide[]>([]);
@@ -18,7 +18,7 @@ export const ManageHero = () => {
 
   useEffect(() => { load(); }, []);
 
-  const openNew = () => { setEditing(null); setForm({ url:'', title:'', subtitle:'', sort_order: slides.length, active: 1 }); setModal(true); };
+  const openNew = () => { setEditing(null); setForm({ url:'', title:'', subtitle:'', sort_order: slides.length, active: true }); setModal(true); };
   const openEdit = (s: Slide) => { setEditing(s); setForm({ url: s.url, title: s.title, subtitle: s.subtitle, sort_order: s.sort_order, active: s.active }); setModal(true); };
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,11 @@ export const ManageHero = () => {
     try {
       const fd = new FormData();
       fd.append('image', file);
-      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: fd });
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${getToken()}` },
+        body: fd,
+      });
       const data = await res.json();
       if (data.url) setForm({ ...form, url: data.url });
     } catch { setMsg('Erro no upload'); }
@@ -138,7 +142,7 @@ export const ManageHero = () => {
               <div className="admin-field"><label>Subtitulo</label><textarea value={form.subtitle} onChange={e => setForm({ ...form, subtitle: e.target.value })} /></div>
               <div className="admin-field">
                 <label>Ativo</label>
-                <select value={form.active} onChange={e => setForm({ ...form, active: +e.target.value })}>
+                <select value={form.active ? '1' : '0'} onChange={e => setForm({ ...form, active: e.target.value === '1' })}>
                   <option value={1}>Sim</option>
                   <option value={0}>Nao</option>
                 </select>

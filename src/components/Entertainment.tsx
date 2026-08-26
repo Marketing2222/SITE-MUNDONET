@@ -15,26 +15,24 @@ interface AppItem {
 export const Entertainment: React.FC = () => {
   const [apps, setApps] = useState<AppItem[]>([]);
   const [s, setS] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/entertainment`)
-      .then(res => res.json())
-      .then(data => setApps(data))
-      .catch(console.error);
-
-    fetch(`${API_BASE_URL}/api/settings`)
-      .then(res => res.json())
-      .then(data => {
-        const map: Record<string, string> = {};
-        for (const [key, obj] of Object.entries(data)) {
-          map[key] = (obj as any).value;
-        }
-        setS(map);
-      })
-      .catch(console.error);
+    Promise.all([
+      fetch(`${API_BASE_URL}/api/entertainment`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/settings`).then(res => res.json()),
+    ]).then(([appsData, settingsData]) => {
+      setApps(appsData);
+      const map: Record<string, string> = {};
+      for (const [key, obj] of Object.entries(settingsData)) {
+        map[key] = (obj as any).value;
+      }
+      setS(map);
+    }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
+  if (loading) return null;
   if (apps.length === 0) return null;
 
   const scroll = (dir: -1 | 1) => {

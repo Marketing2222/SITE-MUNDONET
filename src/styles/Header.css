@@ -195,7 +195,8 @@
   box-shadow: 0 6px 20px rgba(0, 92, 255, 0.3);
 }
 
-.mobile-portal-fallback {
+.mobile-portal-fallback,
+.mobile-portal-right {
   display: none;
 }
 
@@ -416,7 +417,8 @@
     border-radius: 8px;
   }
 
-  .mobile-portal-fallback {
+  .mobile-portal-fallback,
+  .mobile-portal-right {
     display: block;
     margin-top: 0;
     width: 100%;

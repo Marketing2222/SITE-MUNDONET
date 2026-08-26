@@ -16,7 +16,7 @@ const UploadBtn = ({ value, onChange }: { value:string; onChange:(url:string)=>v
     const fd = new FormData(); fd.append('image', file);
     try {
       setUploading(true);
-      const token = localStorage.getItem('mundonet_token');
+      const token = localStorage.getItem('admin_token');
       const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method:'POST', headers:{ Authorization:`Bearer ${token}` }, body:fd,
       });
