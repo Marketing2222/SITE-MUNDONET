@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import '../styles/Support.css';
 import { API_BASE_URL } from '../config/api';
+import { useReveal } from '../hooks/useReveal';
 
 export const Support: React.FC = () => {
   const [s, setS] = useState<Record<string, string>>({});
@@ -107,11 +108,14 @@ export const Support: React.FC = () => {
     }
   };
 
+  const leftRef = useReveal();
+  const rightRef = useReveal(0.15);
+
   return (
     <section className="support-section" style={{ backgroundColor: bg, padding }}>
       <div className="container">
         <div className="support-wrapper">
-          <div className="support-left">
+          <div className="support-left reveal" ref={leftRef}>
             <h2 className="support-title" style={{ color: titleColor }}>{leftTitle}</h2>
             <p className="support-desc" style={{ color: descColor }}>{leftDesc}</p>
             <p className="support-desc" style={{ color: descColor, fontWeight: 600, marginTop: 0 }}>{leftHighlight}</p>
@@ -134,7 +138,7 @@ export const Support: React.FC = () => {
             )}
           </div>
 
-          <div className="support-right">
+          <div className="support-right reveal reveal-delay-2" ref={rightRef}>
             <h2 className="support-title" style={{ color: titleColor }}>{rightTitle}</h2>
             <p className="support-desc" style={{ color: descColor }}>{rightDesc}</p>
 

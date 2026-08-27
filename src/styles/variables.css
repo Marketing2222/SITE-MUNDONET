@@ -56,4 +56,24 @@
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
+  
+  /* Hover */
+  --hover-lift: -3px;
+  --hover-shadow: var(--shadow-xl);
+}
+
+/* Dark Mode */
+html.dark {
+  --global-bg: #0f172a;
+  --global-text: #e2e8f0;
+  --global-title: #f1f5f9;
+  --global-section-bg: #1e293b;
+  --global-card-bg: #1e293b;
+  --global-card-text: #e2e8f0;
+  --color-background-light: #0f172a;
+  --color-white: #1e293b;
+  --color-text-dark: #e2e8f0;
+  --color-text-muted: #94a3b8;
+  --glass-bg: rgba(15, 23, 42, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
 }

@@ -89,11 +89,12 @@ export const Specialties: React.FC = () => {
       <div className="wifi-bar section-padding" style={s.wifi_bg_color ? { backgroundColor: s.wifi_bg_color } : undefined}>
         <div className="container wifi-grid">
           <div className="wifi-image animate-fade-in">
-            <img 
-              src={s.wifi_image || "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/ax3000-da-zte-1-scaled.jpg"} 
-              alt="Roteador Wi-Fi 6" 
-              className="router-img"
-            />
+<img 
+  src={s.wifi_image || "https://mundonetbandalarga.com.br/wp-content/uploads/2026/06/ax3000-da-zte-1-scaled.jpg"} 
+  alt="Roteador Wi-Fi 6" 
+  className="router-img"
+  loading="lazy"
+/>
           </div>
           <div className="wifi-content animate-slide-up">
             <span className="specialty-badge accent">{s.wifi_subtitle || 'Ultra Wi-Fi 6'}</span>

@@ -1,0 +1,18 @@
+{
+  "name": "Mundonet Telecom",
+  "short_name": "Mundonet",
+  "description": "Internet fibra óptica de alta velocidade. Assine a Mundonet.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#002D72",
+  "theme_color": "#002D72",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -127,7 +127,7 @@ export const IndiqueGanhe = () => {
           minHeight: g('ig_hero_height') || undefined,
         }}>
           {g('ig_hero_banner') && (
-            <img src={g('ig_hero_banner')} alt="" className="ig-hero-banner-img" />
+            <img src={g('ig_hero_banner')} alt="" className="ig-hero-banner-img" loading="lazy" />
           )}
           {g('ig_hero_overlay', 'true') === 'true' && g('ig_hero_banner') && (
             <div className="ig-hero-overlay" style={{
@@ -155,7 +155,7 @@ export const IndiqueGanhe = () => {
           <div className="ig-brands-track">
             {[...brands, ...brands].map((brand, i) => (
               <div key={i} className="ig-brand-item">
-                {brand.logo ? <img src={brand.logo} alt={brand.name} /> : <span>{brand.name}</span>}
+                {brand.logo ? <img src={brand.logo} alt={brand.name} loading="lazy" /> : <span>{brand.name}</span>}
               </div>
             ))}
           </div>
@@ -257,7 +257,7 @@ export const IndiqueGanhe = () => {
               {testimonials.map((t, i) => (
                 <div key={i} className="ig-testimonial-card">
                   <div className="ig-testimonial-header">
-                    {t.photo ? <img src={t.photo} alt={t.name} className="ig-testimonial-photo" /> : <div className="ig-testimonial-photo ig-testimonial-photo-placeholder">{t.name.charAt(0)}</div>}
+                    {t.photo ? <img src={t.photo} alt={t.name} className="ig-testimonial-photo" loading="lazy" /> : <div className="ig-testimonial-photo ig-testimonial-photo-placeholder">{t.name.charAt(0)}</div>}
                     <div><strong style={{ color: '#1a0533' }}>{t.name}</strong><span style={{ color: '#64748b', fontSize: 13 }}>{t.company}</span></div>
                   </div>
                   <p style={{ color: '#374151' }}>"{t.text}"</p>

@@ -404,6 +404,14 @@
   border-top: 1px solid #ede8f8;
   padding-top: 14px;
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-details-footer > div:last-child {
+  display: flex;
+  align-items: center;
 }
 
 .plan-price-bottom {
@@ -466,6 +474,28 @@
 .plan-details-toggle:hover .details-toggle-icon {
   background: var(--accent, #7c3aed);
   color: #fff;
+}
+
+.plan-share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.plan-share-btn:hover {
+  background: rgba(124,58,237,0.15);
+  color: #7c3aed;
+  border-color: rgba(124,58,237,0.3);
 }
 
 .plan-details-body {
@@ -634,6 +664,15 @@
   justify-content: center;
   z-index: 1000;
   padding: 20px;
+  animation: fadeIn 0.25s ease;
+}
+
+.plan-modal-overlay.closing {
+  animation: fadeOut 0.25s ease forwards;
+}
+
+.plan-modal-overlay.closing .plan-modal-content {
+  animation: modalSlideDown 0.25s ease forwards;
 }
 
 .plan-modal-content {

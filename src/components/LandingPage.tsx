@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../styles/LandingPage.css';
 import { API_BASE_URL } from '../config/api';
+import { useReveal } from '../hooks/useReveal';
 
 interface LandingSettings {
   hero_title: string;
@@ -110,6 +111,9 @@ export const LandingPage = () => {
 
   const apps = settings.plan_apps.split(',').map(a => a.trim()).filter(Boolean);
   const features = settings.features.split(',').map(f => f.trim()).filter(Boolean);
+  const planRef = useReveal();
+  const featuresRef = useReveal();
+  const ctaRef = useReveal();
 
   return (
     <div className="lp-container">
@@ -130,14 +134,14 @@ export const LandingPage = () => {
           </div>
           <div className="lp-hero-right">
             <div className="lp-hero-image-wrapper">
-              <img src={settings.hero_image} alt="Mundonet" className="lp-hero-image" />
+              <img src={settings.hero_image} alt="Mundonet" className="lp-hero-image" loading="lazy" />
             </div>
           </div>
         </div>
       </section>
 
       {/* PLAN CARD */}
-      <section className="lp-plan-section" style={{ backgroundColor: settings.hero_bg_color }}>
+      <section className="lp-plan-section reveal" ref={planRef} style={{ backgroundColor: settings.hero_bg_color }}>
         <div className="lp-plan-card" style={{ backgroundColor: settings.plan_card_bg }}>
           <div className="lp-plan-header">
             <div className="lp-plan-speed">
@@ -172,7 +176,7 @@ export const LandingPage = () => {
       </section>
 
       {/* FEATURES */}
-      <section className="lp-features" style={{ backgroundColor: '#f8fafc' }}>
+      <section className="lp-features reveal" ref={featuresRef} style={{ backgroundColor: '#f8fafc' }}>
         <div className="lp-features-wrapper">
           <h2 className="lp-features-title" style={{ color: '#1e293b' }}>{settings.features_title}</h2>
           <div className="lp-features-grid">
@@ -187,7 +191,7 @@ export const LandingPage = () => {
       </section>
 
       {/* CTA */}
-      <section className="lp-cta-section" style={{ backgroundColor: settings.cta_bg_color }}>
+      <section className="lp-cta-section reveal reveal-delay-2" ref={ctaRef} style={{ backgroundColor: settings.cta_bg_color }}>
         <div className="lp-cta-wrapper">
           <h2 className="lp-cta-title" style={{ color: settings.cta_text_color }}>{settings.cta_title}</h2>
           <p className="lp-cta-desc" style={{ color: settings.cta_text_color + 'cc' }}>{settings.cta_desc}</p>

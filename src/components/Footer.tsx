@@ -53,7 +53,7 @@ export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       <div className="container footer-grid">
         <div className="footer-col branding-col">
           <a href="#" className="footer-logo">
-            <img src={g('footer_logo_url') || g('logo_url') || 'https://mundonetbandalarga.com.br/wp-content/uploads/2023/10/logo-mundonet.png'} alt="Mundonet Telecom Logo" />
+            <img src={g('footer_logo_url') || g('logo_url') || 'https://mundonetbandalarga.com.br/wp-content/uploads/2023/10/logo-mundonet.png'} alt="Mundonet Telecom Logo" loading="lazy" />
           </a>
           <p className="footer-about" style={{ color: footerText }}>
             {footerAbout}
@@ -97,7 +97,7 @@ export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
             </a>
           </div>
           <div className="anatel-container">
-            {anatelLogo && <img src={anatelLogo} alt="Homologado Anatel" className="anatel-logo" />}
+            {anatelLogo && <img src={anatelLogo} alt="Homologado Anatel" className="anatel-logo" loading="lazy" />}
           </div>
         </div>
       </div>

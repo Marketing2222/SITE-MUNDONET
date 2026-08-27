@@ -61,7 +61,7 @@ export const AppSection: React.FC = () => {
               rel="noreferrer" 
               className="store-btn"
             >
-              <img src={s.app_playstore_image || "https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/play_store.png"} alt="Disponível no Google Play" />
+              <img src={s.app_playstore_image || "https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/play_store.png"} alt="Disponível no Google Play" loading="lazy" />
             </a>
             <a 
               href={s.app_appstore || "https://apps.apple.com/br/app/mundonet/id6747144804"} 
@@ -69,7 +69,7 @@ export const AppSection: React.FC = () => {
               rel="noreferrer" 
               className="store-btn"
             >
-              <img src={s.app_appstore_image || "https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/apple_store.png"} alt="Disponível na App Store" />
+              <img src={s.app_appstore_image || "https://mundonetbandalarga.com.br/wp-content/uploads/2025/07/apple_store.png"} alt="Disponível na App Store" loading="lazy" />
             </a>
           </div>
         </div>
@@ -81,6 +81,7 @@ export const AppSection: React.FC = () => {
             alt="Mundonet App Mockup" 
             className="mockup-img"
             style={s.app_image_size ? { maxWidth: s.app_image_size, width: s.app_image_size } : undefined}
+            loading="lazy"
           />
         </div>
       </div>

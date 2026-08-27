@@ -70,7 +70,7 @@ export const Entertainment: React.FC = () => {
               >
                 <div className="ent-card-inner">
                   {app.banner_url ? (
-                    <img className="ent-card-banner" src={app.banner_url} alt={app.name} />
+                    <img className="ent-card-banner" src={app.banner_url} alt={app.name} loading="lazy" />
                   ) : (
                     <div className="ent-card-banner ent-card-placeholder">
                       <span>{app.icon}</span>
@@ -79,7 +79,7 @@ export const Entertainment: React.FC = () => {
                   <div className="ent-card-overlay" />
                   <div className="ent-card-logo">
                     {app.logo_url ? (
-                      <img src={app.logo_url} alt={app.name} />
+                      <img src={app.logo_url} alt={app.name} loading="lazy" />
                     ) : (
                       <span className="ent-card-logo-text">{app.name}</span>
                     )}

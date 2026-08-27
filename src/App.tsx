@@ -20,6 +20,9 @@ import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
 import IndiqueGanhe from './components/IndiqueGanhe';
 import ParaEmpresas from './components/ParaEmpresas';
+import { Faq } from './components/Faq';
+import { Testimonials } from './components/Testimonials';
+import { NotFound } from './components/NotFound';
 
 // Admin components
 import AdminLogin from './admin/AdminLogin';
@@ -115,11 +118,13 @@ function PublicSite() {
     specialties: <Specialties />,
     entertainment: <Entertainment />,
     cta: <CtaBanner />,
+    testimonials: <Testimonials />,
+    faq: <Faq />,
     support: <Support />,
     contact: <Contact />,
   };
 
-  const defaultOrder = ['hero', 'quicklinks', 'plans', 'benefits', 'app', 'specialties', 'entertainment', 'cta', 'support', 'contact'];
+  const defaultOrder = ['hero', 'quicklinks', 'plans', 'benefits', 'app', 'specialties', 'entertainment', 'cta', 'testimonials', 'faq', 'support', 'contact'];
 
   const mergeOrder = (saved: string[]): string[] => {
     const merged = [...saved];
@@ -367,7 +372,7 @@ function App() {
         <Route path="para-empresas" element={<ManageParaEmpresas />} />
         <Route path="enterprise-plans" element={<ManageEnterprisePlans />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
