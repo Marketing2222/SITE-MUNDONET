@@ -66,7 +66,6 @@ export const Plans = () => {
   const [selectedAppTab, setSelectedAppTab] = useState<number>(0);
   const [sectionColors, setSectionColors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
-  const [speedFilter, setSpeedFilter] = useState<string>('all');
 
   const [visible, setVisible] = useState(3);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -97,23 +96,13 @@ export const Plans = () => {
   if (loading) return <section id="internet" className="plans-section" style={{ padding: '60px 20px', background: sectionColors.plans_bg_color || '#0a0a1a' }} />;
   if (plans.length === 0) return null;
 
-  const filteredPlans = speedFilter === 'all'
-    ? plans
-    : plans.filter(p => {
-        const speed = parseInt(p.speed) || 0;
-        if (speedFilter === '500') return speed <= 500;
-        if (speedFilter === '500+') return speed > 500 && speed < 1000;
-        if (speedFilter === '1000+') return speed >= 1000;
-        return true;
-      });
-
-  const maxIndex = Math.max(0, filteredPlans.length - visible);
-  const needsScroll = filteredPlans.length > visible;
+  const maxIndex = Math.max(0, plans.length - visible);
+  const needsScroll = plans.length > visible;
 
   // Card width in px (290px default, 270px on md, full on mobile)
   const cardWidthPx = visible === 1 ? window.innerWidth - 52 : visible === 2 ? 270 : 290;
   const cardGapPx = 20;
-  const totalTrackWidth = filteredPlans.length * (cardWidthPx + cardGapPx) - cardGapPx;
+  const totalTrackWidth = plans.length * (cardWidthPx + cardGapPx) - cardGapPx;
   // If plans fit: center them by adding symmetric padding
   const containerWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth - 48, 1280) : 1280;
   const centeringOffset = !needsScroll ? Math.max(0, (containerWidth - totalTrackWidth) / 2) : 0;
@@ -162,33 +151,6 @@ export const Plans = () => {
           <p className="site-section-subtitle">
             Assine a Mundonet e tenha acesso a aplicativos, canais de TV e muito mais!
           </p>
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
-            {[
-              { key: 'all', label: 'Todos' },
-              { key: '500', label: 'Até 500MB' },
-              { key: '500+', label: '500MB - 1GB' },
-              { key: '1000+', label: '1GB+' },
-            ].map(f => (
-              <button
-                key={f.key}
-                onClick={() => { setSpeedFilter(f.key); setCurrentIndex(0); }}
-                style={{
-                  padding: '8px 18px',
-                  borderRadius: 50,
-                  border: speedFilter === f.key ? '2px solid #7c3aed' : '1px solid rgba(124,58,237,0.2)',
-                  background: speedFilter === f.key ? '#7c3aed' : 'transparent',
-                  color: speedFilter === f.key ? '#fff' : '#64748b',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  fontFamily: 'inherit',
-                }}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
         </div>
 
         <div className="plans-carousel-wrapper">
@@ -203,7 +165,7 @@ export const Plans = () => {
               paddingLeft: needsScroll ? 0 : centeringOffset
             }}
           >
-            {filteredPlans.map((plan, i) => (
+            {plans.map((plan, i) => (
               <div 
                 key={plan.id} 
                 className={`plan-card ${plan.popular ? 'popular' : ''}`}

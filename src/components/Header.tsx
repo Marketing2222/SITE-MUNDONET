@@ -1,8 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
 import '../styles/Header.css';
 import { API_BASE_URL } from '../config/api';
-import { DarkModeToggle } from './DarkModeToggle';
-
 type Settings = Record<string, { value: string; label: string }>;
 type ContactInfo = Record<string, { value: string; label: string }>;
 
@@ -146,7 +144,6 @@ export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
               </a>
             </div>
             </div>
-            <DarkModeToggle />
           </div>
       </div>
 
