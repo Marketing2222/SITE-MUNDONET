@@ -86,6 +86,12 @@ export async function initDB() {
     plans.forEach((p, i) => db.data.enterprise_plans.push({ id: i+1, ...p }));
   }
 
+  // ── Seed: faq ──────────────────────────────────────────────────────
+  if (!db.data.faq) db.data.faq = [];
+
+  // ── Seed: testimonials ─────────────────────────────────────────────
+  if (!db.data.testimonials) db.data.testimonials = [];
+
   // ── Seed: quick_links ────────────────────────────────────────────
   if (db.data.quick_links.length === 0) {
     const links = [
