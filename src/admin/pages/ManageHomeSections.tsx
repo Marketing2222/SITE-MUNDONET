@@ -701,7 +701,7 @@ export const ManageHomeSections = () => {
                             width: 18, height: 18,
                             fill: card.icon_type === icon.value ? '#ffffff' : 'var(--adm-text2)'
                           }}>
-                            {getIconPath(icon.value)}
+                            <path d={getIconPath(icon.value)} />
                           </svg>
                         </button>
                       ))}
