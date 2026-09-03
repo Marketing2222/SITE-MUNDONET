@@ -55,16 +55,6 @@ const getIconPath = (type: string): string => {
   return ICON_PATHS[type] || 'M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z';
 };
 
-type FieldType = 'text' | 'url' | 'textarea' | 'image' | 'color' | 'toggle' | 'font' | 'spacing' | 'list' | 'align' | 'select';
-
-interface FieldDef {
-  key: string;
-  label: string;
-  type: FieldType;
-  hint?: string;
-  options?: { value: string; label: string }[];
-}
-
 const SECTIONS: Record<string, FieldDef[]> = {
   'Links Rápidos (Ajuda)': [
     { key: 'quicklinks_bg_color', label: 'Cor de Fundo da Seção', type: 'color' },
