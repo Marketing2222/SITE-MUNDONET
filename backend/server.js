@@ -37,7 +37,7 @@ app.use(express.json({ limit: '50mb' }));
 // ── Uploads (armazenados no banco de dados) ────────────────────────────
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB (para vídeos)
 });
 
 // ── Inicializa banco antes de registrar rotas ─────────────────────

@@ -10,7 +10,7 @@ import { EXIT_ICON_OPTIONS } from '../../components/ExitPopup';
 
 interface Setting { key: string; value: string; label: string; }
 
-type FieldType = 'text' | 'url' | 'textarea' | 'image' | 'color' | 'toggle' | 'font' | 'spacing' | 'list' | 'align' | 'select';
+type FieldType = 'text' | 'url' | 'textarea' | 'image' | 'video' | 'color' | 'toggle' | 'font' | 'spacing' | 'list' | 'align' | 'select';
 
 interface FieldDef {
   key: string;
@@ -205,7 +205,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'campaign_btn_link', label: 'Link do Botão', type: 'url' },
     { key: 'campaign_btn_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #ffffff' },
     { key: 'campaign_btn_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #1a0a2e' },
-    { key: 'campaign_video_url', label: 'URL do Vídeo', type: 'url', hint: 'YouTube, Vimeo ou URL direta do vídeo' },
+    { key: 'campaign_video_url', label: 'Vídeo (URL ou upload)', type: 'video', hint: 'YouTube, Vimeo, URL direta ou upload do PC (mp4, webm)' },
     { key: 'campaign_content_position', label: 'Posição do Conteúdo (Texto)', type: 'select', hint: 'left', options: [
       { value: 'left', label: 'Esquerda' },
       { value: 'right', label: 'Direita' },
@@ -426,6 +426,33 @@ export const ManageHomeSections = () => {
             )}
           </div>
         );
+      case 'video':
+        return (
+          <div className="admin-field" key={fd.key} style={{ gridColumn: '1 / -1' }}>
+            <label>{fd.label}</label>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <input value={val} onChange={e => set(fd.key, e.target.value, fd.label)} placeholder="https://... ou faça upload" style={{ flex: 1 }} />
+              <label className="admin-btn ghost" style={{ cursor: 'pointer', margin: 0 }}>
+                📹 Upload Vídeo
+                <input type="file" accept="video/mp4,video/webm,video/ogg" style={{ display: 'none' }} onChange={e => {
+                  if (e.target.files && e.target.files[0]) {
+                    handleImageUpload(e.target.files[0], fd.key, fd.label);
+                  }
+                }} />
+              </label>
+            </div>
+            {fd.hint && <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>{fd.hint}</small>}
+            {val && (
+              <div style={{ marginTop: 10, padding: 10, background: 'var(--adm-bg)', borderRadius: 8 }}>
+                {val.includes('youtube.com') || val.includes('youtu.be') || val.includes('vimeo.com') ? (
+                  <div style={{ fontSize: 13, color: 'var(--adm-text2)' }}>🔗 URL de vídeo: <a href={val} target="_blank" rel="noreferrer" style={{ color: 'var(--adm-accent)' }}>{val}</a></div>
+                ) : (
+                  <video src={val} controls style={{ maxHeight: 200, maxWidth: '100%', borderRadius: 8 }} />
+                )}
+              </div>
+            )}
+          </div>
+        );
       case 'color':
         return (
           <div className="admin-field" key={fd.key}>
@@ -570,27 +597,27 @@ export const ManageHomeSections = () => {
             {saving ? 'Salvando...' : 'Salvar Ordem e Visibilidade'}
           </button>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 6 }}>
           {sectionOrder.map((id, i) => {
             const def = SECTION_DEFS.find(s => s.id === id);
             const active = sectionsActive[id] !== false;
             return (
               <div key={id} style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '8px 12px', background: 'var(--adm-bg)', borderRadius: 8,
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '6px 10px', background: 'var(--adm-bg)', borderRadius: 8,
                 border: '1px solid var(--adm-border)', opacity: active ? 1 : 0.5
               }}>
-                <span style={{ fontSize: 18 }}>{def?.icon || '?'}</span>
-                <span style={{ flex: 1 }}>{def?.label || id}</span>
+                <span style={{ fontSize: 16 }}>{def?.icon || '?'}</span>
+                <span style={{ flex: 1, fontSize: 13 }}>{def?.label || id}</span>
                 <ToggleSwitch value={active} onChange={() => toggleActive(id)} />
-                <label style={{ display:'flex', alignItems:'center', gap:6, cursor:'pointer', fontSize:13, color: sectionsMobile[id] !== false ? 'var(--adm-success)' : 'var(--adm-text2)' }}
+                <label style={{ display:'flex', alignItems:'center', gap:4, cursor:'pointer', fontSize:11, color: sectionsMobile[id] !== false ? 'var(--adm-success)' : 'var(--adm-text2)' }}
                   title={sectionsMobile[id] !== false ? 'Visível no mobile' : 'Oculto no mobile'}
                   onClick={() => setSectionsMobile(prev => ({ ...prev, [id]: prev[id] === false ? true : false }))}>
                   📱 {sectionsMobile[id] !== false ? 'Sim' : 'Não'}
                 </label>
-                <button className="admin-btn ghost" style={{ padding: '4px 8px', fontSize: 13, lineHeight: 1 }}
+                <button className="admin-btn ghost" style={{ padding: '2px 6px', fontSize: 12, lineHeight: 1 }}
                   disabled={i === 0} onClick={() => moveSection(i, -1)} title="Mover para cima">▲</button>
-                <button className="admin-btn ghost" style={{ padding: '4px 8px', fontSize: 13, lineHeight: 1 }}
+                <button className="admin-btn ghost" style={{ padding: '2px 6px', fontSize: 12, lineHeight: 1 }}
                   disabled={i === sectionOrder.length - 1} onClick={() => moveSection(i, 1)} title="Mover para baixo">▼</button>
               </div>
             );

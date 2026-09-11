@@ -958,6 +958,17 @@
   padding-bottom: 0;
   margin-bottom: 24px;
   overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--adm-border) transparent;
+}
+
+.admin-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.admin-tabs::-webkit-scrollbar-thumb {
+  background: var(--adm-border);
+  border-radius: 4px;
 }
 
 .admin-tab {
