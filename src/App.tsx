@@ -12,6 +12,7 @@ import AppSection from './components/AppSection';
 import Specialties from './components/Specialties';
 import Entertainment from './components/Entertainment';
 import CtaBanner from './components/CtaBanner';
+import Campaign from './components/Campaign';
 import Support from './components/Support';
 import Benefits from './components/Benefits';
 import Contact from './components/Contact';
@@ -118,13 +119,14 @@ function PublicSite() {
     specialties: <Specialties />,
     entertainment: <Entertainment />,
     cta: <CtaBanner />,
+    campaign: <Campaign />,
     testimonials: <Testimonials />,
     faq: <Faq />,
     support: <Support />,
     contact: <Contact />,
   };
 
-  const defaultOrder = ['hero', 'quicklinks', 'plans', 'benefits', 'app', 'specialties', 'entertainment', 'cta', 'testimonials', 'faq', 'support', 'contact'];
+  const defaultOrder = ['hero', 'quicklinks', 'plans', 'benefits', 'app', 'specialties', 'entertainment', 'cta', 'campaign', 'testimonials', 'faq', 'support', 'contact'];
 
   const mergeOrder = (saved: string[]): string[] => {
     const merged = [...saved];

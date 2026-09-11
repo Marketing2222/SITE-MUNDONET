@@ -249,13 +249,13 @@ export async function initDB() {
     db.data.site_settings.push({
       id: settings.length + 2,
       key: 'sections_order',
-      value: JSON.stringify(['hero','quicklinks','plans','benefits','app','specialties','entertainment','cta','support','contact']),
+      value: JSON.stringify(['hero','quicklinks','plans','benefits','app','specialties','entertainment','cta','campaign','support','contact']),
       label: 'Ordem das Seções'
     });
     // Seções ativas (todas ativas por padrão)
     db.data.site_settings.push({
       id: settings.length + 3,
-      value: JSON.stringify({ hero:true, quicklinks:true, plans:true, benefits:true, app:true, specialties:true, entertainment:true, cta:true, support:true, contact:true }),
+      value: JSON.stringify({ hero:true, quicklinks:true, plans:true, benefits:true, app:true, specialties:true, entertainment:true, cta:true, campaign:true, support:true, contact:true }),
       label: 'Seções Ativas'
     });
     // Popup de saída
@@ -285,7 +285,7 @@ export async function initDB() {
     db.data.site_settings.push({
       id: db.nextId('site_settings'),
       key: 'sections_order',
-      value: JSON.stringify(['hero','quicklinks','plans','benefits','app','specialties','entertainment','cta','support','contact']),
+      value: JSON.stringify(['hero','quicklinks','plans','benefits','app','specialties','entertainment','cta','campaign','support','contact']),
       label: 'Ordem das Seções'
     });
   }
@@ -295,7 +295,7 @@ export async function initDB() {
     db.data.site_settings.push({
       id: db.nextId('site_settings'),
       key: 'sections_active',
-      value: JSON.stringify({ hero:true, quicklinks:true, plans:true, benefits:true, app:true, specialties:true, entertainment:true, cta:true, support:true, contact:true }),
+      value: JSON.stringify({ hero:true, quicklinks:true, plans:true, benefits:true, app:true, specialties:true, entertainment:true, cta:true, campaign:true, support:true, contact:true }),
       label: 'Seções Ativas'
     });
   }
@@ -813,13 +813,66 @@ export async function initDB() {
 
   // ── Migração: sections_mobile_active ────────────────────────────
   if (!db.data.site_settings.find(x => x.key === 'sections_mobile_active')) {
-    const mobileDefault = { hero:true, quicklinks:true, plans:true, benefits:true, app:true, specialties:true, entertainment:true, cta:true, support:true, contact:true };
+    const mobileDefault = { hero:true, quicklinks:true, plans:true, benefits:true, app:true, specialties:true, entertainment:true, cta:true, campaign:true, support:true, contact:true };
     db.data.site_settings.push({
       id: db.nextId('site_settings'),
       key: 'sections_mobile_active',
       value: JSON.stringify(mobileDefault),
       label: 'Seções Ativas no Mobile'
     });
+  }
+
+  // ── Migração: Campanhas ─────────────────────────────────────────
+  const campaignSettings = [
+    { key:'campaign_section_bg_color', value:'', label:'Campanhas: Cor de Fundo da Seção' },
+    { key:'campaign_bg_image', value:'', label:'Campanhas: Imagem de Fundo' },
+    { key:'campaign_overlay_color', value:'rgba(0,0,0,0.75)', label:'Campanhas: Cor do Overlay' },
+    { key:'campaign_logo_url', value:'', label:'Campanhas: Logo da Campanha' },
+    { key:'campaign_logo2_url', value:'', label:'Campanhas: Logo Secundário' },
+    { key:'campaign_title', value:'Campanha Especial', label:'Campanhas: Título Principal' },
+    { key:'campaign_subtitle', value:'Aproveite nossas ofertas exclusivas', label:'Campanhas: Subtítulo' },
+    { key:'campaign_text_color', value:'#ffffff', label:'Campanhas: Cor do Título' },
+    { key:'campaign_subtitle_color', value:'#d1d5db', label:'Campanhas: Cor do Subtítulo' },
+    { key:'campaign_btn_text', value:'Saiba Mais', label:'Campanhas: Texto do Botão' },
+    { key:'campaign_btn_link', value:'#', label:'Campanhas: Link do Botão' },
+    { key:'campaign_btn_bg', value:'#ffffff', label:'Campanhas: Cor de Fundo do Botão' },
+    { key:'campaign_btn_color', value:'#1a0a2e', label:'Campanhas: Cor do Texto do Botão' },
+    { key:'campaign_video_url', value:'', label:'Campanhas: URL do Vídeo' },
+    { key:'campaign_content_position', value:'left', label:'Campanhas: Posição do Conteúdo' },
+  ];
+  for (const s of campaignSettings) {
+    if (!db.data.site_settings.find(x => x.key === s.key)) {
+      db.data.site_settings.push({ id: db.nextId('site_settings'), ...s });
+    }
+  }
+
+  // ── Migração forçada: adicionar 'campaign' nas listas existentes ──
+  const migrationKeys = ['sections_order', 'sections_active', 'sections_mobile_active'];
+  for (const key of migrationKeys) {
+    const setting = db.data.site_settings.find(x => x.key === key);
+    if (setting) {
+      try {
+        const parsed = JSON.parse(setting.value);
+        if (Array.isArray(parsed)) {
+          if (!parsed.includes('campaign')) {
+            const ctaIndex = parsed.indexOf('cta');
+            if (ctaIndex >= 0) {
+              parsed.splice(ctaIndex + 1, 0, 'campaign');
+            } else {
+              parsed.push('campaign');
+            }
+            setting.value = JSON.stringify(parsed);
+            console.log(`  → '${key}' atualizado com 'campaign'`);
+          }
+        } else if (typeof parsed === 'object' && parsed !== null) {
+          if (!('campaign' in parsed)) {
+            parsed.campaign = true;
+            setting.value = JSON.stringify(parsed);
+            console.log(`  → '${key}' atualizado com campaign:true`);
+          }
+        }
+      } catch { /* ignore */ }
+    }
   }
 
   // ── Migração: Empresas (Para Empresas) ──────────────────────────

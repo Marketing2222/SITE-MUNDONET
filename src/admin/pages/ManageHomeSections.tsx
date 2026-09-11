@@ -191,6 +191,26 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'cta_btn_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #ffffff' },
     { key: 'cta_btn_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #7c3aed' },
   ],
+  'Campanhas': [
+    { key: 'campaign_section_bg_color', label: 'Cor de Fundo da Seção', type: 'color', hint: 'Padrão: transparente' },
+    { key: 'campaign_bg_image', label: 'Imagem de Fundo', type: 'image', hint: 'Imagem de fundo do banner de campanha' },
+    { key: 'campaign_overlay_color', label: 'Cor do Overlay (escurecimento)', type: 'color', hint: 'Padrão: rgba(0,0,0,0.75)' },
+    { key: 'campaign_logo_url', label: 'Logo da Campanha (URL ou upload)', type: 'image', hint: 'Logotipo principal da campanha' },
+    { key: 'campaign_logo2_url', label: 'Logo Secundário (URL ou upload)', type: 'image', hint: 'Segundo logotipo (opcional)' },
+    { key: 'campaign_title', label: 'Título Principal', type: 'text', hint: 'Ex: Campanha Especial' },
+    { key: 'campaign_subtitle', label: 'Subtítulo', type: 'text', hint: 'Ex: Aproveite nossas ofertas exclusivas' },
+    { key: 'campaign_text_color', label: 'Cor do Título', type: 'color', hint: 'Padrão: #ffffff' },
+    { key: 'campaign_subtitle_color', label: 'Cor do Subtítulo', type: 'color', hint: 'Padrão: #d1d5db' },
+    { key: 'campaign_btn_text', label: 'Texto do Botão', type: 'text', hint: 'Ex: Saiba Mais' },
+    { key: 'campaign_btn_link', label: 'Link do Botão', type: 'url' },
+    { key: 'campaign_btn_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #ffffff' },
+    { key: 'campaign_btn_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #1a0a2e' },
+    { key: 'campaign_video_url', label: 'URL do Vídeo', type: 'url', hint: 'YouTube, Vimeo ou URL direta do vídeo' },
+    { key: 'campaign_content_position', label: 'Posição do Conteúdo (Texto)', type: 'select', hint: 'left', options: [
+      { value: 'left', label: 'Esquerda' },
+      { value: 'right', label: 'Direita' },
+    ]},
+  ],
   'Central de Atendimento': [],
 };
 
@@ -203,6 +223,7 @@ const SECTION_DEFS = [
   { id: 'specialties', label: 'Especialidades (Wi-Fi 6 + Link Dedicado)', icon: '📶' },
   { id: 'entertainment', label: 'Entretenimento', icon: '🎬' },
   { id: 'cta', label: 'Banner CTA', icon: '🎯' },
+  { id: 'campaign', label: 'Campanhas', icon: '📢' },
   { id: 'support', label: 'Central de Atendimento', icon: '💬' },
   { id: 'contact', label: 'Contato', icon: '📞' },
 ];
