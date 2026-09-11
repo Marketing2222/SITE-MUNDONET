@@ -120,12 +120,12 @@ export const Hero: React.FC = () => {
       {slides.length > 1 && (
         <>
           <button className="carousel-control prev" onClick={prevSlide} aria-label="Previous Slide">
-            <svg viewBox="0 0 256 512" width="16" height="16">
+            <svg viewBox="0 0 256 512" width="20" height="20">
               <path fill="currentColor" d="M31.7 244l192-184c6.2-6 16.3-5.6 22 1l15 15.6c5.7 6 5.2 16-.9 21.6L84.8 256l175 161.8c6 5.6 6.5 15.6.9 21.6l-15 15.6c-5.7 6.6-15.8 7-22 1L31.7 268c-7.6-7-7.6-17 0-24z"/>
             </svg>
           </button>
           <button className="carousel-control next" onClick={nextSlide} aria-label="Next Slide">
-            <svg viewBox="0 0 256 512" width="16" height="16">
+            <svg viewBox="0 0 256 512" width="20" height="20">
               <path fill="currentColor" d="M224.3 273l-192 184c-6.2 6-16.3 5.6-22-1l-15-15.6c-5.7-6-5.2-16 .9-21.6L171.2 256 9.8 95.8c-6-5.6-6.5-15.6-.9-21.6l15-15.6c5.7-6.6 15.8-7 22-1l192 184c7.6 7 7.6 17 0 24z"/>
             </svg>
           </button>
