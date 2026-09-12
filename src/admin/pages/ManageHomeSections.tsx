@@ -344,7 +344,13 @@ export const ManageHomeSections = () => {
         body: formData
       });
       const data = await res.json();
-      if (data.url) set(key, data.url, label);
+      if (data.url) {
+        set(key, data.url, label);
+        await apiFetch(`/settings/${key}`, {
+          method: 'PUT',
+          body: JSON.stringify({ value: data.url, label })
+        });
+      }
     } catch (e) {
       console.error('Erro no upload', e);
       alert('Erro no upload da imagem.');
