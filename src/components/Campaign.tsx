@@ -43,6 +43,8 @@ export const Campaign: React.FC = () => {
     return url;
   };
 
+  const isLocalVideo = (url: string) => url && !url.includes('youtube.com') && !url.includes('youtu.be') && !url.includes('vimeo.com');
+
   const videoEmbed = getVideoEmbed(videoUrl);
 
   const containerStyle: React.CSSProperties = {
@@ -77,16 +79,21 @@ export const Campaign: React.FC = () => {
               </a>
             )}
           </div>
-          {videoEmbed && (
+          {videoUrl && (
             <div className="campaign-video-wrapper">
-              <iframe
-                src={videoEmbed}
-                title="Vídeo da Campanha"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="campaign-video"
-              />
+              {isLocalVideo(videoUrl) ? (
+                <video src={videoUrl} controls preload="none" className="campaign-video"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12 }} />
+              ) : (
+                <iframe
+                  src={videoEmbed}
+                  title="Vídeo da Campanha"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="campaign-video"
+                />
+              )}
             </div>
           )}
         </div>
