@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { apiFetch } from '../hooks/useAuth';
+import { apiFetch, getToken } from '../hooks/useAuth';
 import ManageQuickLinks from './ManageQuickLinks';
 import ManageBenefits from './ManageBenefits';
 import { RichTextField } from '../components/RichTextField';
@@ -10,7 +10,7 @@ import { EXIT_ICON_OPTIONS } from '../../components/ExitPopup';
 
 interface Setting { key: string; value: string; label: string; }
 
-type FieldType = 'text' | 'url' | 'textarea' | 'image' | 'video' | 'color' | 'toggle' | 'font' | 'spacing' | 'list' | 'align' | 'select';
+type FieldType = 'text' | 'url' | 'textarea' | 'image' | 'video' | 'color' | 'toggle' | 'font' | 'spacing' | 'list' | 'align' | 'select' | 'subheader';
 
 interface FieldDef {
   key: string;
@@ -81,6 +81,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'app_image_size', label: 'Tamanho da Imagem', type: 'spacing', hint: 'Ex: 100%, 80%, 500px' },
   ],
   'Especialidades': [
+    { key: 'corp_subheader', label: 'Link Dedicado', type: 'subheader' },
     { key: 'corp_bg_color', label: 'Cor de Fundo da Seção (Link Dedicado)', type: 'color' },
     { key: 'corp_subtitle', label: 'Subtítulo Link Dedicado', type: 'text', hint: 'Padrão: Soluções Corporativas' },
     { key: 'corp_subtitle_align', label: 'Alinhamento do Subtítulo', type: 'align' },
@@ -99,6 +100,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'corp_speed_desc', label: 'Texto do Gráfico', type: 'text' },
     { key: 'corp_btn_text', label: 'Texto do Botão Link Dedicado', type: 'text' },
     { key: 'corp_btn_link', label: 'Link do Botão Link Dedicado', type: 'url' },
+    { key: 'wifi_subheader', label: 'Wi-Fi 6', type: 'subheader' },
     { key: 'wifi_bg_color', label: 'Cor de Fundo da Seção (Wi-Fi 6)', type: 'color' },
     { key: 'wifi_subtitle', label: 'Subtítulo Wi-Fi 6', type: 'text', hint: 'Padrão: Ultra Wi-Fi 6' },
     { key: 'wifi_subtitle_align', label: 'Alinhamento do Subtítulo Wi-Fi 6', type: 'align' },
@@ -335,7 +337,7 @@ export const ManageHomeSections = () => {
     const formData = new FormData();
     formData.append('image', file);
     try {
-      const token = localStorage.getItem('mundonet_token');
+      const token = getToken();
       const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
@@ -510,7 +512,7 @@ export const ManageHomeSections = () => {
                   />
                   <button
                     className="admin-btn ghost"
-                    style={{ padding: '4px 8px', fontSize: 12, color: '#ef4444' }}
+                    style={{ padding: '4px 8px', fontSize: 12, color: 'var(--adm-red)' }}
                     onClick={() => {
                       const next = listItems.filter((_: string, i: number) => i !== idx);
                       set(fd.key, next.join('\n'), fd.label);
@@ -563,6 +565,12 @@ export const ManageHomeSections = () => {
             </select>
           </div>
         );
+      case 'subheader':
+        return (
+          <div key={fd.key} style={{ gridColumn: '1 / -1', marginTop: 16, marginBottom: 4, paddingBottom: 8, borderBottom: '2px solid var(--adm-accent)' }}>
+            <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--adm-accent)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{fd.label}</span>
+          </div>
+        );
       default:
         return (
           <div className="admin-field" key={fd.key}>
@@ -610,7 +618,7 @@ export const ManageHomeSections = () => {
                 <span style={{ fontSize: 16 }}>{def?.icon || '?'}</span>
                 <span style={{ flex: 1, fontSize: 13 }}>{def?.label || id}</span>
                 <ToggleSwitch value={active} onChange={() => toggleActive(id)} />
-                <label style={{ display:'flex', alignItems:'center', gap:4, cursor:'pointer', fontSize:11, color: sectionsMobile[id] !== false ? 'var(--adm-success)' : 'var(--adm-text2)' }}
+                <label style={{ display:'flex', alignItems:'center', gap:4, cursor:'pointer', fontSize:11, color: sectionsMobile[id] !== false ? 'var(--adm-green)' : 'var(--adm-text2)' }}
                   title={sectionsMobile[id] !== false ? 'Visível no mobile' : 'Oculto no mobile'}
                   onClick={() => setSectionsMobile(prev => ({ ...prev, [id]: prev[id] === false ? true : false }))}>
                   📱 {sectionsMobile[id] !== false ? 'Sim' : 'Não'}
@@ -754,8 +762,11 @@ export const ManageHomeSections = () => {
                         </button>
                       ))}
                     </div>
+                    <input value={card.link} placeholder="Link (https://... ou tel:... ou mailto:...)" onChange={e => {
+                      const next = [...popupCards]; next[i] = { ...card, link: e.target.value }; setPopupCards(next);
+                    }} style={{ padding: '6px 10px', fontSize: 13 }} />
                   </div>
-                  <button className="admin-btn ghost" style={{ padding: '4px 8px', fontSize: 12, color: '#ef4444', alignSelf: 'start', marginTop: 4 }}
+                  <button className="admin-btn ghost" style={{ padding: '4px 8px', fontSize: 12, color: 'var(--adm-red)', alignSelf: 'start', marginTop: 4 }}
                     onClick={() => setPopupCards(popupCards.filter((_, j) => j !== i))}>Remover</button>
                 </div>
               ))}
@@ -764,13 +775,6 @@ export const ManageHomeSections = () => {
                   id: Date.now(), title: '', description: '', link: '#', icon_type: 'whatsapp'
                 }])} style={{ fontSize: 13 }}>+ Adicionar Card</button>
               </div>
-              {popupCards.map((card, i) => (
-                <div key={`link-${card.id}`} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 8, alignItems: 'center' }}>
-                  <input value={card.link} placeholder="Link (https://... ou tel:... ou mailto:...)" onChange={e => {
-                    const next = [...popupCards]; next[i] = { ...card, link: e.target.value }; setPopupCards(next);
-                  }} style={{ padding: '6px 10px', fontSize: 13 }} />
-                </div>
-              ))}
             </div>
             <div style={{ marginTop: 16 }}>
               <button className="admin-btn primary" onClick={async () => {

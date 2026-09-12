@@ -143,8 +143,8 @@ export const ManageHero = () => {
               <div className="admin-field">
                 <label>Ativo</label>
                 <select value={form.active ? '1' : '0'} onChange={e => setForm({ ...form, active: e.target.value === '1' })}>
-                  <option value={1}>Sim</option>
-                  <option value={0}>Nao</option>
+                  <option value="1">Sim</option>
+                  <option value="0">Não</option>
                 </select>
               </div>
             </div>

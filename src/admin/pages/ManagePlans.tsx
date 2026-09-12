@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { apiFetch } from '../hooks/useAuth';
+import { apiFetch, getToken } from '../hooks/useAuth';
 import { API_BASE_URL } from '../../config/api';
 import { ToggleSwitch } from '../components/ToggleSwitch';
 
@@ -283,7 +283,7 @@ export const ManagePlans = () => {
     fd.append('image', file);
     try {
       setSaving(true);
-      const token = localStorage.getItem('admin_token');
+      const token = getToken();
       const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
@@ -349,6 +349,7 @@ export const ManagePlans = () => {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
+            <div className="admin-modal-body">
             {msg && <div className="admin-alert error">{msg}</div>}
             <div className="admin-form">
 
@@ -381,7 +382,7 @@ export const ManagePlans = () => {
                             const fd = new FormData();
                             fd.append('image', file);
                             try {
-                              const token = localStorage.getItem('admin_token');
+                              const token = getToken();
                               const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd });
                               const data = await res.json();
                               if (data.url) setForm(f => ({ ...f, header_image: data.url }));
@@ -665,6 +666,7 @@ export const ManagePlans = () => {
                 )}
               </div>
 
+            </div>
             </div>
             <div className="admin-modal-footer">
               <button className="admin-btn ghost" onClick={() => setModal(false)}>Cancelar</button>

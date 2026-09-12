@@ -119,13 +119,13 @@ export const ManageEnterprisePlans = () => {
                 <td>{p.speed} Mbps</td>
                 <td>R$ {p.price}</td>
                 <td>{p.popular ? '⭐' : ''}</td>
-                <td><span style={{ color: p.active ? '#16a34a' : '#ef4444', fontWeight: 600 }}>{p.active ? 'Ativo' : 'Inativo'}</span></td>
+                <td><span style={{ color: p.active ? 'var(--adm-green)' : 'var(--adm-red)', fontWeight: 600 }}>{p.active ? 'Ativo' : 'Inativo'}</span></td>
                 <td>
                   <div style={{ display: 'flex', gap: 4 }}>
                     <button className="admin-btn ghost" disabled={i === 0} onClick={() => move(i, -1)}>▲</button>
                     <button className="admin-btn ghost" disabled={i === plans.length - 1} onClick={() => move(i, 1)}>▼</button>
                     <button className="admin-btn ghost" onClick={() => setEdit(p)}>✏️</button>
-                    <button className="admin-btn ghost" style={{ color: '#ef4444' }} onClick={() => p.id && remove(p.id)}>🗑️</button>
+                    <button className="admin-btn ghost" style={{ color: 'var(--adm-red)' }} onClick={() => p.id && remove(p.id)}>🗑️</button>
                   </div>
                 </td>
               </tr>

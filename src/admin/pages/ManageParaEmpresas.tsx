@@ -271,7 +271,7 @@ export const ManageParaEmpresas = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
             <span style={{ fontSize: 13, color: 'var(--adm-text2)', fontWeight: 600 }}>#{idx + 1}</span>
             <button onClick={() => setItems(items.filter((_, i) => i !== idx))}
-              style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: 18 }}>
+              style={{ background: 'none', border: 'none', color: 'var(--adm-red)', cursor: 'pointer', fontSize: 18 }}>
               🗑️
             </button>
           </div>

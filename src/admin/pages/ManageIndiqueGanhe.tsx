@@ -438,7 +438,7 @@ export const ManageIndiqueGanhe = () => {
                         <button onClick={e => { e.stopPropagation(); moveNavItem(item.id, 1); }} style={{ padding: '2px 6px', fontSize: '0.7rem', background: 'var(--adm-surface2)', color: 'var(--adm-text)', border: 'none', borderRadius: 4, cursor: 'pointer' }} disabled={idx === navItems.length - 1}>▼</button>
                       </div>
                       <span style={{ flex: 1, fontWeight: 600, color: 'var(--adm-text)', fontSize: '0.9rem' }}>{item.label}{item.hasDropdown && <span style={{ marginLeft: 8, fontSize: '0.72rem', color: 'var(--adm-text2)', fontWeight: 400 }}>({item.items.length} sub)</span>}</span>
-                      <button onClick={e => { e.stopPropagation(); removeNavItem(item.id); }} style={{ background: '#ef4444', color: 'var(--adm-text)', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
+                      <button onClick={e => { e.stopPropagation(); removeNavItem(item.id); }} style={{ background: 'var(--adm-red)', color: 'var(--adm-text)', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
                       <span style={{ color: 'var(--adm-text2)' }}>{expandedNav === item.id ? '▾' : '▸'}</span>
                     </div>
                     {expandedNav === item.id && (
@@ -458,7 +458,7 @@ export const ManageIndiqueGanhe = () => {
                               <div><label style={{ fontSize: 11, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>Nome</label><input value={sub.label} onChange={e => updateSubItem(item.id, sub.id, { label: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }} /></div>
                               <div><label style={{ fontSize: 11, color: 'var(--adm-text2)', display: 'block', marginBottom: 2 }}>Link</label><input value={sub.href} onChange={e => updateSubItem(item.id, sub.id, { href: e.target.value })} style={{ width: '100%', padding: '6px 10px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 12 }} /></div>
                               <select value={sub.target || '_self'} onChange={e => updateSubItem(item.id, sub.id, { target: e.target.value as '_blank' | '_self' })} style={{ height: 32, padding: '0 6px', background: 'var(--adm-surface2)', border: '1px solid var(--adm-border)', borderRadius: 6, color: 'var(--adm-text)', fontSize: 11 }}><option value="_self">Mesma</option><option value="_blank">Nova</option></select>
-                              <button onClick={() => removeSubItem(item.id, sub.id)} style={{ background: '#ef4444', color: 'var(--adm-text)', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
+                              <button onClick={() => removeSubItem(item.id, sub.id)} style={{ background: 'var(--adm-red)', color: 'var(--adm-text)', border: 'none', borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11 }}>🗑️</button>
                             </div>
                           ))}
                         </div>

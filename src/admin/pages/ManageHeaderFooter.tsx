@@ -1,5 +1,5 @@
 ﻿import { useEffect, useState } from 'react';
-import { apiFetch } from '../hooks/useAuth';
+import { apiFetch, getToken } from '../hooks/useAuth';
 import { ColorPicker } from '../components/ColorPicker';
 import { API_BASE_URL } from '../../config/api';
 
@@ -189,7 +189,7 @@ export const ManageHeaderFooter = () => {
     fd.append('image', file);
     try {
       setUploadingLogo(true);
-      const token = localStorage.getItem('admin_token');
+      const token = getToken();
       const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
@@ -208,7 +208,7 @@ export const ManageHeaderFooter = () => {
     fd.append('image', file);
     try {
       setUploadingLogo(true);
-      const token = localStorage.getItem('admin_token');
+      const token = getToken();
       const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
