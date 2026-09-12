@@ -36,6 +36,8 @@ COPY --from=builder /app/dist ./public/
 
 RUN mkdir -p uploads data
 
+VOLUME /app/backend/uploads
+
 EXPOSE 80
 
 ENV PORT=80

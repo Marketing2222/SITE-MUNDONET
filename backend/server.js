@@ -34,10 +34,21 @@ const corsOrigin = process.env.CORS_ORIGIN
 app.use(cors({ origin: corsOrigin }));
 app.use(express.json({ limit: '50mb' }));
 
-// ── Uploads (armazenados no banco de dados) ────────────────────────────
+// ── Uploads (armazenados em disco) ────────────────────────────
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
+    cb(null, name);
+  },
+});
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB (para vídeos)
+  storage,
+  limits: { fileSize: 300 * 1024 * 1024 }, // 300MB
 });
 
 // ── Inicializa banco antes de registrar rotas ─────────────────────
@@ -58,28 +69,32 @@ initDB().then(() => {
   app.use('/api/testimonials', testimonialsRoutes);
   app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
+  app.use('/uploads', express.static(uploadsDir, { maxAge: '7d', immutable: true }));
+
   app.post('/api/upload', upload.single('image'), async (req, res) => {
     try {
-      if (!req.file) return res.status(400).json({ error: 'Nenhuma imagem enviada' });
-      const base64 = req.file.buffer.toString('base64');
+      if (!req.file) return res.status(400).json({ error: 'Nenhum arquivo enviado' });
+      const fileUrl = `/uploads/${req.file.filename}`;
       const id = db.nextId('file_uploads');
       db.data.file_uploads.push({
         id,
         filename: req.file.originalname,
+        stored: req.file.filename,
         mimetype: req.file.mimetype,
-        data: base64,
+        size: req.file.size,
+        url: fileUrl,
         created_at: new Date().toISOString(),
       });
       await db.write();
-      console.log(`✅ Upload salvo: id=${id}, filename=${req.file.originalname}, size=${req.file.size}bytes`);
-      res.json({ url: `/api/files/${id}?t=${Date.now()}` });
+      console.log(`✅ Upload salvo: id=${id}, filename=${req.file.originalname}, size=${(req.file.size / 1024 / 1024).toFixed(1)}MB, path=${fileUrl}`);
+      res.json({ url: `${fileUrl}?t=${Date.now()}` });
     } catch (err) {
       console.error('❌ Erro no upload:', err);
       res.status(500).json({ error: 'Erro ao salvar arquivo' });
     }
   });
 
-  // Servir arquivos do banco de dados (cache curto para evitar imagens obsoletas)
+  // Servir arquivos do banco de dados (legado: base64, novo: disco)
   app.get('/api/files/:id', (req, res) => {
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json({ error: 'ID inválido' });
@@ -88,9 +103,20 @@ initDB().then(() => {
       console.log(`⚠️ Arquivo não encontrado: id=${id}`);
       return res.status(404).json({ error: 'Arquivo não encontrado' });
     }
+    // Novo: arquivo em disco
+    if (file.stored) {
+      const filePath = path.join(uploadsDir, file.stored);
+      if (fs.existsSync(filePath)) {
+        res.setHeader('Content-Type', file.mimetype);
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        return res.sendFile(filePath);
+      }
+      return res.status(404).json({ error: 'Arquivo não encontrado no disco' });
+    }
+    // Legado: base64 no JSON
     const buffer = Buffer.from(file.data, 'base64');
     res.setHeader('Content-Type', file.mimetype);
-    res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hora
+    res.setHeader('Cache-Control', 'public, max-age=3600');
     res.send(buffer);
   });
 

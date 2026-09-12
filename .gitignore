@@ -32,3 +32,7 @@ dist-ssr
 backend/mundonet-db.json
 backend/mundonet-db.backup.json
 backend/data/
+
+# Uploads (em produção fica no volume Docker)
+backend/uploads/*
+!backend/uploads/.gitkeep
