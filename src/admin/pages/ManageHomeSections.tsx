@@ -11,7 +11,7 @@ import { ICON_OPTIONS } from '../../components/AppSection';
 
 interface Setting { key: string; value: string; label: string; }
 
-type FieldType = 'text' | 'url' | 'textarea' | 'image' | 'video' | 'color' | 'toggle' | 'font' | 'spacing' | 'list' | 'align' | 'select' | 'subheader';
+type FieldType = 'text' | 'url' | 'textarea' | 'plain-textarea' | 'cep-ranges' | 'image' | 'video' | 'color' | 'toggle' | 'font' | 'spacing' | 'list' | 'align' | 'select' | 'subheader';
 
 interface FieldDef {
   key: string;
@@ -232,7 +232,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'cep_checker_button_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #005CFF' },
     { key: 'cep_checker_button_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #ffffff' },
     { key: 'cep_checker_sidebar_title', label: 'Título da Sidebar', type: 'text', hint: 'Ex: Antes de continuar, vamos verificar se atendemos sua região?' },
-    { key: 'cep_checker_ranges', label: 'Faixas de CEP (uma por linha: 65000-65999)', type: 'textarea', hint: 'Ex: 65000-65999' },
+    { key: 'cep_checker_ranges', label: 'Faixas de CEP atendidas (5 dígitos)', type: 'cep-ranges' },
     { key: 'cep_checker_success_msg', label: 'Mensagem — CEP atende', type: 'text', hint: 'Ex: Parabéns! Atendemos sua região!' },
     { key: 'cep_checker_fail_msg', label: 'Mensagem — CEP não atende', type: 'text', hint: 'Ex: Infelizmente não atendemos sua região no momento.' },
     { key: 'cep_checker_invalid_msg', label: 'Mensagem — CEP inválido', type: 'text', hint: 'Ex: CEP inválido, tente novamente.' },
@@ -266,6 +266,8 @@ export const ManageHomeSections = () => {
   const [sectionsActive, setSectionsActive] = useState<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
   const [sectionsMobile, setSectionsMobile] = useState<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
   const [popupCards, setPopupCards] = useState<{ id: number; title: string; description: string; link: string; icon_type: string }[]>([]);
+  const [cepFrom, setCepFrom] = useState('');
+  const [cepTo, setCepTo] = useState('');
 
   const load = async () => {
     try {
@@ -431,6 +433,86 @@ export const ManageHomeSections = () => {
             </div>
             <RichTextField value={val} onChange={v => set(fd.key, v, fd.label)} placeholder={fd.hint} />
             {fd.hint && <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>{fd.hint}</small>}
+          </div>
+        );
+      case 'plain-textarea':
+        return (
+          <div className="admin-field" key={fd.key} style={{ gridColumn: '1 / -1' }}>
+            <label>{fd.label}</label>
+            <textarea
+              value={val}
+              onChange={e => set(fd.key, e.target.value, fd.label)}
+              placeholder={fd.hint}
+              rows={6}
+              style={{ width: '100%', padding: '10px', fontSize: 13, fontFamily: 'monospace', resize: 'vertical', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
+            />
+            {fd.hint && <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>{fd.hint}</small>}
+          </div>
+        );
+      case 'cep-ranges':
+        const addRange = () => {
+          const from = cepFrom.replace(/\D/g, '').slice(0, 5);
+          const to = cepTo.replace(/\D/g, '').slice(0, 5);
+          if (from.length !== 5 || to.length !== 5) return;
+          const line = `${from}-${to}`;
+          const current = val ? val.trim() : '';
+          const exists = current.split('\n').some(l => l.trim() === line);
+          if (!exists) {
+            set(fd.key, current ? current + '\n' + line : line, fd.label + ' (Faixa CEP)');
+          }
+          setCepFrom('');
+          setCepTo('');
+        };
+        const removeRangeLine = (idx: number) => {
+          const lines = val.split('\n').filter((_, i) => i !== idx);
+          set(fd.key, lines.join('\n'), fd.label + ' (Faixa CEP)');
+        };
+        return (
+          <div className="admin-field" key={fd.key} style={{ gridColumn: '1 / -1' }}>
+            <label>{fd.label}</label>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+              <input
+                value={cepFrom}
+                onChange={e => setCepFrom(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                placeholder="De: 65000"
+                maxLength={5}
+                style={{ width: 110, padding: '8px 10px', fontSize: 13, fontFamily: 'monospace', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
+              />
+              <span style={{ color: 'var(--adm-text2)', fontSize: 13 }}>até</span>
+              <input
+                value={cepTo}
+                onChange={e => setCepTo(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                placeholder="Até: 65099"
+                maxLength={5}
+                style={{ width: 110, padding: '8px 10px', fontSize: 13, fontFamily: 'monospace', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
+              />
+              <button
+                type="button"
+                className="admin-btn primary"
+                onClick={addRange}
+                style={{ padding: '8px 16px', fontSize: 13, whiteSpace: 'nowrap' }}
+              >+ Adicionar</button>
+            </div>
+            {val && (
+              <div style={{ marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {val.split('\n').filter(l => l.trim()).map((line, idx) => (
+                  <span key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', background: 'var(--adm-primary-bg, #e8f0fe)', borderRadius: 14, fontSize: 13, fontFamily: 'monospace', color: 'var(--adm-primary, #1a73e8)' }}>
+                    {line.trim()}
+                    <button type="button" onClick={() => removeRangeLine(idx)} style={{ background: 'none', border: 'none', color: 'var(--adm-text2)', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }} title="Remover">×</button>
+                  </span>
+                ))}
+              </div>
+            )}
+            <textarea
+              value={val}
+              onChange={e => set(fd.key, e.target.value, fd.label)}
+              placeholder="Ou cole aqui — uma faixa por linha:&#10;65000-65099&#10;65100-65199&#10;66000-66099"
+              rows={4}
+              style={{ width: '100%', padding: '10px', fontSize: 13, fontFamily: 'monospace', resize: 'vertical', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
+            />
+            <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>
+              Formato: <b>INICIO-FIM</b> (5 dígitos cada). Ex: <code>65000-65099</code> atende todos os CEPs de 65000-000 a 65099-999.
+            </small>
           </div>
         );
       case 'image':

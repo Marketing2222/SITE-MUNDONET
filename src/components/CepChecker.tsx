@@ -36,6 +36,11 @@ const formatCep = (v: string): string => {
   return digits;
 };
 
+const toPrefix5 = (s: string): number => {
+  const digits = s.replace(/\D/g, '');
+  return parseInt(digits.slice(0, 5), 10);
+};
+
 const checkCep = (cep: string, ranges: string[]): ResultType => {
   const digits = cep.replace(/\D/g, '');
   if (digits.length !== 8) return 'invalid';
@@ -43,11 +48,11 @@ const checkCep = (cep: string, ranges: string[]): ResultType => {
   for (const range of ranges) {
     const parts = range.split('-').map(s => s.trim());
     if (parts.length === 2) {
-      const from = parseInt(parts[0], 10);
-      const to = parseInt(parts[1], 10);
+      const from = toPrefix5(parts[0]);
+      const to = toPrefix5(parts[1]);
       if (!isNaN(from) && !isNaN(to) && num >= from && num <= to) return 'success';
     } else if (parts.length === 1) {
-      const single = parseInt(parts[0], 10);
+      const single = toPrefix5(parts[0]);
       if (!isNaN(single) && num === single) return 'success';
     }
   }
