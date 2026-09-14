@@ -15,8 +15,16 @@ interface CepSettings {
   cep_ranges: string[];
 }
 
+const DEFAULT_RANGES = [
+  '65015-65015', '65020-65020', '65031-65031', '65035-65035',
+  '65040-65042', '65044-65045', '65047-65049', '65054-65054',
+  '65056-65060', '65062-65062', '65066-65068', '65070-65071',
+  '65073-65073', '65075-65076', '65080-65083', '65085-65086',
+  '65090-65095',
+];
+
 const DEFAULT_SETTINGS: CepSettings = {
-  enabled: false,
+  enabled: true,
   button_text: 'Verifique se atendemos sua região',
   button_bg: '#005CFF',
   button_color: '#ffffff',
@@ -25,7 +33,7 @@ const DEFAULT_SETTINGS: CepSettings = {
   fail_msg: 'Infelizmente não atendemos sua região no momento.',
   invalid_msg: 'CEP inválido, tente novamente.',
   whatsapp_link: 'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Gostaria%20de%20saber%20se%20atendem%20minha%20região.',
-  cep_ranges: [],
+  cep_ranges: DEFAULT_RANGES,
 };
 
 type ResultType = 'idle' | 'invalid' | 'success' | 'fail';
@@ -70,11 +78,13 @@ export const CepChecker = () => {
     fetch(`${API_BASE_URL}/api/settings`)
       .then(res => res.json())
       .then(data => {
+        const s = { ...DEFAULT_SETTINGS };
         if (data.cep_checker_enabled?.value === 'false') {
+          s.enabled = false;
+          setSettings(s);
           setReady(true);
           return;
         }
-        const s = { ...DEFAULT_SETTINGS, enabled: true };
         if (data.cep_checker_button_text?.value) s.button_text = data.cep_checker_button_text.value;
         if (data.cep_checker_button_bg?.value) s.button_bg = data.cep_checker_button_bg.value;
         if (data.cep_checker_button_color?.value) s.button_color = data.cep_checker_button_color.value;
@@ -83,7 +93,7 @@ export const CepChecker = () => {
         if (data.cep_checker_fail_msg?.value) s.fail_msg = data.cep_checker_fail_msg.value;
         if (data.cep_checker_invalid_msg?.value) s.invalid_msg = data.cep_checker_invalid_msg.value;
         if (data.cep_checker_whatsapp_link?.value) s.whatsapp_link = data.cep_checker_whatsapp_link.value;
-        if (data.cep_checker_ranges?.value) {
+        if (data.cep_checker_ranges?.value && data.cep_checker_ranges.value.trim()) {
           s.cep_ranges = data.cep_checker_ranges.value.split('\n').filter((l: string) => l.trim() !== '');
         }
         setSettings(s);
