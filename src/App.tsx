@@ -17,6 +17,7 @@ import Support from './components/Support';
 import Benefits from './components/Benefits';
 import Contact from './components/Contact';
 import ExitPopup from './components/ExitPopup';
+import CepChecker from './components/CepChecker';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
 import IndiqueGanhe from './components/IndiqueGanhe';
@@ -194,6 +195,7 @@ function PublicSite() {
         </a>
       </div>
       <ExitPopup />
+      <CepChecker />
     </>
   );
 }

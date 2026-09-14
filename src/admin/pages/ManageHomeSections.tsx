@@ -226,6 +226,18 @@ const SECTIONS: Record<string, FieldDef[]> = {
     ]},
   ],
   'Central de Atendimento': [],
+  'Verificador de CEP': [
+    { key: 'cep_checker_enabled', label: 'Buscador de CEP Ativo', type: 'toggle' },
+    { key: 'cep_checker_button_text', label: 'Texto do Botão Flutuante', type: 'text', hint: 'Ex: Verifique se atendemos sua região' },
+    { key: 'cep_checker_button_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #005CFF' },
+    { key: 'cep_checker_button_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #ffffff' },
+    { key: 'cep_checker_sidebar_title', label: 'Título da Sidebar', type: 'text', hint: 'Ex: Antes de continuar, vamos verificar se atendemos sua região?' },
+    { key: 'cep_checker_ranges', label: 'Faixas de CEP (uma por linha: 65000-65999)', type: 'textarea', hint: 'Ex: 65000-65999' },
+    { key: 'cep_checker_success_msg', label: 'Mensagem — CEP atende', type: 'text', hint: 'Ex: Parabéns! Atendemos sua região!' },
+    { key: 'cep_checker_fail_msg', label: 'Mensagem — CEP não atende', type: 'text', hint: 'Ex: Infelizmente não atendemos sua região no momento.' },
+    { key: 'cep_checker_invalid_msg', label: 'Mensagem — CEP inválido', type: 'text', hint: 'Ex: CEP inválido, tente novamente.' },
+    { key: 'cep_checker_whatsapp_link', label: 'Link do WhatsApp', type: 'url' },
+  ],
 };
 
 const SECTION_DEFS = [

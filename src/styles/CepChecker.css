@@ -1,0 +1,214 @@
+/* ============================================
+   CEP CHECKER — Floating bar + Sidebar
+   ============================================ */
+
+/* ---------- Floating Bar ---------- */
+.cep-floating-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 14px 24px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.cep-floating-text {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.cep-floating-btn {
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.cep-floating-btn:hover {
+  opacity: 0.9;
+}
+
+/* ---------- Overlay ---------- */
+.cep-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  animation: cepFadeIn 0.25s ease;
+}
+
+@keyframes cepFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Sidebar ---------- */
+.cep-sidebar {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: #fff;
+  padding: 40px 32px;
+  position: relative;
+  animation: cepSlideIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+@keyframes cepSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.cep-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #666;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+}
+
+.cep-close:hover {
+  color: #333;
+}
+
+.cep-sidebar-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ---------- Input ---------- */
+.cep-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.cep-input:focus {
+  border-color: #005CFF;
+}
+
+/* ---------- Verify Button ---------- */
+.cep-verify-btn {
+  width: 100%;
+  padding: 14px;
+  background: #1a1a2e;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cep-verify-btn:hover {
+  background: #2d2d44;
+}
+
+/* ---------- Results ---------- */
+.cep-result {
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cep-result-error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.cep-result-card {
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.cep-result-card p {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.cep-result-success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.cep-result-fail {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+/* ---------- WhatsApp Button ---------- */
+.cep-whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 28px;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.cep-whatsapp-btn:hover {
+  background: #15803d;
+  color: #fff;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .cep-floating-bar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+
+  .cep-floating-text {
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .cep-sidebar {
+    max-width: 100%;
+    padding: 32px 20px;
+  }
+}
