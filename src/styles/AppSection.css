@@ -6,8 +6,8 @@
 
 .app-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 40px;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
   align-items: center;
 }
 
@@ -25,34 +25,52 @@
   line-height: 1.7;
 }
 
-.app-features-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 40px;
+/* ---------- Icon Grid 2x2 ---------- */
+.app-icon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 36px;
 }
 
-.app-features-list li {
+.app-icon-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--color-text-dark);
+  gap: 14px;
 }
 
-.bullet-check {
-  width: 24px;
-  height: 24px;
+.app-icon-circle {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
   border-radius: 50%;
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
+  background: #f1f5f9;
+  color: var(--color-primary, #005CFF);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
+.app-icon-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.app-icon-texts strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-dark, #1a1a2e);
+  line-height: 1.3;
+}
+
+.app-icon-texts span {
+  font-size: 13px;
+  color: var(--color-text-muted, #6b7280);
+  line-height: 1.4;
+}
+
+/* ---------- Store Buttons ---------- */
 .store-buttons {
   display: flex;
   gap: 16px;
@@ -71,7 +89,7 @@
   box-shadow: var(--shadow-md);
 }
 
-/* App Mockup with Glow */
+/* ---------- App Mockup with Glow ---------- */
 .app-mockup {
   position: relative;
   display: flex;
@@ -103,46 +121,50 @@
   transform: rotate(0deg) scale(1.03);
 }
 
+/* ---------- Responsive ---------- */
 @media (max-width: 992px) {
   .app-grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  
+
   .app-content {
     text-align: center;
+    order: 2;
   }
-  
+
+  .app-mockup {
+    order: 1;
+  }
+
   .app-content h2 {
     font-size: 28px;
   }
-  
-  .app-features-list {
-    align-items: center;
+
+  .app-icon-grid {
     max-width: 450px;
-    margin: 0 auto 28px;
+    margin: 0 auto 36px;
   }
-  
-  .app-features-list li {
-    text-align: left;
-    width: 100%;
-  }
-  
+
   .store-buttons {
     justify-content: center;
   }
-  
+
   .mockup-img {
     transform: none;
     max-width: 320px;
   }
-  
+
   .app-mockup:hover .mockup-img {
     transform: scale(1.03);
   }
 }
 
 @media (max-width: 480px) {
+  .app-icon-grid {
+    grid-template-columns: 1fr;
+  }
+
   .store-buttons {
     flex-direction: column;
     align-items: center;

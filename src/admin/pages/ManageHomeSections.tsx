@@ -7,6 +7,7 @@ import { ToggleSwitch } from '../components/ToggleSwitch';
 import { ColorPicker } from '../components/ColorPicker';
 import { API_BASE_URL } from '../../config/api';
 import { EXIT_ICON_OPTIONS } from '../../components/ExitPopup';
+import { ICON_OPTIONS } from '../../components/AppSection';
 
 interface Setting { key: string; value: string; label: string; }
 
@@ -72,7 +73,18 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'app_title_align', label: 'Alinhamento', type: 'align' },
     { key: 'app_desc', label: 'Texto Descritivo', type: 'textarea' },
     { key: 'app_desc_align', label: 'Alinhamento', type: 'align' },
-    { key: 'app_bullets', label: 'Benefícios (um por linha)', type: 'list' },
+    { key: 'app_grid1_icon', label: 'Ícone Item 1', type: 'select', options: ICON_OPTIONS },
+    { key: 'app_grid1_title', label: 'Título Item 1', type: 'text', hint: 'Ex: 2ª via de boleto' },
+    { key: 'app_grid1_desc', label: 'Descrição Item 1', type: 'text', hint: 'Ex: Emissão em poucos toques' },
+    { key: 'app_grid2_icon', label: 'Ícone Item 2', type: 'select', options: ICON_OPTIONS },
+    { key: 'app_grid2_title', label: 'Título Item 2', type: 'text', hint: 'Ex: Desbloqueio' },
+    { key: 'app_grid2_desc', label: 'Descrição Item 2', type: 'text', hint: 'Ex: Confiança imediato' },
+    { key: 'app_grid3_icon', label: 'Ícone Item 3', type: 'select', options: ICON_OPTIONS },
+    { key: 'app_grid3_title', label: 'Título Item 3', type: 'text', hint: 'Ex: Consumo' },
+    { key: 'app_grid3_desc', label: 'Descrição Item 3', type: 'text', hint: 'Ex: Consulte sua internet' },
+    { key: 'app_grid4_icon', label: 'Ícone Item 4', type: 'select', options: ICON_OPTIONS },
+    { key: 'app_grid4_title', label: 'Título Item 4', type: 'text', hint: 'Ex: Suporte técnico' },
+    { key: 'app_grid4_desc', label: 'Descrição Item 4', type: 'text', hint: 'Ex: Chat direto no app' },
     { key: 'app_playstore_image', label: 'Imagem Botão Google Play', type: 'image' },
     { key: 'app_playstore', label: 'Link Google Play', type: 'url' },
     { key: 'app_appstore_image', label: 'Imagem Botão App Store', type: 'image' },
