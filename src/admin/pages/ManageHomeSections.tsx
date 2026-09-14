@@ -266,8 +266,7 @@ export const ManageHomeSections = () => {
   const [sectionsActive, setSectionsActive] = useState<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
   const [sectionsMobile, setSectionsMobile] = useState<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
   const [popupCards, setPopupCards] = useState<{ id: number; title: string; description: string; link: string; icon_type: string }[]>([]);
-  const [cepFrom, setCepFrom] = useState('');
-  const [cepTo, setCepTo] = useState('');
+  const [cepManualInput, setCepManualInput] = useState('');
   const [cepSearchQuery, setCepSearchQuery] = useState('');
   const [cepSearchResults, setCepSearchResults] = useState<{ cep: string; logradouro: string; bairro: string; localidade: string; uf: string }[]>([]);
   const [cepSearchLoading, setCepSearchLoading] = useState(false);
@@ -509,29 +508,28 @@ export const ManageHomeSections = () => {
           </div>
         );
       case 'cep-ranges':
-        const addRange = () => {
-          const from = cepFrom.replace(/\D/g, '').slice(0, 5);
-          const to = cepTo.replace(/\D/g, '').slice(0, 5);
-          if (from.length !== 5 || to.length !== 5) return;
-          const line = `${from}-${to}`;
+        const addSingleCep = () => {
+          const digits = cepManualInput.replace(/\D/g, '');
+          if (digits.length !== 8) return;
+          const formatted = `${digits.slice(0, 5)}-${digits.slice(5)}`;
           const current = val ? val.trim() : '';
-          const exists = current.split('\n').some(l => l.trim() === line);
+          const exists = current.split('\n').some(l => l.trim() === formatted);
           if (!exists) {
-            set(fd.key, current ? current + '\n' + line : line, fd.label + ' (Faixa CEP)');
+            set(fd.key, current ? current + '\n' + formatted : formatted, fd.label + ' (CEP)');
           }
-          setCepFrom('');
-          setCepTo('');
+          setCepManualInput('');
         };
         const removeRangeLine = (idx: number) => {
-          const lines = val.split('\n').filter((_, i) => i !== idx);
-          set(fd.key, lines.join('\n'), fd.label + ' (Faixa CEP)');
+          const lines = val.split('\n').filter((_: string, i: number) => i !== idx);
+          set(fd.key, lines.join('\n'), fd.label + ' (CEP)');
         };
+        const inputStyle = { padding: '8px 10px', fontSize: 13, fontFamily: 'monospace', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-input-bg, var(--adm-bg))', color: 'var(--adm-text)' };
         return (
           <div className="admin-field" key={fd.key} style={{ gridColumn: '1 / -1' }}>
             <label>{fd.label}</label>
 
             {/* Buscar por endereço/bairro/rua */}
-            <div style={{ background: 'var(--adm-bg)', border: '1px solid var(--adm-border)', borderRadius: 8, padding: 12, marginBottom: 10 }}>
+            <div style={{ background: 'var(--adm-card-bg, var(--adm-bg))', border: '1px solid var(--adm-border)', borderRadius: 8, padding: 12, marginBottom: 10 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--adm-text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                 Buscar por bairro, rua ou endereço
               </div>
@@ -541,7 +539,7 @@ export const ManageHomeSections = () => {
                   onChange={e => setCepSearchQuery(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && searchCepByAddress()}
                   placeholder="Ex: São Raimundo, Vila Ariri, Rua do Sol..."
-                  style={{ flex: 1, padding: '8px 10px', fontSize: 13, borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-input-bg, #fff)', color: 'var(--adm-text)' }}
+                  style={{ flex: 1, ...inputStyle }}
                 />
                 <button
                   type="button"
@@ -589,30 +587,23 @@ export const ManageHomeSections = () => {
               )}
             </div>
 
-            {/* Adicionar faixa manual */}
+            {/* Adicionar CEP manual */}
             <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--adm-text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              Adicionar faixa manual (5 dígitos)
+              Adicionar CEP manual
             </div>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
               <input
-                value={cepFrom}
-                onChange={e => setCepFrom(e.target.value.replace(/\D/g, '').slice(0, 5))}
-                placeholder="De: 65000"
-                maxLength={5}
-                style={{ width: 110, padding: '8px 10px', fontSize: 13, fontFamily: 'monospace', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
-              />
-              <span style={{ color: 'var(--adm-text2)', fontSize: 13 }}>até</span>
-              <input
-                value={cepTo}
-                onChange={e => setCepTo(e.target.value.replace(/\D/g, '').slice(0, 5))}
-                placeholder="Até: 65099"
-                maxLength={5}
-                style={{ width: 110, padding: '8px 10px', fontSize: 13, fontFamily: 'monospace', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
+                value={cepManualInput}
+                onChange={e => setCepManualInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && addSingleCep()}
+                placeholder="Ex: 65082-507"
+                maxLength={9}
+                style={{ flex: 1, ...inputStyle }}
               />
               <button
                 type="button"
                 className="admin-btn primary"
-                onClick={addRange}
+                onClick={addSingleCep}
                 style={{ padding: '8px 16px', fontSize: 13, whiteSpace: 'nowrap' }}
               >+ Adicionar</button>
             </div>
@@ -621,7 +612,7 @@ export const ManageHomeSections = () => {
             {val && (
               <div style={{ marginBottom: 8 }}>
                 <div style={{ fontSize: 12, color: 'var(--adm-text2)', marginBottom: 4 }}>
-                  {val.split('\n').filter((l: string) => l.trim()).length} faixa(s)/CEP(s) adicionado(s):
+                  {val.split('\n').filter((l: string) => l.trim()).length} CEP(s) adicionado(s):
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {val.split('\n').filter((l: string) => l.trim()).map((line: string, idx: number) => (
@@ -638,12 +629,12 @@ export const ManageHomeSections = () => {
             <textarea
               value={val}
               onChange={e => set(fd.key, e.target.value, fd.label)}
-              placeholder="Ou cole aqui — um CEP ou faixa por linha:&#10;65082-507&#10;65086-233&#10;65000-65099"
+              placeholder="Ou cole aqui — um CEP por linha:&#10;65082-507&#10;65086-233&#10;65093-421"
               rows={4}
-              style={{ width: '100%', padding: '10px', fontSize: 13, fontFamily: 'monospace', resize: 'vertical', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
+              style={{ width: '100%', ...inputStyle, resize: 'vertical' }}
             />
             <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>
-              Formatos: <b>CEP individual</b> (65082-507) ou <b>faixa</b> (65000-65099). Um por linha.
+              Um CEP por linha. Formato: <b>XXXXX-XXX</b> (ex: 65082-507).
             </small>
           </div>
         );
