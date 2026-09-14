@@ -361,15 +361,13 @@ export const ManageHomeSections = () => {
     setSaving(true);
     setMsg('');
     try {
-      const updates = Object.values(settings);
-      await Promise.all(
-        updates.map(s => 
-          apiFetch(`/settings/${s.key}`, {
-            method: 'PUT',
-            body: JSON.stringify({ value: s.value, label: s.label })
-          })
-        )
-      );
+      const updates = Object.values(settings).map(s => ({
+        key: s.key, value: s.value, label: s.label
+      }));
+      await apiFetch('/settings/batch', {
+        method: 'PUT',
+        body: JSON.stringify({ settings: updates })
+      });
       setMsg('Configurações salvas com sucesso!');
       setTimeout(() => setMsg(''), 3000);
     } catch (e: unknown) {

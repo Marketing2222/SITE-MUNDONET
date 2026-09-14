@@ -99,14 +99,6 @@ export const Plans = () => {
   const maxIndex = Math.max(0, plans.length - visible);
   const needsScroll = plans.length > visible;
 
-  // Card width in px (290px default, 270px on md, full on mobile)
-  const cardWidthPx = visible === 1 ? window.innerWidth - 52 : visible === 2 ? 270 : 290;
-  const cardGapPx = 20;
-  const totalTrackWidth = plans.length * (cardWidthPx + cardGapPx) - cardGapPx;
-  // If plans fit: center them by adding symmetric padding
-  const containerWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth - 48, 1280) : 1280;
-  const centeringOffset = !needsScroll ? Math.max(0, (containerWidth - totalTrackWidth) / 2) : 0;
-
   const prev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const next = () => setCurrentIndex((i) => Math.min(maxIndex, i + 1));
 
@@ -161,8 +153,7 @@ export const Plans = () => {
             style={{
               transform: needsScroll
                 ? `translateX(calc(-${currentIndex} * (var(--card-width) + var(--card-gap))))`
-                : 'none',
-              paddingLeft: needsScroll ? 0 : centeringOffset
+                : 'none'
             }}
           >
             {plans.map((plan, i) => (

@@ -326,11 +326,14 @@ export const ManageIndiqueGanhe = () => {
       allKeys.push('ig_faq_title_color', 'ig_faq_bg', 'ig_faq_card_bg', 'ig_faq_question_color', 'ig_faq_answer_color', 'ig_faq_icon_color', 'ig_faq_border');
       allKeys.push('ig_mobile_section_spacing', 'ig_hero_mobile_padding', 'ig_brands_mobile_padding', 'ig_steps_mobile_padding', 'ig_calc_mobile_padding', 'ig_about_mobile_padding', 'ig_benefits_mobile_padding', 'ig_testimonials_mobile_padding', 'ig_faq_mobile_padding', 'ig_cta_mobile_padding');
       ['ig_brands_items', 'ig_steps_items', 'ig_benefits_items', 'ig_testimonials_items', 'ig_faq_items'].forEach(k => allKeys.push(k));
-      const toSave = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
-        if (k === 'ig_nav_menu') return apiFetch('/settings/ig_nav_menu', { method: 'PUT', body: JSON.stringify({ value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' }) });
-        return apiFetch(`/settings/${k}`, { method: 'PUT', body: JSON.stringify({ value: settings[k].value, label: settings[k].label }) });
+      const settingsPayload = allKeys.filter(k => settings[k] || k === 'ig_nav_menu').map(k => {
+        if (k === 'ig_nav_menu') return { key: 'ig_nav_menu', value: JSON.stringify(navItems), label: 'IG: Menu de Navegação (JSON)' };
+        return { key: k, value: settings[k].value, label: settings[k].label };
       });
-      await Promise.all(toSave);
+      await apiFetch('/settings/batch', {
+        method: 'PUT',
+        body: JSON.stringify({ settings: settingsPayload })
+      });
       setMsg('Configurações salvas com sucesso!');
       setTimeout(() => setMsg(''), 3000);
     } catch (e: unknown) { setMsg(e instanceof Error ? e.message : 'Erro ao salvar'); }

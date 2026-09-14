@@ -38,12 +38,13 @@ export const ManageSettings = () => {
     setMsg('');
     try {
       const toSave = GENERAL_KEYS.filter(k => k in form);
-      await Promise.all(
-        toSave.map(k => apiFetch(`/settings/${k}`, {
-          method: 'PUT',
-          body: JSON.stringify({ value: form[k] || '', label: labels[k] || k }),
-        }))
-      );
+      const settings = toSave.map(k => ({
+        key: k, value: form[k] || '', label: labels[k] || k
+      }));
+      await apiFetch('/settings/batch', {
+        method: 'PUT',
+        body: JSON.stringify({ settings })
+      });
       setMsg('Configuracoes salvas com sucesso!');
     } catch (e: unknown) {
       setMsg(e instanceof Error ? e.message : 'Erro ao salvar');

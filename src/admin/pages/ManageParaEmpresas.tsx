@@ -173,23 +173,17 @@ export const ManageParaEmpresas = () => {
     setSaving(true);
     setMsg('');
     try {
-      const allUpdates = [
-        ...FIELDS.flatMap(s => s.fields).filter(f => settings[f.key]).map(f =>
-          apiFetch(`/settings/${f.key}`, {
-            method: 'PUT',
-            body: JSON.stringify({ value: settings[f.key].value, label: f.label })
-          })
-        ),
-        apiFetch('/settings/emp_benefits_items', {
-          method: 'PUT',
-          body: JSON.stringify({ value: serializeList(benefits), label: 'Itens Benefícios' })
-        }),
-        apiFetch('/settings/emp_services_items', {
-          method: 'PUT',
-          body: JSON.stringify({ value: serializeList(services), label: 'Itens Serviços' })
-        }),
+      const settingsPayload = [
+        ...FIELDS.flatMap(s => s.fields).filter(f => settings[f.key]).map(f => ({
+          key: f.key, value: settings[f.key].value, label: f.label
+        })),
+        { key: 'emp_benefits_items', value: serializeList(benefits), label: 'Itens Benefícios' },
+        { key: 'emp_services_items', value: serializeList(services), label: 'Itens Serviços' },
       ];
-      await Promise.all(allUpdates);
+      await apiFetch('/settings/batch', {
+        method: 'PUT',
+        body: JSON.stringify({ settings: settingsPayload })
+      });
       setMsg('Configurações salvas!');
       setTimeout(() => setMsg(''), 3000);
     } catch (e: unknown) {

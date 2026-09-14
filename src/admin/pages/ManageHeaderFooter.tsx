@@ -166,17 +166,16 @@ export const ManageHeaderFooter = () => {
     setSaving(true); setMsg('');
     try {
       const ALL_FIELDS = [...HEADER_FIELDS, ...NAV_SPACING_FIELDS, ...FOOTER_FIELDS];
-      await Promise.all([
-        ...ALL_FIELDS.map(fd => apiFetch(`/settings/${fd.key}`, {
-          method: 'PUT',
-          body: JSON.stringify({ value: form[fd.key] ?? '', label: fd.label })
+      const settingsPayload = [
+        ...ALL_FIELDS.map(fd => ({
+          key: fd.key, value: form[fd.key] ?? '', label: fd.label
         })),
-        // Save nav menu as JSON
-        apiFetch('/settings/nav_menu', {
-          method: 'PUT',
-          body: JSON.stringify({ value: JSON.stringify(navItems), label: 'Menu de Navegação (JSON)' })
-        }),
-      ]);
+        { key: 'nav_menu', value: JSON.stringify(navItems), label: 'Menu de Navegação (JSON)' },
+      ];
+      await apiFetch('/settings/batch', {
+        method: 'PUT',
+        body: JSON.stringify({ settings: settingsPayload })
+      });
       setMsg('✅ Configurações salvas com sucesso! Recarregue o site para ver as mudanças.');
     } catch (e: unknown) { setMsg(e instanceof Error ? e.message : 'Erro ao salvar'); }
     finally { setSaving(false); }
