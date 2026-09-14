@@ -53,15 +53,27 @@ const checkCep = (cep: string, ranges: string[]): ResultType => {
   const digits = cep.replace(/\D/g, '');
   if (digits.length !== 8) return 'invalid';
   const num = parseInt(digits.slice(0, 5), 10);
+  const fullNum = parseInt(digits, 10);
   for (const range of ranges) {
-    const parts = range.split('-').map(s => s.trim());
-    if (parts.length === 2) {
+    const r = range.trim();
+    if (r.length === 8 && !r.includes('-')) {
+      const rNum = parseInt(r, 10);
+      if (!isNaN(rNum) && fullNum === rNum) return 'success';
+    } else if (r.length === 10 && r.includes('-')) {
+      const parts = r.split('-').map(s => s.trim());
       const from = toPrefix5(parts[0]);
       const to = toPrefix5(parts[1]);
       if (!isNaN(from) && !isNaN(to) && num >= from && num <= to) return 'success';
-    } else if (parts.length === 1) {
-      const single = toPrefix5(parts[0]);
-      if (!isNaN(single) && num === single) return 'success';
+    } else {
+      const parts = r.split('-').map(s => s.trim());
+      if (parts.length === 2) {
+        const from = toPrefix5(parts[0]);
+        const to = toPrefix5(parts[1]);
+        if (!isNaN(from) && !isNaN(to) && num >= from && num <= to) return 'success';
+      } else if (parts.length === 1) {
+        const single = toPrefix5(parts[0]);
+        if (!isNaN(single) && num === single) return 'success';
+      }
     }
   }
   return 'fail';

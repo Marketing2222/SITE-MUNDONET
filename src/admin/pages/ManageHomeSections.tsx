@@ -268,6 +268,65 @@ export const ManageHomeSections = () => {
   const [popupCards, setPopupCards] = useState<{ id: number; title: string; description: string; link: string; icon_type: string }[]>([]);
   const [cepFrom, setCepFrom] = useState('');
   const [cepTo, setCepTo] = useState('');
+  const [cepSearchQuery, setCepSearchQuery] = useState('');
+  const [cepSearchResults, setCepSearchResults] = useState<{ cep: string; logradouro: string; bairro: string; localidade: string; uf: string }[]>([]);
+  const [cepSearchLoading, setCepSearchLoading] = useState(false);
+  const [cepSearchSelected, setCepSearchSelected] = useState<Set<string>>(new Set());
+
+  const searchCepByAddress = async () => {
+    const q = cepSearchQuery.trim();
+    if (q.length < 3) return;
+    setCepSearchLoading(true);
+    setCepSearchResults([]);
+    setCepSearchSelected(new Set());
+    try {
+      const uf = 'MA';
+      const cidade = 'São Luís';
+      const resp = await fetch(`https://viacep.com.br/ws/${uf}/${encodeURIComponent(cidade)}/${encodeURIComponent(q)}/json/`);
+      const data: any = await resp.json();
+      if (Array.isArray(data) && data.length > 0 && !(data as any).erro) {
+        setCepSearchResults(data.map((d: any) => ({
+          cep: d.cep.replace('-', ''),
+          logradouro: d.logradouro || '',
+          bairro: d.bairro || '',
+          localidade: d.localidade || '',
+          uf: d.uf || '',
+        })));
+      } else {
+        setCepSearchResults([]);
+      }
+    } catch {
+      setCepSearchResults([]);
+    }
+    setCepSearchLoading(false);
+  };
+
+  const toggleCepSearchSelect = (cep: string) => {
+    setCepSearchSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(cep)) next.delete(cep);
+      else next.add(cep);
+      return next;
+    });
+  };
+
+  const addSelectedCeps = (key: string, label: string) => {
+    const current = settings[key]?.value?.trim() || '';
+    const lines = current ? current.split('\n').map((l: string) => l.trim()).filter(Boolean) : [];
+    let added = 0;
+    for (const cep of cepSearchSelected) {
+      if (!lines.includes(cep)) {
+        lines.push(cep);
+        added++;
+      }
+    }
+    if (added > 0) {
+      set(key, lines.join('\n'), label + ` (+${added} CEPs)`);
+    }
+    setCepSearchSelected(new Set());
+    setCepSearchResults([]);
+    setCepSearchQuery('');
+  };
 
   const load = async () => {
     try {
@@ -470,6 +529,70 @@ export const ManageHomeSections = () => {
         return (
           <div className="admin-field" key={fd.key} style={{ gridColumn: '1 / -1' }}>
             <label>{fd.label}</label>
+
+            {/* Buscar por endereço/bairro/rua */}
+            <div style={{ background: 'var(--adm-bg)', border: '1px solid var(--adm-border)', borderRadius: 8, padding: 12, marginBottom: 10 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--adm-text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                Buscar por bairro, rua ou endereço
+              </div>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <input
+                  value={cepSearchQuery}
+                  onChange={e => setCepSearchQuery(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && searchCepByAddress()}
+                  placeholder="Ex: São Raimundo, Vila Ariri, Rua do Sol..."
+                  style={{ flex: 1, padding: '8px 10px', fontSize: 13, borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-input-bg, #fff)', color: 'var(--adm-text)' }}
+                />
+                <button
+                  type="button"
+                  className="admin-btn primary"
+                  onClick={searchCepByAddress}
+                  disabled={cepSearchLoading || cepSearchQuery.trim().length < 3}
+                  style={{ padding: '8px 16px', fontSize: 13, whiteSpace: 'nowrap', opacity: cepSearchLoading || cepSearchQuery.trim().length < 3 ? 0.5 : 1 }}
+                >{cepSearchLoading ? 'Buscando...' : 'Buscar CEPs'}</button>
+              </div>
+              {cepSearchResults.length > 0 && (
+                <div style={{ marginTop: 10 }}>
+                  <div style={{ fontSize: 12, color: 'var(--adm-text2)', marginBottom: 6 }}>
+                    {cepSearchResults.length} CEP(s) encontrado(s). Selecione os que deseja adicionar:
+                  </div>
+                  <div style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid var(--adm-border)', borderRadius: 6 }}>
+                    {cepSearchResults.map((r, i) => (
+                      <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderBottom: i < cepSearchResults.length - 1 ? '1px solid var(--adm-border)' : 'none', cursor: 'pointer', fontSize: 13, background: cepSearchSelected.has(r.cep) ? 'var(--adm-primary-bg, #e8f0fe)' : 'transparent' }}>
+                        <input
+                          type="checkbox"
+                          checked={cepSearchSelected.has(r.cep)}
+                          onChange={() => toggleCepSearchSelect(r.cep)}
+                          style={{ accentColor: 'var(--adm-primary, #1a73e8)' }}
+                        />
+                        <span style={{ fontFamily: 'monospace', fontWeight: 600, minWidth: 75 }}>{r.cep.slice(0, 5)}-{r.cep.slice(5)}</span>
+                        <span style={{ color: 'var(--adm-text2)', fontSize: 12 }}>
+                          {[r.logradouro, r.bairro].filter(Boolean).join(', ')}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  {cepSearchSelected.size > 0 && (
+                    <button
+                      type="button"
+                      className="admin-btn primary"
+                      onClick={() => addSelectedCeps(fd.key, fd.label)}
+                      style={{ marginTop: 8, padding: '8px 16px', fontSize: 13 }}
+                    >+ Adicionar {cepSearchSelected.size} CEP(s) selecionado(s)</button>
+                  )}
+                </div>
+              )}
+              {cepSearchResults.length === 0 && !cepSearchLoading && cepSearchQuery.length >= 3 && (
+                <div style={{ marginTop: 8, fontSize: 12, color: 'var(--adm-text2)' }}>
+                  Nenhum CEP encontrado para "{cepSearchQuery}". Tente outro termo.
+                </div>
+              )}
+            </div>
+
+            {/* Adicionar faixa manual */}
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--adm-text2)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              Adicionar faixa manual (5 dígitos)
+            </div>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
               <input
                 value={cepFrom}
@@ -493,25 +616,34 @@ export const ManageHomeSections = () => {
                 style={{ padding: '8px 16px', fontSize: 13, whiteSpace: 'nowrap' }}
               >+ Adicionar</button>
             </div>
+
+            {/* CEPs adicionados */}
             {val && (
-              <div style={{ marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                {val.split('\n').filter(l => l.trim()).map((line, idx) => (
-                  <span key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', background: 'var(--adm-primary-bg, #e8f0fe)', borderRadius: 14, fontSize: 13, fontFamily: 'monospace', color: 'var(--adm-primary, #1a73e8)' }}>
-                    {line.trim()}
-                    <button type="button" onClick={() => removeRangeLine(idx)} style={{ background: 'none', border: 'none', color: 'var(--adm-text2)', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }} title="Remover">×</button>
-                  </span>
-                ))}
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ fontSize: 12, color: 'var(--adm-text2)', marginBottom: 4 }}>
+                  {val.split('\n').filter((l: string) => l.trim()).length} faixa(s)/CEP(s) adicionado(s):
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {val.split('\n').filter((l: string) => l.trim()).map((line: string, idx: number) => (
+                    <span key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', background: 'var(--adm-primary-bg, #e8f0fe)', borderRadius: 14, fontSize: 13, fontFamily: 'monospace', color: 'var(--adm-primary, #1a73e8)' }}>
+                      {line.trim()}
+                      <button type="button" onClick={() => removeRangeLine(idx)} style={{ background: 'none', border: 'none', color: 'var(--adm-text2)', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }} title="Remover">×</button>
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
+
+            {/* Textarea para colar lista */}
             <textarea
               value={val}
               onChange={e => set(fd.key, e.target.value, fd.label)}
-              placeholder="Ou cole aqui — uma faixa por linha:&#10;65000-65099&#10;65100-65199&#10;66000-66099"
+              placeholder="Ou cole aqui — um CEP ou faixa por linha:&#10;65082-507&#10;65086-233&#10;65000-65099"
               rows={4}
               style={{ width: '100%', padding: '10px', fontSize: 13, fontFamily: 'monospace', resize: 'vertical', borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)' }}
             />
             <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>
-              Formato: <b>INICIO-FIM</b> (5 dígitos cada). Ex: <code>65000-65099</code> atende todos os CEPs de 65000-000 a 65099-999.
+              Formatos: <b>CEP individual</b> (65082-507) ou <b>faixa</b> (65000-65099). Um por linha.
             </small>
           </div>
         );
