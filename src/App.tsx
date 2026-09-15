@@ -102,9 +102,12 @@ function PublicSite() {
           setMeta('name', 'title', data.site_name.value);
         }
         if (data.favicon_url?.value) {
-          let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-          if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
-          link.href = data.favicon_url.value;
+          const existing = document.querySelector("link[rel='icon']") as HTMLLinkElement;
+          if (existing) existing.remove();
+          const link = document.createElement('link');
+          link.rel = 'icon';
+          link.href = data.favicon_url.value + '?v=' + Date.now();
+          document.head.appendChild(link);
         }
         if (data.sections_mobile_active?.value) {
           try {
