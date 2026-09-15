@@ -520,6 +520,17 @@ export async function initDB() {
     console.log('  → favicon_url adicionado às configurações');
   }
 
+  // ── Migração: admin_panel_name ────────────────────────────────────
+  if (!db.data.site_settings.find(s => s.key === 'admin_panel_name')) {
+    db.data.site_settings.push({
+      id: db.nextId('site_settings'),
+      key: 'admin_panel_name',
+      value: 'Admin',
+      label: 'Nome do Painel Admin'
+    });
+    console.log('  → admin_panel_name adicionado às configurações');
+  }
+
   // ── Migração: Landing Page (Vem pra Mundonet) ─────────────────────
   const lpSettings = [
     { key:'lp_hero_title', value:'Na MUNDONET você tem o', label:'LP: Título Hero' },

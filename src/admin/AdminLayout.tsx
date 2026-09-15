@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { getUser, logout } from './hooks/useAuth';
+import { API_BASE_URL } from '../config/api';
 import './styles/Admin.css';
 
 const Icons = {
@@ -79,6 +80,17 @@ export const AdminLayout = () => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const [adminName, setAdminName] = useState('Admin');
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.admin_panel_name?.value) setAdminName(data.admin_panel_name.value);
+      })
+      .catch(() => {});
+  }, []);
+
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const saved = localStorage.getItem('admin_open_groups');
     return saved ? JSON.parse(saved) : {};
@@ -147,7 +159,7 @@ export const AdminLayout = () => {
               <path d="M2 12l10 5 10-5"/>
             </svg>
           </div>
-          <span className="admin-logo-text">Admin</span>
+          <span className="admin-logo-text">{adminName}</span>
         </div>
 
         <nav className="admin-nav">

@@ -7,7 +7,7 @@ import { ToggleSwitch } from '../components/ToggleSwitch';
 interface Setting { key: string; value: string; label: string; }
 
 const GENERAL_KEYS = [
-  'site_name', 'logo_url', 'favicon_url', 'primary_color',
+  'site_name', 'admin_panel_name', 'logo_url', 'favicon_url', 'primary_color',
   'whatsapp_float', 'footer_cnpj', 'footer_anatel',
   'loading_mascot_url',
 ];
@@ -84,6 +84,17 @@ export const ManageSettings = () => {
                 onChange={e => set('site_name', e.target.value)}
                 placeholder="MundoNet"
               />
+            </div>
+            <div className="admin-field">
+              <label>Nome do Painel Admin</label>
+              <input
+                value={form.admin_panel_name || ''}
+                onChange={e => set('admin_panel_name', e.target.value)}
+                placeholder="Admin"
+              />
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>
+                Nome exibido no topo da barra lateral do painel administrativo.
+              </p>
             </div>
             <div className="admin-field">
               <label>Logo</label>
