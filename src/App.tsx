@@ -64,7 +64,7 @@ function PublicSite() {
   const [sectionsMobile, setSectionsMobile] = useState<Record<string, boolean> | null>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/settings`)
+    fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
         if (data.whatsapp_float?.value) setFloatLink(data.whatsapp_float.value);
@@ -102,6 +102,7 @@ function PublicSite() {
           setMeta('name', 'title', data.site_name.value);
         }
         if (data.favicon_url?.value) {
+          console.log('[favicon] Setting to:', data.favicon_url.value);
           const existing = document.querySelector("link[rel='icon']") as HTMLLinkElement;
           if (existing) existing.remove();
           const link = document.createElement('link');

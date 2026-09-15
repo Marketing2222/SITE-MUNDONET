@@ -26,7 +26,9 @@ async function safeWrite() {
 }
 
 router.get('/', (_req, res) => {
-  res.set('Cache-Control', 'public, max-age=60');
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   const result = {};
   db.data[TABLE].forEach(r => { result[r.key] = { value: r.value, label: r.label }; });
   res.json(result);
@@ -50,10 +52,12 @@ router.put('/batch', authMiddleware, async (req, res) => {
     return res.status(400).json({ error: 'Array "settings" é obrigatório' });
   }
   let created = 0;
+  let updated = 0;
   for (const { key, value, label } of settings) {
     const idx = db.data[TABLE].findIndex(s => s.key === key);
     if (idx !== -1) {
       db.data[TABLE][idx] = { ...db.data[TABLE][idx], value, label };
+      updated++;
     } else {
       const id = db.data[TABLE].length ? Math.max(...db.data[TABLE].map(i=>i.id))+1 : 1;
       db.data[TABLE].push({ id, key, value, label });
@@ -61,6 +65,7 @@ router.put('/batch', authMiddleware, async (req, res) => {
     }
   }
   await safeWrite();
-  res.json({ message: 'Configurações salvas', count: settings.length, created });
+  console.log(`✅ Batch save: ${updated} updated, ${created} created`);
+  res.json({ message: 'Configurações salvas', count: settings.length, created, updated });
 });
 export default router;
