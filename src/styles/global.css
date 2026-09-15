@@ -344,9 +344,23 @@ img {
   100% { box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); }
 }
 
+/* WhatsApp float acima da barra CEP */
+.whatsapp-float-wrapper {
+  bottom: 60px;
+}
+
 /* Esconder seção no mobile */
 @media (max-width: 768px) {
   .hide-mobile {
     display: none !important;
+  }
+
+  .whatsapp-float-wrapper {
+    bottom: 80px;
+  }
+
+  .whatsapp-float-wrapper.bubble-closed {
+    right: -10px;
+    bottom: 80px;
   }
 }
