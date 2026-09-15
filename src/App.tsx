@@ -67,6 +67,9 @@ function PublicSite() {
     fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
+        console.log('[settings] Keys received:', Object.keys(data).filter(k => k.startsWith('site_') || k.startsWith('favicon') || k.startsWith('logo')));
+        console.log('[settings] site_name:', data.site_name);
+        console.log('[settings] favicon_url:', data.favicon_url);
         if (data.whatsapp_float?.value) setFloatLink(data.whatsapp_float.value);
         if (data.wa_btn_link?.value) setFloatLink(data.wa_btn_link.value);
         if (data.wa_btn_image?.value) setFloatImage(data.wa_btn_image.value);
