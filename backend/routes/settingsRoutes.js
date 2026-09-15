@@ -43,19 +43,13 @@ router.get('/', (_req, res) => {
   db.data[TABLE].forEach(r => { result[r.key] = { value: r.value, label: r.label }; });
   res.json(result);
 });
-router.get('/all', authMiddleware, (_req, res) => res.json(db.data[TABLE]));
-router.put('/:key', authMiddleware, async (req, res) => {
-  const { value, label } = req.body;
-  const idx = db.data[TABLE].findIndex(s => s.key === req.params.key);
-  if (idx !== -1) {
-    db.data[TABLE][idx] = { ...db.data[TABLE][idx], value, label };
-  } else {
-    const id = db.data[TABLE].length ? Math.max(...db.data[TABLE].map(i=>i.id))+1 : 1;
-    db.data[TABLE].push({ id, key: req.params.key, value, label });
-  }
-  await safeWrite();
-  res.json({ message: 'Configuração salva' });
+router.get('/all', authMiddleware, (_req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.json(db.data[TABLE]);
 });
+// ⚠️ /batch DEVE vir ANTES de /:key senao Express faz match errado
 router.put('/batch', authMiddleware, async (req, res) => {
   const { settings } = req.body;
   if (!Array.isArray(settings) || settings.length === 0) {
@@ -74,13 +68,18 @@ router.put('/batch', authMiddleware, async (req, res) => {
       created++;
     }
   }
-  // Gravar no disco diretamente
+  // Gravar no disco: primeiro via LowDB, depois fs.writeFileSync como garantia
   try {
     await db.write();
-    console.log(`✅ Batch save: ${updated} updated, ${created} created, db.write() OK`);
   } catch (writeErr) {
     console.error('❌ db.write() FALHOU:', writeErr);
-    return res.status(500).json({ error: 'Erro ao gravar no disco', detail: String(writeErr) });
+  }
+  try {
+    fs.writeFileSync(DB_PATH, JSON.stringify(db.data, null, 2), 'utf8');
+    console.log(`✅ Batch save OK: ${updated} updated, ${created} created → ${DB_PATH}`);
+  } catch (fsErr) {
+    console.error('❌ fs.writeFileSync FALHOU:', fsErr);
+    return res.status(500).json({ error: 'Erro ao gravar no disco', detail: String(fsErr) });
   }
   // Verificar persistência no disco
   try {
@@ -88,10 +87,27 @@ router.put('/batch', authMiddleware, async (req, res) => {
     const diskData = JSON.parse(diskContent);
     const diskSiteName = diskData.site_settings?.find(s => s.key === 'site_name');
     const diskFavicon = diskData.site_settings?.find(s => s.key === 'favicon_url');
-    console.log(`💾 Disco verificado — site_name: "${diskSiteName?.value?.substring(0, 30)}", favicon: "${diskFavicon?.value?.substring(0, 50)}"`);
+    console.log(`💾 Disco OK — site_name: "${diskSiteName?.value?.substring(0, 30)}", favicon: "${diskFavicon?.value?.substring(0, 50)}"`);
   } catch (verifyErr) {
     console.error('⚠️ Falha ao verificar disco:', verifyErr);
   }
   res.json({ message: 'Configurações salvas', count: settings.length, created, updated });
+});
+router.put('/:key', authMiddleware, async (req, res) => {
+  const { value, label } = req.body;
+  const idx = db.data[TABLE].findIndex(s => s.key === req.params.key);
+  if (idx !== -1) {
+    db.data[TABLE][idx] = { ...db.data[TABLE][idx], value, label };
+  } else {
+    const id = db.data[TABLE].length ? Math.max(...db.data[TABLE].map(i=>i.id))+1 : 1;
+    db.data[TABLE].push({ id, key: req.params.key, value, label });
+  }
+  await safeWrite();
+  try {
+    fs.writeFileSync(DB_PATH, JSON.stringify(db.data, null, 2), 'utf8');
+  } catch (fsErr) {
+    console.error('❌ fs.writeFileSync FALHOU:', fsErr);
+  }
+  res.json({ message: 'Configuração salva' });
 });
 export default router;

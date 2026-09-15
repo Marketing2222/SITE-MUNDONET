@@ -14,6 +14,7 @@ export const logout = () => {
 export const apiFetch = async (path: string, options: RequestInit = {}) => {
   const token = getToken();
   const res = await fetch(`${API_BASE_URL}/api${path}`, {
+    cache: 'no-store',
     ...options,
     headers: {
       'Content-Type': 'application/json',
