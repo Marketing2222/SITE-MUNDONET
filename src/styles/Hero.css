@@ -240,17 +240,19 @@
     min-height: 0;
     background-color: transparent;
     margin-bottom: 0;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .slides-container {
     height: auto;
     background-color: transparent;
+    overflow: visible;
   }
 
   .slide {
     position: relative;
     height: auto;
+    overflow: visible;
   }
 
   .slide-img {
