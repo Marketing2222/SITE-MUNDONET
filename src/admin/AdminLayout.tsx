@@ -80,13 +80,18 @@ export const AdminLayout = () => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const [adminName, setAdminName] = useState('Admin');
+  const [adminName, setAdminName] = useState(() => {
+    return localStorage.getItem('admin_panel_name') || 'Admin';
+  });
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
-        if (data.admin_panel_name?.value) setAdminName(data.admin_panel_name.value);
+        if (data.admin_panel_name?.value) {
+          setAdminName(data.admin_panel_name.value);
+          localStorage.setItem('admin_panel_name', data.admin_panel_name.value);
+        }
       })
       .catch(() => {});
   }, []);
