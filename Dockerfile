@@ -37,6 +37,7 @@ COPY --from=builder /app/dist ./public/
 RUN mkdir -p uploads data
 
 VOLUME /app/backend/uploads
+VOLUME /app/backend/data
 
 EXPOSE 80
 

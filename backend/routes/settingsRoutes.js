@@ -6,21 +6,24 @@ const router = Router();
 const TABLE = 'site_settings';
 
 let writeLock = false;
-const queuedWrites = [];
+let pendingWrite = false;
 
 async function safeWrite() {
   if (writeLock) {
-    if (!queuedWrites.includes('pending')) queuedWrites.push('pending');
+    pendingWrite = true;
     return;
   }
   writeLock = true;
   try {
     await db.write();
+    console.log('✅ db.write() concluído');
+  } catch (err) {
+    console.error('❌ ERRO ao escrever banco:', err);
   } finally {
     writeLock = false;
-    if (queuedWrites.length > 0) {
-      queuedWrites.length = 0;
-      safeWrite();
+    if (pendingWrite) {
+      pendingWrite = false;
+      await safeWrite();
     }
   }
 }
@@ -66,6 +69,12 @@ router.put('/batch', authMiddleware, async (req, res) => {
   }
   await safeWrite();
   console.log(`✅ Batch save: ${updated} updated, ${created} created`);
+  // Verificar se gravou
+  const verify = settings.map(s => {
+    const found = db.data[TABLE].find(x => x.key === s.key);
+    return `${s.key}=${found?.value?.substring(0, 30) || 'NOT FOUND'}`;
+  });
+  console.log('📋 Verificação pós-save:', verify.join(' | '));
   res.json({ message: 'Configurações salvas', count: settings.length, created, updated });
 });
 export default router;
