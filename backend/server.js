@@ -169,7 +169,9 @@ initDB().then(() => {
   for (const distPath of distPaths) {
     if (fs.existsSync(distPath)) {
       foundDist = true;
-      app.use(express.static(distPath));
+      // Assets com hash no nome: cache imutável
+      app.use('/assets', express.static(path.join(distPath, 'assets'), { maxAge: '1y', immutable: true }));
+      app.use(express.static(distPath, { maxAge: '1h' }));
       // Rota catch-all para o React Router (SPA)
       app.get('*', (_req, res) => {
         res.sendFile(path.join(distPath, 'index.html'));
