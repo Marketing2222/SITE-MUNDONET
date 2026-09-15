@@ -29,6 +29,8 @@ export const Hero: React.FC = () => {
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({});
   const [loading, setLoading] = useState(true);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
 
   useEffect(() => {
     Promise.all([
@@ -67,6 +69,20 @@ export const Hero: React.FC = () => {
     if (slides.length > 0) goToSlide((currentSlide - 1 + slides.length) % slides.length);
   }, [slides.length, currentSlide, goToSlide]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+      if (deltaX < 0) nextSlide();
+      else prevSlide();
+    }
+  };
+
   if (loading) return <div className="hero-section" style={{ minHeight: '500px', background: '#0a0a1a' }} />;
   if (slides.length === 0) return null;
 
@@ -83,7 +99,7 @@ export const Hero: React.FC = () => {
 
   return (
     <section className={`hero-section hero-transition-${transition}`}>
-      <div className="slides-container">
+      <div className="slides-container" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         {slides.map((slide, index) => (
           <div 
             key={slide.id} 
