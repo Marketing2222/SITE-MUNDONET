@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import '../styles/Plans.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -69,6 +69,8 @@ export const Plans = () => {
 
   const [visible, setVisible] = useState(3);
   const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     Promise.all([
@@ -86,7 +88,9 @@ export const Plans = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setVisible(window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 4);
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      setVisible(mobile ? 1 : window.innerWidth <= 1024 ? 2 : 4);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -103,11 +107,12 @@ export const Plans = () => {
   const next = () => setCurrentIndex((i) => Math.min(maxIndex, i + 1));
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (isMobile) return;
     setTouchStart(e.targetTouches[0].clientX);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart === null) return;
+    if (isMobile || touchStart === null) return;
     const touchEnd = e.changedTouches[0].clientX;
     const distance = touchStart - touchEnd;
     const swipeThreshold = 50;
@@ -147,11 +152,12 @@ export const Plans = () => {
 
         <div className="plans-carousel-wrapper">
           <div
+            ref={trackRef}
             className="plans-track"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             style={{
-              transform: needsScroll
+              transform: (!isMobile && needsScroll)
                 ? `translateX(calc(-${currentIndex} * (var(--card-width) + var(--card-gap))))`
                 : 'none'
             }}

@@ -623,35 +623,34 @@
     font-size: 0.85rem;
   }
 
+  .plans-carousel-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .plans-carousel-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .plans-track {
+    justify-content: flex-start;
+    padding-left: 0;
+    transition: none;
+  }
+
+  .plans-track .plan-card {
+    scroll-snap-align: center;
+  }
+
   .plans-nav {
-    margin-top: 16px;
-    gap: 14px;
-  }
-
-  .plans-nav-btn {
-    width: 44px;
-    height: 44px;
-    border-width: 2px;
-    background: #7c3aed;
-    color: #fff;
-    border-color: #7c3aed;
-    touch-action: manipulation;
-  }
-
-  .plans-nav-btn.disabled {
-    opacity: 0.3;
-    background: transparent;
-    color: #7c3aed;
-    border-color: #c4b5e8;
+    display: none;
   }
 
   .plans-dots {
-    margin-top: 12px;
-  }
-
-  .plans-dot {
-    width: 8px;
-    height: 8px;
+    display: none;
   }
 }
 
