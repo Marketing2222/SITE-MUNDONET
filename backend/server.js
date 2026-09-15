@@ -171,9 +171,11 @@ initDB().then(() => {
       foundDist = true;
       // Assets com hash no nome: cache imutável
       app.use('/assets', express.static(path.join(distPath, 'assets'), { maxAge: '1y', immutable: true }));
-      app.use(express.static(distPath, { maxAge: '1h' }));
-      // Rota catch-all para o React Router (SPA)
+      app.use(express.static(distPath, { maxAge: '1h', index: false }));
+      // index.html SEMPRE fresh (para pegar novos bundles)
       app.get('*', (_req, res) => {
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
         res.sendFile(path.join(distPath, 'index.html'));
       });
       console.log(`📁 Servindo frontend de: ${distPath}`);

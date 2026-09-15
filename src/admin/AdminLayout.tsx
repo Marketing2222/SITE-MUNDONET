@@ -83,7 +83,7 @@ export const AdminLayout = () => {
   const [adminName, setAdminName] = useState('Admin');
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`)
+    fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.admin_panel_name?.value) setAdminName(data.admin_panel_name.value);
