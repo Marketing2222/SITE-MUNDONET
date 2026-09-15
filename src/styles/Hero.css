@@ -236,36 +236,52 @@
 
 @media (max-width: 768px) {
   .hero-section {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
     height: auto;
-    min-height: 0;
+    min-height: unset;
     background-color: transparent;
-    margin-bottom: 0;
+    margin: 0;
+    padding: 0;
     overflow: visible;
+    display: block;
   }
 
   .slides-container {
+    position: relative;
+    width: 100%;
     height: auto;
-    background-color: transparent;
     overflow: visible;
   }
 
   .slide {
     position: relative;
+    width: 100%;
     height: auto;
+    opacity: 0;
+    visibility: hidden;
+    display: block;
     overflow: visible;
   }
 
-  .slide-img {
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
     position: relative;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    background-color: transparent;
-    display: block;
   }
 
   .slide:not(.active) {
     display: none;
+  }
+
+  .slide-img {
+    position: static;
+    transform: none;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
   }
 
   .slide-overlay {
