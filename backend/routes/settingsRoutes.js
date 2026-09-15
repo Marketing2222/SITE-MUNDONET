@@ -1,6 +1,13 @@
 import { Router } from 'express';
 import { db } from '../database.js';
 import { authMiddleware } from '../auth.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DB_PATH = path.join(__dirname, '..', 'data', 'mundonet-db.json');
 
 const router = Router();
 const TABLE = 'site_settings';
@@ -67,14 +74,24 @@ router.put('/batch', authMiddleware, async (req, res) => {
       created++;
     }
   }
-  await safeWrite();
-  console.log(`✅ Batch save: ${updated} updated, ${created} created`);
-  // Verificar se gravou
-  const verify = settings.map(s => {
-    const found = db.data[TABLE].find(x => x.key === s.key);
-    return `${s.key}=${found?.value?.substring(0, 30) || 'NOT FOUND'}`;
-  });
-  console.log('📋 Verificação pós-save:', verify.join(' | '));
+  // Gravar no disco diretamente
+  try {
+    await db.write();
+    console.log(`✅ Batch save: ${updated} updated, ${created} created, db.write() OK`);
+  } catch (writeErr) {
+    console.error('❌ db.write() FALHOU:', writeErr);
+    return res.status(500).json({ error: 'Erro ao gravar no disco', detail: String(writeErr) });
+  }
+  // Verificar persistência no disco
+  try {
+    const diskContent = fs.readFileSync(DB_PATH, 'utf8');
+    const diskData = JSON.parse(diskContent);
+    const diskSiteName = diskData.site_settings?.find(s => s.key === 'site_name');
+    const diskFavicon = diskData.site_settings?.find(s => s.key === 'favicon_url');
+    console.log(`💾 Disco verificado — site_name: "${diskSiteName?.value?.substring(0, 30)}", favicon: "${diskFavicon?.value?.substring(0, 50)}"`);
+  } catch (verifyErr) {
+    console.error('⚠️ Falha ao verificar disco:', verifyErr);
+  }
   res.json({ message: 'Configurações salvas', count: settings.length, created, updated });
 });
 export default router;
