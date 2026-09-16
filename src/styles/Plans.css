@@ -86,6 +86,11 @@
   overflow: hidden;
 }
 
+.plan-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 .plan-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 36px rgba(100, 40, 200, 0.16);
@@ -501,12 +506,17 @@
 
 /* ---------- Bottom Image ---------- */
 .plan-card-bottom {
-  margin: 16px -22px -22px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
+  pointer-events: none;
   border-radius: 0 0 var(--global-border-radius, 20px) var(--global-border-radius, 20px);
+  z-index: 0;
 }
 
 .plan-card-bottom-img {
