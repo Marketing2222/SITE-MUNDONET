@@ -499,6 +499,22 @@
   border-color: rgba(124,58,237,0.3);
 }
 
+/* ---------- Bottom Image ---------- */
+.plan-card-bottom {
+  margin: 16px -22px -22px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0 0 var(--global-border-radius, 20px) var(--global-border-radius, 20px);
+}
+
+.plan-card-bottom-img {
+  width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 .plan-details-body {
   max-height: 0;
   overflow: hidden;

@@ -25,6 +25,7 @@ interface Plan {
   offer_tag_icon?: string;
   show_price?: boolean;
   header_image?: string;
+  bottom_image?: string;
 }
 
 const EMPTY_PLAN: Omit<Plan, 'id'> = {
@@ -38,7 +39,7 @@ const EMPTY_PLAN: Omit<Plan, 'id'> = {
   label_bonus: 'Na assinatura, adicione mais um benefício:', label_details: 'Mais detalhes do plano',
   label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151', modal_title_color: '',
   offer_tag_enabled: false, offer_tag_text: 'OFERTA EXCLUSIVA', offer_tag_color: '#6b21a8', offer_tag_text_color: '#ffffff', offer_tag_icon: '⚡',
-  show_price: true, header_image: ''
+  show_price: true, header_image: '', bottom_image: ''
 };
 
 interface LibraryApp {
@@ -397,6 +398,34 @@ export const ManagePlans = () => {
                         </div>
                       )}
                       <p style={{ fontSize: '0.75rem', color: 'var(--adm-text2)', marginTop: 4 }}>Imagem que aparece atras do conteudo no topo do card (ate o botao).</p>
+                    </div>
+                    <div className="admin-field">
+                      <label>Imagem de Rodape do Card</label>
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <input value={form.bottom_image || ''} onChange={e=>setForm({...form,bottom_image:e.target.value})} placeholder="URL da imagem ou faca upload" style={{ flex: 1 }} />
+                        <label className="admin-btn secondary small" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}>
+                          {saving ? '...' : 'Upload'}
+                          <input type="file" accept="image/*" onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            const fd = new FormData();
+                            fd.append('image', file);
+                            try {
+                              const token = getToken();
+                              const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd });
+                              const data = await res.json();
+                              if (data.url) setForm(f => ({ ...f, bottom_image: data.url }));
+                            } catch { alert('Erro no upload'); }
+                          }} style={{ display: 'none' }} />
+                        </label>
+                      </div>
+                      {form.bottom_image && (
+                        <div style={{ marginTop: 8, position: 'relative', display: 'inline-block' }}>
+                          <img src={form.bottom_image} alt="preview" style={{ borderRadius: 8, maxHeight: 100, objectFit: 'contain', width: '100%' }} />
+                          <button className="admin-btn danger small" onClick={() => setForm(f => ({ ...f, bottom_image: '' }))} style={{ position: 'absolute', top: 4, right: 4, padding: '2px 8px', fontSize: 11 }}>X</button>
+                        </div>
+                      )}
+                      <p style={{ fontSize: '0.75rem', color: 'var(--adm-text2)', marginTop: 4 }}>Imagem decorativa na parte inferior do card (largura do card).</p>
                     </div>
                     <div className="admin-form-row">
                       <div className="admin-field"><label>Texto do botão</label><input value={form.button_text} onChange={e=>setForm({...form,button_text:e.target.value})} /></div>

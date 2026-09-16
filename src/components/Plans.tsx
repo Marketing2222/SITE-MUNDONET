@@ -55,6 +55,7 @@ interface Plan {
   offer_tag_icon?: string;
   show_price?: boolean;
   header_image?: string;
+  bottom_image?: string;
 }
 
 export const Plans = () => {
@@ -308,6 +309,12 @@ export const Plans = () => {
                     </svg>
                   </button>
                 </div>
+
+                {plan.bottom_image && (
+                  <div className="plan-card-bottom">
+                    <img src={plan.bottom_image} alt="" className="plan-card-bottom-img" loading="lazy" />
+                  </div>
+                )}
               </div>
             ))}
           </div>
