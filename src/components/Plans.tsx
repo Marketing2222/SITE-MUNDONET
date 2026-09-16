@@ -177,6 +177,7 @@ export const Plans = () => {
                   fontFamily: plan.plan_font || undefined
                 } as React.CSSProperties}
               >
+                {plan.popular && <div className="popular-ribbon">Mais Popular</div>}
                 {plan.offer_tag_enabled && (
                   <div 
                     className="offer-tag-ribbon"
@@ -189,7 +190,6 @@ export const Plans = () => {
                     {plan.offer_tag_icon && <span className="offer-tag-icon">{plan.offer_tag_icon}</span>}
                   </div>
                 )}
-                {plan.popular && <div className="popular-ribbon">Mais Popular</div>}
 
                 <div 
                   className={`plan-card-top ${plan.header_image ? 'has-header-image' : ''}`}

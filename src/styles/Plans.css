@@ -134,6 +134,12 @@
   z-index: 2;
 }
 
+.popular + .offer-tag-ribbon,
+.popular-ribbon + .offer-tag-ribbon {
+  left: auto;
+  right: 20px;
+}
+
 .offer-tag-ribbon .offer-tag-icon {
   font-size: 0.85rem;
 }
