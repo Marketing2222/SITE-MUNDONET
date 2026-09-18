@@ -226,6 +226,7 @@ export async function initDB() {
       { key:'footer_font', value:'', label:'Footer: Fonte (Google Fonts, ex: Poppins)' },
       { key:'footer_padding', value:'60px 0', label:'Footer: Espaçamento interno (padding)' },
       { key:'footer_logo_url', value:'', label:'Footer: URL da Logomarca' },
+      { key:'footer_campaign_logo', value:'', label:'Footer: Logo de Campanha' },
       // Entretenimento (Apps Carrossel)
       { key:'ent_subtitle', value:'Aplicativos para diversão, entretenimento e segurança para toda a família', label:'Entretenimento: Subtítulo' },
       { key:'ent_title', value:'Aplicativos de entretenimento que traz diversão para toda a família. Junte-se a nós e descubra uma nova forma de se divertir juntos!', label:'Entretenimento: Título' },

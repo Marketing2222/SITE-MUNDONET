@@ -94,22 +94,10 @@ const NAV_SPACING_FIELDS: FieldDef[] = [
 ];
 
 const FOOTER_FIELDS: FieldDef[] = [
-  { key: 'footer_logo_url', label: 'URL da Logomarca do Footer', type: 'url', hint: 'Deixe em branco para usar o logo do cabeçalho' },
   { key: 'footer_bg_color', label: 'Cor de fundo do Footer', type: 'color' },
-  { key: 'footer_text_color', label: 'Cor do texto', type: 'color' },
-  { key: 'footer_heading_color', label: 'Cor dos títulos das colunas', type: 'color' },
-  { key: 'footer_link_color', label: 'Cor dos links', type: 'color' },
-  { key: 'footer_about_text', label: 'Texto institucional (sobre a empresa)', type: 'textarea' },
-  { key: 'footer_col2_title', label: 'Título da coluna de Contato', type: 'text' },
-  { key: 'footer_col3_title', label: 'Título da coluna de Atalhos', type: 'text' },
-  { key: 'footer_col4_title', label: 'Título da coluna de Redes Sociais', type: 'text' },
-  { key: 'footer_subbar_bg', label: 'Cor de fundo da barra inferior', type: 'color' },
-  { key: 'footer_subbar_text', label: 'Cor do texto da barra inferior', type: 'color' },
-  { key: 'footer_anatel_logo_url', label: 'URL do logo Anatel', type: 'url', hint: 'Link da imagem do selo Anatel' },
-  { key: 'footer_font', label: 'Fonte do Footer (Google Fonts)', type: 'font', hint: 'Nome da fonte, ex: Poppins. Deixe em branco para padrão.' },
-  { key: 'footer_padding', label: 'Espaçamento interno do Footer', type: 'spacing', hint: 'Ex: 60px 0, ou 80px 24px' },
+  { key: 'footer_text_color', label: 'Cor do texto (CNPJ/Endereço)', type: 'color' },
   { key: 'footer_cnpj', label: 'CNPJ da empresa', type: 'text' },
-  { key: 'footer_anatel', label: 'Número Anatel', type: 'text' },
+  { key: 'footer_campaign_logo', label: 'Logo de Campanha (lado direito)', type: 'image', hint: 'Imagem exibida no lado direito do footer' },
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 9);
@@ -483,29 +471,27 @@ export const ManageHeaderFooter = () => {
       {/* ══════ TAB: FOOTER ══════ */}
       {tab === 'footer' && (
         <div>
-          <div style={{ background: form.footer_bg_color || '#002D72', borderRadius: 12, padding: 24, marginBottom: 20, fontFamily: form.footer_font || 'inherit' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 20, marginBottom: 20 }}>
+          <div style={{ background: form.footer_bg_color || '#001a3d', borderRadius: 12, padding: 32, marginBottom: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 40 }}>
               <div>
                 {(() => {
                   const src = form.footer_logo_url || form.logo_url || '';
                   return src ? (
-                    <img src={src} alt="Logo" style={{ maxHeight: 40, maxWidth: 140, objectFit: 'contain', display: 'block', marginBottom: 10 }} />
+                    <img src={src} alt="Logo" style={{ maxHeight: 40, maxWidth: 140, objectFit: 'contain', display: 'block', marginBottom: 16 }} />
                   ) : (
-                    <div style={{ background: '#ffffff22', height: 30, width: 120, borderRadius: 6, marginBottom: 10 }} />
+                    <div style={{ background: '#ffffff22', height: 30, width: 120, borderRadius: 6, marginBottom: 16 }} />
                   );
                 })()}
-                <p style={{ color: form.footer_text_color || '#cbd5e1', fontSize: '0.72rem', margin: 0, lineHeight: 1.5 }}>{(form.footer_about_text || '').slice(0, 80)}...</p>
+                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.78rem', margin: '0 0 4px' }}>CNPJ {form.footer_cnpj || '00.000...'}</p>
+                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.72rem', margin: 0 }}>São Luís/MA</p>
               </div>
-              {[form.footer_col2_title || 'CONTATO', form.footer_col3_title || 'ATALHOS', form.footer_col4_title || 'REDES'].map((title, i) => (
-                <div key={i}>
-                  <p style={{ color: form.footer_heading_color || '#fff', fontWeight: 700, fontSize: '0.75rem', margin: '0 0 8px' }}>{title}</p>
-                  {['Item 1', 'Item 2', 'Item 3'].map(it => <p key={it} style={{ color: form.footer_link_color || '#93c5fd', fontSize: '0.68rem', margin: '0 0 4px' }}>{it}</p>)}
-                </div>
-              ))}
-            </div>
-            <div style={{ borderTop: '1px solid #ffffff22', paddingTop: 12, display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: form.footer_subbar_text || '#94a3b8', fontSize: '0.68rem' }}>Mundonet | CNPJ {form.footer_cnpj || '00.000...'}</span>
-              <span style={{ color: form.footer_subbar_text || '#94a3b8', fontSize: '0.68rem' }}>© {new Date().getFullYear()}</span>
+              <div>
+                {form.footer_campaign_logo ? (
+                  <img src={form.footer_campaign_logo} alt="Campanha" style={{ maxHeight: 60, maxWidth: 200, objectFit: 'contain' }} />
+                ) : (
+                  <div style={{ background: '#ffffff11', height: 60, width: 200, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff44', fontSize: '0.7rem' }}>Logo Campanha</div>
+                )}
+              </div>
             </div>
           </div>
           <div style={card}>
@@ -514,7 +500,7 @@ export const ManageHeaderFooter = () => {
               {(() => {
                 const src = footerLogoPreview || form.footer_logo_url || form.logo_url || '';
                 return src ? (
-                  <div style={{ background: form.footer_bg_color || '#002D72', padding: 16, borderRadius: 12, border: '1px solid var(--adm-border)' }}>
+                  <div style={{ background: form.footer_bg_color || '#001a3d', padding: 16, borderRadius: 12, border: '1px solid var(--adm-border)' }}>
                     <img src={src} alt="Logo Footer" style={{ maxHeight: 40, maxWidth: 160, objectFit: 'contain', display: 'block' }} />
                   </div>
                 ) : (
@@ -531,8 +517,8 @@ export const ManageHeaderFooter = () => {
             </div>
           </div>
           <div style={card}>
-            <h3 style={{ marginTop: 0, marginBottom: 16, color: 'var(--adm-text)', fontSize: '1rem' }}>🎨 Configurações do Rodapé</h3>
-            <div className="admin-form">{FOOTER_FIELDS.filter(f => f.key !== 'footer_logo_url').map(renderField)}</div>
+            <h3 style={{ marginTop: 0, marginBottom: 16, color: 'var(--adm-text)', fontSize: '1rem' }}>⚙️ Configurações do Rodapé</h3>
+            <div className="admin-form">{FOOTER_FIELDS.map(renderField)}</div>
           </div>
         </div>
       )}
