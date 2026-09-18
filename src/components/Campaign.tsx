@@ -49,7 +49,7 @@ export const Campaign: React.FC = () => {
 
   const containerStyle: React.CSSProperties = {
     background: bgImage
-      ? `linear-gradient(to right, ${overlayColor} 0%, ${overlayColor}cc 50%, transparent 100%), url(${bgImage}) center/cover no-repeat`
+      ? `linear-gradient(to right, ${overlayColor} 0%, ${overlayColor} 50%, transparent 100%), url(${bgImage}) center/cover no-repeat`
       : `linear-gradient(135deg, #1a0a2e 0%, #2d1b69 100%)`,
     backgroundColor: bgImage ? undefined : sectionBgColor || '#1a0a2e',
   };
