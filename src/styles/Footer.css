@@ -32,11 +32,10 @@
 .footer-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
-.footer-cnpj,
-.footer-address {
+.footer-subtext-line {
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.5;

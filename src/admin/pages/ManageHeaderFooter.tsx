@@ -96,7 +96,7 @@ const NAV_SPACING_FIELDS: FieldDef[] = [
 const FOOTER_FIELDS: FieldDef[] = [
   { key: 'footer_bg_color', label: 'Cor de fundo do Footer', type: 'color' },
   { key: 'footer_text_color', label: 'Cor do texto (CNPJ/Endereço)', type: 'color' },
-  { key: 'footer_cnpj', label: 'CNPJ da empresa', type: 'text' },
+  { key: 'footer_subtext', label: 'Texto abaixo da logo (CNPJ, endereço, cidade...)', type: 'textarea', hint: 'Exibido abaixo do logo no rodapé. Use quebras de linha para separar informações.' },
   { key: 'footer_campaign_logo', label: 'Logo de Campanha (lado direito)', type: 'image', hint: 'Imagem exibida no lado direito do footer' },
 ];
 
@@ -517,8 +517,7 @@ export const ManageHeaderFooter = () => {
                     <div style={{ background: '#ffffff22', height: 30, width: 120, borderRadius: 6, marginBottom: 16 }} />
                   );
                 })()}
-                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.78rem', margin: '0 0 4px' }}>CNPJ {form.footer_cnpj || '00.000...'}</p>
-                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.72rem', margin: 0 }}>São Luís/MA</p>
+                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.72rem', margin: 0, lineHeight: 1.6 }}>{(form.footer_subtext || 'CNPJ...\nEndereço...\nCidade/UF').split('\n').slice(0, 3).join(' | ')}</p>
               </div>
               <div>
                 {form.footer_campaign_logo ? (
