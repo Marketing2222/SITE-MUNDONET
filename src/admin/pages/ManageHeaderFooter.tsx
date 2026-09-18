@@ -96,7 +96,8 @@ const NAV_SPACING_FIELDS: FieldDef[] = [
 const FOOTER_FIELDS: FieldDef[] = [
   { key: 'footer_bg_color', label: 'Cor de fundo do Footer', type: 'color' },
   { key: 'footer_text_color', label: 'Cor do texto (CNPJ/Endereço)', type: 'color' },
-  { key: 'footer_subtext', label: 'Texto abaixo da logo (CNPJ, endereço, cidade...)', type: 'textarea', hint: 'Exibido abaixo do logo no rodapé. Use quebras de linha para separar informações.' },
+  { key: 'footer_above_text', label: 'Linha acima do CNPJ/endereço', type: 'text', hint: 'Ex: Mundonet Telecom, ou texto livre' },
+  { key: 'footer_subtext', label: 'CNPJ, endereço, cidade (tudo em uma linha)', type: 'text', hint: 'Ex: CNPJ 19.062.539/0001-01 | Rua X, 123 | São Luís/MA' },
   { key: 'footer_campaign_logo', label: 'Logo de Campanha (lado direito)', type: 'image', hint: 'Imagem exibida no lado direito do footer' },
 ];
 
@@ -517,7 +518,8 @@ export const ManageHeaderFooter = () => {
                     <div style={{ background: '#ffffff22', height: 30, width: 120, borderRadius: 6, marginBottom: 16 }} />
                   );
                 })()}
-                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.72rem', margin: 0, lineHeight: 1.6 }}>{(form.footer_subtext || 'CNPJ...\nEndereço...\nCidade/UF').split('\n').slice(0, 3).join(' | ')}</p>
+                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.7rem', margin: '0 0 2px', fontWeight: 600 }}>{form.footer_above_text || 'Mundonet Telecom'}</p>
+                <p style={{ color: form.footer_text_color || '#94a3b8', fontSize: '0.65rem', margin: 0 }}>{form.footer_subtext || 'CNPJ... | Endereço... | Cidade/UF'}</p>
               </div>
               <div>
                 {form.footer_campaign_logo ? (

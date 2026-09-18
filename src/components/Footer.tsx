@@ -20,6 +20,7 @@ export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
   const g = (key: string) => s[prefix + key]?.value;
 
   const footerBg = g('footer_bg_color') || '#001a3d';
+  const aboveText = g('footer_above_text') || '';
   const subtext = g('footer_subtext') || '';
   const logoUrl = g('footer_logo_url') || g('logo_url') || '';
   const campaignLogo = g('footer_campaign_logo') || '';
@@ -34,9 +35,8 @@ export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
             </a>
           )}
           <div className="footer-info">
-            {subtext && subtext.split('\n').map((line, i) => (
-              <p key={i} className="footer-subtext-line">{line}</p>
-            ))}
+            {aboveText && <p className="footer-subtext-line">{aboveText}</p>}
+            {subtext && <p className="footer-subtext-line">{subtext}</p>}
           </div>
         </div>
         <div className="footer-right">
