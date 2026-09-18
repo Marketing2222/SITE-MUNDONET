@@ -20,7 +20,6 @@ export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
   const g = (key: string) => s[prefix + key]?.value;
 
   const footerBg = g('footer_bg_color') || '#001a3d';
-  const footerText = g('footer_text_color') || '#94a3b8';
   const cnpj = g('footer_cnpj') || '';
   const address = g('contact_address') || '';
   const logoUrl = g('footer_logo_url') || g('logo_url') || '';

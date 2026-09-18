@@ -5,7 +5,7 @@ import { API_BASE_URL } from '../../config/api';
 
 interface Setting { key: string; value: string; label: string; }
 
-type FieldType = 'text' | 'color' | 'url' | 'font' | 'textarea' | 'spacing' | 'select';
+type FieldType = 'text' | 'color' | 'url' | 'font' | 'textarea' | 'spacing' | 'select' | 'image';
 
 interface FieldDef {
   key: string;
@@ -130,6 +130,7 @@ export const ManageHeaderFooter = () => {
   const [tab, setTab] = useState<'header' | 'nav' | 'footer'>('header');
   const [logoPreview, setLogoPreview] = useState('');
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingCampaignLogo, setUploadingCampaignLogo] = useState(false);
   const [footerLogoPreview, setFooterLogoPreview] = useState('');
   const [navItems, setNavItems] = useState<NavItem[]>(DEFAULT_NAV);
   const [expandedNav, setExpandedNav] = useState<string | null>(null);
@@ -207,6 +208,25 @@ export const ManageHeaderFooter = () => {
     finally { setUploadingLogo(false); }
   };
 
+  const handleCampaignLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('image', file);
+    try {
+      setUploadingCampaignLogo(true);
+      const token = getToken();
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+      const data = await res.json();
+      if (data.url) setForm(f => ({ ...f, footer_campaign_logo: data.url }));
+    } catch { alert('Erro no upload do logo de campanha'); }
+    finally { setUploadingCampaignLogo(false); }
+  };
+
   const set = (key: string, value: string) => setForm(f => ({ ...f, [key]: value }));
 
   // ── Nav helpers ──────────────────────────────────────────────────────────
@@ -282,6 +302,21 @@ export const ManageHeaderFooter = () => {
               style={{ height: 42, padding: '0 12px', borderRadius: 8, border: '1px solid var(--adm-border)', background: 'var(--adm-bg)', color: 'var(--adm-text)', width: '100%' }}>
               {fd.options?.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
+            {fd.hint && <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>{fd.hint}</small>}
+          </div>
+        );
+      case 'image':
+        return (
+          <div className="admin-field" key={fd.key}>
+            <label>{fd.label}</label>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <input value={val} onChange={e => set(fd.key, e.target.value)} placeholder="https://... ou faça upload" style={{ flex: 1 }} />
+              <label className="admin-btn ghost small" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                {uploadingCampaignLogo ? '⏳...' : '📷 Upload'}
+                <input type="file" accept="image/*" onChange={handleCampaignLogoUpload} style={{ display: 'none' }} />
+              </label>
+            </div>
+            {val && <img src={val} alt="" style={{ maxHeight: 60, maxWidth: 200, objectFit: 'contain', marginTop: 8, borderRadius: 6, border: '1px solid var(--adm-border)' }} />}
             {fd.hint && <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>{fd.hint}</small>}
           </div>
         );
