@@ -20,13 +20,14 @@ export const Footer: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
   const g = (key: string) => s[prefix + key]?.value;
 
   const footerBg = g('footer_bg_color') || '#001a3d';
+  const footerText = g('footer_text_color') || '#cbd5e1';
   const aboveText = g('footer_above_text') || '';
   const subtext = g('footer_subtext') || '';
   const logoUrl = g('footer_logo_url') || g('logo_url') || '';
   const campaignLogo = g('footer_campaign_logo') || '';
 
   return (
-    <footer className="site-footer" style={{ backgroundColor: footerBg }}>
+    <footer className="site-footer" style={{ backgroundColor: footerBg, color: footerText }}>
       <div className="footer-container">
         <div className="footer-left">
           {logoUrl && (
