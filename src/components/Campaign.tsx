@@ -4,6 +4,7 @@ import { API_BASE_URL } from '../config/api';
 
 export const Campaign: React.FC = () => {
   const [s, setS] = useState<Record<string, string>>({});
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings`)
@@ -32,6 +33,7 @@ export const Campaign: React.FC = () => {
   const textColor = s.campaign_text_color || '#ffffff';
   const subtitleColor = s.campaign_subtitle_color || '#d1d5db';
   const videoUrl = s.campaign_video_url || '';
+  const videoPoster = s.campaign_video_poster || '';
   const contentPosition = s.campaign_content_position || 'left';
 
   const getVideoEmbed = (url: string): string => {
@@ -81,12 +83,21 @@ export const Campaign: React.FC = () => {
           </div>
           {videoUrl && (
             <div className="campaign-video-wrapper">
-              {isLocalVideo(videoUrl) ? (
-                <video src={videoUrl} controls preload="none" className="campaign-video"
+              {!videoPlaying && videoPoster ? (
+                <div className="campaign-video-poster" onClick={() => setVideoPlaying(true)}>
+                  <img src={videoPoster} alt="Thumbnail" className="campaign-poster-img" />
+                  <div className="campaign-play-btn">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+              ) : isLocalVideo(videoUrl) ? (
+                <video src={videoUrl} controls autoPlay muted className="campaign-video"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12 }} />
               ) : (
                 <iframe
-                  src={videoEmbed}
+                  src={videoEmbed + (videoEmbed.includes('?') ? '&' : '?') + 'autoplay=1&mute=1'}
                   title="Vídeo da Campanha"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -220,6 +220,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'campaign_btn_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #ffffff' },
     { key: 'campaign_btn_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #1a0a2e' },
     { key: 'campaign_video_url', label: 'Vídeo (URL ou upload)', type: 'video', hint: 'YouTube, Vimeo, URL direta ou upload do PC (mp4, webm)' },
+    { key: 'campaign_video_poster', label: 'Thumbnail do Vídeo', type: 'image', hint: 'Imagem exibida antes de clicar no play (proporção 16:9)' },
     { key: 'campaign_content_position', label: 'Posição do Conteúdo (Texto)', type: 'select', hint: 'left', options: [
       { value: 'left', label: 'Esquerda' },
       { value: 'right', label: 'Direita' },
