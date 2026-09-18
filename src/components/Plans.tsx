@@ -56,6 +56,7 @@ interface Plan {
   show_price?: boolean;
   header_image?: string;
   bottom_image?: string;
+  price_color?: string;
 }
 
 export const Plans = () => {
@@ -274,11 +275,11 @@ export const Plans = () => {
                   {plan.show_price !== false && (
                     <div className="plan-price-bottom">
                       {plan.price.toLowerCase().includes('sob consulta') ? (
-                        <span className="plan-price-consult">Sob Consulta</span>
+                        <span className="plan-price-consult" style={plan.price_color ? { color: plan.price_color } : undefined}>Sob Consulta</span>
                       ) : (
                         <>
-                          <span className="plan-price-bottom-currency">R$</span>
-                          <span className="plan-price-bottom-value">{plan.price}</span>
+                          <span className="plan-price-bottom-currency" style={plan.price_color ? { color: plan.price_color } : undefined}>R$</span>
+                          <span className="plan-price-bottom-value" style={plan.price_color ? { color: plan.price_color } : undefined}>{plan.price}</span>
                         </>
                       )}
                     </div>

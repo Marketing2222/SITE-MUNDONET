@@ -26,6 +26,7 @@ interface Plan {
   show_price?: boolean;
   header_image?: string;
   bottom_image?: string;
+  price_color?: string;
 }
 
 const EMPTY_PLAN: Omit<Plan, 'id'> = {
@@ -39,7 +40,7 @@ const EMPTY_PLAN: Omit<Plan, 'id'> = {
   label_bonus: 'Na assinatura, adicione mais um benefício:', label_details: 'Mais detalhes do plano',
   label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151', modal_title_color: '',
   offer_tag_enabled: false, offer_tag_text: 'OFERTA EXCLUSIVA', offer_tag_color: '#6b21a8', offer_tag_text_color: '#ffffff', offer_tag_icon: '⚡',
-  show_price: true, header_image: '', bottom_image: ''
+  show_price: true, header_image: '', bottom_image: '', price_color: ''
 };
 
 interface LibraryApp {
@@ -653,6 +654,12 @@ export const ManagePlans = () => {
                         <div className="admin-field"><label>Período do preço</label><input value={form.label_price_period ?? ''} onChange={e=>setForm({...form,label_price_period:e.target.value})} placeholder="Ex: por mês" /></div>
                       </div>
                       <div className="admin-field" style={{marginTop:8}}><label>Subtítulo do preço pop-up</label><input value={form.modal_price_text ?? ''} onChange={e=>setForm({...form,modal_price_text:e.target.value})} placeholder="Ex: Depois R$129,90" /></div>
+                    </div>
+                    <div style={{borderTop:'1px solid var(--adm-border)', paddingTop:12, marginTop:4}}>
+                      <label style={{fontSize:'0.8rem',fontWeight:600,color:'var(--adm-text2)',marginBottom:8,display:'block'}}>Cor do Preço</label>
+                      <div className="admin-form-row">
+                        <div className="admin-field"><label>Cor valor R$</label><div style={{display:'flex',gap:6}}><input type="color" value={form.price_color || '#1a0533'} onChange={e=>setForm({...form,price_color:e.target.value})} style={{height:38,width:40}} /><button className="admin-btn ghost small" onClick={()=>setForm({...form,price_color:''})}>Limpar</button></div></div>
+                      </div>
                     </div>
                     <div style={{borderTop:'1px solid var(--adm-border)', paddingTop:12, marginTop:4}}>
                       <label style={{fontSize:'0.8rem',fontWeight:600,color:'var(--adm-text2)',marginBottom:8,display:'block'}}>Personalização Visual</label>
