@@ -57,6 +57,8 @@ interface Plan {
   header_image?: string;
   bottom_image?: string;
   price_color?: string;
+  title_image?: string;
+  title_font_weight?: string;
 }
 
 export const Plans = () => {
@@ -197,17 +199,19 @@ export const Plans = () => {
                   style={plan.header_image ? { backgroundImage: `url(${plan.header_image})` } : undefined}
                 >
                   <div className="plan-price-block">
-                    {(() => {
+                    {plan.title_image ? (
+                      <img src={plan.title_image} alt={plan.name} className="plan-title-image" />
+                    ) : (() => {
                       const match = plan.name.match(/^(\d+)\s*(.*)$/);
                       if (match) {
                         return (
                           <>
-                            <span className="plan-speed-number">{match[1]}</span>
+                            <span className="plan-speed-number" style={plan.title_font_weight ? { fontWeight: plan.title_font_weight as React.CSSProperties['fontWeight'] } : undefined}>{match[1]}</span>
                             <span className="plan-speed-unit">{match[2]}</span>
                           </>
                         );
                       }
-                      return <span className="plan-name plan-name-speed">{plan.name}</span>;
+                      return <span className="plan-name plan-name-speed" style={plan.title_font_weight ? { fontWeight: plan.title_font_weight as React.CSSProperties['fontWeight'] } : undefined}>{plan.name}</span>;
                     })()}
                   </div>
 

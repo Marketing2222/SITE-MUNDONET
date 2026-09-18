@@ -242,6 +242,14 @@
   flex-wrap: wrap;
 }
 
+.plan-title-image {
+  width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 4px;
+}
+
 .plan-price-block .plan-name {
   font-size: 1rem;
   font-weight: 800;

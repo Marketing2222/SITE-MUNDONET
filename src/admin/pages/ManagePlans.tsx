@@ -27,6 +27,8 @@ interface Plan {
   header_image?: string;
   bottom_image?: string;
   price_color?: string;
+  title_image?: string;
+  title_font_weight?: string;
 }
 
 const EMPTY_PLAN: Omit<Plan, 'id'> = {
@@ -40,7 +42,7 @@ const EMPTY_PLAN: Omit<Plan, 'id'> = {
   label_bonus: 'Na assinatura, adicione mais um benefício:', label_details: 'Mais detalhes do plano',
   label_price_period: 'por mês', modal_price_text: 'Preço mensal:', accent_color: '#7c3aed', modal_label_color: '#374151', modal_title_color: '',
   offer_tag_enabled: false, offer_tag_text: 'OFERTA EXCLUSIVA', offer_tag_color: '#6b21a8', offer_tag_text_color: '#ffffff', offer_tag_icon: '⚡',
-  show_price: true, header_image: '', bottom_image: '', price_color: ''
+  show_price: true, header_image: '', bottom_image: '', price_color: '', title_image: '', title_font_weight: ''
 };
 
 interface LibraryApp {
@@ -366,6 +368,59 @@ export const ManagePlans = () => {
                     <div className="admin-form-row">
                       <div className="admin-field"><label>Nome do Plano</label><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Ex: 700 MEGA" /></div>
                       <div className="admin-field"><label>Velocidade</label><input value={form.speed} onChange={e=>setForm({...form,speed:e.target.value})} placeholder="Ex: 700" /></div>
+                    </div>
+                    <div style={{borderTop:'1px solid var(--adm-border)', paddingTop:12, marginTop:4}}>
+                      <label style={{fontSize:'0.8rem',fontWeight:600,color:'var(--adm-text2)',marginBottom:8,display:'block'}}>Título do Card (nº MEGA)</label>
+                      <ToggleSwitch value={!!form.title_image} onChange={v => setForm({...form, title_image: v ? '' : ''})} label="Usar imagem no título" />
+                      {form.title_image ? (
+                        <div className="admin-field" style={{marginTop:8}}>
+                          <div style={{ display: 'flex', gap: 8 }}>
+                            <input value={form.title_image || ''} onChange={e=>setForm({...form,title_image:e.target.value})} placeholder="URL da imagem ou faca upload" style={{ flex: 1 }} />
+                            <label className="admin-btn secondary small" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}>
+                              {saving ? '...' : 'Upload'}
+                              <input type="file" accept="image/*" onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                const fd = new FormData();
+                                fd.append('image', file);
+                                try {
+                                  const token = getToken();
+                                  const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd });
+                                  const data = await res.json();
+                                  if (data.url) setForm(f => ({ ...f, title_image: data.url }));
+                                } catch { alert('Erro no upload'); }
+                              }} style={{ display: 'none' }} />
+                            </label>
+                          </div>
+                          {form.title_image && (
+                            <div style={{ marginTop: 8, position: 'relative', display: 'inline-block' }}>
+                              <img src={form.title_image} alt="preview" style={{ borderRadius: 8, maxHeight: 100, objectFit: 'contain', width: '100%' }} />
+                              <button className="admin-btn danger small" onClick={() => setForm(f => ({ ...f, title_image: '' }))} style={{ position: 'absolute', top: 4, right: 4, padding: '2px 8px', fontSize: 11 }}>X</button>
+                            </div>
+                          )}
+                          <p style={{ fontSize: '0.75rem', color: 'var(--adm-text2)', marginTop: 4 }}>Substitui o número de MEGA por uma imagem.</p>
+                        </div>
+                      ) : (
+                        <div className="admin-field" style={{marginTop:8}}>
+                          <label>Peso da Fonte</label>
+                          <select value={form.title_font_weight || ''} onChange={e=>setForm({...form,title_font_weight:e.target.value})}>
+                            <option value="">Padrão (900)</option>
+                            <option value="400">Regular (400)</option>
+                            <option value="500">Medium (500)</option>
+                            <option value="600">SemiBold (600)</option>
+                            <option value="700">Bold (700)</option>
+                            <option value="800">ExtraBold (800)</option>
+                            <option value="900">Black (900)</option>
+                          </select>
+                          <div style={{ marginTop: 8, padding: '16px', background: 'var(--adm-card, #1e1e2d)', borderRadius: 8, textAlign: 'center' }}>
+                            <span style={{ fontSize: '3rem', fontWeight: form.title_font_weight || 900, lineHeight: 1, letterSpacing: '-2px', fontFamily: form.plan_font || 'inherit' }}>
+                              {form.speed || '600'}
+                            </span>
+                            <span style={{ fontSize: '1.2rem', fontWeight: 700, marginLeft: 4, color: 'var(--adm-text2)' }}>MB</span>
+                          </div>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--adm-text2)', marginTop: 4 }}>Pré-visualização do título do card.</p>
+                        </div>
+                      )}
                     </div>
                     <div className="admin-form-row">
                       <div className="admin-field"><label>Preço (R$)</label><input value={form.price} onChange={e=>setForm({...form,price:e.target.value})} placeholder="Ex: 89,90" /></div>
