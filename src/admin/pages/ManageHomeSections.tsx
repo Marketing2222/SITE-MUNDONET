@@ -272,6 +272,10 @@ export const ManageHomeSections = () => {
   const [cepSearchResults, setCepSearchResults] = useState<{ cep: string; logradouro: string; bairro: string; localidade: string; uf: string }[]>([]);
   const [cepSearchLoading, setCepSearchLoading] = useState(false);
   const [cepSearchSelected, setCepSearchSelected] = useState<Set<string>>(new Set());
+  const [cepViewOpen, setCepViewOpen] = useState(false);
+  const [cepViewData, setCepViewData] = useState<{ range: string; cep: string; street: string; neighborhood: string; city: string; uf: string }[]>([]);
+  const [cepViewLoading, setCepViewLoading] = useState(false);
+  const [cepViewFilter, setCepViewFilter] = useState('');
 
   const searchCepByAddress = async () => {
     const q = cepSearchQuery.trim();
@@ -326,6 +330,44 @@ export const ManageHomeSections = () => {
     setCepSearchSelected(new Set());
     setCepSearchResults([]);
     setCepSearchQuery('');
+  };
+
+  const openCepView = async () => {
+    const rangesRaw = settings['cep_checker_ranges']?.value || '';
+    if (!rangesRaw.trim()) return;
+    setCepViewOpen(true);
+    setCepViewLoading(true);
+    setCepViewData([]);
+    const lines = rangesRaw.split('\n').filter((l: string) => l.trim());
+    const results: { range: string; cep: string; street: string; neighborhood: string; city: string; uf: string }[] = [];
+    for (const line of lines) {
+      const range = line.trim();
+      const digits = range.replace(/\D/g, '');
+      let sampleCep = '';
+      if (digits.length >= 5) {
+        sampleCep = digits.slice(0, 5) + '0000';
+      } else if (digits.length === 8) {
+        sampleCep = digits;
+      }
+      if (sampleCep) {
+        try {
+          const resp = await fetch(`https://viacep.com.br/ws/${sampleCep}/json/`);
+          const data = await resp.json();
+          results.push({
+            range,
+            cep: sampleCep.replace(/(\d{5})(\d{3})/, '$1-$2'),
+            street: data.logradouro || '',
+            neighborhood: data.bairro || '',
+            city: data.localidade || '',
+            uf: data.uf || '',
+          });
+        } catch {
+          results.push({ range, cep: sampleCep.replace(/(\d{5})(\d{3})/, '$1-$2'), street: '', neighborhood: '', city: '', uf: '' });
+        }
+      }
+    }
+    setCepViewData(results);
+    setCepViewLoading(false);
   };
 
   const load = async () => {
@@ -612,8 +654,13 @@ export const ManageHomeSections = () => {
             {/* CEPs adicionados */}
             {val && (
               <div style={{ marginBottom: 8 }}>
-                <div style={{ fontSize: 12, color: 'var(--adm-text2)', marginBottom: 4 }}>
-                  {val.split('\n').filter((l: string) => l.trim()).length} CEP(s) adicionado(s):
+                <div style={{ fontSize: 12, color: 'var(--adm-text2)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span>{val.split('\n').filter((l: string) => l.trim()).length} CEP(s) adicionado(s):</span>
+                  <button
+                    type="button"
+                    onClick={openCepView}
+                    style={{ padding: '3px 10px', fontSize: 11, fontWeight: 600, borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-card-bg, var(--adm-bg))', color: 'var(--adm-primary, #1a73e8)', cursor: 'pointer' }}
+                  >Visualizar CEPs</button>
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {val.split('\n').filter((l: string) => l.trim()).map((line: string, idx: number) => (
@@ -1191,6 +1238,80 @@ export const ManageHomeSections = () => {
           </h3>
           <div className="admin-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
             {SECTIONS[activeTab].map(renderField)}
+          </div>
+        </div>
+      )}
+
+      {/* Popup: Visualizar CEPs Cadastrados */}
+      {cepViewOpen && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}
+          onClick={() => { setCepViewOpen(false); setCepViewFilter(''); }}
+        >
+          <div
+            style={{ background: 'var(--adm-card-bg, #fff)', borderRadius: 16, padding: 24, maxWidth: 700, width: '92%', maxHeight: '80vh', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h3 style={{ margin: 0, fontSize: 18, color: 'var(--adm-text)' }}>CEPs Cadastrados ({cepViewData.length})</h3>
+              <button
+                onClick={() => { setCepViewOpen(false); setCepViewFilter(''); }}
+                style={{ background: 'none', border: 'none', fontSize: 22, color: 'var(--adm-text2)', cursor: 'pointer', padding: '0 4px' }}
+              >×</button>
+            </div>
+
+            {!cepViewLoading && cepViewData.length > 0 && (
+              <input
+                value={cepViewFilter}
+                onChange={e => setCepViewFilter(e.target.value)}
+                placeholder="Filtrar por CEP, rua, bairro..."
+                style={{ padding: '8px 12px', fontSize: 13, borderRadius: 8, border: '1px solid var(--adm-border)', background: 'var(--adm-input-bg, var(--adm-bg))', color: 'var(--adm-text)', marginBottom: 12, width: '100%', boxSizing: 'border-box' }}
+              />
+            )}
+
+            <div style={{ overflowY: 'auto', flex: 1 }}>
+              {cepViewLoading ? (
+                <div style={{ padding: 40, textAlign: 'center', color: 'var(--adm-text2)' }}>
+                  <div style={{ fontSize: 14 }}>Buscando endereços via ViaCEP...</div>
+                  <div style={{ fontSize: 12, marginTop: 6, color: 'var(--adm-text2)' }}>Isso pode levar alguns segundos</div>
+                </div>
+              ) : cepViewData.length === 0 ? (
+                <div style={{ padding: 40, textAlign: 'center', color: 'var(--adm-text2)' }}>Nenhum CEP cadastrado</div>
+              ) : (
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid var(--adm-border)' }}>
+                      <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--adm-text2)', textTransform: 'uppercase', letterSpacing: 0.5 }}>Faixa</th>
+                      <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--adm-text2)', textTransform: 'uppercase', letterSpacing: 0.5 }}>CEP Exemplo</th>
+                      <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--adm-text2)', textTransform: 'uppercase', letterSpacing: 0.5 }}>Rua / Logradouro</th>
+                      <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--adm-text2)', textTransform: 'uppercase', letterSpacing: 0.5 }}>Bairro</th>
+                      <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--adm-text2)', textTransform: 'uppercase', letterSpacing: 0.5 }}>Cidade/UF</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cepViewData
+                      .filter(item => {
+                        if (!cepViewFilter.trim()) return true;
+                        const q = cepViewFilter.toLowerCase();
+                        return item.range.toLowerCase().includes(q) ||
+                          item.cep.includes(q) ||
+                          item.street.toLowerCase().includes(q) ||
+                          item.neighborhood.toLowerCase().includes(q) ||
+                          item.city.toLowerCase().includes(q);
+                      })
+                      .map((item, i) => (
+                      <tr key={i} style={{ borderBottom: '1px solid var(--adm-border)' }}>
+                        <td style={{ padding: '8px 10px', fontFamily: 'monospace', fontWeight: 600, color: 'var(--adm-primary, #1a73e8)' }}>{item.range}</td>
+                        <td style={{ padding: '8px 10px', fontFamily: 'monospace' }}>{item.cep}</td>
+                        <td style={{ padding: '8px 10px', color: 'var(--adm-text)' }}>{item.street || <span style={{ color: 'var(--adm-text2)' }}>—</span>}</td>
+                        <td style={{ padding: '8px 10px', color: 'var(--adm-text)' }}>{item.neighborhood || <span style={{ color: 'var(--adm-text2)' }}>—</span>}</td>
+                        <td style={{ padding: '8px 10px', color: 'var(--adm-text)' }}>{item.city && item.uf ? `${item.city}/${item.uf}` : <span style={{ color: 'var(--adm-text2)' }}>—</span>}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
       )}
