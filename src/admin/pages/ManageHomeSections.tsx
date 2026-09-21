@@ -779,12 +779,13 @@ export const ManageHomeSections = () => {
                       if (!text) return;
                       text = text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
                       const cepsFromCsv = new Set<string>();
-                      const allCells = text.split(/[\n;,\t]+/);
-                      for (const cell of allCells) {
-                        const digits = cell.replace(/\D/g, '');
+                      const allTokens = text.split(/[\n;,\t]+/);
+                      for (const token of allTokens) {
+                        const clean = token.trim();
+                        const digits = clean.replace(/\D/g, '');
                         if (digits.length === 8) {
                           cepsFromCsv.add(`${digits.slice(0, 5)}-${digits.slice(5)}`);
-                        } else if (digits.length === 5) {
+                        } else if (digits.length === 5 && /^\d{5}$/.test(digits)) {
                           cepsFromCsv.add(`${digits}-000`);
                         }
                       }
@@ -800,7 +801,7 @@ export const ManageHomeSections = () => {
                       set(fd.key, existing.join('\n'), fd.label + ` (+${added} do CSV)`);
                       e.target.value = '';
                     };
-                    reader.readAsText(file);
+                    reader.readAsText(file, 'UTF-8');
                   }}
                 />
               </label>
