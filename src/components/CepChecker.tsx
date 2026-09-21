@@ -56,22 +56,25 @@ const checkCep = (cep: string, ranges: string[]): ResultType => {
   const fullNum = parseInt(digits, 10);
   for (const range of ranges) {
     const r = range.trim();
-    if (r.length === 8 && !r.includes('-')) {
-      const rNum = parseInt(r, 10);
-      if (!isNaN(rNum) && fullNum === rNum) return 'success';
-    } else if (r.length === 10 && r.includes('-')) {
+    if (r.includes('-')) {
       const parts = r.split('-').map(s => s.trim());
-      const from = toPrefix5(parts[0]);
-      const to = toPrefix5(parts[1]);
-      if (!isNaN(from) && !isNaN(to) && num >= from && num <= to) return 'success';
-    } else {
-      const parts = r.split('-').map(s => s.trim());
-      if (parts.length === 2) {
+      const leftDigits = parts[0].replace(/\D/g, '');
+      const rightDigits = parts[1].replace(/\D/g, '');
+      if (leftDigits.length === 5 && rightDigits.length === 3) {
+        const rFull = parseInt(leftDigits + rightDigits, 10);
+        if (!isNaN(rFull) && fullNum === rFull) return 'success';
+      } else {
         const from = toPrefix5(parts[0]);
         const to = toPrefix5(parts[1]);
         if (!isNaN(from) && !isNaN(to) && num >= from && num <= to) return 'success';
-      } else if (parts.length === 1) {
-        const single = toPrefix5(parts[0]);
+      }
+    } else {
+      const digitsOnly = r.replace(/\D/g, '');
+      if (digitsOnly.length === 8) {
+        const rNum = parseInt(digitsOnly, 10);
+        if (!isNaN(rNum) && fullNum === rNum) return 'success';
+      } else if (digitsOnly.length === 5) {
+        const single = parseInt(digitsOnly, 10);
         if (!isNaN(single) && num === single) return 'success';
       }
     }
