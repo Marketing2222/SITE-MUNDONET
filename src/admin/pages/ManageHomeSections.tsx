@@ -276,6 +276,7 @@ export const ManageHomeSections = () => {
   const [cepViewData, setCepViewData] = useState<{ range: string; cep: string; street: string; neighborhood: string; city: string; uf: string }[]>([]);
   const [cepViewLoading, setCepViewLoading] = useState(false);
   const [cepViewFilter, setCepViewFilter] = useState('');
+  const [cepViewSelected, setCepViewSelected] = useState<Set<string>>(new Set());
   const [cepTagsExpanded, setCepTagsExpanded] = useState(false);
 
   const searchCepByAddress = async () => {
@@ -366,6 +367,69 @@ export const ManageHomeSections = () => {
       setCepViewData([...allResults]);
     }
     setCepViewLoading(false);
+  };
+
+  const toggleCepViewSelect = (range: string) => {
+    setCepViewSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(range)) next.delete(range);
+      else next.add(range);
+      return next;
+    });
+  };
+
+  const filteredCepViewData = () => {
+    if (!cepViewFilter.trim()) return cepViewData;
+    const q = cepViewFilter.toLowerCase();
+    return cepViewData.filter(item =>
+      item.range.toLowerCase().includes(q) ||
+      item.cep.includes(q) ||
+      item.street.toLowerCase().includes(q) ||
+      item.neighborhood.toLowerCase().includes(q) ||
+      item.city.toLowerCase().includes(q)
+    );
+  };
+
+  const toggleSelectAllCepView = () => {
+    const filtered = filteredCepViewData();
+    const allSelected = filtered.every(item => cepViewSelected.has(item.range));
+    if (allSelected) {
+      setCepViewSelected(prev => {
+        const next = new Set(prev);
+        for (const item of filtered) next.delete(item.range);
+        return next;
+      });
+    } else {
+      setCepViewSelected(prev => {
+        const next = new Set(prev);
+        for (const item of filtered) next.add(item.range);
+        return next;
+      });
+    }
+  };
+
+  const removeRangesFromSettings = (rangesToRemove: string[]) => {
+    const current = settings['cep_checker_ranges']?.value || '';
+    const lines = current.split('\n').map((l: string) => l.trim()).filter(Boolean);
+    const toRemove = new Set(rangesToRemove);
+    const remaining = lines.filter(l => !toRemove.has(l));
+    set('cep_checker_ranges', remaining.join('\n'), 'CEP ranges');
+    setCepViewData(prev => prev.filter(item => !toRemove.has(item.range)));
+    setCepViewSelected(prev => {
+      const next = new Set(prev);
+      for (const r of rangesToRemove) next.delete(r);
+      return next;
+    });
+  };
+
+  const deleteSelectedCeps = () => {
+    if (cepViewSelected.size === 0) return;
+    removeRangesFromSettings(Array.from(cepViewSelected));
+  };
+
+  const deleteAllCeps = () => {
+    if (cepViewData.length === 0) return;
+    removeRangesFromSettings(cepViewData.map(item => item.range));
   };
 
   const load = async () => {
@@ -1303,35 +1367,65 @@ export const ManageHomeSections = () => {
       )}
 
       {/* Popup: Visualizar CEPs Cadastrados */}
-      {cepViewOpen && (
+      {cepViewOpen && (() => {
+        const filtered = filteredCepViewData();
+        const allVisibleSelected = filtered.length > 0 && filtered.every(item => cepViewSelected.has(item.range));
+        return (
         <div
           style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}
-          onClick={() => { setCepViewOpen(false); setCepViewFilter(''); }}
+          onClick={() => { setCepViewOpen(false); setCepViewFilter(''); setCepViewSelected(new Set()); }}
         >
           <div
-            style={{ background: '#fff', borderRadius: 16, padding: 24, maxWidth: 800, width: '94%', maxHeight: '80vh', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
+            style={{ background: '#fff', borderRadius: 16, padding: 24, maxWidth: 850, width: '94%', maxHeight: '80vh', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
             onClick={e => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: 17, color: '#111', fontWeight: 700 }}>CEPs Cadastrados</h3>
                 <span style={{ fontSize: 13, color: '#888' }}>{cepViewData.length} faixa(s) de cobertura</span>
               </div>
               <button
-                onClick={() => { setCepViewOpen(false); setCepViewFilter(''); }}
+                onClick={() => { setCepViewOpen(false); setCepViewFilter(''); setCepViewSelected(new Set()); }}
                 style={{ background: '#f3f4f6', border: 'none', fontSize: 18, color: '#666', cursor: 'pointer', padding: '6px 10px', borderRadius: 8, lineHeight: 1 }}
               >×</button>
             </div>
 
+            {/* Search + Actions bar */}
             {!cepViewLoading && cepViewData.length > 0 && (
-              <input
-                value={cepViewFilter}
-                onChange={e => setCepViewFilter(e.target.value)}
-                placeholder="Buscar por CEP, rua, bairro..."
-                style={{ padding: '10px 14px', fontSize: 13, borderRadius: 8, border: '1px solid #e5e7eb', background: '#f9fafb', color: '#111', marginBottom: 12, width: '100%', boxSizing: 'border-box', outline: 'none' }}
-              />
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
+                <input
+                  value={cepViewFilter}
+                  onChange={e => setCepViewFilter(e.target.value)}
+                  placeholder="Buscar por CEP, rua, bairro..."
+                  style={{ flex: 1, minWidth: 200, padding: '10px 14px', fontSize: 13, borderRadius: 8, border: '1px solid #e5e7eb', background: '#f9fafb', color: '#111', outline: 'none', boxSizing: 'border-box' }}
+                />
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  <button
+                    onClick={toggleSelectAllCepView}
+                    style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, border: '1px solid #e5e7eb', background: allVisibleSelected ? '#111' : '#fff', color: allVisibleSelected ? '#fff' : '#333', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                  >
+                    {allVisibleSelected ? 'Desmarcar todos' : 'Selecionar todos'}
+                  </button>
+                  {cepViewSelected.size > 0 && (
+                    <button
+                      onClick={deleteSelectedCeps}
+                      style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, border: '1px solid #fecaca', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                    >
+                      Excluir ({cepViewSelected.size})
+                    </button>
+                  )}
+                  <button
+                    onClick={() => { if (confirm('Excluir TODOS os ' + cepViewData.length + ' CEPs?')) deleteAllCeps(); }}
+                    style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, border: '1px solid #fecaca', background: '#dc2626', color: '#fff', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                  >
+                    Excluir todos
+                  </button>
+                </div>
+              </div>
             )}
 
+            {/* Table */}
             <div style={{ overflowY: 'auto', flex: 1 }}>
               {cepViewLoading ? (
                 <div style={{ padding: 40, textAlign: 'center' }}>
@@ -1347,6 +1441,14 @@ export const ManageHomeSections = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
+                      <th style={{ padding: '10px 8px', width: 40 }}>
+                        <input
+                          type="checkbox"
+                          checked={allVisibleSelected}
+                          onChange={toggleSelectAllCepView}
+                          style={{ accentColor: '#111', width: 16, height: 16, cursor: 'pointer' }}
+                        />
+                      </th>
                       <th style={{ padding: '10px 12px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5 }}>Faixa</th>
                       <th style={{ padding: '10px 12px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5 }}>Rua / Logradouro</th>
                       <th style={{ padding: '10px 12px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5 }}>Bairro</th>
@@ -1354,18 +1456,16 @@ export const ManageHomeSections = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {cepViewData
-                      .filter(item => {
-                        if (!cepViewFilter.trim()) return true;
-                        const q = cepViewFilter.toLowerCase();
-                        return item.range.toLowerCase().includes(q) ||
-                          item.cep.includes(q) ||
-                          item.street.toLowerCase().includes(q) ||
-                          item.neighborhood.toLowerCase().includes(q) ||
-                          item.city.toLowerCase().includes(q);
-                      })
-                      .map((item, i) => (
-                      <tr key={i} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                    {filtered.map((item, i) => (
+                      <tr key={i} style={{ borderBottom: '1px solid #f3f4f6', background: cepViewSelected.has(item.range) ? '#f9fafb' : 'transparent' }}>
+                        <td style={{ padding: '10px 8px' }}>
+                          <input
+                            type="checkbox"
+                            checked={cepViewSelected.has(item.range)}
+                            onChange={() => toggleCepViewSelect(item.range)}
+                            style={{ accentColor: '#111', width: 16, height: 16, cursor: 'pointer' }}
+                          />
+                        </td>
                         <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontWeight: 600, color: '#111' }}>{item.range}</td>
                         <td style={{ padding: '10px 12px', color: '#333' }}>{item.street || <span style={{ color: '#ccc' }}>—</span>}</td>
                         <td style={{ padding: '10px 12px', color: '#333' }}>{item.neighborhood || <span style={{ color: '#ccc' }}>—</span>}</td>
@@ -1378,7 +1478,8 @@ export const ManageHomeSections = () => {
             </div>
           </div>
         </div>
-      )}
+        );
+      })()}
     </div>
   );
 };
