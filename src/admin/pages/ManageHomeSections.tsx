@@ -775,19 +775,17 @@ export const ManageHomeSections = () => {
                     if (!file) return;
                     const reader = new FileReader();
                     reader.onload = (ev) => {
-                      const text = ev.target?.result as string;
+                      let text = ev.target?.result as string;
                       if (!text) return;
+                      text = text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
                       const cepsFromCsv = new Set<string>();
-                      const lines = text.split(/[\n\r;]+/);
-                      for (const line of lines) {
-                        const cells = line.split(/[;,]/);
-                        for (const cell of cells) {
-                          const digits = cell.replace(/\D/g, '');
-                          if (digits.length === 8) {
-                            cepsFromCsv.add(`${digits.slice(0, 5)}-${digits.slice(5)}`);
-                          } else if (digits.length === 5) {
-                            cepsFromCsv.add(digits);
-                          }
+                      const allCells = text.split(/[\n;,\t]+/);
+                      for (const cell of allCells) {
+                        const digits = cell.replace(/\D/g, '');
+                        if (digits.length === 8) {
+                          cepsFromCsv.add(`${digits.slice(0, 5)}-${digits.slice(5)}`);
+                        } else if (digits.length === 5) {
+                          cepsFromCsv.add(`${digits}-000`);
                         }
                       }
                       const existing = val ? val.split('\n').map((l: string) => l.trim()).filter(Boolean) : [];
