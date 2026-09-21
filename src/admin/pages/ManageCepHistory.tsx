@@ -45,6 +45,8 @@ interface PagedInterest {
   limit: number;
 }
 
+const PER_PAGE = 10;
+
 const ManageCepHistory = () => {
   const [activeTab, setActiveTab] = useState<'buscas' | 'interesse'>('buscas');
   const [data, setData] = useState<PagedResult | null>(null);
@@ -71,7 +73,7 @@ const ManageCepHistory = () => {
     try {
       const params = new URLSearchParams();
       params.set('page', String(page));
-      params.set('limit', '50');
+      params.set('limit', String(PER_PAGE));
       if (filterCep) params.set('cep', filterCep);
       if (filterResult) params.set('result', filterResult);
       if (filterDateFrom) params.set('dateFrom', filterDateFrom);
@@ -98,7 +100,7 @@ const ManageCepHistory = () => {
     try {
       const params = new URLSearchParams();
       params.set('page', String(interestPage));
-      params.set('limit', '50');
+      params.set('limit', String(PER_PAGE));
       if (interestSearch) params.set('search', interestSearch);
 
       const result = await apiFetch(`/cep-interest?${params.toString()}`);
@@ -117,9 +119,7 @@ const ManageCepHistory = () => {
       await apiFetch(`/cep-searches/${id}`, { method: 'DELETE' });
       setDeleteConfirm(null);
       fetchData();
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const handleClearAll = async () => {
@@ -127,9 +127,7 @@ const ManageCepHistory = () => {
       await apiFetch('/cep-searches', { method: 'DELETE' });
       setClearConfirm(false);
       fetchData();
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const handleInterestDelete = async (id: number) => {
@@ -137,9 +135,7 @@ const ManageCepHistory = () => {
       await apiFetch(`/cep-interest/${id}`, { method: 'DELETE' });
       setInterestDeleteConfirm(null);
       fetchInterest();
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const handleInterestClearAll = async () => {
@@ -147,9 +143,7 @@ const ManageCepHistory = () => {
       await apiFetch('/cep-interest', { method: 'DELETE' });
       setInterestClearConfirm(false);
       fetchInterest();
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const exportCSV = () => {
@@ -187,23 +181,23 @@ const ManageCepHistory = () => {
     URL.revokeObjectURL(url);
   };
 
-  const totalPages = data ? Math.ceil(data.total / 50) : 1;
-  const interestTotalPages = interestData ? Math.ceil(interestData.total / 50) : 1;
+  const totalPages = data ? Math.ceil(data.total / PER_PAGE) : 1;
+  const interestTotalPages = interestData ? Math.ceil(interestData.total / PER_PAGE) : 1;
 
   const formatDate = (iso: string) => {
     return new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
   const resultBadge = (r: string) => {
-    if (r === 'success') return <span style={{ background: '#dcfce7', color: '#166534', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>Atendido</span>;
-    if (r === 'fail') return <span style={{ background: '#fee2e2', color: '#991b1b', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>Não atendido</span>;
-    return <span style={{ background: '#fef3c7', color: '#92400e', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>Inválido</span>;
+    if (r === 'success') return <span style={{ background: '#dcfce7', color: '#15803d', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>Atendido</span>;
+    if (r === 'fail') return <span style={{ background: '#fee2e2', color: '#b91c1c', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>Não atendido</span>;
+    return <span style={{ background: '#fef3c7', color: '#b45309', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>Inválido</span>;
   };
 
   return (
-    <div style={{ padding: '0' }}>
+    <div>
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: 0, marginBottom: 24, borderBottom: '2px solid #e2e8f0' }}>
+      <div style={{ display: 'flex', gap: 0, marginBottom: 28, borderBottom: '2px solid #e2e8f0' }}>
         <button
           onClick={() => setActiveTab('buscas')}
           style={{
@@ -211,6 +205,7 @@ const ManageCepHistory = () => {
             borderBottom: activeTab === 'buscas' ? '2px solid #005CFF' : '2px solid transparent',
             marginBottom: '-2px', background: 'transparent',
             color: activeTab === 'buscas' ? '#005CFF' : '#64748b',
+            transition: 'color 0.2s',
           }}
         >
           Histórico de Buscas
@@ -222,90 +217,89 @@ const ManageCepHistory = () => {
             borderBottom: activeTab === 'interesse' ? '2px solid #005CFF' : '2px solid transparent',
             marginBottom: '-2px', background: 'transparent',
             color: activeTab === 'interesse' ? '#005CFF' : '#64748b',
+            transition: 'color 0.2s',
           }}
         >
-          Interesse {interestData && interestData.total > 0 && (
-            <span style={{ background: '#fee2e2', color: '#991b1b', padding: '2px 8px', borderRadius: 999, fontSize: 11, marginLeft: 6 }}>{interestData.total}</span>
+          Interesse
+          {interestData && interestData.total > 0 && (
+            <span style={{ background: '#fee2e2', color: '#b91c1c', padding: '2px 8px', borderRadius: 999, fontSize: 11, marginLeft: 6 }}>{interestData.total}</span>
           )}
         </button>
       </div>
 
+      {/* ═══════ TAB: BUSCAS ═══════ */}
       {activeTab === 'buscas' && (
         <>
-          {/* Stats Cards */}
+          {/* Stats */}
           {stats && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 24 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
               <div style={statCardStyle}>
-                <div style={{ fontSize: 28, fontWeight: 700, color: '#005CFF' }}>{stats.total}</div>
-                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Total de buscas</div>
+                <div style={{ fontSize: 32, fontWeight: 700, color: '#2563eb' }}>{stats.total}</div>
+                <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Total de buscas</div>
               </div>
               <div style={statCardStyle}>
-                <div style={{ fontSize: 28, fontWeight: 700, color: '#22c55e' }}>{stats.covered}</div>
-                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Atendidos</div>
+                <div style={{ fontSize: 32, fontWeight: 700, color: '#16a34a' }}>{stats.covered}</div>
+                <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Atendidos</div>
               </div>
               <div style={statCardStyle}>
-                <div style={{ fontSize: 28, fontWeight: 700, color: '#ef4444' }}>{stats.notCovered}</div>
-                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Não atendidos</div>
+                <div style={{ fontSize: 32, fontWeight: 700, color: '#dc2626' }}>{stats.notCovered}</div>
+                <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Não atendidos</div>
               </div>
               <div style={statCardStyle}>
-                <div style={{ fontSize: 28, fontWeight: 700, color: '#f59e0b' }}>{stats.todayCount}</div>
-                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Buscas hoje</div>
+                <div style={{ fontSize: 32, fontWeight: 700, color: '#d97706' }}>{stats.todayCount}</div>
+                <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Buscas hoje</div>
               </div>
             </div>
           )}
 
-          {/* Top Bairros */}
-          {stats && stats.topNeighborhoods.length > 0 && (
+          {/* Top 5 */}
+          {stats && (stats.topCeps.length > 0 || stats.topNeighborhoods.length > 0) && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-              <div style={cardStyle}>
-                <h3 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Top 10 CEPs mais buscados</h3>
-                {stats.topCeps.map((item, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13 }}>
-                    <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>{item.cep.slice(0,5)}-{item.cep.slice(5)}</span>
-                    <span style={{ color: '#64748b' }}>{item.count}x</span>
-                  </div>
-                ))}
-              </div>
-              <div style={cardStyle}>
-                <h3 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Top 10 Bairros mais buscados</h3>
-                {stats.topNeighborhoods.map((item, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13 }}>
-                    <span>{item.name}</span>
-                    <span style={{ color: '#64748b' }}>{item.count}x</span>
-                  </div>
-                ))}
-              </div>
+              {stats.topCeps.length > 0 && (
+                <div style={cardStyle}>
+                  <h3 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600, color: '#1e293b' }}>Top 5 CEPs mais buscados</h3>
+                  {stats.topCeps.slice(0, 5).map((item, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < 4 ? '1px solid #f1f5f9' : 'none' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ width: 22, height: 22, borderRadius: 6, background: i < 3 ? '#005CFF' : '#e2e8f0', color: i < 3 ? '#fff' : '#64748b', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
+                        <span style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 600, color: '#1e293b' }}>{item.cep.slice(0,5)}-{item.cep.slice(5)}</span>
+                      </div>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b' }}>{item.count}x</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {stats.topNeighborhoods.length > 0 && (
+                <div style={cardStyle}>
+                  <h3 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600, color: '#1e293b' }}>Top 5 Bairros mais buscados</h3>
+                  {stats.topNeighborhoods.slice(0, 5).map((item, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < 4 ? '1px solid #f1f5f9' : 'none' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ width: 22, height: 22, borderRadius: 6, background: i < 3 ? '#005CFF' : '#e2e8f0', color: i < 3 ? '#fff' : '#64748b', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
+                        <span style={{ fontSize: 14, fontWeight: 500, color: '#1e293b' }}>{item.name}</span>
+                      </div>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b' }}>{item.count}x</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
           {/* Filters */}
           <div style={cardStyle}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end', marginBottom: 0 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end' }}>
               <div style={{ flex: '1 1 150px' }}>
                 <label style={labelStyle}>CEP</label>
-                <input
-                  style={inputStyle}
-                  placeholder="Filtrar por CEP..."
-                  value={filterCep}
-                  onChange={e => { setFilterCep(e.target.value); setPage(1); }}
-                />
+                <input style={inputStyle} placeholder="Filtrar por CEP..." value={filterCep} onChange={e => { setFilterCep(e.target.value); setPage(1); }} />
               </div>
               <div style={{ flex: '1 1 200px' }}>
                 <label style={labelStyle}>Buscar (rua, bairro...)</label>
-                <input
-                  style={inputStyle}
-                  placeholder="Buscar por endereço..."
-                  value={filterSearch}
-                  onChange={e => { setFilterSearch(e.target.value); setPage(1); }}
-                />
+                <input style={inputStyle} placeholder="Buscar por endereço..." value={filterSearch} onChange={e => { setFilterSearch(e.target.value); setPage(1); }} />
               </div>
               <div style={{ flex: '1 1 140px' }}>
                 <label style={labelStyle}>Resultado</label>
-                <select
-                  style={inputStyle}
-                  value={filterResult}
-                  onChange={e => { setFilterResult(e.target.value); setPage(1); }}
-                >
+                <select style={inputStyle} value={filterResult} onChange={e => { setFilterResult(e.target.value); setPage(1); }}>
                   <option value="">Todos</option>
                   <option value="success">Atendido</option>
                   <option value="fail">Não atendido</option>
@@ -314,35 +308,16 @@ const ManageCepHistory = () => {
               </div>
               <div style={{ flex: '1 1 140px' }}>
                 <label style={labelStyle}>Data inicial</label>
-                <input
-                  style={inputStyle}
-                  type="date"
-                  value={filterDateFrom}
-                  onChange={e => { setFilterDateFrom(e.target.value); setPage(1); }}
-                />
+                <input style={inputStyle} type="date" value={filterDateFrom} onChange={e => { setFilterDateFrom(e.target.value); setPage(1); }} />
               </div>
               <div style={{ flex: '1 1 140px' }}>
                 <label style={labelStyle}>Data final</label>
-                <input
-                  style={inputStyle}
-                  type="date"
-                  value={filterDateTo}
-                  onChange={e => { setFilterDateTo(e.target.value); setPage(1); }}
-                />
+                <input style={inputStyle} type="date" value={filterDateTo} onChange={e => { setFilterDateTo(e.target.value); setPage(1); }} />
               </div>
               <div style={{ display: 'flex', gap: 8, paddingBottom: 2 }}>
-                <button
-                  onClick={() => { setFilterCep(''); setFilterResult(''); setFilterDateFrom(''); setFilterDateTo(''); setFilterSearch(''); setPage(1); }}
-                  style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}
-                >
-                  Limpar
-                </button>
-                <button onClick={exportCSV} style={{ ...btnStyle, background: '#005CFF' }}>
-                  Exportar CSV
-                </button>
-                <button onClick={() => setClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#991b1b' }}>
-                  Limpar Tudo
-                </button>
+                <button onClick={() => { setFilterCep(''); setFilterResult(''); setFilterDateFrom(''); setFilterDateTo(''); setFilterSearch(''); setPage(1); }} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Limpar</button>
+                <button onClick={exportCSV} style={{ ...btnStyle, background: '#005CFF' }}>Exportar CSV</button>
+                <button onClick={() => setClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#b91c1c' }}>Limpar Tudo</button>
               </div>
             </div>
           </div>
@@ -370,7 +345,7 @@ const ManageCepHistory = () => {
                   <tbody>
                     {data.data.map(item => (
                       <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                        <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontSize: 12 }}>{item.cep}</code></td>
+                        <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 600 }}>{item.cep}</code></td>
                         <td style={tdStyle}>{item.street || '—'}</td>
                         <td style={tdStyle}>{item.neighborhood || '—'}</td>
                         <td style={tdStyle}>{item.city && item.uf ? `${item.city}/${item.uf}` : '—'}</td>
@@ -379,11 +354,11 @@ const ManageCepHistory = () => {
                         <td style={tdStyle}>
                           {deleteConfirm === item.id ? (
                             <div style={{ display: 'flex', gap: 4 }}>
-                              <button onClick={() => handleDelete(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Sim</button>
-                              <button onClick={() => setDeleteConfirm(null)} style={{ ...smallBtn, background: '#f1f5f9' }}>Não</button>
+                              <button onClick={() => handleDelete(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#b91c1c' }}>Sim</button>
+                              <button onClick={() => setDeleteConfirm(null)} style={smallBtn}>Não</button>
                             </div>
                           ) : (
-                            <button onClick={() => setDeleteConfirm(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Excluir</button>
+                            <button onClick={() => setDeleteConfirm(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#b91c1c' }}>Excluir</button>
                           )}
                         </td>
                       </tr>
@@ -394,14 +369,25 @@ const ManageCepHistory = () => {
             )}
 
             {/* Pagination */}
-            {data && totalPages > 1 && (
+            {data && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderTop: '1px solid #e2e8f0' }}>
                 <span style={{ fontSize: 13, color: '#64748b' }}>
-                  Página {data.page} de {totalPages} — {data.total} registros
+                  Página {page} de {totalPages} — {data.total} registros
                 </span>
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} style={{ ...smallBtn, opacity: page <= 1 ? 0.4 : 1 }}>Anterior</button>
-                  <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} style={{ ...smallBtn, opacity: page >= totalPages ? 0.4 : 1 }}>Próxima</button>
+                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <button disabled={page <= 1} onClick={() => setPage(1)} style={{ ...smallBtn, opacity: page <= 1 ? 0.3 : 1 }} title="Primeira página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/></svg>
+                  </button>
+                  <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} style={{ ...smallBtn, opacity: page <= 1 ? 0.3 : 1 }} title="Página anterior">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#1e293b', padding: '0 8px' }}>{page}/{totalPages}</span>
+                  <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} style={{ ...smallBtn, opacity: page >= totalPages ? 0.3 : 1 }} title="Próxima página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                  <button disabled={page >= totalPages} onClick={() => setPage(totalPages)} style={{ ...smallBtn, opacity: page >= totalPages ? 0.3 : 1 }} title="Última página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 17l5-5-5-5"/><path d="M6 17l5-5-5-5"/></svg>
+                  </button>
                 </div>
               </div>
             )}
@@ -409,38 +395,23 @@ const ManageCepHistory = () => {
         </>
       )}
 
+      {/* ═══════ TAB: INTERESSE ═══════ */}
       {activeTab === 'interesse' && (
         <>
-          {/* Interest Filters */}
           <div style={cardStyle}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end', marginBottom: 0 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end' }}>
               <div style={{ flex: '1 1 250px' }}>
                 <label style={labelStyle}>Buscar (CEP, endereço, bairro, WhatsApp)</label>
-                <input
-                  style={inputStyle}
-                  placeholder="Buscar..."
-                  value={interestSearch}
-                  onChange={e => { setInterestSearch(e.target.value); setInterestPage(1); }}
-                />
+                <input style={inputStyle} placeholder="Buscar..." value={interestSearch} onChange={e => { setInterestSearch(e.target.value); setInterestPage(1); }} />
               </div>
               <div style={{ display: 'flex', gap: 8, paddingBottom: 2 }}>
-                <button
-                  onClick={() => { setInterestSearch(''); setInterestPage(1); }}
-                  style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}
-                >
-                  Limpar
-                </button>
-                <button onClick={exportInterestCSV} style={{ ...btnStyle, background: '#005CFF' }}>
-                  Exportar CSV
-                </button>
-                <button onClick={() => setInterestClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#991b1b' }}>
-                  Limpar Tudo
-                </button>
+                <button onClick={() => { setInterestSearch(''); setInterestPage(1); }} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Limpar</button>
+                <button onClick={exportInterestCSV} style={{ ...btnStyle, background: '#005CFF' }}>Exportar CSV</button>
+                <button onClick={() => setInterestClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#b91c1c' }}>Limpar Tudo</button>
               </div>
             </div>
           </div>
 
-          {/* Interest Table */}
           <div style={{ ...cardStyle, padding: 0, overflow: 'hidden', marginTop: 16 }}>
             {interestLoading ? (
               <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Carregando...</div>
@@ -462,7 +433,7 @@ const ManageCepHistory = () => {
                   <tbody>
                     {interestData.data.map(item => (
                       <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                        <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontSize: 12 }}>{item.cep}</code></td>
+                        <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 600 }}>{item.cep}</code></td>
                         <td style={tdStyle}>{item.endereco || '—'}</td>
                         <td style={tdStyle}>{item.bairro || '—'}</td>
                         <td style={tdStyle}>
@@ -474,11 +445,11 @@ const ManageCepHistory = () => {
                         <td style={tdStyle}>
                           {interestDeleteConfirm === item.id ? (
                             <div style={{ display: 'flex', gap: 4 }}>
-                              <button onClick={() => handleInterestDelete(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Sim</button>
-                              <button onClick={() => setInterestDeleteConfirm(null)} style={{ ...smallBtn, background: '#f1f5f9' }}>Não</button>
+                              <button onClick={() => handleInterestDelete(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#b91c1c' }}>Sim</button>
+                              <button onClick={() => setInterestDeleteConfirm(null)} style={smallBtn}>Não</button>
                             </div>
                           ) : (
-                            <button onClick={() => setInterestDeleteConfirm(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Excluir</button>
+                            <button onClick={() => setInterestDeleteConfirm(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#b91c1c' }}>Excluir</button>
                           )}
                         </td>
                       </tr>
@@ -489,14 +460,25 @@ const ManageCepHistory = () => {
             )}
 
             {/* Interest Pagination */}
-            {interestData && interestTotalPages > 1 && (
+            {interestData && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderTop: '1px solid #e2e8f0' }}>
                 <span style={{ fontSize: 13, color: '#64748b' }}>
-                  Página {interestData.page} de {interestTotalPages} — {interestData.total} registros
+                  Página {interestPage} de {interestTotalPages} — {interestData.total} registros
                 </span>
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button disabled={interestPage <= 1} onClick={() => setInterestPage(p => p - 1)} style={{ ...smallBtn, opacity: interestPage <= 1 ? 0.4 : 1 }}>Anterior</button>
-                  <button disabled={interestPage >= interestTotalPages} onClick={() => setInterestPage(p => p + 1)} style={{ ...smallBtn, opacity: interestPage >= interestTotalPages ? 0.4 : 1 }}>Próxima</button>
+                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <button disabled={interestPage <= 1} onClick={() => setInterestPage(1)} style={{ ...smallBtn, opacity: interestPage <= 1 ? 0.3 : 1 }} title="Primeira página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/></svg>
+                  </button>
+                  <button disabled={interestPage <= 1} onClick={() => setInterestPage(p => p - 1)} style={{ ...smallBtn, opacity: interestPage <= 1 ? 0.3 : 1 }} title="Página anterior">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#1e293b', padding: '0 8px' }}>{interestPage}/{interestTotalPages}</span>
+                  <button disabled={interestPage >= interestTotalPages} onClick={() => setInterestPage(p => p + 1)} style={{ ...smallBtn, opacity: interestPage >= interestTotalPages ? 0.3 : 1 }} title="Próxima página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                  <button disabled={interestPage >= interestTotalPages} onClick={() => setInterestPage(interestTotalPages)} style={{ ...smallBtn, opacity: interestPage >= interestTotalPages ? 0.3 : 1 }} title="Última página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 17l5-5-5-5"/><path d="M6 17l5-5-5-5"/></svg>
+                  </button>
                 </div>
               </div>
             )}
@@ -504,29 +486,28 @@ const ManageCepHistory = () => {
         </>
       )}
 
-      {/* Clear All Confirm Modal */}
+      {/* ═══════ MODALS ═══════ */}
       {clearConfirm && (
         <div style={overlayStyle} onClick={() => setClearConfirm(false)}>
           <div style={modalStyle} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 12px', fontSize: 18 }}>Limpar todo o histórico?</h3>
-            <p style={{ color: '#64748b', margin: '0 0 20px', fontSize: 14 }}>Esta ação não pode ser desfeita. Todos os registros de busca de CEP serão removidos.</p>
+            <h3 style={{ margin: '0 0 12px', fontSize: 18, color: '#1e293b' }}>Limpar todo o histórico?</h3>
+            <p style={{ color: '#64748b', margin: '0 0 20px', fontSize: 14 }}>Esta ação não pode ser desfeita.</p>
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
               <button onClick={() => setClearConfirm(false)} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Cancelar</button>
-              <button onClick={handleClearAll} style={{ ...btnStyle, background: '#ef4444' }}>Sim, limpar tudo</button>
+              <button onClick={handleClearAll} style={{ ...btnStyle, background: '#dc2626' }}>Sim, limpar tudo</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Interest Clear All Confirm Modal */}
       {interestClearConfirm && (
         <div style={overlayStyle} onClick={() => setInterestClearConfirm(false)}>
           <div style={modalStyle} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 12px', fontSize: 18 }}>Limpar todos os interesses?</h3>
-            <p style={{ color: '#64748b', margin: '0 0 20px', fontSize: 14 }}>Esta ação não pode ser desfeita. Todos os registros de interesse serão removidos.</p>
+            <h3 style={{ margin: '0 0 12px', fontSize: 18, color: '#1e293b' }}>Limpar todos os interesses?</h3>
+            <p style={{ color: '#64748b', margin: '0 0 20px', fontSize: 14 }}>Esta ação não pode ser desfeita.</p>
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
               <button onClick={() => setInterestClearConfirm(false)} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Cancelar</button>
-              <button onClick={handleInterestClearAll} style={{ ...btnStyle, background: '#ef4444' }}>Sim, limpar tudo</button>
+              <button onClick={handleInterestClearAll} style={{ ...btnStyle, background: '#dc2626' }}>Sim, limpar tudo</button>
             </div>
           </div>
         </div>
@@ -583,14 +564,17 @@ const btnStyle: React.CSSProperties = {
 };
 
 const smallBtn: React.CSSProperties = {
-  padding: '4px 10px',
+  padding: '5px 10px',
   borderRadius: 6,
-  border: 'none',
+  border: '1px solid #e2e8f0',
   fontSize: 12,
   fontWeight: 600,
   cursor: 'pointer',
-  background: '#f1f5f9',
+  background: '#fff',
   color: '#475569',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 };
 
 const thStyle: React.CSSProperties = {

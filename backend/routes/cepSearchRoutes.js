@@ -64,7 +64,7 @@ router.get('/stats', authMiddleware, async (req, res) => {
   today.setHours(0, 0, 0, 0);
   const todayCount = all.filter(r => new Date(r.created_at) >= today).length;
 
-  // Top 10 CEPs mais buscados
+  // Top 5 CEPs mais buscados
   const cepCount = {};
   all.forEach(r => {
     const clean = r.cep.replace(/\D/g, '');
@@ -72,10 +72,10 @@ router.get('/stats', authMiddleware, async (req, res) => {
   });
   const topCeps = Object.entries(cepCount)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
+    .slice(0, 5)
     .map(([cep, count]) => ({ cep, count }));
 
-  // Top bairros
+  // Top 5 bairros
   const neighborhoodCount = {};
   all.forEach(r => {
     if (r.neighborhood) {
@@ -84,7 +84,7 @@ router.get('/stats', authMiddleware, async (req, res) => {
   });
   const topNeighborhoods = Object.entries(neighborhoodCount)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
+    .slice(0, 5)
     .map(([name, count]) => ({ name, count }));
 
   res.json({ total, covered, notCovered, invalid, todayCount, topCeps, topNeighborhoods });
