@@ -44,6 +44,13 @@ const formatCep = (v: string): string => {
   return digits;
 };
 
+const formatPhone = (v: string): string => {
+  const digits = v.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+};
+
 const toPrefix5 = (s: string): number => {
   const digits = s.replace(/\D/g, '');
   return parseInt(digits.slice(0, 5), 10);
@@ -293,9 +300,10 @@ export const CepChecker = () => {
                     <input
                       className="cep-input"
                       type="tel"
-                      placeholder="WhatsApp (com DDD)"
+                      placeholder="(00) 00000-0000"
                       value={interestWhatsapp}
-                      onChange={e => setInterestWhatsapp(e.target.value)}
+                      onChange={e => setInterestWhatsapp(formatPhone(e.target.value))}
+                      maxLength={16}
                       style={{ marginBottom: 12 }}
                     />
                     <button

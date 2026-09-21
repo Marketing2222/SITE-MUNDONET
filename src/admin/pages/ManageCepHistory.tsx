@@ -166,7 +166,7 @@ const ManageCepHistory = () => {
 
   const exportInterestCSV = () => {
     if (!interestData?.data.length) return;
-    const headers = ['CEP', 'Endereço', 'Bairro', 'WhatsApp', 'Data/Hora'];
+    const headers = ['CEP', 'ENDEREÇO', 'BAIRRO', 'WHATSAPP', 'DATA E HORA'];
     const rows = interestData.data.map(r => [
       r.cep, r.endereco, r.bairro, r.whatsapp,
       new Date(r.created_at).toLocaleString('pt-BR'),
