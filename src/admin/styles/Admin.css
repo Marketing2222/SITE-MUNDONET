@@ -980,58 +980,46 @@
 
 /* ── Tabs ────────────────────────────────────── */
 .admin-tabs {
-  display: flex;
-  gap: 4px;
-  border-bottom: 1px solid var(--adm-border);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  border-bottom: none;
   padding-bottom: 0;
   margin-bottom: 24px;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--adm-border) transparent;
-}
-
-.admin-tabs::-webkit-scrollbar {
-  height: 4px;
-}
-
-.admin-tabs::-webkit-scrollbar-thumb {
-  background: var(--adm-border);
-  border-radius: 4px;
 }
 
 .admin-tab {
-  background: none;
-  border: none;
+  background: var(--adm-surface, #f1f5f9);
+  border: 1px solid var(--adm-border, #e2e8f0);
   color: var(--adm-text2);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  padding: 10px 16px;
+  padding: 10px 8px;
   cursor: pointer;
-  border-radius: var(--adm-radius-sm) var(--adm-radius-sm) 0 0;
+  border-radius: var(--adm-radius-sm);
   transition: all 0.15s;
   white-space: nowrap;
   position: relative;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .admin-tab:hover {
   color: var(--adm-text);
-  background: var(--adm-surface2);
+  background: var(--adm-surface2, #e2e8f0);
+  border-color: var(--adm-accent, #005CFF);
 }
 
 .admin-tab.active {
-  color: var(--adm-accent);
+  color: #fff;
+  background: var(--adm-accent, #005CFF);
+  border-color: var(--adm-accent, #005CFF);
   font-weight: 600;
 }
 
 .admin-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--adm-accent);
-  border-radius: 2px 2px 0 0;
+  content: none;
 }
 
 /* ── Settings Grid ───────────────────────────── */
