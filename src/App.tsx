@@ -41,6 +41,7 @@ import { ManageSiteCustomization } from './admin/pages/ManageSiteCustomization';
 import ManageIndiqueGanhe from './admin/pages/ManageIndiqueGanhe';
 import ManageParaEmpresas from './admin/pages/ManageParaEmpresas';
 import ManageEnterprisePlans from './admin/pages/ManageEnterprisePlans';
+import ManageCepHistory from './admin/pages/ManageCepHistory';
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -387,6 +388,7 @@ function App() {
         <Route path="indique-ganhe" element={<ManageIndiqueGanhe />} />
         <Route path="para-empresas" element={<ManageParaEmpresas />} />
         <Route path="enterprise-plans" element={<ManageEnterprisePlans />} />
+        <Route path="cep-history" element={<ManageCepHistory />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

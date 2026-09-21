@@ -63,6 +63,13 @@ const NAV: NavItem[] = [
     ],
   },
   { to: '/admin/settings', icon: Icons.settings, label: 'Configurações' },
+  {
+    icon: Icons.barChart,
+    label: 'Relatórios',
+    children: [
+      { to: '/admin/cep-history', label: 'Histórico de CEPs' },
+    ],
+  },
 ];
 
 export const AdminLayout = () => {

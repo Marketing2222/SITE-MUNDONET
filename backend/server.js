@@ -23,6 +23,7 @@ import badgeLibraryRoutes from './routes/badgeLibraryRoutes.js';
 import enterprisePlansRoutes from './routes/enterprisePlansRoutes.js';
 import faqRoutes from './routes/faqRoutes.js';
 import testimonialsRoutes from './routes/testimonialsRoutes.js';
+import cepSearchRoutes from './routes/cepSearchRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -67,6 +68,7 @@ initDB().then(() => {
   app.use('/api/enterprise-plans', enterprisePlansRoutes);
   app.use('/api/faq', faqRoutes);
   app.use('/api/testimonials', testimonialsRoutes);
+  app.use('/api/cep-searches', cepSearchRoutes);
   app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
   app.use('/uploads', express.static(uploadsDir, { maxAge: '7d', immutable: true }));
@@ -143,7 +145,7 @@ initDB().then(() => {
       return res.status(400).json({ error: 'Dados de backup inválidos' });
     }
     try {
-      const tables = ['users','hero_slides','plans','quick_links','entertainment','contact_info','site_settings','app_library','benefits','file_uploads','badge_library','enterprise_plans'];
+      const tables = ['users','hero_slides','plans','quick_links','entertainment','contact_info','site_settings','app_library','benefits','file_uploads','badge_library','enterprise_plans','cep_searches'];
       let restored = 0;
       for (const table of tables) {
         if (backupData[table] && Array.isArray(backupData[table])) {

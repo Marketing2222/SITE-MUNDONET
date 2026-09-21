@@ -114,9 +114,39 @@ export const CepChecker = () => {
       .catch(() => setReady(true));
   }, []);
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const r = checkCep(cep, settings.cep_ranges);
     setResult(r);
+
+    // Buscar endereço via ViaCEP e registrar no backend
+    const digits = cep.replace(/\D/g, '');
+    if (digits.length === 8) {
+      try {
+        const viaCepRes = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
+        const viaCepData = await viaCepRes.json();
+        await fetch(`${API_BASE_URL}/api/cep-searches`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cep: cep,
+            street: viaCepData.logradouro || '',
+            neighborhood: viaCepData.bairro || '',
+            city: viaCepData.localidade || '',
+            uf: viaCepData.uf || '',
+            result: r,
+          }),
+        });
+      } catch {
+        // Falha silenciosa — não afeta a experiência do usuário
+        try {
+          await fetch(`${API_BASE_URL}/api/cep-searches`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cep, street: '', neighborhood: '', city: '', uf: '', result: r }),
+          });
+        } catch { /* ignore */ }
+      }
+    }
   };
 
   const handleClose = () => {
