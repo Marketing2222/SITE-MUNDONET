@@ -698,6 +698,52 @@ export const ManageHomeSections = () => {
             <small style={{ color: 'var(--adm-text2)', marginTop: 4, display: 'block' }}>
               Um CEP por linha. Formato: <b>XXXXX-XXX</b> (ex: 65082-507).
             </small>
+            <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+              <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: '1px solid var(--adm-border)', background: 'var(--adm-card-bg, var(--adm-bg))', color: 'var(--adm-text)', cursor: 'pointer' }}>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Importar CSV
+                <input
+                  type="file"
+                  accept=".csv,.txt,.tsv"
+                  style={{ display: 'none' }}
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                      const text = ev.target?.result as string;
+                      if (!text) return;
+                      const cepsFromCsv = new Set<string>();
+                      const lines = text.split(/[\n\r;]+/);
+                      for (const line of lines) {
+                        const cells = line.split(/[;,]/);
+                        for (const cell of cells) {
+                          const digits = cell.replace(/\D/g, '');
+                          if (digits.length === 8) {
+                            cepsFromCsv.add(`${digits.slice(0, 5)}-${digits.slice(5)}`);
+                          } else if (digits.length === 5) {
+                            cepsFromCsv.add(digits);
+                          }
+                        }
+                      }
+                      const existing = val ? val.split('\n').map((l: string) => l.trim()).filter(Boolean) : [];
+                      const existingSet = new Set(existing);
+                      let added = 0;
+                      for (const cep of cepsFromCsv) {
+                        if (!existingSet.has(cep)) {
+                          existing.push(cep);
+                          added++;
+                        }
+                      }
+                      set(fd.key, existing.join('\n'), fd.label + ` (+${added} do CSV)`);
+                      e.target.value = '';
+                    };
+                    reader.readAsText(file);
+                  }}
+                />
+              </label>
+              <span style={{ fontSize: 11, color: 'var(--adm-text2)' }}>Aceita .csv, .txt — um CEP por linha ou separado por vírgula/ponto e vírgula</span>
+            </div>
           </div>
         );
       case 'image':
