@@ -85,6 +85,7 @@ export const CepChecker = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cep, setCep] = useState('');
   const [result, setResult] = useState<ResultType>('idle');
+  const [addressInfo, setAddressInfo] = useState<{ street: string; neighborhood: string; city: string; uf: string } | null>(null);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings`)
@@ -117,6 +118,7 @@ export const CepChecker = () => {
   const handleVerify = async () => {
     const r = checkCep(cep, settings.cep_ranges);
     setResult(r);
+    setAddressInfo(null);
 
     // Buscar endereço via ViaCEP e registrar no backend
     const digits = cep.replace(/\D/g, '');
@@ -124,6 +126,14 @@ export const CepChecker = () => {
       try {
         const viaCepRes = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
         const viaCepData = await viaCepRes.json();
+        if (!viaCepData.erro) {
+          setAddressInfo({
+            street: viaCepData.logradouro || '',
+            neighborhood: viaCepData.bairro || '',
+            city: viaCepData.localidade || '',
+            uf: viaCepData.uf || '',
+          });
+        }
         await fetch(`${API_BASE_URL}/api/cep-searches`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -153,6 +163,7 @@ export const CepChecker = () => {
     setSidebarOpen(false);
     setResult('idle');
     setCep('');
+    setAddressInfo(null);
   };
 
   if (!ready || !settings.enabled) return null;
@@ -230,8 +241,25 @@ export const CepChecker = () => {
             {result === 'success' && (
               <div className="cep-result-card cep-result-success">
                 <p>{settings.success_msg}</p>
+                {addressInfo && (
+                  <p style={{ fontSize: 13, color: '#475569', margin: '4px 0 12px', lineHeight: 1.5 }}>
+                    {addressInfo.street && <>{addressInfo.street}<br /></>}
+                    {addressInfo.neighborhood && <>{addressInfo.neighborhood}<br /></>}
+                    {addressInfo.city && addressInfo.uf && <>{addressInfo.city} - {addressInfo.uf}</>}
+                  </p>
+                )}
                 <a
-                  href={settings.whatsapp_link}
+                  href={(() => {
+                    const base = settings.whatsapp_link.split('&text=')[0];
+                    let msg = `Olá! Vim pelo site e gostaria de contratar a internet.`;
+                    msg += `%0ACEP: ${cep}`;
+                    if (addressInfo) {
+                      if (addressInfo.street) msg += `%0ARua: ${addressInfo.street}`;
+                      if (addressInfo.neighborhood) msg += `%0ABairro: ${addressInfo.neighborhood}`;
+                      if (addressInfo.city && addressInfo.uf) msg += `%0ACidade: ${addressInfo.city} - ${addressInfo.uf}`;
+                    }
+                    return `${base}&text=${msg}`;
+                  })()}
                   target="_blank"
                   rel="noreferrer"
                   className="cep-whatsapp-btn"
