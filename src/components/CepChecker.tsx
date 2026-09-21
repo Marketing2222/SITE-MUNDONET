@@ -89,6 +89,11 @@ export const CepChecker = () => {
   const [cep, setCep] = useState('');
   const [result, setResult] = useState<ResultType>('idle');
   const [addressInfo, setAddressInfo] = useState<{ street: string; neighborhood: string; city: string; uf: string } | null>(null);
+  const [interestEndereco, setInterestEndereco] = useState('');
+  const [interestBairro, setInterestBairro] = useState('');
+  const [interestWhatsapp, setInterestWhatsapp] = useState('');
+  const [interestSent, setInterestSent] = useState(false);
+  const [interestSending, setInterestSending] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings`)
@@ -167,6 +172,32 @@ export const CepChecker = () => {
     setResult('idle');
     setCep('');
     setAddressInfo(null);
+    setInterestEndereco('');
+    setInterestBairro('');
+    setInterestWhatsapp('');
+    setInterestSent(false);
+  };
+
+  const handleInterestSubmit = async () => {
+    if (!interestEndereco.trim() || !interestWhatsapp.trim()) return;
+    setInterestSending(true);
+    try {
+      await fetch(`${API_BASE_URL}/api/cep-interest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cep,
+          endereco: interestEndereco.trim(),
+          bairro: interestBairro.trim(),
+          whatsapp: interestWhatsapp.trim(),
+        }),
+      });
+      setInterestSent(true);
+    } catch {
+      // falha silenciosa
+    } finally {
+      setInterestSending(false);
+    }
   };
 
   if (!ready || !settings.enabled) return null;
@@ -238,6 +269,51 @@ export const CepChecker = () => {
             {result === 'fail' && (
               <div className="cep-result-card cep-result-fail">
                 <p>{settings.fail_msg}</p>
+                {!interestSent ? (
+                  <div style={{ marginTop: 16, borderTop: '1px solid #e2e8f0', paddingTop: 16 }}>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: '#1e293b', margin: '0 0 12px' }}>
+                      Deixe seus dados para quando expandirmos sua região:
+                    </p>
+                    <input
+                      className="cep-input"
+                      type="text"
+                      placeholder="Endereço (rua, nº)"
+                      value={interestEndereco}
+                      onChange={e => setInterestEndereco(e.target.value)}
+                      style={{ marginBottom: 8 }}
+                    />
+                    <input
+                      className="cep-input"
+                      type="text"
+                      placeholder="Bairro"
+                      value={interestBairro}
+                      onChange={e => setInterestBairro(e.target.value)}
+                      style={{ marginBottom: 8 }}
+                    />
+                    <input
+                      className="cep-input"
+                      type="tel"
+                      placeholder="WhatsApp (com DDD)"
+                      value={interestWhatsapp}
+                      onChange={e => setInterestWhatsapp(e.target.value)}
+                      style={{ marginBottom: 12 }}
+                    />
+                    <button
+                      className="cep-verify-btn"
+                      onClick={handleInterestSubmit}
+                      disabled={interestSending || !interestEndereco.trim() || !interestWhatsapp.trim()}
+                      style={{ opacity: interestSending || !interestEndereco.trim() || !interestWhatsapp.trim() ? 0.5 : 1 }}
+                    >
+                      {interestSending ? 'Enviando...' : 'Enviar dados de interesse'}
+                    </button>
+                  </div>
+                ) : (
+                  <div style={{ marginTop: 16, padding: '12px 16px', background: '#f0fdf4', borderRadius: 10, border: '1px solid #bbf7d0' }}>
+                    <p style={{ fontSize: 14, color: '#166534', margin: 0, fontWeight: 600 }}>
+                      Dados enviados com sucesso! Quando expandirmos sua região, entraremos em contato.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 

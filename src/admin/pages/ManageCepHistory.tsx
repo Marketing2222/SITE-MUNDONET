@@ -12,6 +12,15 @@ interface CepSearch {
   created_at: string;
 }
 
+interface CepInterest {
+  id: number;
+  cep: string;
+  endereco: string;
+  bairro: string;
+  whatsapp: string;
+  created_at: string;
+}
+
 interface CepStats {
   total: number;
   covered: number;
@@ -29,7 +38,15 @@ interface PagedResult {
   limit: number;
 }
 
+interface PagedInterest {
+  data: CepInterest[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 const ManageCepHistory = () => {
+  const [activeTab, setActiveTab] = useState<'buscas' | 'interesse'>('buscas');
   const [data, setData] = useState<PagedResult | null>(null);
   const [stats, setStats] = useState<CepStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,6 +58,13 @@ const ManageCepHistory = () => {
   const [filterSearch, setFilterSearch] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [clearConfirm, setClearConfirm] = useState(false);
+
+  const [interestData, setInterestData] = useState<PagedInterest | null>(null);
+  const [interestLoading, setInterestLoading] = useState(true);
+  const [interestPage, setInterestPage] = useState(1);
+  const [interestSearch, setInterestSearch] = useState('');
+  const [interestDeleteConfirm, setInterestDeleteConfirm] = useState<number | null>(null);
+  const [interestClearConfirm, setInterestClearConfirm] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -69,6 +93,25 @@ const ManageCepHistory = () => {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  const fetchInterest = useCallback(async () => {
+    setInterestLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.set('page', String(interestPage));
+      params.set('limit', '50');
+      if (interestSearch) params.set('search', interestSearch);
+
+      const result = await apiFetch(`/cep-interest?${params.toString()}`);
+      setInterestData(result);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setInterestLoading(false);
+    }
+  }, [interestPage, interestSearch]);
+
+  useEffect(() => { fetchInterest(); }, [fetchInterest]);
+
   const handleDelete = async (id: number) => {
     try {
       await apiFetch(`/cep-searches/${id}`, { method: 'DELETE' });
@@ -84,6 +127,26 @@ const ManageCepHistory = () => {
       await apiFetch('/cep-searches', { method: 'DELETE' });
       setClearConfirm(false);
       fetchData();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleInterestDelete = async (id: number) => {
+    try {
+      await apiFetch(`/cep-interest/${id}`, { method: 'DELETE' });
+      setInterestDeleteConfirm(null);
+      fetchInterest();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleInterestClearAll = async () => {
+    try {
+      await apiFetch('/cep-interest', { method: 'DELETE' });
+      setInterestClearConfirm(false);
+      fetchInterest();
     } catch (err) {
       console.error(err);
     }
@@ -107,7 +170,25 @@ const ManageCepHistory = () => {
     URL.revokeObjectURL(url);
   };
 
+  const exportInterestCSV = () => {
+    if (!interestData?.data.length) return;
+    const headers = ['CEP', 'Endereço', 'Bairro', 'WhatsApp', 'Data/Hora'];
+    const rows = interestData.data.map(r => [
+      r.cep, r.endereco, r.bairro, r.whatsapp,
+      new Date(r.created_at).toLocaleString('pt-BR'),
+    ]);
+    const csv = [headers, ...rows].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cep-interesse-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const totalPages = data ? Math.ceil(data.total / 50) : 1;
+  const interestTotalPages = interestData ? Math.ceil(interestData.total / 50) : 1;
 
   const formatDate = (iso: string) => {
     return new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -121,180 +202,307 @@ const ManageCepHistory = () => {
 
   return (
     <div style={{ padding: '0' }}>
-      {/* Stats Cards */}
-      {stats && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 24 }}>
-          <div style={statCardStyle}>
-            <div style={{ fontSize: 28, fontWeight: 700, color: '#005CFF' }}>{stats.total}</div>
-            <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Total de buscas</div>
-          </div>
-          <div style={statCardStyle}>
-            <div style={{ fontSize: 28, fontWeight: 700, color: '#22c55e' }}>{stats.covered}</div>
-            <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Atendidos</div>
-          </div>
-          <div style={statCardStyle}>
-            <div style={{ fontSize: 28, fontWeight: 700, color: '#ef4444' }}>{stats.notCovered}</div>
-            <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Não atendidos</div>
-          </div>
-          <div style={statCardStyle}>
-            <div style={{ fontSize: 28, fontWeight: 700, color: '#f59e0b' }}>{stats.todayCount}</div>
-            <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Buscas hoje</div>
-          </div>
-        </div>
-      )}
-
-      {/* Top Bairros */}
-      {stats && stats.topNeighborhoods.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-          <div style={cardStyle}>
-            <h3 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Top 10 CEPs mais buscados</h3>
-            {stats.topCeps.map((item, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13 }}>
-                <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>{item.cep.slice(0,5)}-{item.cep.slice(5)}</span>
-                <span style={{ color: '#64748b' }}>{item.count}x</span>
-              </div>
-            ))}
-          </div>
-          <div style={cardStyle}>
-            <h3 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Top 10 Bairros mais buscados</h3>
-            {stats.topNeighborhoods.map((item, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13 }}>
-                <span>{item.name}</span>
-                <span style={{ color: '#64748b' }}>{item.count}x</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Filters */}
-      <div style={cardStyle}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end', marginBottom: 0 }}>
-          <div style={{ flex: '1 1 150px' }}>
-            <label style={labelStyle}>CEP</label>
-            <input
-              style={inputStyle}
-              placeholder="Filtrar por CEP..."
-              value={filterCep}
-              onChange={e => { setFilterCep(e.target.value); setPage(1); }}
-            />
-          </div>
-          <div style={{ flex: '1 1 200px' }}>
-            <label style={labelStyle}>Buscar (rua, bairro...)</label>
-            <input
-              style={inputStyle}
-              placeholder="Buscar por endereço..."
-              value={filterSearch}
-              onChange={e => { setFilterSearch(e.target.value); setPage(1); }}
-            />
-          </div>
-          <div style={{ flex: '1 1 140px' }}>
-            <label style={labelStyle}>Resultado</label>
-            <select
-              style={inputStyle}
-              value={filterResult}
-              onChange={e => { setFilterResult(e.target.value); setPage(1); }}
-            >
-              <option value="">Todos</option>
-              <option value="success">Atendido</option>
-              <option value="fail">Não atendido</option>
-              <option value="invalid">Inválido</option>
-            </select>
-          </div>
-          <div style={{ flex: '1 1 140px' }}>
-            <label style={labelStyle}>Data inicial</label>
-            <input
-              style={inputStyle}
-              type="date"
-              value={filterDateFrom}
-              onChange={e => { setFilterDateFrom(e.target.value); setPage(1); }}
-            />
-          </div>
-          <div style={{ flex: '1 1 140px' }}>
-            <label style={labelStyle}>Data final</label>
-            <input
-              style={inputStyle}
-              type="date"
-              value={filterDateTo}
-              onChange={e => { setFilterDateTo(e.target.value); setPage(1); }}
-            />
-          </div>
-          <div style={{ display: 'flex', gap: 8, paddingBottom: 2 }}>
-            <button
-              onClick={() => { setFilterCep(''); setFilterResult(''); setFilterDateFrom(''); setFilterDateTo(''); setFilterSearch(''); setPage(1); }}
-              style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}
-            >
-              Limpar
-            </button>
-            <button onClick={exportCSV} style={{ ...btnStyle, background: '#005CFF' }}>
-              Exportar CSV
-            </button>
-            <button onClick={() => setClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#991b1b' }}>
-              Limpar Tudo
-            </button>
-          </div>
-        </div>
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: 0, marginBottom: 24, borderBottom: '2px solid #e2e8f0' }}>
+        <button
+          onClick={() => setActiveTab('buscas')}
+          style={{
+            padding: '12px 24px', fontSize: 14, fontWeight: 600, cursor: 'pointer', border: 'none',
+            borderBottom: activeTab === 'buscas' ? '2px solid #005CFF' : '2px solid transparent',
+            marginBottom: '-2px', background: 'transparent',
+            color: activeTab === 'buscas' ? '#005CFF' : '#64748b',
+          }}
+        >
+          Histórico de Buscas
+        </button>
+        <button
+          onClick={() => setActiveTab('interesse')}
+          style={{
+            padding: '12px 24px', fontSize: 14, fontWeight: 600, cursor: 'pointer', border: 'none',
+            borderBottom: activeTab === 'interesse' ? '2px solid #005CFF' : '2px solid transparent',
+            marginBottom: '-2px', background: 'transparent',
+            color: activeTab === 'interesse' ? '#005CFF' : '#64748b',
+          }}
+        >
+          Interesse {interestData && interestData.total > 0 && (
+            <span style={{ background: '#fee2e2', color: '#991b1b', padding: '2px 8px', borderRadius: 999, fontSize: 11, marginLeft: 6 }}>{interestData.total}</span>
+          )}
+        </button>
       </div>
 
-      {/* Table */}
-      <div style={{ ...cardStyle, padding: 0, overflow: 'hidden', marginTop: 16 }}>
-        {loading ? (
-          <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Carregando...</div>
-        ) : !data?.data.length ? (
-          <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Nenhum registro encontrado</div>
-        ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-              <thead>
-                <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
-                  <th style={thStyle}>CEP</th>
-                  <th style={thStyle}>Rua</th>
-                  <th style={thStyle}>Bairro</th>
-                  <th style={thStyle}>Cidade/UF</th>
-                  <th style={thStyle}>Resultado</th>
-                  <th style={thStyle}>Data/Hora</th>
-                  <th style={{ ...thStyle, width: 50 }}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.data.map(item => (
-                  <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontSize: 12 }}>{item.cep}</code></td>
-                    <td style={tdStyle}>{item.street || '—'}</td>
-                    <td style={tdStyle}>{item.neighborhood || '—'}</td>
-                    <td style={tdStyle}>{item.city && item.uf ? `${item.city}/${item.uf}` : '—'}</td>
-                    <td style={tdStyle}>{resultBadge(item.result)}</td>
-                    <td style={{ ...tdStyle, color: '#64748b', whiteSpace: 'nowrap' }}>{formatDate(item.created_at)}</td>
-                    <td style={tdStyle}>
-                      {deleteConfirm === item.id ? (
-                        <div style={{ display: 'flex', gap: 4 }}>
-                          <button onClick={() => handleDelete(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Sim</button>
-                          <button onClick={() => setDeleteConfirm(null)} style={{ ...smallBtn, background: '#f1f5f9' }}>Não</button>
-                        </div>
-                      ) : (
-                        <button onClick={() => setDeleteConfirm(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Excluir</button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      {activeTab === 'buscas' && (
+        <>
+          {/* Stats Cards */}
+          {stats && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 24 }}>
+              <div style={statCardStyle}>
+                <div style={{ fontSize: 28, fontWeight: 700, color: '#005CFF' }}>{stats.total}</div>
+                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Total de buscas</div>
+              </div>
+              <div style={statCardStyle}>
+                <div style={{ fontSize: 28, fontWeight: 700, color: '#22c55e' }}>{stats.covered}</div>
+                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Atendidos</div>
+              </div>
+              <div style={statCardStyle}>
+                <div style={{ fontSize: 28, fontWeight: 700, color: '#ef4444' }}>{stats.notCovered}</div>
+                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Não atendidos</div>
+              </div>
+              <div style={statCardStyle}>
+                <div style={{ fontSize: 28, fontWeight: 700, color: '#f59e0b' }}>{stats.todayCount}</div>
+                <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 4 }}>Buscas hoje</div>
+              </div>
+            </div>
+          )}
 
-        {/* Pagination */}
-        {data && totalPages > 1 && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderTop: '1px solid #e2e8f0' }}>
-            <span style={{ fontSize: 13, color: '#64748b' }}>
-              Página {data.page} de {totalPages} — {data.total} registros
-            </span>
-            <div style={{ display: 'flex', gap: 6 }}>
-              <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} style={{ ...smallBtn, opacity: page <= 1 ? 0.4 : 1 }}>Anterior</button>
-              <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} style={{ ...smallBtn, opacity: page >= totalPages ? 0.4 : 1 }}>Próxima</button>
+          {/* Top Bairros */}
+          {stats && stats.topNeighborhoods.length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+              <div style={cardStyle}>
+                <h3 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Top 10 CEPs mais buscados</h3>
+                {stats.topCeps.map((item, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13 }}>
+                    <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>{item.cep.slice(0,5)}-{item.cep.slice(5)}</span>
+                    <span style={{ color: '#64748b' }}>{item.count}x</span>
+                  </div>
+                ))}
+              </div>
+              <div style={cardStyle}>
+                <h3 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Top 10 Bairros mais buscados</h3>
+                {stats.topNeighborhoods.map((item, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f1f5f9', fontSize: 13 }}>
+                    <span>{item.name}</span>
+                    <span style={{ color: '#64748b' }}>{item.count}x</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Filters */}
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end', marginBottom: 0 }}>
+              <div style={{ flex: '1 1 150px' }}>
+                <label style={labelStyle}>CEP</label>
+                <input
+                  style={inputStyle}
+                  placeholder="Filtrar por CEP..."
+                  value={filterCep}
+                  onChange={e => { setFilterCep(e.target.value); setPage(1); }}
+                />
+              </div>
+              <div style={{ flex: '1 1 200px' }}>
+                <label style={labelStyle}>Buscar (rua, bairro...)</label>
+                <input
+                  style={inputStyle}
+                  placeholder="Buscar por endereço..."
+                  value={filterSearch}
+                  onChange={e => { setFilterSearch(e.target.value); setPage(1); }}
+                />
+              </div>
+              <div style={{ flex: '1 1 140px' }}>
+                <label style={labelStyle}>Resultado</label>
+                <select
+                  style={inputStyle}
+                  value={filterResult}
+                  onChange={e => { setFilterResult(e.target.value); setPage(1); }}
+                >
+                  <option value="">Todos</option>
+                  <option value="success">Atendido</option>
+                  <option value="fail">Não atendido</option>
+                  <option value="invalid">Inválido</option>
+                </select>
+              </div>
+              <div style={{ flex: '1 1 140px' }}>
+                <label style={labelStyle}>Data inicial</label>
+                <input
+                  style={inputStyle}
+                  type="date"
+                  value={filterDateFrom}
+                  onChange={e => { setFilterDateFrom(e.target.value); setPage(1); }}
+                />
+              </div>
+              <div style={{ flex: '1 1 140px' }}>
+                <label style={labelStyle}>Data final</label>
+                <input
+                  style={inputStyle}
+                  type="date"
+                  value={filterDateTo}
+                  onChange={e => { setFilterDateTo(e.target.value); setPage(1); }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: 8, paddingBottom: 2 }}>
+                <button
+                  onClick={() => { setFilterCep(''); setFilterResult(''); setFilterDateFrom(''); setFilterDateTo(''); setFilterSearch(''); setPage(1); }}
+                  style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}
+                >
+                  Limpar
+                </button>
+                <button onClick={exportCSV} style={{ ...btnStyle, background: '#005CFF' }}>
+                  Exportar CSV
+                </button>
+                <button onClick={() => setClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#991b1b' }}>
+                  Limpar Tudo
+                </button>
+              </div>
             </div>
           </div>
-        )}
-      </div>
+
+          {/* Table */}
+          <div style={{ ...cardStyle, padding: 0, overflow: 'hidden', marginTop: 16 }}>
+            {loading ? (
+              <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Carregando...</div>
+            ) : !data?.data.length ? (
+              <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Nenhum registro encontrado</div>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                      <th style={thStyle}>CEP</th>
+                      <th style={thStyle}>Rua</th>
+                      <th style={thStyle}>Bairro</th>
+                      <th style={thStyle}>Cidade/UF</th>
+                      <th style={thStyle}>Resultado</th>
+                      <th style={thStyle}>Data/Hora</th>
+                      <th style={{ ...thStyle, width: 50 }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.data.map(item => (
+                      <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontSize: 12 }}>{item.cep}</code></td>
+                        <td style={tdStyle}>{item.street || '—'}</td>
+                        <td style={tdStyle}>{item.neighborhood || '—'}</td>
+                        <td style={tdStyle}>{item.city && item.uf ? `${item.city}/${item.uf}` : '—'}</td>
+                        <td style={tdStyle}>{resultBadge(item.result)}</td>
+                        <td style={{ ...tdStyle, color: '#64748b', whiteSpace: 'nowrap' }}>{formatDate(item.created_at)}</td>
+                        <td style={tdStyle}>
+                          {deleteConfirm === item.id ? (
+                            <div style={{ display: 'flex', gap: 4 }}>
+                              <button onClick={() => handleDelete(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Sim</button>
+                              <button onClick={() => setDeleteConfirm(null)} style={{ ...smallBtn, background: '#f1f5f9' }}>Não</button>
+                            </div>
+                          ) : (
+                            <button onClick={() => setDeleteConfirm(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Excluir</button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Pagination */}
+            {data && totalPages > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderTop: '1px solid #e2e8f0' }}>
+                <span style={{ fontSize: 13, color: '#64748b' }}>
+                  Página {data.page} de {totalPages} — {data.total} registros
+                </span>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} style={{ ...smallBtn, opacity: page <= 1 ? 0.4 : 1 }}>Anterior</button>
+                  <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} style={{ ...smallBtn, opacity: page >= totalPages ? 0.4 : 1 }}>Próxima</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {activeTab === 'interesse' && (
+        <>
+          {/* Interest Filters */}
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end', marginBottom: 0 }}>
+              <div style={{ flex: '1 1 250px' }}>
+                <label style={labelStyle}>Buscar (CEP, endereço, bairro, WhatsApp)</label>
+                <input
+                  style={inputStyle}
+                  placeholder="Buscar..."
+                  value={interestSearch}
+                  onChange={e => { setInterestSearch(e.target.value); setInterestPage(1); }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: 8, paddingBottom: 2 }}>
+                <button
+                  onClick={() => { setInterestSearch(''); setInterestPage(1); }}
+                  style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}
+                >
+                  Limpar
+                </button>
+                <button onClick={exportInterestCSV} style={{ ...btnStyle, background: '#005CFF' }}>
+                  Exportar CSV
+                </button>
+                <button onClick={() => setInterestClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#991b1b' }}>
+                  Limpar Tudo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Interest Table */}
+          <div style={{ ...cardStyle, padding: 0, overflow: 'hidden', marginTop: 16 }}>
+            {interestLoading ? (
+              <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Carregando...</div>
+            ) : !interestData?.data.length ? (
+              <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Nenhum interesse registrado</div>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                      <th style={thStyle}>CEP</th>
+                      <th style={thStyle}>Endereço</th>
+                      <th style={thStyle}>Bairro</th>
+                      <th style={thStyle}>WhatsApp</th>
+                      <th style={thStyle}>Data/Hora</th>
+                      <th style={{ ...thStyle, width: 50 }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {interestData.data.map(item => (
+                      <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontSize: 12 }}>{item.cep}</code></td>
+                        <td style={tdStyle}>{item.endereco || '—'}</td>
+                        <td style={tdStyle}>{item.bairro || '—'}</td>
+                        <td style={tdStyle}>
+                          <a href={`https://wa.me/55${item.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" style={{ color: '#16a34a', textDecoration: 'none', fontWeight: 600 }}>
+                            {item.whatsapp}
+                          </a>
+                        </td>
+                        <td style={{ ...tdStyle, color: '#64748b', whiteSpace: 'nowrap' }}>{formatDate(item.created_at)}</td>
+                        <td style={tdStyle}>
+                          {interestDeleteConfirm === item.id ? (
+                            <div style={{ display: 'flex', gap: 4 }}>
+                              <button onClick={() => handleInterestDelete(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Sim</button>
+                              <button onClick={() => setInterestDeleteConfirm(null)} style={{ ...smallBtn, background: '#f1f5f9' }}>Não</button>
+                            </div>
+                          ) : (
+                            <button onClick={() => setInterestDeleteConfirm(item.id)} style={{ ...smallBtn, background: '#fee2e2', color: '#991b1b' }}>Excluir</button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Interest Pagination */}
+            {interestData && interestTotalPages > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderTop: '1px solid #e2e8f0' }}>
+                <span style={{ fontSize: 13, color: '#64748b' }}>
+                  Página {interestData.page} de {interestTotalPages} — {interestData.total} registros
+                </span>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button disabled={interestPage <= 1} onClick={() => setInterestPage(p => p - 1)} style={{ ...smallBtn, opacity: interestPage <= 1 ? 0.4 : 1 }}>Anterior</button>
+                  <button disabled={interestPage >= interestTotalPages} onClick={() => setInterestPage(p => p + 1)} style={{ ...smallBtn, opacity: interestPage >= interestTotalPages ? 0.4 : 1 }}>Próxima</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Clear All Confirm Modal */}
       {clearConfirm && (
@@ -305,6 +513,20 @@ const ManageCepHistory = () => {
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
               <button onClick={() => setClearConfirm(false)} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Cancelar</button>
               <button onClick={handleClearAll} style={{ ...btnStyle, background: '#ef4444' }}>Sim, limpar tudo</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Interest Clear All Confirm Modal */}
+      {interestClearConfirm && (
+        <div style={overlayStyle} onClick={() => setInterestClearConfirm(false)}>
+          <div style={modalStyle} onClick={e => e.stopPropagation()}>
+            <h3 style={{ margin: '0 0 12px', fontSize: 18 }}>Limpar todos os interesses?</h3>
+            <p style={{ color: '#64748b', margin: '0 0 20px', fontSize: 14 }}>Esta ação não pode ser desfeita. Todos os registros de interesse serão removidos.</p>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+              <button onClick={() => setInterestClearConfirm(false)} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Cancelar</button>
+              <button onClick={handleInterestClearAll} style={{ ...btnStyle, background: '#ef4444' }}>Sim, limpar tudo</button>
             </div>
           </div>
         </div>
