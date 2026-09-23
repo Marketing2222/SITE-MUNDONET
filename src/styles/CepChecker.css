@@ -45,17 +45,7 @@
   width: auto;
   box-shadow: none;
   border-radius: 0;
-  background: transparent !important;
-  padding: 14px 0;
-}
-
-.cep-floating-centered .cep-floating-text {
-  color: #fff;
-}
-
-.cep-floating-centered .cep-floating-btn {
-  background: #fff;
-  color: #005CFF;
+  padding: 14px 32px;
 }
 
 /* ---------- Overlay ---------- */
