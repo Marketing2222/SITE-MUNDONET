@@ -7,6 +7,7 @@ interface Slide {
   url: string;
   title: string;
   subtitle: string;
+  video_url?: string;
 }
 
 interface SiteSettings {
@@ -106,6 +107,17 @@ export const Hero: React.FC = () => {
             className={`slide ${index === currentSlide ? 'active' : ''}`}
           >
             <img src={slide.url} alt={slide.title} className="slide-img" />
+            {slide.video_url && (
+              <video
+                className="slide-video"
+                src={slide.video_url}
+                muted
+                loop
+                playsInline
+                preload="none"
+                autoPlay={index === currentSlide}
+              />
+            )}
             <div className="slide-overlay"></div>
             <div className="container slide-content-container">
               <div className="slide-text">

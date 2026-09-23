@@ -15,9 +15,9 @@ router.get('/all', authMiddleware, (_req, res) => {
   res.json(sorted(db.data[TABLE]));
 });
 router.post('/', authMiddleware, async (req, res) => {
-  const { url, title, subtitle, sort_order = 0 } = req.body;
+  const { url, title, subtitle, sort_order = 0, video_url = '' } = req.body;
   const id = nextId();
-  db.data[TABLE].push({ id, url, title, subtitle, sort_order, active: true });
+  db.data[TABLE].push({ id, url, title, subtitle, video_url, sort_order, active: true });
   await db.write();
   res.json({ id, message: 'Slide criado' });
 });

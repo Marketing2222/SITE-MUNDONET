@@ -2,8 +2,8 @@
 import { apiFetch, getToken } from '../hooks/useAuth';
 import { API_BASE_URL } from '../../config/api';
 
-interface Slide { id: number; url: string; title: string; subtitle: string; sort_order: number; active: boolean; }
-const EMPTY: Omit<Slide,'id'> = { url:'', title:'', subtitle:'', sort_order:0, active:true };
+interface Slide { id: number; url: string; title: string; subtitle: string; video_url?: string; sort_order: number; active: boolean; }
+const EMPTY: Omit<Slide,'id'> = { url:'', title:'', subtitle:'', video_url:'', sort_order:0, active:true };
 
 export const ManageHero = () => {
   const [slides, setSlides] = useState<Slide[]>([]);
@@ -13,13 +13,14 @@ export const ManageHero = () => {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
 
   const load = async () => setSlides(await apiFetch('/hero/all'));
 
   useEffect(() => { load(); }, []);
 
-  const openNew = () => { setEditing(null); setForm({ url:'', title:'', subtitle:'', sort_order: slides.length, active: true }); setModal(true); };
-  const openEdit = (s: Slide) => { setEditing(s); setForm({ url: s.url, title: s.title, subtitle: s.subtitle, sort_order: s.sort_order, active: s.active }); setModal(true); };
+  const openNew = () => { setEditing(null); setForm({ url:'', title:'', subtitle:'', video_url:'', sort_order: slides.length, active: true }); setModal(true); };
+  const openEdit = (s: Slide) => { setEditing(s); setForm({ url: s.url, title: s.title, subtitle: s.subtitle, video_url: s.video_url || '', sort_order: s.sort_order, active: s.active }); setModal(true); };
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,6 +38,24 @@ export const ManageHero = () => {
       if (data.url) setForm({ ...form, url: data.url });
     } catch { setMsg('Erro no upload'); }
     finally { setUploading(false); }
+  };
+
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingVideo(true);
+    try {
+      const fd = new FormData();
+      fd.append('image', file);
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${getToken()}` },
+        body: fd,
+      });
+      const data = await res.json();
+      if (data.url) setForm({ ...form, video_url: data.url });
+    } catch { setMsg('Erro no upload do vídeo'); }
+    finally { setUploadingVideo(false); }
   };
 
   const save = async () => {
@@ -137,6 +156,25 @@ export const ManageHero = () => {
                   </label>
                 </div>
                 {form.url && <img src={form.url} alt="preview" style={{ marginTop: 8, borderRadius: 8, maxHeight: 120, objectFit: 'cover' }} onError={() => {}} />}
+              </div>
+              <div className="admin-field">
+                <label>Vídeo (opcional — apenas desktop)</label>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <input value={form.video_url || ''} onChange={e => setForm({ ...form, video_url: e.target.value })} placeholder="https://... ou faça upload" style={{ flex: 1 }} />
+                  <label className="admin-btn secondary small" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}>
+                    {uploadingVideo ? 'Enviando...' : 'Upload Vídeo'}
+                    <input type="file" accept="video/mp4,video/webm,video/ogg" onChange={handleVideoUpload} style={{ display: 'none' }} />
+                  </label>
+                  {form.video_url && (
+                    <button className="admin-btn danger small" onClick={() => setForm({ ...form, video_url: '' })} title="Remover vídeo">✕</button>
+                  )}
+                </div>
+                {form.video_url && (
+                  <video src={form.video_url} controls style={{ marginTop: 8, borderRadius: 8, maxHeight: 120, width: '100%', objectFit: 'cover' }} />
+                )}
+                <small style={{ color: 'var(--adm-text2)', fontSize: 11 }}>
+                  Formatos: MP4, WebM. O vídeo aparece apenas no desktop. O vídeo abaixo é o de fundo de desktop, e a imagem acima é o fallback mobile.
+                </small>
               </div>
               <div className="admin-field"><label>Titulo</label><input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} /></div>
               <div className="admin-field"><label>Subtitulo</label><textarea value={form.subtitle} onChange={e => setForm({ ...form, subtitle: e.target.value })} /></div>
