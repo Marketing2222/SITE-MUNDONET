@@ -232,6 +232,10 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'cep_checker_button_text', label: 'Texto do Botão Flutuante', type: 'text', hint: 'Ex: Verifique se atendemos sua região' },
     { key: 'cep_checker_button_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #005CFF' },
     { key: 'cep_checker_button_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #ffffff' },
+    { key: 'cep_checker_bar_style', label: 'Layout da Barra', type: 'select', hint: 'full', options: [
+      { value: 'full', label: 'Footer completo (toda a largura)' },
+      { value: 'centered', label: 'Centralizado sem borda' },
+    ]},
     { key: 'cep_checker_sidebar_title', label: 'Título da Sidebar', type: 'text', hint: 'Ex: Antes de continuar, vamos verificar se atendemos sua região?' },
     { key: 'cep_checker_ranges', label: 'Faixas de CEP atendidas (5 dígitos)', type: 'cep-ranges' },
     { key: 'cep_checker_success_msg', label: 'Mensagem — CEP atende', type: 'text', hint: 'Ex: Parabéns! Atendemos sua região!' },

@@ -7,6 +7,7 @@ interface CepSettings {
   button_text: string;
   button_bg: string;
   button_color: string;
+  bar_style: string;
   sidebar_title: string;
   success_msg: string;
   fail_msg: string;
@@ -28,6 +29,7 @@ const DEFAULT_SETTINGS: CepSettings = {
   button_text: 'Verifique se atendemos sua região',
   button_bg: '#005CFF',
   button_color: '#ffffff',
+  bar_style: 'full',
   sidebar_title: 'Antes de continuar, vamos verificar se atendemos sua região?',
   success_msg: 'Parabéns! Atendemos sua região!',
   fail_msg: 'Infelizmente não atendemos sua região no momento.',
@@ -116,6 +118,7 @@ export const CepChecker = () => {
         if (data.cep_checker_button_text?.value) s.button_text = data.cep_checker_button_text.value;
         if (data.cep_checker_button_bg?.value) s.button_bg = data.cep_checker_button_bg.value;
         if (data.cep_checker_button_color?.value) s.button_color = data.cep_checker_button_color.value;
+        if (data.cep_checker_bar_style?.value) s.bar_style = data.cep_checker_bar_style.value;
         if (data.cep_checker_sidebar_title?.value) s.sidebar_title = data.cep_checker_sidebar_title.value;
         if (data.cep_checker_success_msg?.value) s.success_msg = data.cep_checker_success_msg.value;
         if (data.cep_checker_fail_msg?.value) s.fail_msg = data.cep_checker_fail_msg.value;
@@ -212,7 +215,7 @@ export const CepChecker = () => {
   return (
     <>
       <div
-        className="cep-floating-bar"
+        className={`cep-floating-bar ${settings.bar_style === 'centered' ? 'cep-floating-centered' : ''}`}
         style={{ backgroundColor: settings.button_bg }}
       >
         <span className="cep-floating-text" style={{ color: settings.button_color }}>

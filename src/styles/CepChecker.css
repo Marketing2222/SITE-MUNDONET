@@ -37,6 +37,27 @@
   opacity: 0.9;
 }
 
+/* ---------- Centered (sem borda) ---------- */
+.cep-floating-centered {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: auto;
+  box-shadow: none;
+  border-radius: 0;
+  background: transparent !important;
+  padding: 14px 0;
+}
+
+.cep-floating-centered .cep-floating-text {
+  color: #fff;
+}
+
+.cep-floating-centered .cep-floating-btn {
+  background: #fff;
+  color: #005CFF;
+}
+
 /* ---------- Overlay ---------- */
 .cep-overlay {
   position: fixed;
