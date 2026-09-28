@@ -312,26 +312,26 @@
     display: flex;
   }
 
-  .nav-menu ul {
+  .nav-menu>ul {
     flex-direction: column;
     width: 100%;
     gap: 0;
-    align-items: flex-start;
+    align-items: stretch;
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
-  .nav-menu ul li {
+  .nav-menu>ul>li {
     width: 100%;
     border-bottom: 1px solid #f1f5f9;
   }
 
-  .nav-menu ul li:last-child {
+  .nav-menu>ul>li:last-child {
     border-bottom: none;
   }
 
-  .nav-menu ul li>a {
+  .nav-menu>ul>li>a {
     font-family: var(--font-family-title);
     font-weight: 500;
     font-size: 16px;
@@ -342,19 +342,20 @@
     color: #1e293b;
     display: flex;
     align-items: center;
+    transition: background 0.2s ease, color 0.2s ease;
   }
 
-  .nav-menu ul li>a:hover {
+  .nav-menu>ul>li>a:hover {
     color: var(--color-primary);
     background: #f8fafc;
   }
 
-  .nav-menu ul li.open>a {
-    color: var(--color-primary);
-    background: rgba(37, 99, 235, 0.05);
+  .nav-menu>ul>li.open>a {
+    background: #005CFF !important;
+    color: #ffffff !important;
   }
 
-  .nav-menu ul li>a::after {
+  .nav-menu>ul>li>a::after {
     display: none;
   }
 
@@ -365,7 +366,7 @@
     flex-shrink: 0;
   }
 
-  .nav-menu ul li.open .chevron-icon {
+  .nav-menu>ul>li.open .chevron-icon {
     transform: rotate(180deg);
   }
 
@@ -378,75 +379,87 @@
     border-radius: 0;
     width: 100%;
     min-width: 0;
-    background: rgba(0, 0, 0, 0.03);
+    background: #f8fafc;
     max-height: 0;
     overflow: hidden;
     padding: 0;
-    transition: max-height 0.35s ease, padding 0.35s ease;
-    border-left: 3px solid transparent;
-    margin-left: 0;
+    margin: 0;
+    display: block;
     box-sizing: border-box;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+    opacity: 0;
   }
 
   .dropdown-menu::before {
     display: none;
   }
 
-  .nav-menu ul li.open .dropdown-menu {
-    max-height: 300px;
-    padding: 6px 0;
-    border-left-color: var(--color-primary);
+  .nav-menu ul li:hover .dropdown-menu,
+  .nav-menu ul li:hover .dropdown-menu::before {
+    transform: none;
+    opacity: 0;
+    visibility: visible;
+    box-shadow: none;
+  }
+
+  .nav-menu>ul>li.open:hover .dropdown-menu {
+    opacity: 1;
+  }
+
+  .nav-menu>ul>li.open .dropdown-menu {
+    max-height: 320px;
+    padding: 4px 0;
+    opacity: 1;
   }
 
   .dropdown-menu li {
     border-bottom: none;
     width: 100%;
     opacity: 0;
-    transform: translateX(-8px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.25s ease;
   }
 
-  .nav-menu ul li.open .dropdown-menu li {
+  .nav-menu>ul>li.open .dropdown-menu li {
     opacity: 1;
-    transform: translateX(0);
   }
 
-  .nav-menu ul li.open .dropdown-menu li:nth-child(1) { transition-delay: 0.05s; }
-  .nav-menu ul li.open .dropdown-menu li:nth-child(2) { transition-delay: 0.1s; }
-  .nav-menu ul li.open .dropdown-menu li:nth-child(3) { transition-delay: 0.15s; }
-  .nav-menu ul li.open .dropdown-menu li:nth-child(4) { transition-delay: 0.2s; }
+  .nav-menu>ul>li.open .dropdown-menu li:nth-child(1) { transition-delay: 0.05s; }
+  .nav-menu>ul>li.open .dropdown-menu li:nth-child(2) { transition-delay: 0.1s; }
+  .nav-menu>ul>li.open .dropdown-menu li:nth-child(3) { transition-delay: 0.15s; }
+  .nav-menu>ul>li.open .dropdown-menu li:nth-child(4) { transition-delay: 0.2s; }
 
   .dropdown-menu li a {
-    padding: 12px 24px;
+    padding: 12px 20px 12px 36px;
     font-size: 15px;
     color: #475569;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: block;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
     transition: color 0.2s, background 0.2s;
   }
 
   .dropdown-menu li a::before {
     content: '';
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 5px;
     height: 5px;
     border-radius: 50%;
     background: #cbd5e1;
-    flex-shrink: 0;
-    transition: background 0.2s, transform 0.2s;
+    transition: background 0.2s;
   }
 
   .dropdown-menu li a:hover,
   .dropdown-menu li a:active {
-    color: var(--color-primary);
-    background: rgba(37, 99, 235, 0.06);
+    color: #005CFF;
+    background: #ffffff;
   }
 
   .dropdown-menu li a:hover::before {
-    background: var(--color-primary);
-    transform: scale(1.4);
+    background: #005CFF;
   }
 
   .nav-cta-wrapper {
