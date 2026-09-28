@@ -349,6 +349,11 @@
     background: #f8fafc;
   }
 
+  .nav-menu ul li.open>a {
+    color: var(--color-primary);
+    background: rgba(37, 99, 235, 0.05);
+  }
+
   .nav-menu ul li>a::after {
     display: none;
   }
@@ -371,10 +376,16 @@
     visibility: visible;
     box-shadow: none;
     border-radius: 0;
-    padding: 0 0 0 20px;
-    display: none;
     width: 100%;
-    background: transparent;
+    min-width: 0;
+    background: rgba(0, 0, 0, 0.03);
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    border-left: 3px solid transparent;
+    margin-left: 0;
+    box-sizing: border-box;
   }
 
   .dropdown-menu::before {
@@ -382,23 +393,60 @@
   }
 
   .nav-menu ul li.open .dropdown-menu {
-    display: block;
+    max-height: 300px;
+    padding: 6px 0;
+    border-left-color: var(--color-primary);
   }
 
   .dropdown-menu li {
     border-bottom: none;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
   }
+
+  .nav-menu ul li.open .dropdown-menu li {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .nav-menu ul li.open .dropdown-menu li:nth-child(1) { transition-delay: 0.05s; }
+  .nav-menu ul li.open .dropdown-menu li:nth-child(2) { transition-delay: 0.1s; }
+  .nav-menu ul li.open .dropdown-menu li:nth-child(3) { transition-delay: 0.15s; }
+  .nav-menu ul li.open .dropdown-menu li:nth-child(4) { transition-delay: 0.2s; }
 
   .dropdown-menu li a {
-    padding: 12px 20px;
+    padding: 12px 24px;
     font-size: 15px;
     color: #475569;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: color 0.2s, background 0.2s;
   }
 
-  .dropdown-menu li a:hover {
+  .dropdown-menu li a::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .dropdown-menu li a:hover,
+  .dropdown-menu li a:active {
     color: var(--color-primary);
-    background: #f8fafc;
+    background: rgba(37, 99, 235, 0.06);
+  }
+
+  .dropdown-menu li a:hover::before {
+    background: var(--color-primary);
+    transform: scale(1.4);
   }
 
   .nav-cta-wrapper {
