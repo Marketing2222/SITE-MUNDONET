@@ -26,6 +26,7 @@ export const ManageHero = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    setMsg('');
     try {
       const fd = new FormData();
       fd.append('image', file);
@@ -34,16 +35,21 @@ export const ManageHero = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
         body: fd,
       });
-      const data = await res.json();
-      if (data.url) setForm({ ...form, url: data.url });
-    } catch { setMsg('Erro no upload'); }
-    finally { setUploading(false); }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.url) {
+        setMsg(`Erro no upload: ${data.error || `HTTP ${res.status}`}`);
+        return;
+      }
+      setForm(f => ({ ...f, url: data.url }));
+    } catch { setMsg('Erro no upload — verifique sua conexão e tente novamente.'); }
+    finally { setUploading(false); e.target.value = ''; }
   };
 
   const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingVideo(true);
+    setMsg('');
     try {
       const fd = new FormData();
       fd.append('image', file);
@@ -52,10 +58,14 @@ export const ManageHero = () => {
         headers: { Authorization: `Bearer ${getToken()}` },
         body: fd,
       });
-      const data = await res.json();
-      if (data.url) setForm({ ...form, video_url: data.url });
-    } catch { setMsg('Erro no upload do vídeo'); }
-    finally { setUploadingVideo(false); }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.url) {
+        setMsg(`Erro no upload do vídeo: ${data.error || `HTTP ${res.status}`}`);
+        return;
+      }
+      setForm(f => ({ ...f, video_url: data.url }));
+    } catch { setMsg('Erro no upload do vídeo — verifique sua conexão e tente novamente.'); }
+    finally { setUploadingVideo(false); e.target.value = ''; }
   };
 
   const save = async () => {
@@ -103,7 +113,7 @@ export const ManageHero = () => {
         <button className="admin-btn primary" onClick={openNew}>+ Novo Slide</button>
       </div>
 
-      {msg && <div className="admin-alert success">{msg}</div>}
+      {msg && <div className={`admin-alert ${msg.includes('Erro') ? 'red' : 'success'}`}>{msg}</div>}
 
       <div className="admin-items-list">
         {slides.map((s, idx) => (
@@ -130,6 +140,7 @@ export const ManageHero = () => {
               <span>{s.subtitle}</span>
             </div>
             <span className={`admin-badge ${s.active ? 'green' : 'red'}`}>{s.active ? 'Ativo' : 'Inativo'}</span>
+            {s.video_url && <span className="admin-badge" title={s.video_url.split('?')[0].toLowerCase().endsWith('.gif') ? 'GIF animado' : 'Vídeo'}>🎬</span>}
             <div className="admin-item-actions">
               <button className="admin-btn ghost small" onClick={() => openEdit(s)}>Editar</button>
               <button className="admin-btn danger small" onClick={() => remove(s.id)}>&#128465;</button>
@@ -146,13 +157,14 @@ export const ManageHero = () => {
               <button className="admin-modal-close" onClick={() => setModal(false)}>&times;</button>
             </div>
             <div className="admin-form">
+              {msg && <div className={`admin-alert ${msg.includes('Erro') ? 'red' : 'success'}`} style={{ marginBottom: 12 }}>{msg}</div>}
               <div className="admin-field">
                 <label>URL da Imagem</label>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <input value={form.url} onChange={e => setForm({ ...form, url: e.target.value })} placeholder="https://..." style={{ flex: 1 }} />
                   <label className="admin-btn secondary small" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}>
                     {uploading ? 'Enviando...' : 'Upload'}
-                    <input type="file" accept="image/*" onChange={handleUpload} style={{ display: 'none' }} />
+                    <input type="file" accept="image/*,.gif,.png,.jpg,.jpeg,.webp" onChange={handleUpload} style={{ display: 'none' }} />
                   </label>
                 </div>
                 {form.url && <img src={form.url} alt="preview" style={{ marginTop: 8, borderRadius: 8, maxHeight: 120, objectFit: 'cover' }} onError={() => {}} />}
@@ -163,17 +175,19 @@ export const ManageHero = () => {
                   <input value={form.video_url || ''} onChange={e => setForm({ ...form, video_url: e.target.value })} placeholder="https://... ou faça upload" style={{ flex: 1 }} />
                   <label className="admin-btn secondary small" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}>
                     {uploadingVideo ? 'Enviando...' : 'Upload Vídeo'}
-                    <input type="file" accept="video/mp4,video/webm,video/ogg" onChange={handleVideoUpload} style={{ display: 'none' }} />
+                    <input type="file" accept="video/mp4,video/webm,video/ogg,image/gif,.gif,.mp4,.webm,.ogv" onChange={handleVideoUpload} style={{ display: 'none' }} />
                   </label>
                   {form.video_url && (
                     <button className="admin-btn danger small" onClick={() => setForm({ ...form, video_url: '' })} title="Remover vídeo">✕</button>
                   )}
                 </div>
                 {form.video_url && (
-                  <video src={form.video_url} controls style={{ marginTop: 8, borderRadius: 8, maxHeight: 120, width: '100%', objectFit: 'cover' }} />
+                  form.video_url.split('?')[0].toLowerCase().endsWith('.gif')
+                    ? <img src={form.video_url} alt="preview gif" style={{ marginTop: 8, borderRadius: 8, maxHeight: 120, width: '100%', objectFit: 'cover' }} />
+                    : <video src={form.video_url} controls style={{ marginTop: 8, borderRadius: 8, maxHeight: 120, width: '100%', objectFit: 'cover' }} />
                 )}
                 <small style={{ color: 'var(--adm-text2)', fontSize: 11 }}>
-                  Formatos: MP4, WebM. O vídeo aparece apenas no desktop. O vídeo abaixo é o de fundo de desktop, e a imagem acima é o fallback mobile.
+                  Formatos: MP4, WebM, OGG ou GIF. Aparece apenas no desktop (no mobile entra a imagem do slide acima como fallback).
                 </small>
               </div>
               <div className="admin-field"><label>Titulo</label><input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} /></div>

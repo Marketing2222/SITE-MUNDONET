@@ -32,6 +32,7 @@ export const Hero: React.FC = () => {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
 
   useEffect(() => {
     Promise.all([
@@ -42,6 +43,22 @@ export const Hero: React.FC = () => {
       setSiteSettings(settingsData);
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+    videoRefs.current.forEach((v, i) => {
+      if (!v) return;
+      if (i === currentSlide && !isMobile) {
+        v.muted = true;
+        v.preload = 'auto';
+        const p = v.play();
+        if (p) p.catch(() => { /* autoplay bloqueado: imagem de fundo continua visível */ });
+      } else {
+        v.pause();
+      }
+    });
+  }, [currentSlide, loading, slides]);
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -107,17 +124,20 @@ export const Hero: React.FC = () => {
             className={`slide ${index === currentSlide ? 'active' : ''}`}
           >
             <img src={slide.url} alt={slide.title} className="slide-img" />
-            {slide.video_url && (
+            {slide.video_url && slide.video_url.split('?')[0].toLowerCase().endsWith('.gif') ? (
+              <img src={slide.video_url} alt="" className="slide-video" />
+            ) : slide.video_url ? (
               <video
+                ref={el => { videoRefs.current[index] = el; }}
                 className="slide-video"
                 src={slide.video_url}
                 muted
                 loop
                 playsInline
-                preload="none"
+                preload={index === currentSlide ? 'auto' : 'none'}
                 autoPlay={index === currentSlide}
               />
-            )}
+            ) : null}
             <div className="slide-overlay"></div>
             <div className="container slide-content-container">
               <div className="slide-text">
