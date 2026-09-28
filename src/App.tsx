@@ -166,7 +166,8 @@ function PublicSite() {
         })}
       </main>
       <Footer />
-      <div className={`whatsapp-float-wrapper ${!bubbleVisible ? 'bubble-closed' : ''}`}>
+      {sectionsActive?.whatsapp_float !== false && (
+        <div className={`whatsapp-float-wrapper ${!bubbleVisible ? 'bubble-closed' : ''}`}>
         {bubbleText && bubbleVisible && (
           <div
             className="whatsapp-bubble"
@@ -206,9 +207,10 @@ function PublicSite() {
             </svg>
           )}
         </a>
-      </div>
-      <ExitPopup />
-      <CepChecker />
+        </div>
+      )}
+      {sectionsActive?.exit_popup !== false && <ExitPopup />}
+      {sectionsActive?.cep_checker !== false && <CepChecker />}
     </>
   );
 }

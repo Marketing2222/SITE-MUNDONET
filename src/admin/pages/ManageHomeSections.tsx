@@ -260,7 +260,28 @@ const SECTION_DEFS = [
 ];
 
 const DEFAULT_ORDER = SECTION_DEFS.map(s => s.id);
-const DEFAULT_ACTIVE: Record<string, boolean> = Object.fromEntries(SECTION_DEFS.map(s => [s.id, true]));
+
+const TAB_TO_ID: Record<string, string> = {
+  'Links Rápidos (Ajuda)': 'quicklinks',
+  'Benefícios': 'benefits',
+  'Aplicativo Móvel': 'app',
+  'Especialidades': 'specialties',
+  'Entretenimento': 'entertainment',
+  'Planos': 'plans',
+  'Popup de Saída': 'exit_popup',
+  'Botão WhatsApp': 'whatsapp_float',
+  'Banner CTA': 'cta',
+  'Campanhas': 'campaign',
+  'Central de Atendimento': 'support',
+  'Verificador de CEP': 'cep_checker',
+};
+
+const DEFAULT_ACTIVE: Record<string, boolean> = {
+  ...Object.fromEntries(SECTION_DEFS.map(s => [s.id, true])),
+  exit_popup: true,
+  whatsapp_float: true,
+  cep_checker: true,
+};
 
 export const ManageHomeSections = () => {
   const [settings, setSettings] = useState<Record<string, Setting>>({});
@@ -489,8 +510,19 @@ export const ManageHomeSections = () => {
     setSectionOrder(next);
   };
 
+  const persistSectionsActive = async (next: Record<string, boolean>) => {
+    try {
+      await apiFetch('/settings/sections_active', {
+        method: 'PUT',
+        body: JSON.stringify({ value: JSON.stringify(next), label: 'Seções Ativas' })
+      });
+    } catch (e) { console.error(e); }
+  };
+
   const toggleActive = (id: string) => {
-    setSectionsActive(prev => ({ ...prev, [id]: !prev[id] }));
+    const next = { ...sectionsActive, [id]: !(sectionsActive[id] !== false) };
+    setSectionsActive(next);
+    persistSectionsActive(next);
   };
 
   const saveOrder = async () => {
@@ -990,6 +1022,9 @@ export const ManageHomeSections = () => {
     }
   };
 
+  const tabId = TAB_TO_ID[activeTab];
+  const tabIsActive = tabId ? sectionsActive[tabId] !== false : true;
+
   return (
     <div>
       <div className="admin-page-header">
@@ -1059,23 +1094,16 @@ export const ManageHomeSections = () => {
           <span style={{ fontWeight: 600, fontSize: 14 }}>Seção {activeTab}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ color: sectionsActive[Object.keys(SECTIONS).find(k => k === activeTab) || ''] !== false ? 'var(--adm-green)' : 'var(--adm-text2)', fontWeight: 500, fontSize: 13 }}>
-            {sectionsActive[Object.keys(SECTIONS).find(k => k === activeTab) || ''] !== false ? 'Visível no site' : 'Oculta no site'}
+          <span style={{ color: tabIsActive ? 'var(--adm-green)' : 'var(--adm-text2)', fontWeight: 500, fontSize: 13 }}>
+            {tabIsActive ? 'Visível no site' : 'Oculta no site'}
           </span>
           <ToggleSwitch
-            value={sectionsActive[sectionOrder.find(id => SECTION_DEFS.find(s => s.id === id)?.label === activeTab) || ''] !== false}
-            onChange={async () => {
-              const tabId = sectionOrder.find(id => SECTION_DEFS.find(s => s.id === id)?.label === activeTab);
-              if (tabId) {
-                const nextActive = { ...sectionsActive, [tabId]: sectionsActive[tabId] === false ? true : false };
-                setSectionsActive(nextActive);
-                try {
-                  await apiFetch('/settings/sections_active', {
-                    method: 'PUT',
-                    body: JSON.stringify({ value: JSON.stringify(nextActive), label: 'Seções Ativas' })
-                  });
-                } catch (e) { console.error(e); }
-              }
+            value={tabIsActive}
+            onChange={() => {
+              if (!tabId) return;
+              const nextActive = { ...sectionsActive, [tabId]: !tabIsActive };
+              setSectionsActive(nextActive);
+              persistSectionsActive(nextActive);
             }}
           />
         </div>
