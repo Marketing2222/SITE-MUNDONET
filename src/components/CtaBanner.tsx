@@ -30,9 +30,14 @@ export const CtaBanner: React.FC = () => {
   const descColor = s.cta_desc_color || '#d1d5db';
   const contentPosition = s.cta_content_position || 'left';
   const bgImage = s.cta_bg_image || '';
+  const overlayEnabled = s.cta_overlay_enabled !== 'false';
 
   const containerStyle: React.CSSProperties = {
-    background: bgImage ? `linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, transparent 85%), url(${bgImage}) center/cover no-repeat` : `linear-gradient(135deg, ${bg} 0%, ${bg}dd 100%)`,
+    background: bgImage
+      ? (overlayEnabled
+        ? `linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, transparent 85%), url(${bgImage}) center/cover no-repeat`
+        : `url(${bgImage}) center/cover no-repeat`)
+      : `linear-gradient(135deg, ${bg} 0%, ${bg}dd 100%)`,
     backgroundColor: bgImage ? bg : undefined,
     borderRadius: '16px',
     padding: '60px 50px',
