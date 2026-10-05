@@ -1,9 +1,44 @@
 ﻿import { useEffect, useState } from 'react';
+import {
+  DndContext, closestCenter, KeyboardSensor, MouseSensor, TouchSensor,
+  useSensor, useSensors, type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext, arrayMove, sortableKeyboardCoordinates,
+  useSortable, verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { apiFetch, getToken } from '../hooks/useAuth';
 import { API_BASE_URL } from '../../config/api';
 
 interface Slide { id: number; url: string; title: string; subtitle: string; video_url?: string; sort_order: number; active: boolean; }
 const EMPTY: Omit<Slide,'id'> = { url:'', title:'', subtitle:'', video_url:'', sort_order:0, active:true };
+
+const SortableRow = ({ slide, onEdit, onRemove }: { slide: Slide; onEdit: (s: Slide) => void; onRemove: (id: number) => void }) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: slide.id });
+  return (
+    <div
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      className={`admin-item-row${isDragging ? ' dragging' : ''}`}
+      {...attributes}
+      {...listeners}
+    >
+      <span className="admin-item-grip" aria-hidden="true">⋮⋮</span>
+      <img src={slide.url} alt={slide.title} className="admin-item-thumb" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; }} />
+      <div className="admin-item-info">
+        <strong>{slide.title}</strong>
+        <span>{slide.subtitle}</span>
+      </div>
+      <span className={`admin-badge ${slide.active ? 'green' : 'red'}`}>{slide.active ? 'Ativo' : 'Inativo'}</span>
+      {slide.video_url && <span className="admin-badge" title={slide.video_url.split('?')[0].toLowerCase().endsWith('.gif') ? 'GIF animado' : 'Vídeo'}>🎬</span>}
+      <div className="admin-item-actions">
+        <button className="admin-btn ghost small" onClick={() => onEdit(slide)}>Editar</button>
+        <button className="admin-btn danger small" onClick={() => onRemove(slide.id)}>&#128465;</button>
+      </div>
+    </div>
+  );
+};
 
 export const ManageHero = () => {
   const [slides, setSlides] = useState<Slide[]>([]);
@@ -14,6 +49,12 @@ export const ManageHero = () => {
   const [msg, setMsg] = useState('');
   const [uploading, setUploading] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
 
   const load = async () => setSlides(await apiFetch('/hero/all'));
 
@@ -90,63 +131,39 @@ export const ManageHero = () => {
     load();
   };
 
-  const moveSlide = async (id: number, direction: 'up' | 'down') => {
-    const idx = slides.findIndex(s => s.id === id);
-    if (idx === -1) return;
-    const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
-    if (targetIdx < 0 || targetIdx >= slides.length) return;
-    const current = slides[idx];
-    const target = slides[targetIdx];
-    const currentNewOrder = target.sort_order;
-    const targetNewOrder = current.sort_order;
-    await Promise.all([
-      apiFetch(`/hero/${current.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: currentNewOrder }) }),
-      apiFetch(`/hero/${target.id}`, { method: 'PUT', body: JSON.stringify({ sort_order: targetNewOrder }) }),
-    ]);
-    load();
+  const handleDragEnd = async ({ active, over }: DragEndEvent) => {
+    if (!over || active.id === over.id) return;
+    const prev = slides;
+    const oldIndex = prev.findIndex(s => s.id === active.id);
+    const newIndex = prev.findIndex(s => s.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    const next = arrayMove(prev, oldIndex, newIndex).map((s, i) => ({ ...s, sort_order: i }));
+    setSlides(next);
+    try {
+      await apiFetch('/hero/reorder', { method: 'PUT', body: JSON.stringify({ order: next.map(s => s.id) }) });
+    } catch (e) {
+      setSlides(prev);
+      setMsg(`Erro ao salvar a ordem: ${e instanceof Error ? e.message : 'tente novamente'}`);
+    }
   };
 
   return (
     <div>
       <div className="admin-page-header">
-        <div><h2>Banners do Hero</h2><p>Gerencie os slides do carrossel principal do site. Use as setas para definir a ordem.</p></div>
+        <div><h2>Banners do Hero</h2><p>Gerencie os slides do carrossel principal do site. Arraste os slides para definir a ordem.</p></div>
         <button className="admin-btn primary" onClick={openNew}>+ Novo Slide</button>
       </div>
 
       {msg && <div className={`admin-alert ${msg.includes('Erro') ? 'red' : 'success'}`}>{msg}</div>}
 
       <div className="admin-items-list">
-        {slides.map((s, idx) => (
-          <div key={s.id} className="admin-item-row">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginRight: 4, minWidth: 28 }}>
-              <button
-                className="admin-btn ghost small"
-                onClick={() => moveSlide(s.id, 'up')}
-                disabled={idx === 0}
-                style={{ padding: '2px 4px', fontSize: 11, opacity: idx === 0 ? 0.25 : 1, cursor: idx === 0 ? 'default' : 'pointer' }}
-                title="Mover para cima"
-              >&#9650;</button>
-              <button
-                className="admin-btn ghost small"
-                onClick={() => moveSlide(s.id, 'down')}
-                disabled={idx === slides.length - 1}
-                style={{ padding: '2px 4px', fontSize: 11, opacity: idx === slides.length - 1 ? 0.25 : 1, cursor: idx === slides.length - 1 ? 'default' : 'pointer' }}
-                title="Mover para baixo"
-              >&#9660;</button>
-            </div>
-            <img src={s.url} alt={s.title} className="admin-item-thumb" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; }} />
-            <div className="admin-item-info">
-              <strong>{s.title}</strong>
-              <span>{s.subtitle}</span>
-            </div>
-            <span className={`admin-badge ${s.active ? 'green' : 'red'}`}>{s.active ? 'Ativo' : 'Inativo'}</span>
-            {s.video_url && <span className="admin-badge" title={s.video_url.split('?')[0].toLowerCase().endsWith('.gif') ? 'GIF animado' : 'Vídeo'}>🎬</span>}
-            <div className="admin-item-actions">
-              <button className="admin-btn ghost small" onClick={() => openEdit(s)}>Editar</button>
-              <button className="admin-btn danger small" onClick={() => remove(s.id)}>&#128465;</button>
-            </div>
-          </div>
-        ))}
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={slides.map(s => s.id)} strategy={verticalListSortingStrategy}>
+            {slides.map(s => (
+              <SortableRow key={s.id} slide={s} onEdit={openEdit} onRemove={remove} />
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
 
       {modal && (

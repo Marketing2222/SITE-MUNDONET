@@ -21,6 +21,18 @@ router.post('/', authMiddleware, async (req, res) => {
   await db.write();
   res.json({ id, message: 'Slide criado' });
 });
+router.put('/reorder', authMiddleware, async (req, res) => {
+  const { order } = req.body;
+  if (!Array.isArray(order) || order.some(id => !Number.isInteger(+id)))
+    return res.status(400).json({ error: 'Ordem inválida' });
+  const ids = order.map(Number);
+  const slides = db.data[TABLE];
+  if (ids.length !== slides.length || slides.some(s => !ids.includes(s.id)))
+    return res.status(400).json({ error: 'A ordem não corresponde aos slides existentes' });
+  ids.forEach((id, i) => { slides.find(s => s.id === id).sort_order = i; });
+  await db.write();
+  res.json({ message: 'Ordem atualizada' });
+});
 router.put('/:id', authMiddleware, async (req, res) => {
   const id = +req.params.id;
   const idx = db.data[TABLE].findIndex(s => s.id === id);

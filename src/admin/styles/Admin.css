@@ -915,6 +915,28 @@
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
+  cursor: grab;
+  touch-action: manipulation;
+}
+
+.admin-item-row:active {
+  cursor: grabbing;
+}
+
+.admin-item-row.dragging {
+  position: relative;
+  z-index: 2;
+  opacity: 0.55;
+  border-color: var(--adm-accent);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.admin-item-grip {
+  color: var(--adm-text2);
+  font-size: 13px;
+  letter-spacing: 1px;
+  user-select: none;
+  flex-shrink: 0;
 }
 
 .admin-item-thumb {
