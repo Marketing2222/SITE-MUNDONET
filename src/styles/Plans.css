@@ -65,6 +65,7 @@
   display: flex;
   gap: var(--card-gap);
   justify-content: center;
+  justify-content: safe center;
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
@@ -689,6 +690,50 @@
     display: none;
   }
 
+  .plans-dots {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) {
+  .plan-card {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: var(--card-width);
+  }
+
+  .plan-speed-number {
+    font-size: calc(var(--desktop-card-width, var(--card-width)) * 0.275862);
+    letter-spacing: -0.025em;
+  }
+
+  .plan-speed-unit {
+    font-size: calc(var(--desktop-card-width, var(--card-width)) * 0.0772414);
+  }
+
+  .plan-price-bottom-currency {
+    font-size: calc(var(--desktop-card-width, var(--card-width)) * 0.0606897);
+  }
+
+  .plan-price-bottom-value {
+    font-size: calc(var(--desktop-card-width, var(--card-width)) * 0.0882759);
+  }
+
+  .plan-price-consult {
+    font-size: calc(var(--desktop-card-width, var(--card-width)) * 0.0827586);
+  }
+
+  .plan-cta-btn {
+    font-size: max(11px, calc(var(--desktop-card-width, var(--card-width)) * 0.0507586));
+    letter-spacing: 0.068em;
+  }
+
+  .popular-ribbon,
+  .offer-tag-ribbon {
+    font-size: max(9px, calc(var(--desktop-card-width, var(--card-width)) * 0.0375172));
+  }
+
+  .plans-nav,
   .plans-dots {
     display: none;
   }

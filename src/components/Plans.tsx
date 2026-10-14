@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import '../styles/Plans.css';
 import { API_BASE_URL } from '../config/api';
 
@@ -74,6 +74,8 @@ export const Plans = () => {
   const [visible, setVisible] = useState(3);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [desktopCardWidth, setDesktopCardWidth] = useState<number | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -92,14 +94,36 @@ export const Plans = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
+      const width = document.documentElement.clientWidth;
+      const mobile = width <= 768;
       setIsMobile(mobile);
-      setVisible(mobile ? 1 : window.innerWidth <= 1024 ? 2 : 4);
+      setIsDesktop(width > 1024);
+      setVisible(mobile ? 1 : width <= 1024 ? 2 : 4);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useLayoutEffect(() => {
+    const recalc = () => {
+      const wrapper = trackRef.current?.parentElement;
+      if (!isDesktop || plans.length === 0 || !wrapper) {
+        setDesktopCardWidth(null);
+        return;
+      }
+      const available = wrapper.clientWidth;
+      if (available <= 0) return;
+      const styles = getComputedStyle(document.documentElement);
+      const maxWidth = parseFloat(styles.getPropertyValue('--card-width')) || 290;
+      const gap = parseFloat(styles.getPropertyValue('--card-gap')) || 20;
+      const width = Math.min(maxWidth, (available - (plans.length - 1) * gap) / plans.length);
+      setDesktopCardWidth(width);
+    };
+    recalc();
+    window.addEventListener('resize', recalc);
+    return () => window.removeEventListener('resize', recalc);
+  }, [isDesktop, plans.length]);
 
   if (loading) return <section id="internet" className="plans-section" style={{ padding: '60px 20px', background: sectionColors.plans_bg_color || '#0a0a1a' }} />;
   if (plans.length === 0) return null;
@@ -111,12 +135,12 @@ export const Plans = () => {
   const next = () => setCurrentIndex((i) => Math.min(maxIndex, i + 1));
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (isMobile) return;
+    if (isMobile || isDesktop) return;
     setTouchStart(e.targetTouches[0].clientX);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (isMobile || touchStart === null) return;
+    if (isMobile || isDesktop || touchStart === null) return;
     const touchEnd = e.changedTouches[0].clientX;
     const distance = touchStart - touchEnd;
     const swipeThreshold = 50;
@@ -161,10 +185,13 @@ export const Plans = () => {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             style={{
-              transform: (!isMobile && needsScroll)
+              transform: (!isMobile && !isDesktop && needsScroll)
                 ? `translateX(calc(-${currentIndex} * (var(--card-width) + var(--card-gap))))`
-                : 'none'
-            }}
+                : 'none',
+              ...(desktopCardWidth != null
+                ? { '--desktop-card-width': `${desktopCardWidth}px` }
+                : {})
+            } as React.CSSProperties}
           >
             {plans.map((plan, i) => (
               <div 
