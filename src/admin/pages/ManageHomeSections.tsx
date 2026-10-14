@@ -244,6 +244,12 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'cep_checker_invalid_msg', label: 'Mensagem — CEP inválido', type: 'text', hint: 'Ex: CEP inválido, tente novamente.' },
     { key: 'cep_checker_whatsapp_link', label: 'Link do WhatsApp', type: 'url' },
   ],
+  'Webchat': [
+    { key: 'webchat_token', label: 'Token da Conta OPA', type: 'text', hint: 'ID da conta fornecido pelo OPA Suite' },
+    { key: 'webchat_url', label: 'URL do Servidor OPA', type: 'url', hint: 'Padrão: https://opasuite.mundonetbandalarga.com.br' },
+    { key: 'webchat_anonimo', label: 'Permitir acesso sem login', type: 'toggle' },
+    { key: 'webchat_css', label: 'CSS Personalizado', type: 'plain-textarea', hint: 'Ex: .opa_chat{border-radius:16px} — o botão próprio do OPA fica oculto; o chat abre pelo botão flutuante.' },
+  ],
 };
 
 const SECTION_DEFS = [
@@ -275,6 +281,7 @@ const TAB_TO_ID: Record<string, string> = {
   'Campanhas': 'campaign',
   'Central de Atendimento': 'support',
   'Verificador de CEP': 'cep_checker',
+  'Webchat': 'webchat',
 };
 
 const DEFAULT_ACTIVE: Record<string, boolean> = {
@@ -282,6 +289,7 @@ const DEFAULT_ACTIVE: Record<string, boolean> = {
   exit_popup: true,
   whatsapp_float: true,
   cep_checker: true,
+  webchat: true,
 };
 
 export const ManageHomeSections = () => {

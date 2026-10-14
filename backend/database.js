@@ -860,6 +860,19 @@ export async function initDB() {
     }
   }
 
+  // ── Migração: Webchat (OPA Suite) ──
+  const webchatSettings = [
+    { key:'webchat_token', value:'6aca54df3fdc68516efe4e26', label:'Webchat: Token da Conta OPA' },
+    { key:'webchat_url', value:'https://opasuite.mundonetbandalarga.com.br', label:'Webchat: URL do Servidor OPA' },
+    { key:'webchat_anonimo', value:'true', label:'Webchat: Permitir acesso sem login' },
+    { key:'webchat_css', value:'', label:'Webchat: CSS Personalizado' },
+  ];
+  for (const s of webchatSettings) {
+    if (!db.data.site_settings.find(x => x.key === s.key)) {
+      db.data.site_settings.push({ id: db.nextId('site_settings'), ...s });
+    }
+  }
+
   // ── Migração forçada: adicionar 'campaign' nas listas existentes ──
   const migrationKeys = ['sections_order', 'sections_active', 'sections_mobile_active'];
   for (const key of migrationKeys) {

@@ -19,6 +19,7 @@ import Contact from './components/Contact';
 import ExitPopup from './components/ExitPopup';
 import CepChecker from './components/CepChecker';
 import Webchat from './components/Webchat';
+import { openOpaChat } from './utils/webchat';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
 import IndiqueGanhe from './components/IndiqueGanhe';
@@ -64,6 +65,11 @@ function PublicSite() {
   const [sectionOrder, setSectionOrder] = useState<string[] | null>(null);
   const [sectionsActive, setSectionsActive] = useState<Record<string, boolean> | null>(null);
   const [sectionsMobile, setSectionsMobile] = useState<Record<string, boolean> | null>(null);
+  const [webchatReady, setWebchatReady] = useState(false);
+  const [webchatToken, setWebchatToken] = useState('');
+  const [webchatUrl, setWebchatUrl] = useState('');
+  const [webchatAnonimo, setWebchatAnonimo] = useState(true);
+  const [webchatCss, setWebchatCss] = useState('');
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`)
@@ -121,8 +127,13 @@ function PublicSite() {
             if (typeof parsed === 'object' && parsed !== null) setSectionsMobile(parsed);
           } catch { /* use default */ }
         }
+        if (data.webchat_token?.value) setWebchatToken(data.webchat_token.value);
+        if (data.webchat_url?.value) setWebchatUrl(data.webchat_url.value);
+        if (data.webchat_anonimo?.value) setWebchatAnonimo(data.webchat_anonimo.value !== 'false');
+        if (data.webchat_css?.value) setWebchatCss(data.webchat_css.value);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setWebchatReady(true));
   }, []);
 
   const componentMap: Record<string, React.ReactNode> = {
@@ -193,6 +204,9 @@ function PublicSite() {
           rel="noreferrer"
           className={`whatsapp-float ${floatImage ? 'whatsapp-float--custom' : ''} animate-fade-in`}
           aria-label="Falar pelo WhatsApp"
+          onClick={(e) => {
+            if (sectionsActive?.webchat !== false && openOpaChat()) e.preventDefault();
+          }}
           style={{
             backgroundColor: floatImage ? 'transparent' : floatColor,
             width: floatImage ? 'auto' : floatSize,
@@ -212,7 +226,15 @@ function PublicSite() {
       )}
       {sectionsActive && sectionsActive.exit_popup !== false && <ExitPopup />}
       {sectionsActive?.cep_checker !== false && <CepChecker />}
-      {sectionsActive?.webchat !== false && <Webchat />}
+      {webchatReady && sectionsActive?.webchat !== false && (
+        <Webchat
+          baseUrl={webchatUrl}
+          token={webchatToken}
+          anonimo={webchatAnonimo}
+          customCss={webchatCss}
+          hideIcon={sectionsActive?.whatsapp_float !== false}
+        />
+      )}
     </>
   );
 }
