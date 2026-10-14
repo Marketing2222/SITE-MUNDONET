@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teste Webchat OPA</title>
+</head>
+<body>
+  <h1>Teste do webchat (página isolada, sem React)</h1>
+  <p>Se o widget aparecer no canto inferior direito, o problema está na integração React. Se não aparecer, é bloqueio de rede/adblock.</p>
+  <script>
+    console.log('[teste] injetando opa.js...');
+    var a = document.createElement('script');
+    a.async = true;
+    a.src = 'https://opasuite.mundonetbandalarga.com.br/js/opa.js';
+    document.head.appendChild(a);
+    a.onload = function () {
+      console.log('[teste] opa.js carregado. typeof opa =', typeof opa);
+      try {
+        opa.init(
+          'https://opasuite.mundonetbandalarga.com.br',
+          '6aca54df3fdc68516efe4e26',
+          JSON.stringify({
+            permitir_login_anonimo: 'on',
+            facebook_appid: '',
+            google_credential: '',
+            google_oauth: ''
+          })
+        );
+        setTimeout(function () {
+          var ico = document.querySelector('.opa_ico');
+          console.log('[teste] init chamado. ícone .opa_ico presente =', !!ico);
+          document.title = ico ? 'TESTE OK - icone criado' : 'TESTE FALHOU - sem icone';
+        }, 500);
+      } catch (e) {
+        console.error('[teste] ERRO no init:', e);
+        document.title = 'TESTE FALHOU - erro no init';
+      }
+    };
+    a.onerror = function () {
+      console.error('[teste] FALHA ao carregar opa.js (bloqueado por rede/adblock?)');
+      document.title = 'TESTE FALHOU - script bloqueado';
+    };
+  </script>
+</body>
+</html>

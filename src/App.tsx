@@ -18,6 +18,7 @@ import Benefits from './components/Benefits';
 import Contact from './components/Contact';
 import ExitPopup from './components/ExitPopup';
 import CepChecker from './components/CepChecker';
+import Webchat from './components/Webchat';
 import Footer from './components/Footer';
 import LandingPage from './components/LandingPage';
 import IndiqueGanhe from './components/IndiqueGanhe';
@@ -211,6 +212,7 @@ function PublicSite() {
       )}
       {sectionsActive && sectionsActive.exit_popup !== false && <ExitPopup />}
       {sectionsActive?.cep_checker !== false && <CepChecker />}
+      {sectionsActive?.webchat !== false && <Webchat />}
     </>
   );
 }
