@@ -209,7 +209,7 @@ function PublicSite() {
         </a>
         </div>
       )}
-      {sectionsActive?.exit_popup !== false && <ExitPopup />}
+      {sectionsActive && sectionsActive.exit_popup !== false && <ExitPopup />}
       {sectionsActive?.cep_checker !== false && <CepChecker />}
     </>
   );

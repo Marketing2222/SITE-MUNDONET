@@ -587,9 +587,10 @@ export const ManageHomeSections = () => {
     setSaving(true);
     setMsg('');
     try {
-      const updates = Object.values(settings).map(s => ({
-        key: s.key, value: s.value, label: s.label
-      }));
+      const META_KEYS = new Set(['sections_order', 'sections_active', 'sections_mobile_active', 'exit_popup_cards']);
+      const updates = Object.values(settings)
+        .filter(s => !META_KEYS.has(s.key))
+        .map(s => ({ key: s.key, value: s.value, label: s.label }));
       await apiFetch('/settings/batch', {
         method: 'PUT',
         body: JSON.stringify({ settings: updates })
