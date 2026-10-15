@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const DEFAULT_BASE = 'https://opasuite.mundonetbandalarga.com.br';
 const DEFAULT_TOKEN = '6aca54df3fdc68516efe4e26';
@@ -18,13 +18,18 @@ export interface WebchatProps {
   baseUrl?: string;
   token?: string;
   anonimo?: boolean;
+  welcome?: string;
   customCss?: string;
   hideIcon?: boolean;
 }
 
-export default function Webchat({ baseUrl, token, anonimo = true, customCss = '', hideIcon = true }: WebchatProps) {
+export default function Webchat({ baseUrl, token, anonimo = true, welcome = '', customCss = '', hideIcon = true }: WebchatProps) {
   const base = baseUrl?.trim() || DEFAULT_BASE;
   const tok = token?.trim() || DEFAULT_TOKEN;
+  const welcomeRef = useRef(welcome);
+  useEffect(() => {
+    welcomeRef.current = welcome;
+  }, [welcome]);
 
   useEffect(() => {
     let style = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
@@ -40,6 +45,63 @@ export default function Webchat({ baseUrl, token, anonimo = true, customCss = ''
       if (s) s.textContent = '.opa_ico { display: none !important; }';
     };
   }, [hideIcon, customCss]);
+
+  useEffect(() => {
+    // 1) pula a tela "Continuar sem efetuar login" clicando sozinho
+    // 2) injeta a mensagem de boas-vindas no corpo do chat quando ele abre
+    let skipped = false;
+    let welcomed = false;
+    let welcomeTimer: number | undefined;
+
+    const observer = new MutationObserver(() => {
+      const semLogin = document.querySelector('.sem-login') as HTMLElement | null;
+      if (semLogin) {
+        if (!skipped) {
+          skipped = true;
+          semLogin.click();
+        }
+      } else {
+        skipped = false;
+      }
+
+      const corpo = document.querySelector('.opa_corpo');
+      if (!corpo) {
+        welcomed = false;
+        if (welcomeTimer) {
+          clearTimeout(welcomeTimer);
+          welcomeTimer = undefined;
+        }
+        return;
+      }
+      if (!welcomed && welcomeRef.current.trim()) {
+        welcomed = true;
+        welcomeTimer = window.setTimeout(() => {
+          welcomeTimer = undefined;
+          const c = document.querySelector('.opa_corpo');
+          if (!c || !welcomeRef.current.trim()) return;
+          const wrap = document.createElement('div');
+          wrap.style.position = 'relative';
+          wrap.style.textAlign = 'left';
+          const ballon = document.createElement('div');
+          ballon.className = 'opa_ballon recebida';
+          ballon.style.textAlign = 'left';
+          ballon.style.whiteSpace = 'pre-wrap';
+          ballon.textContent = welcomeRef.current;
+          const time = document.createElement('div');
+          time.className = 'time';
+          time.style.paddingLeft = '5px';
+          time.style.textAlign = 'left';
+          time.textContent = `Mundonet - ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+          ballon.appendChild(time);
+          wrap.appendChild(ballon);
+          c.appendChild(wrap);
+          ballon.scrollIntoView({ block: 'nearest' });
+        }, 400);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (scriptInjected) return;

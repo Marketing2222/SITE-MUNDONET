@@ -69,6 +69,7 @@ function PublicSite() {
   const [webchatToken, setWebchatToken] = useState('');
   const [webchatUrl, setWebchatUrl] = useState('');
   const [webchatAnonimo, setWebchatAnonimo] = useState(true);
+  const [webchatWelcome, setWebchatWelcome] = useState('');
   const [webchatCss, setWebchatCss] = useState('');
 
   useEffect(() => {
@@ -130,6 +131,7 @@ function PublicSite() {
         if (data.webchat_token?.value) setWebchatToken(data.webchat_token.value);
         if (data.webchat_url?.value) setWebchatUrl(data.webchat_url.value);
         if (data.webchat_anonimo?.value) setWebchatAnonimo(data.webchat_anonimo.value !== 'false');
+        if (data.webchat_welcome?.value) setWebchatWelcome(data.webchat_welcome.value);
         if (data.webchat_css?.value) setWebchatCss(data.webchat_css.value);
       })
       .catch(console.error)
@@ -231,6 +233,7 @@ function PublicSite() {
           baseUrl={webchatUrl}
           token={webchatToken}
           anonimo={webchatAnonimo}
+          welcome={webchatWelcome}
           customCss={webchatCss}
           hideIcon={sectionsActive?.whatsapp_float !== false}
         />

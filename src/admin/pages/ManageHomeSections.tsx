@@ -248,6 +248,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'webchat_token', label: 'Token da Conta OPA', type: 'text', hint: 'ID da conta fornecido pelo OPA Suite' },
     { key: 'webchat_url', label: 'URL do Servidor OPA', type: 'url', hint: 'Padrão: https://opasuite.mundonetbandalarga.com.br' },
     { key: 'webchat_anonimo', label: 'Permitir acesso sem login', type: 'toggle' },
+    { key: 'webchat_welcome', label: 'Mensagem de Boas-vindas', type: 'plain-textarea', hint: 'Exibida automaticamente quando o visitante abre o chat. Vazio = sem mensagem.' },
     { key: 'webchat_css', label: 'CSS Personalizado', type: 'plain-textarea', hint: 'Ex: .opa_chat{border-radius:16px} — o botão próprio do OPA fica oculto; o chat abre pelo botão flutuante.' },
   ],
 };
