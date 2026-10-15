@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react';
 const DEFAULT_BASE = 'https://opasuite.mundonetbandalarga.com.br';
 const DEFAULT_TOKEN = '6aca54df3fdc68516efe4e26';
 const STYLE_ID = 'webchat-style';
+const NAME_KEY = 'webchat_name';
+const ID_KEY = 'webchat_user_id';
 
 declare global {
   // opa é um const de script clássico: existe no escopo global léxico, mas NÃO em window/globalThis
@@ -11,8 +13,50 @@ declare global {
     | undefined;
 }
 
+type OpaSocket = { emit: (event: string, ...args: unknown[]) => void };
+
 let scriptInjected = false;
 let opaInitialized = false;
+
+const getSavedName = () => localStorage.getItem(NAME_KEY) || '';
+
+const getUserId = () => {
+  let id = localStorage.getItem(ID_KEY);
+  if (!id) {
+    id = typeof crypto !== 'undefined' && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    localStorage.setItem(ID_KEY, id);
+  }
+  return id;
+};
+
+const getOpaSocket = (): OpaSocket | undefined => {
+  const sock = typeof opa !== 'undefined' ? opa?.socket : undefined;
+  return sock && typeof (sock as OpaSocket).emit === 'function' ? (sock as OpaSocket) : undefined;
+};
+
+// injeta dadosLogin (nome) em toda mensagem enviada pelo campo do chat
+const patchSocket = (sock: OpaSocket) => {
+  const target = sock as OpaSocket & { __webchatPatched?: boolean };
+  if (target.__webchatPatched) return;
+  target.__webchatPatched = true;
+  const original = sock.emit.bind(sock);
+  sock.emit = (event: string, ...args: unknown[]) => {
+    if (event === 'mensagem' && args.length >= 3) {
+      const payload = args[2] as { dadosLogin?: unknown } | undefined;
+      if (payload && !payload.dadosLogin && getSavedName()) {
+        payload.dadosLogin = {
+          idWebPage: getUserId(),
+          nomeUsuario: getSavedName(),
+          email: '',
+          imagemPerfil: '',
+        };
+      }
+    }
+    return original(event, ...args);
+  };
+};
 
 export interface WebchatProps {
   baseUrl?: string;
@@ -47,26 +91,112 @@ export default function Webchat({ baseUrl, token, anonimo = true, welcome = '', 
   }, [hideIcon, customCss]);
 
   useEffect(() => {
-    // 1) pula a tela "Continuar sem efetuar login" — só após o socket do OPA estar pronto,
-    //    senão chat_rodape() trava e o campo de mensagem nunca é criado
-    // 2) injeta a mensagem de boas-vindas no corpo do chat quando ele abre
+    // 1) pede o nome do visitante antes de abrir o chat (uma vez; depois salva no navegador)
+    // 2) pula a tela "Continuar sem efetuar login" só com o socket OPA pronto
+    // 3) envia o nome pro atendente (set_id_opa_user + dadosLogin nas mensagens)
+    // 4) injeta a mensagem de boas-vindas (suporta {nome})
     let skipped = false;
     let welcomed = false;
     let welcomeTimer: number | undefined;
 
+    const ensureGate = (corpo: Element, socketReady: boolean) => {
+      let gate = corpo.querySelector('.webchat-name-gate') as HTMLElement | null;
+      if (!gate) {
+        gate = document.createElement('div');
+        gate.className = 'webchat-name-gate';
+        gate.style.cssText = 'padding:28px 20px;text-align:center;';
+        const p = document.createElement('p');
+        p.style.cssText = 'margin:0 0 14px;color:#555;font-size:14px;';
+        p.textContent = 'Antes de começar, qual seu nome?';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.maxLength = 60;
+        input.placeholder = 'Seu nome';
+        input.style.cssText = 'width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px;outline:none;';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'width:100%;padding:10px 12px;border:0;border-radius:8px;background:#005CFF;color:#fff;font-size:14px;font-weight:600;cursor:pointer;';
+        const submit = () => {
+          const nome = input.value.trim();
+          if (!nome) {
+            input.focus();
+            return;
+          }
+          const sock = getOpaSocket();
+          if (!sock) return; // ainda conectando; botão fica desabilitado até lá
+          localStorage.setItem(NAME_KEY, nome);
+          patchSocket(sock);
+          try {
+            sock.emit('set_id_opa_user', getUserId());
+          } catch { /* ignore */ }
+          gate?.remove();
+          const link = document.querySelector('.sem-login') as HTMLElement | null;
+          link?.click();
+          window.setTimeout(() => {
+            try {
+              sock.emit('mensagem', '', '', {
+                tipo: 'texto',
+                conteudo: `Meu nome é ${nome}`,
+                dadosLogin: {
+                  idWebPage: getUserId(),
+                  nomeUsuario: nome,
+                  email: '',
+                  imagemPerfil: '',
+                },
+              });
+            } catch { /* ignore */ }
+          }, 700);
+        };
+        btn.addEventListener('click', submit);
+        input.addEventListener('keydown', e => {
+          if (e.key === 'Enter') submit();
+        });
+        gate.append(p, input, btn);
+        corpo.appendChild(gate);
+        input.focus();
+      }
+      const btn = gate.querySelector('button') as HTMLButtonElement | null;
+      if (btn) {
+        btn.disabled = !socketReady;
+        btn.textContent = socketReady ? 'Começar conversa' : 'Conectando...';
+        btn.style.opacity = socketReady ? '1' : '0.6';
+      }
+    };
+
     const tick = () => {
+      const sock = getOpaSocket();
+      const socketReady = !!sock;
       const semLogin = document.querySelector('.sem-login') as HTMLElement | null;
+      const savedName = getSavedName();
+      const corpo = document.querySelector('.opa_corpo');
+
+      if (sock) {
+        patchSocket(sock);
+        if (savedName) {
+          try {
+            sock.emit('set_id_opa_user', getUserId());
+          } catch { /* ignore */ }
+        }
+      }
+
       if (semLogin) {
-        const socketReady = typeof opa !== 'undefined' && !!opa?.socket;
-        if (socketReady && !skipped) {
-          skipped = true;
-          semLogin.click();
+        if (!savedName) {
+          skipped = false;
+          const logins = document.querySelector('.div-logins') as HTMLElement | null;
+          if (logins) logins.style.display = 'none';
+          if (corpo) ensureGate(corpo, socketReady);
+        } else {
+          const gateEl = document.querySelector('.webchat-name-gate');
+          if (gateEl) gateEl.remove();
+          if (socketReady && !skipped) {
+            skipped = true;
+            semLogin.click();
+          }
         }
       } else {
         skipped = false;
       }
 
-      const corpo = document.querySelector('.opa_corpo');
       if (!corpo) {
         welcomed = false;
         if (welcomeTimer) {
@@ -75,12 +205,13 @@ export default function Webchat({ baseUrl, token, anonimo = true, welcome = '', 
         }
         return;
       }
-      if (!welcomed && welcomeRef.current.trim()) {
+      if (!welcomed && welcomeRef.current.trim() && getSavedName()) {
         welcomed = true;
         welcomeTimer = window.setTimeout(() => {
           welcomeTimer = undefined;
           const c = document.querySelector('.opa_corpo');
-          if (!c || !welcomeRef.current.trim()) return;
+          const nome = getSavedName();
+          if (!c || !welcomeRef.current.trim() || !nome) return;
           const wrap = document.createElement('div');
           wrap.style.position = 'relative';
           wrap.style.textAlign = 'left';
@@ -88,7 +219,7 @@ export default function Webchat({ baseUrl, token, anonimo = true, welcome = '', 
           ballon.className = 'opa_ballon recebida';
           ballon.style.textAlign = 'left';
           ballon.style.whiteSpace = 'pre-wrap';
-          ballon.textContent = welcomeRef.current;
+          ballon.textContent = welcomeRef.current.replace(/{nome}/gi, nome);
           const time = document.createElement('div');
           time.className = 'time';
           time.style.paddingLeft = '5px';
@@ -98,7 +229,7 @@ export default function Webchat({ baseUrl, token, anonimo = true, welcome = '', 
           wrap.appendChild(ballon);
           c.appendChild(wrap);
           ballon.scrollIntoView({ block: 'nearest' });
-        }, 400);
+        }, 300);
       }
     };
 
