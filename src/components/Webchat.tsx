@@ -7,7 +7,7 @@ const STYLE_ID = 'webchat-style';
 declare global {
   // opa é um const de script clássico: existe no escopo global léxico, mas NÃO em window/globalThis
   var opa:
-    | { init: (base: string, id: string, config: string) => void }
+    | { init: (base: string, id: string, config: string) => void; socket?: unknown }
     | undefined;
 }
 
@@ -47,16 +47,18 @@ export default function Webchat({ baseUrl, token, anonimo = true, welcome = '', 
   }, [hideIcon, customCss]);
 
   useEffect(() => {
-    // 1) pula a tela "Continuar sem efetuar login" clicando sozinho
+    // 1) pula a tela "Continuar sem efetuar login" — só após o socket do OPA estar pronto,
+    //    senão chat_rodape() trava e o campo de mensagem nunca é criado
     // 2) injeta a mensagem de boas-vindas no corpo do chat quando ele abre
     let skipped = false;
     let welcomed = false;
     let welcomeTimer: number | undefined;
 
-    const observer = new MutationObserver(() => {
+    const tick = () => {
       const semLogin = document.querySelector('.sem-login') as HTMLElement | null;
       if (semLogin) {
-        if (!skipped) {
+        const socketReady = typeof opa !== 'undefined' && !!opa?.socket;
+        if (socketReady && !skipped) {
           skipped = true;
           semLogin.click();
         }
@@ -98,9 +100,13 @@ export default function Webchat({ baseUrl, token, anonimo = true, welcome = '', 
           ballon.scrollIntoView({ block: 'nearest' });
         }, 400);
       }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    };
+
+    const interval = window.setInterval(tick, 200);
+    return () => {
+      window.clearInterval(interval);
+      if (welcomeTimer) clearTimeout(welcomeTimer);
+    };
   }, []);
 
   useEffect(() => {
