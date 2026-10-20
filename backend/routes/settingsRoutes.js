@@ -94,13 +94,26 @@ router.put('/batch', authMiddleware, async (req, res) => {
   res.json({ message: 'Configurações salvas', count: settings.length, created, updated });
 });
 router.put('/:key', authMiddleware, async (req, res) => {
-  const { value, label } = req.body;
+  const { value, label, patch } = req.body;
   const idx = db.data[TABLE].findIndex(s => s.key === req.params.key);
+  // patch: mescla o JSON parcial recebido sobre o valor atual do banco
+  // (evita que uma aba/celular defasado regrave valores antigos de outras chaves)
+  let newValue = value;
+  if (patch === true) {
+    try {
+      const incoming = JSON.parse(value);
+      const existing = idx !== -1 ? JSON.parse(db.data[TABLE][idx].value) : {};
+      if (incoming && typeof incoming === 'object' && !Array.isArray(incoming)
+        && existing && typeof existing === 'object' && !Array.isArray(existing)) {
+        newValue = JSON.stringify({ ...existing, ...incoming });
+      }
+    } catch { /* mantém value bruto */ }
+  }
   if (idx !== -1) {
-    db.data[TABLE][idx] = { ...db.data[TABLE][idx], value, label };
+    db.data[TABLE][idx] = { ...db.data[TABLE][idx], value: newValue, label };
   } else {
     const id = db.data[TABLE].length ? Math.max(...db.data[TABLE].map(i=>i.id))+1 : 1;
-    db.data[TABLE].push({ id, key: req.params.key, value, label });
+    db.data[TABLE].push({ id, key: req.params.key, value: newValue, label });
   }
   await safeWrite();
   try {

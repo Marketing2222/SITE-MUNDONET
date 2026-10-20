@@ -874,6 +874,21 @@ export async function initDB() {
     }
   }
 
+  // ── Dedup: remove chaves duplicadas em site_settings (mantém a última ocorrência) ──
+  {
+    const byKey = new Map();
+    let hasDup = false;
+    for (const s of db.data.site_settings) {
+      if (byKey.has(s.key)) hasDup = true;
+      byKey.set(s.key, s);
+    }
+    if (hasDup) {
+      db.data.site_settings = [...byKey.values()];
+      db.data.site_settings.forEach((s, i) => { s.id = i + 1; });
+      console.log('  → site_settings deduplicado por key');
+    }
+  }
+
   // ── Migração forçada: adicionar 'campaign' nas listas existentes ──
   const migrationKeys = ['sections_order', 'sections_active', 'sections_mobile_active'];
   for (const key of migrationKeys) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { apiFetch, getToken } from '../hooks/useAuth';
 import ManageQuickLinks from './ManageQuickLinks';
 import ManageBenefits from './ManageBenefits';
@@ -313,6 +313,9 @@ export const ManageHomeSections = () => {
   const [cepViewFilter, setCepViewFilter] = useState('');
   const [cepViewSelected, setCepViewSelected] = useState<Set<string>>(new Set());
   const [cepTagsExpanded, setCepTagsExpanded] = useState(false);
+  // snapshots do que foi carregado do servidor — usados pra enviar só as diferenças (patch)
+  const loadedActiveRef = useRef<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
+  const loadedMobileRef = useRef<Record<string, boolean>>({ ...DEFAULT_ACTIVE });
 
   const searchCepByAddress = async () => {
     const q = cepSearchQuery.trim();
@@ -490,13 +493,21 @@ export const ManageHomeSections = () => {
       if (data.sections_active?.value) {
         try {
           const parsed = JSON.parse(data.sections_active.value);
-          if (typeof parsed === 'object' && parsed !== null) setSectionsActive({ ...DEFAULT_ACTIVE, ...parsed });
+          if (typeof parsed === 'object' && parsed !== null) {
+            const merged = { ...DEFAULT_ACTIVE, ...parsed };
+            setSectionsActive(merged);
+            loadedActiveRef.current = merged;
+          }
         } catch { /* use default */ }
       }
       if (data.sections_mobile_active?.value) {
         try {
           const parsed = JSON.parse(data.sections_mobile_active.value);
-          if (typeof parsed === 'object' && parsed !== null) setSectionsMobile({ ...DEFAULT_ACTIVE, ...parsed });
+          if (typeof parsed === 'object' && parsed !== null) {
+            const merged = { ...DEFAULT_ACTIVE, ...parsed };
+            setSectionsMobile(merged);
+            loadedMobileRef.current = merged;
+          }
         } catch { /* use default */ }
       }
       if (data.exit_popup_cards?.value) {
@@ -520,38 +531,60 @@ export const ManageHomeSections = () => {
     setSectionOrder(next);
   };
 
-  const persistSectionsActive = async (next: Record<string, boolean>) => {
+  // patch: envia só as chaves alteradas; o servidor mescla no valor atual
+  // (impede que aba/celular defasado regrave valores antigos de outras chaves)
+  const persistSectionsActive = async (patch: Record<string, boolean>) => {
+    if (Object.keys(patch).length === 0) return;
     try {
       await apiFetch('/settings/sections_active', {
         method: 'PUT',
-        body: JSON.stringify({ value: JSON.stringify(next), label: 'Seções Ativas' })
+        body: JSON.stringify({ value: JSON.stringify(patch), label: 'Seções Ativas', patch: true })
       });
     } catch (e) { console.error(e); }
+  };
+
+  const diffActive = (current: Record<string, boolean>, loaded: Record<string, boolean>): Record<string, boolean> => {
+    const patch: Record<string, boolean> = {};
+    const keys = new Set([...Object.keys(current), ...Object.keys(loaded)]);
+    for (const k of keys) {
+      if ((current[k] !== false) !== (loaded[k] !== false)) patch[k] = current[k] !== false;
+    }
+    return patch;
   };
 
   const toggleActive = (id: string) => {
     const next = { ...sectionsActive, [id]: !(sectionsActive[id] !== false) };
     setSectionsActive(next);
-    persistSectionsActive(next);
+    loadedActiveRef.current = next;
+    persistSectionsActive({ [id]: next[id] !== false });
   };
 
   const saveOrder = async () => {
     setSaving(true);
     try {
-      await Promise.all([
+      const activePatch = diffActive(sectionsActive, loadedActiveRef.current);
+      const mobilePatch = diffActive(sectionsMobile, loadedMobileRef.current);
+      const requests: Promise<unknown>[] = [
         apiFetch('/settings/sections_order', {
           method: 'PUT',
           body: JSON.stringify({ value: JSON.stringify(sectionOrder), label: 'Ordem das Seções' })
-        }),
-        apiFetch('/settings/sections_active', {
-          method: 'PUT',
-          body: JSON.stringify({ value: JSON.stringify(sectionsActive), label: 'Seções Ativas' })
-        }),
-        apiFetch('/settings/sections_mobile_active', {
-          method: 'PUT',
-          body: JSON.stringify({ value: JSON.stringify(sectionsMobile), label: 'Seções Ativas no Mobile' })
         })
-      ]);
+      ];
+      if (Object.keys(activePatch).length > 0) {
+        requests.push(apiFetch('/settings/sections_active', {
+          method: 'PUT',
+          body: JSON.stringify({ value: JSON.stringify(activePatch), label: 'Seções Ativas', patch: true })
+        }));
+      }
+      if (Object.keys(mobilePatch).length > 0) {
+        requests.push(apiFetch('/settings/sections_mobile_active', {
+          method: 'PUT',
+          body: JSON.stringify({ value: JSON.stringify(mobilePatch), label: 'Seções Ativas no Mobile', patch: true })
+        }));
+      }
+      await Promise.all(requests);
+      loadedActiveRef.current = { ...sectionsActive };
+      loadedMobileRef.current = { ...sectionsMobile };
       setMsg('Ordem, visibilidade e mobile salvos com sucesso!');
       setTimeout(() => setMsg(''), 3000);
     } catch (e: unknown) {
@@ -1114,7 +1147,8 @@ export const ManageHomeSections = () => {
               if (!tabId) return;
               const nextActive = { ...sectionsActive, [tabId]: !tabIsActive };
               setSectionsActive(nextActive);
-              persistSectionsActive(nextActive);
+              loadedActiveRef.current = nextActive;
+              persistSectionsActive({ [tabId]: !tabIsActive });
             }}
           />
         </div>
