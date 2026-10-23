@@ -16,6 +16,13 @@ const DEFAULT_NAV: NavItem[] = [
   { id: 'mais', label: 'MAIS', href: '#mais', target: '_self', hasDropdown: true, items: [{ id: 'm1', label: 'Contrato', href: 'https://drive.google.com/file/d/1t5XomND_mju6X07q1I3HFfQpdb81PXwJ/view?usp=sharing', target: '_blank' }, { id: 'm2', label: 'Contato', href: '#contact', target: '_self' }] },
 ];
 
+const NAVBAR_TRIM_PX = 12;
+
+const parseHeaderHeight = (raw: string | undefined): number => {
+  const parsed = parseInt(raw || '80', 10);
+  return Math.max(56, (isNaN(parsed) ? 80 : parsed) - NAVBAR_TRIM_PX);
+};
+
 export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,7 +53,7 @@ export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
         }
       }
       if (gk('header_height')) {
-        document.documentElement.style.setProperty('--header-height', gk('header_height')! + 'px');
+        document.documentElement.style.setProperty('--header-height', parseHeaderHeight(gk('header_height')) + 'px');
       }
       if (gk('nav_menu')) {
         try { setNavItems(JSON.parse(gk('nav_menu')!)); } catch { /* use default */ }
@@ -69,7 +76,7 @@ export const Header: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
   const topbarBg = g('header_topbar_bg') || '#001a4d';
   const topbarText = g('header_topbar_text') || '#ffffff';
   const headerFont = g('header_font') || '';
-  const headerHeight = g('header_height') || '80';
+  const headerHeight = String(parseHeaderHeight(g('header_height')));
   const portalUrl = g('header_portal_url') || 'https://ixc.mundonetbandalarga.com.br/central_assinante_web/login';
   const portalText = g('header_portal_text') || 'Portal do Assinante';
   const portalBg = g('header_portal_bg') || '#4f46e5';

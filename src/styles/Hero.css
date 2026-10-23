@@ -1,21 +1,28 @@
 .hero-section {
+  --hero-cep-overhang: 115px;
+  --hero-cep-card-height: 170px;
   position: relative;
   width: 100%;
   max-width: 1920px;
-  height: var(--hero-height, 650px);
-  background-color: #001a4d;
+  height: auto;
+  background-color: var(--section-bg, #f2f2f2);
   margin: 0 auto;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  padding-bottom: var(--hero-cep-overhang);
+}
+
+.hero-section--loading {
+  padding-bottom: 0;
+  background-color: #0a0a1a;
 }
 
 .slides-container {
   width: 100%;
-  height: 100%;
+  height: min(var(--hero-height, 650px), 420px);
   position: relative;
   overflow: hidden;
+  background-color: var(--hero-bg, #f8f7f0);
 }
 
 .slide {
@@ -39,8 +46,8 @@
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center 38%;
 }
 
 .slide-video {
@@ -224,7 +231,7 @@
 /* Carousel Indicators */
 .carousel-indicators {
   position: absolute;
-  bottom: 24px;
+  bottom: calc(var(--hero-cep-card-height) - var(--hero-cep-overhang) + 16px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;

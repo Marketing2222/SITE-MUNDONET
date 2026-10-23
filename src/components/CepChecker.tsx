@@ -1,216 +1,55 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/CepChecker.css';
-import { API_BASE_URL } from '../config/api';
-
-interface CepSettings {
-  enabled: boolean;
-  button_text: string;
-  button_bg: string;
-  button_color: string;
-  bar_style: string;
-  sidebar_title: string;
-  success_msg: string;
-  fail_msg: string;
-  invalid_msg: string;
-  whatsapp_link: string;
-  cep_ranges: string[];
-}
-
-const DEFAULT_RANGES = [
-  '65015-65015', '65020-65020', '65031-65031', '65035-65035',
-  '65040-65042', '65044-65045', '65047-65049', '65054-65054',
-  '65056-65060', '65062-65062', '65066-65068', '65070-65071',
-  '65073-65073', '65075-65076', '65080-65083', '65085-65086',
-  '65090-65095',
-];
-
-const DEFAULT_SETTINGS: CepSettings = {
-  enabled: true,
-  button_text: 'Verifique se atendemos sua região',
-  button_bg: '#005CFF',
-  button_color: '#ffffff',
-  bar_style: 'full',
-  sidebar_title: 'Antes de continuar, vamos verificar se atendemos sua região?',
-  success_msg: 'Parabéns! Atendemos sua região!',
-  fail_msg: 'Infelizmente não atendemos sua região no momento.',
-  invalid_msg: 'CEP inválido, tente novamente.',
-  whatsapp_link: 'https://api.whatsapp.com/send?phone=559830420030&text=Olá!%20Gostaria%20de%20saber%20se%20atendem%20minha%20região.',
-  cep_ranges: DEFAULT_RANGES,
-};
-
-type ResultType = 'idle' | 'invalid' | 'success' | 'fail';
-
-const formatCep = (v: string): string => {
-  const digits = v.replace(/\D/g, '').slice(0, 8);
-  if (digits.length > 5) return `${digits.slice(0, 5)}-${digits.slice(5)}`;
-  return digits;
-};
-
-const formatPhone = (v: string): string => {
-  const digits = v.replace(/\D/g, '').slice(0, 11);
-  if (digits.length <= 2) return digits;
-  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
-};
-
-const toPrefix5 = (s: string): number => {
-  const digits = s.replace(/\D/g, '');
-  return parseInt(digits.slice(0, 5), 10);
-};
-
-const checkCep = (cep: string, ranges: string[]): ResultType => {
-  const digits = cep.replace(/\D/g, '');
-  if (digits.length !== 8) return 'invalid';
-  const num = parseInt(digits.slice(0, 5), 10);
-  const fullNum = parseInt(digits, 10);
-  for (const range of ranges) {
-    const r = range.trim();
-    if (r.includes('-')) {
-      const parts = r.split('-').map(s => s.trim());
-      const leftDigits = parts[0].replace(/\D/g, '');
-      const rightDigits = parts[1].replace(/\D/g, '');
-      if (leftDigits.length === 5 && rightDigits.length === 3) {
-        const rFull = parseInt(leftDigits + rightDigits, 10);
-        if (!isNaN(rFull) && fullNum === rFull) return 'success';
-      } else {
-        const from = toPrefix5(parts[0]);
-        const to = toPrefix5(parts[1]);
-        if (!isNaN(from) && !isNaN(to) && num >= from && num <= to) return 'success';
-      }
-    } else {
-      const digitsOnly = r.replace(/\D/g, '');
-      if (digitsOnly.length === 8) {
-        const rNum = parseInt(digitsOnly, 10);
-        if (!isNaN(rNum) && fullNum === rNum) return 'success';
-      } else if (digitsOnly.length === 5) {
-        const single = parseInt(digitsOnly, 10);
-        if (!isNaN(single) && num === single) return 'success';
-      }
-    }
-  }
-  return 'fail';
-};
+import useCepChecker from '../hooks/useCepChecker';
 
 export const CepChecker = () => {
-  const [settings, setSettings] = useState<CepSettings>(DEFAULT_SETTINGS);
-  const [ready, setReady] = useState(false);
+  const { settings, ready, cep, setCep, result, addressInfo, handleVerify, reset, interest } = useCepChecker();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [cep, setCep] = useState('');
-  const [result, setResult] = useState<ResultType>('idle');
-  const [addressInfo, setAddressInfo] = useState<{ street: string; neighborhood: string; city: string; uf: string } | null>(null);
-  const [interestEndereco, setInterestEndereco] = useState('');
-  const [interestBairro, setInterestBairro] = useState('');
-  const [interestWhatsapp, setInterestWhatsapp] = useState('');
-  const [interestSent, setInterestSent] = useState(false);
-  const [interestSending, setInterestSending] = useState(false);
+  const [heroCardVisible, setHeroCardVisible] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/settings`)
-      .then(res => res.json())
-      .then(data => {
-        const s = { ...DEFAULT_SETTINGS };
-        if (data.cep_checker_enabled?.value === 'false') {
-          s.enabled = false;
-          setSettings(s);
-          setReady(true);
-          return;
-        }
-        if (data.cep_checker_button_text?.value) s.button_text = data.cep_checker_button_text.value;
-        if (data.cep_checker_button_bg?.value) s.button_bg = data.cep_checker_button_bg.value;
-        if (data.cep_checker_button_color?.value) s.button_color = data.cep_checker_button_color.value;
-        if (data.cep_checker_bar_style?.value) s.bar_style = data.cep_checker_bar_style.value;
-        if (data.cep_checker_sidebar_title?.value) s.sidebar_title = data.cep_checker_sidebar_title.value;
-        if (data.cep_checker_success_msg?.value) s.success_msg = data.cep_checker_success_msg.value;
-        if (data.cep_checker_fail_msg?.value) s.fail_msg = data.cep_checker_fail_msg.value;
-        if (data.cep_checker_invalid_msg?.value) s.invalid_msg = data.cep_checker_invalid_msg.value;
-        if (data.cep_checker_whatsapp_link?.value) s.whatsapp_link = data.cep_checker_whatsapp_link.value;
-        if (data.cep_checker_ranges?.value && data.cep_checker_ranges.value.trim()) {
-          s.cep_ranges = data.cep_checker_ranges.value.split('\n').filter((l: string) => l.trim() !== '');
-        }
-        setSettings(s);
-        setReady(true);
-      })
-      .catch(() => setReady(true));
-  }, []);
+    let interObs: IntersectionObserver | null = null;
+    let mutObs: MutationObserver | null = null;
+    let observed: Element | null = null;
 
-  const handleVerify = async () => {
-    const r = checkCep(cep, settings.cep_ranges);
-    setResult(r);
-    setAddressInfo(null);
+    const watch = (el: Element) => {
+      if (observed === el) return;
+      interObs?.disconnect();
+      observed = el;
+      interObs = new IntersectionObserver(
+        entries => setHeroCardVisible(entries.some(e => e.isIntersecting)),
+        { threshold: 0.2 },
+      );
+      interObs.observe(el);
+    };
 
-    // Buscar endereço via ViaCEP e registrar no backend
-    const digits = cep.replace(/\D/g, '');
-    if (digits.length === 8) {
-      try {
-        const viaCepRes = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
-        const viaCepData = await viaCepRes.json();
-        if (!viaCepData.erro) {
-          setAddressInfo({
-            street: viaCepData.logradouro || '',
-            neighborhood: viaCepData.bairro || '',
-            city: viaCepData.localidade || '',
-            uf: viaCepData.uf || '',
-          });
-        }
-        await fetch(`${API_BASE_URL}/api/cep-searches`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cep: cep,
-            street: viaCepData.logradouro || '',
-            neighborhood: viaCepData.bairro || '',
-            city: viaCepData.localidade || '',
-            uf: viaCepData.uf || '',
-            result: r,
-          }),
-        });
-      } catch {
-        // Falha silenciosa — não afeta a experiência do usuário
-        try {
-          await fetch(`${API_BASE_URL}/api/cep-searches`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cep, street: '', neighborhood: '', city: '', uf: '', result: r }),
-          });
-        } catch { /* ignore */ }
+    const sync = () => {
+      const el = document.querySelector('.hero-cep-card');
+      if (el) {
+        watch(el);
+      } else {
+        observed = null;
+        interObs?.disconnect();
+        setHeroCardVisible(false);
       }
-    }
-  };
+    };
+
+    sync();
+    mutObs = new MutationObserver(sync);
+    mutObs.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      interObs?.disconnect();
+      mutObs?.disconnect();
+    };
+  }, []);
 
   const handleClose = () => {
     setSidebarOpen(false);
-    setResult('idle');
-    setCep('');
-    setAddressInfo(null);
-    setInterestEndereco('');
-    setInterestBairro('');
-    setInterestWhatsapp('');
-    setInterestSent(false);
+    reset();
   };
 
-  const handleInterestSubmit = async () => {
-    if (!interestEndereco.trim() || !interestWhatsapp.trim()) return;
-    setInterestSending(true);
-    try {
-      await fetch(`${API_BASE_URL}/api/cep-interest`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cep,
-          endereco: interestEndereco.trim(),
-          bairro: interestBairro.trim(),
-          whatsapp: interestWhatsapp.trim(),
-        }),
-      });
-      setInterestSent(true);
-    } catch {
-      // falha silenciosa
-    } finally {
-      setInterestSending(false);
-    }
-  };
-
-  if (!ready || !settings.enabled) return null;
+  if (!ready || !settings.enabled || heroCardVisible) return null;
 
   return (
     <>
@@ -239,39 +78,24 @@ export const CepChecker = () => {
             <button className="cep-close" onClick={handleClose}>×</button>
             <p className="cep-sidebar-title">{settings.sidebar_title}</p>
 
-            {result === 'idle' && (
+            {(result === 'idle' || result === 'invalid') && (
               <>
+                {result === 'invalid' && (
+                  <div className="cep-result cep-result-error">
+                    {settings.invalid_msg}
+                  </div>
+                )}
                 <input
                   className="cep-input"
                   type="text"
                   placeholder="Digite seu CEP"
                   value={cep}
-                  onChange={e => setCep(formatCep(e.target.value))}
+                  onChange={e => setCep(e.target.value)}
                   maxLength={9}
                   inputMode="numeric"
                 />
                 <button className="cep-verify-btn" onClick={handleVerify}>
-                  Verificar endereço
-                </button>
-              </>
-            )}
-
-            {result === 'invalid' && (
-              <>
-                <div className="cep-result cep-result-error">
-                  {settings.invalid_msg}
-                </div>
-                <input
-                  className="cep-input"
-                  type="text"
-                  placeholder="Digite seu CEP"
-                  value={cep}
-                  onChange={e => setCep(formatCep(e.target.value))}
-                  maxLength={9}
-                  inputMode="numeric"
-                />
-                <button className="cep-verify-btn" onClick={handleVerify}>
-                  Tentar novamente
+                  {result === 'invalid' ? 'Tentar novamente' : 'Verificar endereço'}
                 </button>
               </>
             )}
@@ -279,48 +103,45 @@ export const CepChecker = () => {
             {result === 'fail' && (
               <div className="cep-result-card cep-result-fail">
                 <p>{settings.fail_msg}</p>
-                {!interestSent ? (
-                  <div style={{ marginTop: 16, borderTop: '1px solid #e2e8f0', paddingTop: 16 }}>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: '#1e293b', margin: '0 0 12px' }}>
+                {!interest.sent ? (
+                  <div className="cep-interest-block">
+                    <p className="cep-interest-title">
                       Deixe seus dados para quando expandirmos sua região:
                     </p>
                     <input
                       className="cep-input"
                       type="text"
                       placeholder="Endereço (rua, nº)"
-                      value={interestEndereco}
-                      onChange={e => setInterestEndereco(e.target.value)}
-                      style={{ marginBottom: 8 }}
+                      value={interest.endereco}
+                      onChange={e => interest.setEndereco(e.target.value)}
                     />
                     <input
                       className="cep-input"
                       type="text"
                       placeholder="Bairro"
-                      value={interestBairro}
-                      onChange={e => setInterestBairro(e.target.value)}
-                      style={{ marginBottom: 8 }}
+                      value={interest.bairro}
+                      onChange={e => interest.setBairro(e.target.value)}
                     />
                     <input
                       className="cep-input"
                       type="tel"
                       placeholder="(00) 00000-0000"
-                      value={interestWhatsapp}
-                      onChange={e => setInterestWhatsapp(formatPhone(e.target.value))}
+                      value={interest.whatsapp}
+                      onChange={e => interest.setWhatsapp(e.target.value)}
                       maxLength={16}
-                      style={{ marginBottom: 12 }}
                     />
                     <button
                       className="cep-verify-btn"
-                      onClick={handleInterestSubmit}
-                      disabled={interestSending || !interestEndereco.trim() || !interestWhatsapp.trim()}
-                      style={{ opacity: interestSending || !interestEndereco.trim() || !interestWhatsapp.trim() ? 0.5 : 1 }}
+                      onClick={interest.submit}
+                      disabled={interest.sending || !interest.valid}
+                      style={{ opacity: interest.sending || !interest.valid ? 0.5 : 1 }}
                     >
-                      {interestSending ? 'Enviando...' : 'Enviar dados de interesse'}
+                      {interest.sending ? 'Enviando...' : 'Enviar dados de interesse'}
                     </button>
                   </div>
                 ) : (
-                  <div style={{ marginTop: 16, padding: '12px 16px', background: '#f0fdf4', borderRadius: 10, border: '1px solid #bbf7d0' }}>
-                    <p style={{ fontSize: 14, color: '#166534', margin: 0, fontWeight: 600 }}>
+                  <div className="cep-interest-sent">
+                    <p>
                       Dados enviados com sucesso! Quando expandirmos sua região, entraremos em contato.
                     </p>
                   </div>
@@ -332,7 +153,7 @@ export const CepChecker = () => {
               <div className="cep-result-card cep-result-success">
                 <p>{settings.success_msg}</p>
                 {addressInfo && (
-                  <p style={{ fontSize: 13, color: '#475569', margin: '4px 0 12px', lineHeight: 1.5 }}>
+                  <p className="cep-address">
                     {addressInfo.street && <>{addressInfo.street}<br /></>}
                     {addressInfo.neighborhood && <>{addressInfo.neighborhood}<br /></>}
                     {addressInfo.city && addressInfo.uf && <>{addressInfo.city} - {addressInfo.uf}</>}

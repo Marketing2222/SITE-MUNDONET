@@ -230,6 +230,9 @@ const SECTIONS: Record<string, FieldDef[]> = {
   'Central de Atendimento': [],
   'Verificador de CEP': [
     { key: 'cep_checker_enabled', label: 'Buscador de CEP Ativo', type: 'toggle' },
+    { key: 'cep_checker_card_title', label: 'Título do Card do Hero', type: 'text', hint: 'Deixe vazio para ocultar. Ex: Descubra as ofertas na sua região' },
+    { key: 'cep_checker_card_placeholder', label: 'Texto do Campo de CEP', type: 'text', hint: 'Ex: Digite seu CEP' },
+    { key: 'cep_checker_card_button_text', label: 'Texto do Botão do Card', type: 'text', hint: 'Ex: Consultar disponibilidade' },
     { key: 'cep_checker_button_text', label: 'Texto do Botão Flutuante', type: 'text', hint: 'Ex: Verifique se atendemos sua região' },
     { key: 'cep_checker_button_bg', label: 'Cor de Fundo do Botão', type: 'color', hint: 'Padrão: #005CFF' },
     { key: 'cep_checker_button_color', label: 'Cor do Texto do Botão', type: 'color', hint: 'Padrão: #ffffff' },

@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/Hero.css';
 import { API_BASE_URL } from '../config/api';
+import HeroCepCard from './HeroCepCard';
 
 interface Slide {
   id: number;
@@ -24,7 +25,7 @@ interface SiteSettings {
   hero_btn2_text_color?: string;
 }
 
-export const Hero: React.FC = () => {
+export const Hero: React.FC<{ showCep?: boolean }> = ({ showCep = true }) => {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({});
@@ -101,7 +102,7 @@ export const Hero: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="hero-section" style={{ minHeight: '500px', background: '#0a0a1a' }} />;
+  if (loading) return <div className="hero-section hero-section--loading" style={{ minHeight: '500px' }} />;
   if (slides.length === 0) return null;
 
   const showButtons = siteSettings.hero_show_buttons !== false;
@@ -141,8 +142,8 @@ export const Hero: React.FC = () => {
             <div className="slide-overlay"></div>
             <div className="container slide-content-container">
               <div className="slide-text">
-                <h1 className="animate-slide-up">{slide.title}</h1>
-                <p className="animate-fade-in">{slide.subtitle}</p>
+                {slide.title && <h1 className="animate-slide-up">{slide.title}</h1>}
+                {slide.subtitle && <p className="animate-fade-in">{slide.subtitle}</p>}
                 {showButtons && (
                   <div className="hero-ctas animate-slide-up">
                     <a href={btn1Link} className="hero-primary-btn" style={{ backgroundColor: btn1Bg, color: btn1Color }}>
@@ -163,33 +164,34 @@ export const Hero: React.FC = () => {
             </div>
           </div>
         ))}
+        {slides.length > 1 && (
+          <>
+            <button className="carousel-control prev" onClick={prevSlide} aria-label="Previous Slide">
+              <svg viewBox="0 0 256 512" width="20" height="20">
+                <path fill="currentColor" d="M31.7 244l192-184c6.2-6 16.3-5.6 22 1l15 15.6c5.7 6 5.2 16-.9 21.6L84.8 256l175 161.8c6 5.6 6.5 15.6.9 21.6l-15 15.6c-5.7 6.6-15.8 7-22 1L31.7 268c-7.6-7-7.6-17 0-24z"/>
+              </svg>
+            </button>
+            <button className="carousel-control next" onClick={nextSlide} aria-label="Next Slide">
+              <svg viewBox="0 0 256 512" width="20" height="20">
+                <path fill="currentColor" d="M224.3 273l-192 184c-6.2 6-16.3 5.6-22-1l-15-15.6c-5.7-6-5.2-16 .9-21.6L171.2 256 9.8 95.8c-6-5.6-6.5-15.6-.9-21.6l15-15.6c5.7-6.6 15.8-7 22-1l192 184c7.6 7 7.6 17 0 24z"/>
+              </svg>
+            </button>
+
+            <div className="carousel-indicators">
+              {slides.map((_, index) => (
+                <button 
+                  key={index} 
+                  className={`indicator ${index === currentSlide ? 'active' : ''}`}
+                  onClick={() => goToSlide(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
-      {slides.length > 1 && (
-        <>
-          <button className="carousel-control prev" onClick={prevSlide} aria-label="Previous Slide">
-            <svg viewBox="0 0 256 512" width="20" height="20">
-              <path fill="currentColor" d="M31.7 244l192-184c6.2-6 16.3-5.6 22 1l15 15.6c5.7 6 5.2 16-.9 21.6L84.8 256l175 161.8c6 5.6 6.5 15.6.9 21.6l-15 15.6c-5.7 6.6-15.8 7-22 1L31.7 268c-7.6-7-7.6-17 0-24z"/>
-            </svg>
-          </button>
-          <button className="carousel-control next" onClick={nextSlide} aria-label="Next Slide">
-            <svg viewBox="0 0 256 512" width="20" height="20">
-              <path fill="currentColor" d="M224.3 273l-192 184c-6.2 6-16.3 5.6-22-1l-15-15.6c-5.7-6-5.2-16 .9-21.6L171.2 256 9.8 95.8c-6-5.6-6.5-15.6-.9-21.6l15-15.6c5.7-6.6 15.8-7 22-1l192 184c7.6 7 7.6 17 0 24z"/>
-            </svg>
-          </button>
-
-          <div className="carousel-indicators">
-            {slides.map((_, index) => (
-              <button 
-                key={index} 
-                className={`indicator ${index === currentSlide ? 'active' : ''}`}
-                onClick={() => goToSlide(index)}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </>
-      )}
+      {showCep && <HeroCepCard />}
     </section>
   );
 };
