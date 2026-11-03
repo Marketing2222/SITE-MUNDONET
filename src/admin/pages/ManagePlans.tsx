@@ -67,6 +67,7 @@ export const ManagePlans = () => {
   const [appLibrary, setAppLibrary] = useState<LibraryApp[]>([]);
   const [badgeLibrary, setBadgeLibrary] = useState<{id:number;text:string;icon_url:string;icon_emoji:string;bg_color:string;text_color:string}[]>([]);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ basic: true });
+  const [filter, setFilter] = useState<'all' | 'visible' | 'hidden'>('all');
 
   const load = async () => setPlans(await apiFetch('/plans/all'));
   const loadLibrary = async () => { try { setAppLibrary(await apiFetch('/app-library')); } catch { /* silently fail */ } };
@@ -105,6 +106,19 @@ export const ManagePlans = () => {
     if (!confirm('Excluir este plano?')) return;
     await apiFetch(`/plans/${id}`, { method:'DELETE' });
     load();
+  };
+
+  // Mostra/esconde o plano no site sem sair da lista (o site só recebe planos com active: true)
+  const toggleActive = async (p: Plan) => {
+    const next = !p.active;
+    setPlans(list => list.map(x => x.id === p.id ? { ...x, active: next } : x));
+    try {
+      await apiFetch(`/plans/${p.id}`, { method:'PUT', body: JSON.stringify({ ...p, active: next }) });
+      setMsg(next ? `✅ "${p.name}" está visível no site.` : `🙈 "${p.name}" foi ocultado do site.`);
+    } catch {
+      setPlans(list => list.map(x => x.id === p.id ? { ...x, active: !next } : x));
+      setMsg('Erro ao alterar a visibilidade do plano.');
+    }
   };
 
   const duplicate = async (p: Plan) => {
@@ -316,19 +330,46 @@ export const ManagePlans = () => {
 
       {msg && !modal && <div className="admin-alert success">{msg}</div>}
 
+      <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:14, flexWrap:'wrap' }}>
+        <span style={{ fontSize:'0.8rem', color:'var(--adm-text2)', marginRight:4 }}>Exibir:</span>
+        {([
+          { id:'all', label:'Todos', count: plans.length },
+          { id:'visible', label:'Visíveis', count: plans.filter(p => p.active).length },
+          { id:'hidden', label:'Ocultos', count: plans.filter(p => !p.active).length },
+        ] as const).map(f => (
+          <button
+            key={f.id}
+            className={`admin-btn small ${filter === f.id ? 'primary' : 'ghost'}`}
+            onClick={() => setFilter(f.id)}
+          >
+            {f.label} ({f.count})
+          </button>
+        ))}
+      </div>
+
       <div className="admin-table-wrapper">
         <table className="admin-table">
           <thead><tr>
-            <th>Plano</th><th>Velocidade</th><th>Preço</th><th>Popular</th><th>Status</th><th>Ações</th>
+            <th>Plano</th><th>Velocidade</th><th>Preço</th><th>Popular</th><th>Visível no site</th><th>Ações</th>
           </tr></thead>
           <tbody>
-            {plans.map((p, i) => (
-              <tr key={p.id}>
+            {plans
+              .filter(p => filter === 'all' ? true : filter === 'visible' ? p.active : !p.active)
+              .map(p => {
+                const i = plans.findIndex(x => x.id === p.id);
+                return (
+              <tr key={p.id} style={{ opacity: p.active ? 1 : 0.55 }}>
                 <td><strong>{p.name}</strong></td>
                 <td>{p.speed} Mbps</td>
                 <td>R$ {p.price}</td>
                 <td>{p.popular ? <span className="admin-badge purple">⭐ Sim</span> : '—'}</td>
-                <td><span className={`admin-badge ${p.active ? 'green' : 'red'}`}>{p.active ? 'Ativo' : 'Inativo'}</span></td>
+                <td>
+                  <ToggleSwitch
+                    value={p.active}
+                    onChange={() => toggleActive(p)}
+                    label={p.active ? 'No site' : 'Oculto'}
+                  />
+                </td>
                 <td>
                   <div style={{display:'flex',gap:6}}>
                     <button className="admin-btn ghost small" onClick={() => reorder(i, 'up')} disabled={i === 0 || saving}>⬆️</button>
@@ -339,7 +380,13 @@ export const ManagePlans = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+                );
+              })}
+            {plans.filter(p => filter === 'all' ? true : filter === 'visible' ? p.active : !p.active).length === 0 && (
+              <tr><td colSpan={6} style={{ textAlign:'center', color:'var(--adm-text2)', padding:24 }}>
+                Nenhum plano nesta categoria.
+              </td></tr>
+            )}
           </tbody>
         </table>
       </div>
