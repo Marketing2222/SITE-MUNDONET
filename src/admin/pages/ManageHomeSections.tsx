@@ -185,7 +185,7 @@ const SECTIONS: Record<string, FieldDef[]> = {
     { key: 'wa_bubble_text', label: 'Texto do Balão', type: 'text', hint: 'Ex: Olá! Precisa de ajuda?' },
     { key: 'wa_bubble_bg', label: 'Cor de Fundo do Balão', type: 'color', hint: 'Padrão: #ffffff' },
     { key: 'wa_bubble_color', label: 'Cor do Texto do Balão', type: 'color', hint: 'Padrão: #333333' },
-    { key: 'wa_bubble_font_size', label: 'Tamanho da Fonte do Balão', type: 'spacing', hint: 'Padrão: 14px' },
+    { key: 'wa_bubble_font_size', label: 'Tamanho da Fonte do Balão', type: 'spacing', hint: 'Padrão: 13px' },
   ],
   'Banner CTA': [
     { key: 'cta_section_bg_color', label: 'Cor de Fundo da Seção', type: 'color', hint: 'Padrão: transparente' },

@@ -60,7 +60,7 @@ function PublicSite() {
   const [bubbleText, setBubbleText] = useState('Olá! Precisa de ajuda?');
   const [bubbleBg, setBubbleBg] = useState('#ffffff');
   const [bubbleColor, setBubbleColor] = useState('#333333');
-  const [bubbleFontSize, setBubbleFontSize] = useState('14px');
+  const [bubbleFontSize, setBubbleFontSize] = useState('13px');
   const [bubbleVisible, setBubbleVisible] = useState(true);
   const [sectionOrder, setSectionOrder] = useState<string[] | null>(null);
   const [sectionsActive, setSectionsActive] = useState<Record<string, boolean> | null>(null);

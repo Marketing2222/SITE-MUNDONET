@@ -246,11 +246,11 @@ img {
 .whatsapp-bubble {
   background: #fff;
   color: #333;
-  padding: 10px 16px;
-  border-radius: 12px;
+  padding: 7px 12px;
+  border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-  font-size: 14px;
-  max-width: 220px;
+  font-size: 13px;
+  max-width: 185px;
   position: relative;
   animation: bubbleFadeIn 0.4s ease-out;
 }
