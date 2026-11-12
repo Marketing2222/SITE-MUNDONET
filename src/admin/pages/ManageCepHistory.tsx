@@ -45,10 +45,31 @@ interface PagedInterest {
   limit: number;
 }
 
+interface WhatsappClick {
+  id: number;
+  cep: string;
+  source: string;
+  created_at: string;
+}
+
+interface PagedClicks {
+  data: WhatsappClick[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+interface ClickStats {
+  total: number;
+  todayCount: number;
+  last7Days: { date: string; count: number }[];
+  topCeps: { cep: string; count: number }[];
+}
+
 const PER_PAGE = 10;
 
 const ManageCepHistory = () => {
-  const [activeTab, setActiveTab] = useState<'buscas' | 'interesse'>('buscas');
+  const [activeTab, setActiveTab] = useState<'buscas' | 'interesse' | 'leads'>('buscas');
   const [data, setData] = useState<PagedResult | null>(null);
   const [stats, setStats] = useState<CepStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -67,6 +88,12 @@ const ManageCepHistory = () => {
   const [interestSearch, setInterestSearch] = useState('');
   const [interestDeleteConfirm, setInterestDeleteConfirm] = useState<number | null>(null);
   const [interestClearConfirm, setInterestClearConfirm] = useState(false);
+
+  const [clickData, setClickData] = useState<PagedClicks | null>(null);
+  const [clickStats, setClickStats] = useState<ClickStats | null>(null);
+  const [clickLoading, setClickLoading] = useState(true);
+  const [clickPage, setClickPage] = useState(1);
+  const [clickClearConfirm, setClickClearConfirm] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -114,6 +141,27 @@ const ManageCepHistory = () => {
 
   useEffect(() => { fetchInterest(); }, [fetchInterest]);
 
+  const fetchClicks = useCallback(async () => {
+    setClickLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.set('page', String(clickPage));
+      params.set('limit', String(PER_PAGE));
+      const [list, stats] = await Promise.all([
+        apiFetch(`/whatsapp-clicks?${params.toString()}`),
+        apiFetch('/whatsapp-clicks/stats'),
+      ]);
+      setClickData(list);
+      setClickStats(stats);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setClickLoading(false);
+    }
+  }, [clickPage]);
+
+  useEffect(() => { fetchClicks(); }, [fetchClicks]);
+
   const handleDelete = async (id: number) => {
     try {
       await apiFetch(`/cep-searches/${id}`, { method: 'DELETE' });
@@ -144,6 +192,32 @@ const ManageCepHistory = () => {
       setInterestClearConfirm(false);
       fetchInterest();
     } catch (err) { console.error(err); }
+  };
+
+  const handleClickClearAll = async () => {
+    try {
+      await apiFetch('/whatsapp-clicks', { method: 'DELETE' });
+      setClickClearConfirm(false);
+      fetchClicks();
+    } catch (err) { console.error(err); }
+  };
+
+  const exportClicksCSV = () => {
+    if (!clickData?.data.length) return;
+    const headers = ['CEP', 'ORIGEM', 'DATA E HORA'];
+    const rows = clickData.data.map(r => [
+      r.cep,
+      r.source === 'splash' ? 'Tela Inicial' : r.source === 'hero' ? 'Banner Home' : 'Card CEP',
+      new Date(r.created_at).toLocaleString('pt-BR'),
+    ]);
+    const csv = [headers, ...rows].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `leads-whatsapp-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const exportCSV = () => {
@@ -183,6 +257,7 @@ const ManageCepHistory = () => {
 
   const totalPages = data ? Math.ceil(data.total / PER_PAGE) : 1;
   const interestTotalPages = interestData ? Math.ceil(interestData.total / PER_PAGE) : 1;
+  const clickTotalPages = clickData ? Math.ceil(clickData.total / PER_PAGE) : 1;
 
   const formatDate = (iso: string) => {
     return new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -223,6 +298,21 @@ const ManageCepHistory = () => {
           Interesse
           {interestData && interestData.total > 0 && (
             <span style={{ background: '#fee2e2', color: '#b91c1c', padding: '2px 8px', borderRadius: 999, fontSize: 11, marginLeft: 6 }}>{interestData.total}</span>
+          )}
+        </button>
+        <button
+          onClick={() => setActiveTab('leads')}
+          style={{
+            padding: '12px 24px', fontSize: 14, fontWeight: 600, cursor: 'pointer', border: 'none',
+            borderBottom: activeTab === 'leads' ? '2px solid #005CFF' : '2px solid transparent',
+            marginBottom: '-2px', background: 'transparent',
+            color: activeTab === 'leads' ? '#005CFF' : '#64748b',
+            transition: 'color 0.2s',
+          }}
+        >
+          Leads WhatsApp
+          {clickStats && clickStats.total > 0 && (
+            <span style={{ background: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: 999, fontSize: 11, marginLeft: 6 }}>{clickStats.total}</span>
           )}
         </button>
       </div>
@@ -486,6 +576,141 @@ const ManageCepHistory = () => {
         </>
       )}
 
+      {/* ═══════ TAB: LEADS WHATSAPP ═══════ */}
+      {activeTab === 'leads' && (
+        <>
+          {/* Stats de cliques */}
+          {clickStats && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+              <div style={statCardStyle}>
+                <div style={{ fontSize: 32, fontWeight: 700, color: '#16a34a' }}>{clickStats.total}</div>
+                <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Total de cliques (leads)</div>
+              </div>
+              <div style={statCardStyle}>
+                <div style={{ fontSize: 32, fontWeight: 700, color: '#2563eb' }}>{clickStats.todayCount}</div>
+                <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Cliques hoje</div>
+              </div>
+              <div style={statCardStyle}>
+                <div style={{ fontSize: 32, fontWeight: 700, color: '#d97706' }}>
+                  {clickStats.last7Days.reduce((s, d) => s + d.count, 0)}
+                </div>
+                <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>Últimos 7 dias</div>
+              </div>
+            </div>
+          )}
+
+          {/* Gráfico 7 dias + Top CEPs */}
+          {clickStats && (clickStats.last7Days.some(d => d.count > 0) || clickStats.topCeps.length > 0) && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+              <div style={cardStyle}>
+                <h3 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600, color: '#1e293b' }}>Cliques nos últimos 7 dias</h3>
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10, height: 120 }}>
+                  {clickStats.last7Days.map(d => {
+                    const max = Math.max(...clickStats.last7Days.map(x => x.count), 1);
+                    return (
+                      <div key={d.date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                        <span style={{ fontSize: 12, fontWeight: 700, color: '#1e293b' }}>{d.count}</span>
+                        <div style={{ width: '100%', height: Math.max((d.count / max) * 80, 3), background: d.count ? '#16a34a' : '#e2e8f0', borderRadius: 4 }} />
+                        <span style={{ fontSize: 10, color: '#94a3b8' }}>{d.date.slice(8)}/{d.date.slice(5, 7)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              {clickStats.topCeps.length > 0 && (
+                <div style={cardStyle}>
+                  <h3 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600, color: '#1e293b' }}>CEPs que mais clicaram</h3>
+                  {clickStats.topCeps.map((item, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < clickStats.topCeps.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ width: 22, height: 22, borderRadius: 6, background: i < 3 ? '#16a34a' : '#e2e8f0', color: i < 3 ? '#fff' : '#64748b', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</span>
+                        <span style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 600, color: '#1e293b' }}>{item.cep.slice(0, 5)}-{item.cep.slice(5)}</span>
+                      </div>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: '#64748b' }}>{item.count}x</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Ações */}
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end', justifyContent: 'space-between' }}>
+              <div style={{ fontSize: 14, color: '#475569' }}>
+                Clique no botão <strong>“Falar com especialista”</strong> = 1 lead indo pro WhatsApp.
+              </div>
+              <div style={{ display: 'flex', gap: 8, paddingBottom: 2 }}>
+                <button onClick={exportClicksCSV} style={{ ...btnStyle, background: '#005CFF' }}>Exportar CSV</button>
+                <button onClick={() => setClickClearConfirm(true)} style={{ ...btnStyle, background: '#fee2e2', color: '#b91c1c' }}>Limpar Tudo</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Lista */}
+          <div style={{ ...cardStyle, padding: 0, overflow: 'hidden', marginTop: 16 }}>
+            {clickLoading ? (
+              <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Carregando...</div>
+            ) : !clickData?.data.length ? (
+              <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8' }}>Nenhum clique registrado ainda</div>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                      <th style={thStyle}>CEP</th>
+                      <th style={thStyle}>Origem</th>
+                      <th style={thStyle}>Data/Hora</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clickData.data.map(item => (
+                      <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={tdStyle}>
+                          <code style={{ background: '#f1f5f9', padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 600 }}>
+                            {item.cep ? `${item.cep.slice(0, 5)}-${item.cep.slice(5)}` : '—'}
+                          </code>
+                        </td>
+                        <td style={tdStyle}>
+                          <span style={{ background: '#dcfce7', color: '#15803d', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>
+                            {item.source === 'splash' ? 'Tela Inicial' : item.source === 'hero' ? 'Banner Home' : 'Card CEP'}
+                          </span>
+                        </td>
+                        <td style={{ ...tdStyle, color: '#64748b', whiteSpace: 'nowrap' }}>{formatDate(item.created_at)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Paginação */}
+            {clickData && clickData.total > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderTop: '1px solid #e2e8f0' }}>
+                <span style={{ fontSize: 13, color: '#64748b' }}>
+                  Página {clickPage} de {clickTotalPages} — {clickData.total} cliques
+                </span>
+                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <button disabled={clickPage <= 1} onClick={() => setClickPage(1)} style={{ ...smallBtn, opacity: clickPage <= 1 ? 0.3 : 1 }} title="Primeira página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/></svg>
+                  </button>
+                  <button disabled={clickPage <= 1} onClick={() => setClickPage(p => p - 1)} style={{ ...smallBtn, opacity: clickPage <= 1 ? 0.3 : 1 }} title="Página anterior">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#1e293b', padding: '0 8px' }}>{clickPage}/{clickTotalPages}</span>
+                  <button disabled={clickPage >= clickTotalPages} onClick={() => setClickPage(p => p + 1)} style={{ ...smallBtn, opacity: clickPage >= clickTotalPages ? 0.3 : 1 }} title="Próxima página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                  <button disabled={clickPage >= clickTotalPages} onClick={() => setClickPage(clickTotalPages)} style={{ ...smallBtn, opacity: clickPage >= clickTotalPages ? 0.3 : 1 }} title="Última página">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 17l5-5-5-5"/><path d="M6 17l5-5-5-5"/></svg>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
       {/* ═══════ MODALS ═══════ */}
       {clearConfirm && (
         <div style={overlayStyle} onClick={() => setClearConfirm(false)}>
@@ -508,6 +733,19 @@ const ManageCepHistory = () => {
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
               <button onClick={() => setInterestClearConfirm(false)} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Cancelar</button>
               <button onClick={handleInterestClearAll} style={{ ...btnStyle, background: '#dc2626' }}>Sim, limpar tudo</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {clickClearConfirm && (
+        <div style={overlayStyle} onClick={() => setClickClearConfirm(false)}>
+          <div style={modalStyle} onClick={e => e.stopPropagation()}>
+            <h3 style={{ margin: '0 0 12px', fontSize: 18, color: '#1e293b' }}>Limpar todos os cliques de WhatsApp?</h3>
+            <p style={{ color: '#64748b', margin: '0 0 20px', fontSize: 14 }}>Esta ação não pode ser desfeita.</p>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+              <button onClick={() => setClickClearConfirm(false)} style={{ ...btnStyle, background: '#f1f5f9', color: '#475569' }}>Cancelar</button>
+              <button onClick={handleClickClearAll} style={{ ...btnStyle, background: '#dc2626' }}>Sim, limpar tudo</button>
             </div>
           </div>
         </div>

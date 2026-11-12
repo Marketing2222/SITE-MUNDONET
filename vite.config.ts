@@ -32,6 +32,11 @@ export default defineConfig(({ mode }) => {
           target: apiTarget,
           changeOrigin: true,
         },
+        // Permite exibir localmente as imagens enviadas pelo painel (uploads)
+        '/uploads': {
+          target: apiTarget,
+          changeOrigin: true,
+        },
         ...(previewData
           ? {
               '/uploads': {

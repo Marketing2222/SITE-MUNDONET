@@ -23,6 +23,7 @@ const defaultData = {
   enterprise_plans: [],
   cep_searches: [],
   cep_interest: [],
+  whatsapp_clicks: [],
   _counters: { users:0, hero:0, plans:0, ql:0, ent:0, app_lib:0, benefits:0, file_uploads:0, badge_library:0, enterprise_plans:0 }
 };
 
@@ -31,6 +32,22 @@ let db;
 export async function initDB() {
   fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
   db = await JSONFilePreset(DB_PATH, defaultData);
+
+  // ── Migração: garante que todas as tabelas padrão existam ────────
+  // JSONFilePreset NÃO mescla o defaultData com bancos antigos, então
+  // tabelas criadas depois (ex.: file_uploads) podem estar ausentes e
+  // quebrar recursos como o upload de imagens.
+  {
+    let created = false;
+    for (const [key, value] of Object.entries(defaultData)) {
+      if (db.data[key] === undefined) {
+        db.data[key] = Array.isArray(value) ? [] : JSON.parse(JSON.stringify(value));
+        created = true;
+        console.log(`  → Tabela ausente criada: '${key}'`);
+      }
+    }
+    if (created) await db.write();
+  }
 
   // ── Auto-increment helper ────────────────────────────────────────
   db.nextId = (table) => {
@@ -869,6 +886,32 @@ export async function initDB() {
     { key:'webchat_css', value:'', label:'Webchat: CSS Personalizado' },
   ];
   for (const s of webchatSettings) {
+    if (!db.data.site_settings.find(x => x.key === s.key)) {
+      db.data.site_settings.push({ id: db.nextId('site_settings'), ...s });
+    }
+  }
+
+  // ── Migração: Tela Inicial (Splash) ──
+  const splashSettings = [
+    // Ativação e imagens
+    { key:'splash_enabled', value:'true', label:'Tela Inicial: Ativada' },
+    { key:'splash_bg_url', value:'', label:'Tela Inicial: Imagem de Fundo (Papel de Parede)' },
+    { key:'splash_logo_url', value:'', label:'Tela Inicial: Logo' },
+    // Textos
+    { key:'splash_cep_placeholder', value:'Digite seu CEP', label:'Tela Inicial: Texto do Campo de CEP' },
+    { key:'splash_cep_button_text', value:'Consultar disponibilidade', label:'Tela Inicial: Texto do Botão de Consulta' },
+    { key:'splash_btn_client_text', value:'SOU CLIENTE', label:'Tela Inicial: Texto do Botão SOU CLIENTE' },
+    { key:'splash_btn_lead_text', value:'QUERO SER CLIENTE', label:'Tela Inicial: Texto do Botão QUERO SER CLIENTE' },
+    // Cores
+    { key:'splash_bg_color1', value:'#00123f', label:'Tela Inicial: Cor de Fundo 1 (início do degradê)' },
+    { key:'splash_bg_color2', value:'#005CFF', label:'Tela Inicial: Cor de Fundo 2 (fim do degradê)' },
+    { key:'splash_cep_btn_bg', value:'#FCB900', label:'Tela Inicial: Cor de Fundo do Botão de Consulta' },
+    { key:'splash_cep_btn_color', value:'#002D72', label:'Tela Inicial: Cor do Texto do Botão de Consulta' },
+    { key:'splash_btn1_bg', value:'#FFFFFF', label:'Tela Inicial: Cor de Fundo do Botão SOU CLIENTE' },
+    { key:'splash_btn1_color', value:'#002D72', label:'Tela Inicial: Cor do Texto do Botão SOU CLIENTE' },
+    { key:'splash_btn2_color', value:'#FFFFFF', label:'Tela Inicial: Cor do Texto e Borda do Botão QUERO SER CLIENTE' },
+  ];
+  for (const s of splashSettings) {
     if (!db.data.site_settings.find(x => x.key === s.key)) {
       db.data.site_settings.push({ id: db.nextId('site_settings'), ...s });
     }

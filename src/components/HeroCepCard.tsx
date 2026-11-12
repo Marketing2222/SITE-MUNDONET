@@ -2,6 +2,7 @@ import { useState } from 'react';
 import '../styles/HeroCepCard.css';
 import useCepChecker from '../hooks/useCepChecker';
 import { buildWhatsAppLink } from '../lib/cep';
+import { trackWhatsAppClick } from '../lib/track';
 
 export const HeroCepCard = () => {
   const { settings, ready, cep, setCep, result, addressInfo, handleVerify, reset, interest } = useCepChecker();
@@ -77,6 +78,7 @@ export const HeroCepCard = () => {
             target="_blank"
             rel="noreferrer"
             className="hero-cep-card__whatsapp"
+            onClick={() => trackWhatsAppClick(cep, 'hero')}
           >
             Falar com um especialista
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">

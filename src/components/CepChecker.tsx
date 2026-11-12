@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../styles/CepChecker.css';
 import useCepChecker from '../hooks/useCepChecker';
+import { trackWhatsAppClick } from '../lib/track';
 
 export const CepChecker = () => {
   const { settings, ready, cep, setCep, result, addressInfo, handleVerify, reset, interest } = useCepChecker();
@@ -174,6 +175,7 @@ export const CepChecker = () => {
                   target="_blank"
                   rel="noreferrer"
                   className="cep-whatsapp-btn"
+                  onClick={() => trackWhatsAppClick(cep, 'home')}
                 >
                   Falar com um especialista
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style={{ marginLeft: 6 }}>

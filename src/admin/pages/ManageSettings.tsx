@@ -10,6 +10,12 @@ const GENERAL_KEYS = [
   'site_name', 'admin_panel_name', 'logo_url', 'favicon_url', 'primary_color',
   'whatsapp_float', 'footer_cnpj', 'footer_anatel',
   'loading_mascot_url',
+  'splash_enabled', 'splash_bg_url', 'splash_logo_url',
+  'splash_cep_placeholder', 'splash_cep_button_text',
+  'splash_btn_client_text', 'splash_btn_lead_text',
+  'splash_bg_color1', 'splash_bg_color2',
+  'splash_cep_btn_bg', 'splash_cep_btn_color',
+  'splash_btn1_bg', 'splash_btn1_color', 'splash_btn2_color',
 ];
 
 export const ManageSettings = () => {
@@ -52,6 +58,16 @@ export const ManageSettings = () => {
       setSaving(false);
     }
   };
+
+  const splashSub = (t: string) => (
+    <div style={{
+      marginTop: 8, paddingTop: 12, borderTop: '1px solid var(--adm-border)',
+      fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.6px',
+      color: 'var(--adm-accent)', textTransform: 'uppercase',
+    }}>
+      {t}
+    </div>
+  );
 
   return (
     <div>
@@ -114,6 +130,136 @@ export const ManageSettings = () => {
             <div className="admin-field">
               <label>Cor Principal</label>
               <ColorPicker value={form.primary_color || '#002D72'} onChange={v => set('primary_color', v)} />
+            </div>
+          </div>
+        </div>
+
+        {/* Tela Inicial (Splash) */}
+        <div className="admin-settings-card">
+          <h3>Tela Inicial (Splash)</h3>
+          <div className="admin-form">
+            <div className="admin-field">
+              <label>Tela Inicial Ativada</label>
+              <ToggleSwitch
+                value={form.splash_enabled !== 'false'}
+                onChange={v => set('splash_enabled', v ? 'true' : 'false')}
+                label={form.splash_enabled !== 'false' ? 'Ativada' : 'Desativada'}
+              />
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>
+                Quando ativada, o visitante vê a tela inicial (logo + consulta de CEP) antes de entrar no site.
+              </p>
+            </div>
+            <div className="admin-field">
+              <label>Imagem de Fundo (Papel de Parede)</label>
+              <ImageUpload value={form.splash_bg_url || ''} onChange={v => set('splash_bg_url', v)} />
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>
+                Imagem que cobre toda a tela inicial. Se vazio, é exibido um degradê azul padrão.
+              </p>
+            </div>
+            <div className="admin-field">
+              <label>Logo da Tela Inicial</label>
+              <ImageUpload value={form.splash_logo_url || ''} onChange={v => set('splash_logo_url', v)} />
+              <p style={{ fontSize: '0.8rem', color: 'var(--adm-text2)', marginTop: 4 }}>
+                Logo exibido no topo da tela inicial. Se vazio, usa o logo geral do site.
+              </p>
+            </div>
+
+            {splashSub('Textos')}
+
+            <div className="admin-form-row">
+              <div className="admin-field">
+                <label>Texto do Campo de CEP</label>
+                <input
+                  value={form.splash_cep_placeholder || ''}
+                  onChange={e => set('splash_cep_placeholder', e.target.value)}
+                  placeholder="Digite seu CEP"
+                />
+              </div>
+              <div className="admin-field">
+                <label>Texto do Botão de Consulta</label>
+                <input
+                  value={form.splash_cep_button_text || ''}
+                  onChange={e => set('splash_cep_button_text', e.target.value)}
+                  placeholder="Consultar disponibilidade"
+                />
+              </div>
+            </div>
+
+            <div className="admin-form-row">
+              <div className="admin-field">
+                <label>Botão — Sou Cliente</label>
+                <input
+                  value={form.splash_btn_client_text || ''}
+                  onChange={e => set('splash_btn_client_text', e.target.value)}
+                  placeholder="SOU CLIENTE"
+                />
+                <p style={{ fontSize: '0.75rem', color: 'var(--adm-text2)' }}>
+                  Entra no site sem consultar o CEP.
+                </p>
+              </div>
+              <div className="admin-field">
+                <label>Botão — Quero Ser Cliente</label>
+                <input
+                  value={form.splash_btn_lead_text || ''}
+                  onChange={e => set('splash_btn_lead_text', e.target.value)}
+                  placeholder="QUERO SER CLIENTE"
+                />
+                <p style={{ fontSize: '0.75rem', color: 'var(--adm-text2)' }}>
+                  Volta o foco para o campo de CEP.
+                </p>
+              </div>
+            </div>
+
+            {splashSub('Cores')}
+
+            <p style={{ fontSize: '0.78rem', color: 'var(--adm-text2)', margin: 0 }}>
+              Fundo (usado quando não há papel de parede):
+            </p>
+            <div className="admin-form-row">
+              <div className="admin-field">
+                <label>Fundo — Início do Degradê</label>
+                <ColorPicker value={form.splash_bg_color1 || '#00123f'} onChange={v => set('splash_bg_color1', v)} />
+              </div>
+              <div className="admin-field">
+                <label>Fundo — Fim do Degradê</label>
+                <ColorPicker value={form.splash_bg_color2 || '#005CFF'} onChange={v => set('splash_bg_color2', v)} />
+              </div>
+            </div>
+
+            <p style={{ fontSize: '0.78rem', color: 'var(--adm-text2)', margin: 0 }}>
+              Botão de consulta do CEP:
+            </p>
+            <div className="admin-form-row">
+              <div className="admin-field">
+                <label>Cor de Fundo</label>
+                <ColorPicker value={form.splash_cep_btn_bg || '#FCB900'} onChange={v => set('splash_cep_btn_bg', v)} />
+              </div>
+              <div className="admin-field">
+                <label>Cor do Texto</label>
+                <ColorPicker value={form.splash_cep_btn_color || '#002D72'} onChange={v => set('splash_cep_btn_color', v)} />
+              </div>
+            </div>
+
+            <p style={{ fontSize: '0.78rem', color: 'var(--adm-text2)', margin: 0 }}>
+              Botão “Sou Cliente”:
+            </p>
+            <div className="admin-form-row">
+              <div className="admin-field">
+                <label>Cor de Fundo</label>
+                <ColorPicker value={form.splash_btn1_bg || '#FFFFFF'} onChange={v => set('splash_btn1_bg', v)} />
+              </div>
+              <div className="admin-field">
+                <label>Cor do Texto</label>
+                <ColorPicker value={form.splash_btn1_color || '#002D72'} onChange={v => set('splash_btn1_color', v)} />
+              </div>
+            </div>
+
+            <div className="admin-field">
+              <label>Botão “Quero Ser Cliente” — Texto e Borda</label>
+              <ColorPicker value={form.splash_btn2_color || '#FFFFFF'} onChange={v => set('splash_btn2_color', v)} />
+              <p style={{ fontSize: '0.75rem', color: 'var(--adm-text2)' }}>
+                O fundo deste botão é sempre transparente (formato contornado).
+              </p>
             </div>
           </div>
         </div>

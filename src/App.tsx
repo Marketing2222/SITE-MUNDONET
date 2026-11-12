@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { isLoggedIn } from './admin/hooks/useAuth';
 import { API_BASE_URL } from './config/api';
 
@@ -17,6 +17,7 @@ import Support from './components/Support';
 import Benefits from './components/Benefits';
 import Contact from './components/Contact';
 import ExitPopup from './components/ExitPopup';
+import SplashScreen from './components/SplashScreen';
 import CepChecker from './components/CepChecker';
 import Webchat from './components/Webchat';
 import { openOpaChat } from './utils/webchat';
@@ -71,6 +72,19 @@ function PublicSite() {
   const [webchatAnonimo, setWebchatAnonimo] = useState(true);
   const [webchatWelcome, setWebchatWelcome] = useState('');
   const [webchatCss, setWebchatCss] = useState('');
+
+  // ── Tela inicial (splash) ─────────────────────────────────────
+  // Guarda na sessão para não perguntar de novo na mesma visita.
+  // Use ?splash=1 na URL para forçar a exibição (útil para testes).
+  const forceSplash = new URLSearchParams(window.location.search).get('splash') === '1';
+  const [entered, setEntered] = useState(() => {
+    if (forceSplash) return false;
+    return sessionStorage.getItem('mn_entered') === '1';
+  });
+  const handleEnter = useCallback(() => {
+    sessionStorage.setItem('mn_entered', '1');
+    setEntered(true);
+  }, []);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`)
@@ -165,6 +179,9 @@ function PublicSite() {
   };
 
   const order = sectionOrder ? mergeOrder(sectionOrder) : defaultOrder;
+
+  // Enquanto o visitante não entrar, mostra apenas a tela inicial.
+  if (!entered) return <SplashScreen onEnter={handleEnter} />;
 
   return (
     <>
