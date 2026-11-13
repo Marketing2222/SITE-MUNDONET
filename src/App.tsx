@@ -74,17 +74,10 @@ function PublicSite() {
   const [webchatCss, setWebchatCss] = useState('');
 
   // ── Tela inicial (splash) ─────────────────────────────────────
-  // Guarda na sessão para não perguntar de novo na mesma visita.
-  // Use ?splash=1 na URL para forçar a exibição (útil para testes).
-  const forceSplash = new URLSearchParams(window.location.search).get('splash') === '1';
-  const [entered, setEntered] = useState(() => {
-    if (forceSplash) return false;
-    return sessionStorage.getItem('mn_entered') === '1';
-  });
-  const handleEnter = useCallback(() => {
-    sessionStorage.setItem('mn_entered', '1');
-    setEntered(true);
-  }, []);
+  // Sempre volta para a tela inicial quando a página é carregada/atualizada (F5).
+  // Ao navegar dentro do site (SPA), não volta — só em recarregamento total.
+  const [entered, setEntered] = useState(false);
+  const handleEnter = useCallback(() => setEntered(true), []);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/settings?_t=${Date.now()}`)
