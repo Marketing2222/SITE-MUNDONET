@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { API_BASE_URL } from '../../config/api';
 import { getToken } from '../hooks/useAuth';
 
@@ -8,10 +8,27 @@ interface ImageUploadProps {
   accept?: string;
 }
 
+/** Detecta PNG-8 (paleta de 256 cores) — provoca granulado/banding em fotos. */
+const isPalettePng = async (file: File): Promise<boolean> => {
+  if (file.type !== 'image/png' && !/\.png$/i.test(file.name)) return false;
+  try {
+    const buf = new Uint8Array(await file.slice(0, 30).arrayBuffer());
+    // Assinatura PNG + chunk IHDR: offset 24 = bit depth, offset 25 = color type (3 = paleta)
+    return buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47 && buf[25] === 3;
+  } catch {
+    return false;
+  }
+};
+
 export const ImageUpload = ({ value, onChange, accept = 'image/*' }: ImageUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [warn, setWarn] = useState('');
 
   const handleFile = async (file: File) => {
+    setWarn('');
+    if (await isPalettePng(file)) {
+      setWarn('⚠️ Esta imagem é PNG-8 (apenas 256 cores) — pode exibir granulado na tela. Envie a imagem original em PNG-24 ou JPG para melhor qualidade.');
+    }
     const fd = new FormData();
     fd.append('image', file);
     const token = getToken();
@@ -58,6 +75,11 @@ export const ImageUpload = ({ value, onChange, accept = 'image/*' }: ImageUpload
           Upload
         </button>
       </div>
+      {warn && (
+        <div style={{ fontSize: 12, color: '#b45309', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 6, padding: '6px 10px', lineHeight: 1.4 }}>
+          {warn}
+        </div>
+      )}
     </div>
   );
 };

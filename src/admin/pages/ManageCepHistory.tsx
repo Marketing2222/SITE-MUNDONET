@@ -49,6 +49,8 @@ interface WhatsappClick {
   id: number;
   cep: string;
   source: string;
+  name: string;
+  whatsapp: string;
   created_at: string;
 }
 
@@ -204,10 +206,12 @@ const ManageCepHistory = () => {
 
   const exportClicksCSV = () => {
     if (!clickData?.data.length) return;
-    const headers = ['CEP', 'ORIGEM', 'DATA E HORA'];
+    const headers = ['CEP', 'ORIGEM', 'NOME', 'WHATSAPP', 'DATA E HORA'];
     const rows = clickData.data.map(r => [
       r.cep,
       r.source === 'splash' ? 'Tela Inicial' : r.source === 'hero' ? 'Banner Home' : 'Card CEP',
+      r.name || '',
+      r.whatsapp ? r.whatsapp.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3') : '',
       new Date(r.created_at).toLocaleString('pt-BR'),
     ]);
     const csv = [headers, ...rows].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
@@ -660,6 +664,8 @@ const ManageCepHistory = () => {
                     <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
                       <th style={thStyle}>CEP</th>
                       <th style={thStyle}>Origem</th>
+                      <th style={thStyle}>Nome</th>
+                      <th style={thStyle}>WhatsApp</th>
                       <th style={thStyle}>Data/Hora</th>
                     </tr>
                   </thead>
@@ -675,6 +681,12 @@ const ManageCepHistory = () => {
                           <span style={{ background: '#dcfce7', color: '#15803d', padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600 }}>
                             {item.source === 'splash' ? 'Tela Inicial' : item.source === 'hero' ? 'Banner Home' : 'Card CEP'}
                           </span>
+                        </td>
+                        <td style={{ ...tdStyle, fontWeight: 600, color: '#1e293b' }}>{item.name || '—'}</td>
+                        <td style={{ ...tdStyle, whiteSpace: 'nowrap' }}>
+                          {item.whatsapp
+                            ? item.whatsapp.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3')
+                            : '—'}
                         </td>
                         <td style={{ ...tdStyle, color: '#64748b', whiteSpace: 'nowrap' }}>{formatDate(item.created_at)}</td>
                       </tr>

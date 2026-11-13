@@ -14,6 +14,8 @@ router.post('/', async (req, res) => {
       id,
       cep: (req.body.cep || '').replace(/\D/g, ''),
       source: req.body.source || 'splash',
+      name: String(req.body.name || '').trim().slice(0, 80),
+      whatsapp: String(req.body.whatsapp || '').replace(/\D/g, '').slice(0, 11),
       created_at: new Date().toISOString(),
     });
     await db.write();

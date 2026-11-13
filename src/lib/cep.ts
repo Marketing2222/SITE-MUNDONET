@@ -136,9 +136,16 @@ export const loadCepSettings = (): Promise<CepSettings> => {
   return settingsPromise;
 };
 
-export const buildWhatsAppLink = (base: string, cep: string, address: AddressInfo | null): string => {
+export interface LeadInfo {
+  name?: string;
+  whatsapp?: string;
+}
+
+export const buildWhatsAppLink = (base: string, cep: string, address: AddressInfo | null, lead?: LeadInfo): string => {
   const link = base.split('&text=')[0];
   let msg = 'Olá! Vim pelo site e gostaria de contratar a internet.';
+  if (lead?.name) msg += `%0ANome: ${lead.name}`;
+  if (lead?.whatsapp) msg += `%0AWhatsApp: ${lead.whatsapp}`;
   msg += `%0ACEP: ${cep}`;
   if (address) {
     if (address.street) msg += `%0ARua: ${address.street}`;

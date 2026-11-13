@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import '../styles/SplashScreen.css';
 import useCepChecker from '../hooks/useCepChecker';
-import { buildWhatsAppLink } from '../lib/cep';
+import { buildWhatsAppLink, formatPhone } from '../lib/cep';
 import { trackWhatsAppClick } from '../lib/track';
 import { API_BASE_URL } from '../config/api';
 
@@ -33,7 +33,12 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
   const [logoUrl, setLogoUrl] = useState(DEFAULT_LOGO);
   const [ui, setUi] = useState<UiSettings>(DEFAULT_UI);
   const [focused, setFocused] = useState(false);
+  const [leadName, setLeadName] = useState('');
+  const [leadWhats, setLeadWhats] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const leadDigits = leadWhats.replace(/\D/g, '');
+  const leadValid = leadName.trim().length >= 2 && leadDigits.length >= 10 && leadDigits.length <= 11;
 
   useEffect(() => {
     let active = true;
@@ -74,6 +79,12 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
   const focusCep = () => {
     if (!showForm) reset();
     setTimeout(() => inputRef.current?.focus(), 30);
+  };
+
+  const handleReset = () => {
+    setLeadName('');
+    setLeadWhats('');
+    reset();
   };
 
   const bgStyle: CSSProperties = bgUrl
@@ -142,6 +153,32 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                     {addressInfo.city && addressInfo.uf && <>{addressInfo.city} - {addressInfo.uf}</>}
                   </p>
                 )}
+                <div className="splash__lead">
+                  <input
+                    className="splash__lead-input"
+                    type="text"
+                    placeholder="Seu nome"
+                    autoComplete="name"
+                    maxLength={60}
+                    value={leadName}
+                    onChange={e => setLeadName(e.target.value)}
+                  />
+                  <input
+                    className="splash__lead-input"
+                    type="tel"
+                    placeholder="Seu WhatsApp ((00) 00000-0000)"
+                    autoComplete="tel"
+                    inputMode="numeric"
+                    maxLength={16}
+                    value={leadWhats}
+                    onChange={e => setLeadWhats(formatPhone(e.target.value))}
+                  />
+                  {!leadValid && (
+                    <p className="splash__lead-hint">
+                      Preencha seu nome e WhatsApp para falar com o especialista
+                    </p>
+                  )}
+                </div>
                 <div className="splash__result-actions">
                   <button
                     type="button"
@@ -152,17 +189,30 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                     Acessar o site
                   </button>
                   <a
-                    className="splash__mini splash__mini--ghost"
+                    className={`splash__mini splash__mini--ghost ${leadValid ? '' : 'is-disabled'}`}
                     style={{ color: ui.btn2Color, borderColor: ui.btn2Color }}
-                    href={buildWhatsAppLink(settings.whatsapp_link, cep, addressInfo)}
+                    href={buildWhatsAppLink(settings.whatsapp_link, cep, addressInfo, {
+                      name: leadName.trim(),
+                      whatsapp: leadDigits,
+                    })}
                     target="_blank"
                     rel="noreferrer"
-                    onClick={() => trackWhatsAppClick(cep, 'splash')}
+                    aria-disabled={!leadValid}
+                    onClick={e => {
+                      if (!leadValid) {
+                        e.preventDefault();
+                        return;
+                      }
+                      trackWhatsAppClick(cep, 'splash', {
+                        name: leadName.trim(),
+                        whatsapp: leadDigits,
+                      });
+                    }}
                   >
                     Falar com especialista
                   </a>
                 </div>
-                <button type="button" className="splash__link" onClick={reset}>
+                <button type="button" className="splash__link" onClick={handleReset}>
                   Fazer nova consulta
                 </button>
               </div>
