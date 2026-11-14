@@ -112,6 +112,16 @@ export const CepChecker = () => {
                     <input
                       className="cep-input"
                       type="text"
+                      placeholder="SEU NOME"
+                      autoComplete="name"
+                      maxLength={60}
+                      style={{ textTransform: 'uppercase' }}
+                      value={interest.nome}
+                      onChange={e => interest.setNome(e.target.value)}
+                    />
+                    <input
+                      className="cep-input"
+                      type="text"
                       placeholder="Endereço (rua, nº)"
                       value={interest.endereco}
                       onChange={e => interest.setEndereco(e.target.value)}

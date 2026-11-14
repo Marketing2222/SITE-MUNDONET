@@ -294,6 +294,12 @@
   pointer-events: none;
 }
 
+/* Nome sempre em caixa alta */
+.splash__caps {
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
 /* ── Botões principais ──────────────────────────────────────── */
 .splash__actions {
   display: flex;

@@ -22,6 +22,7 @@ router.get('/', authMiddleware, async (req, res) => {
     const q = search.toLowerCase();
     results = results.filter(r =>
       r.cep.includes(q) ||
+      (r.nome && r.nome.toLowerCase().includes(q)) ||
       (r.endereco && r.endereco.toLowerCase().includes(q)) ||
       (r.bairro && r.bairro.toLowerCase().includes(q)) ||
       (r.whatsapp && r.whatsapp.includes(q))
@@ -45,9 +46,10 @@ router.post('/', async (req, res) => {
   const entry = {
     id,
     cep: req.body.cep || '',
+    nome: String(req.body.nome || '').trim().slice(0, 80).toUpperCase(),
     endereco: req.body.endereco || '',
     bairro: req.body.bairro || '',
-    whatsapp: req.body.whatsapp || '',
+    whatsapp: String(req.body.whatsapp || '').replace(/\D/g, '').slice(0, 11),
     created_at: new Date().toISOString(),
   };
   db.data[TABLE].push(entry);

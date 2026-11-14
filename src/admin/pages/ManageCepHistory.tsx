@@ -15,6 +15,7 @@ interface CepSearch {
 interface CepInterest {
   id: number;
   cep: string;
+  nome: string;
   endereco: string;
   bairro: string;
   whatsapp: string;
@@ -244,9 +245,9 @@ const ManageCepHistory = () => {
 
   const exportInterestCSV = () => {
     if (!interestData?.data.length) return;
-    const headers = ['CEP', 'ENDEREÇO', 'BAIRRO', 'WHATSAPP', 'DATA E HORA'];
+    const headers = ['CEP', 'NOME', 'ENDEREÇO', 'BAIRRO', 'WHATSAPP', 'DATA E HORA'];
     const rows = interestData.data.map(r => [
-      r.cep, r.endereco, r.bairro, r.whatsapp,
+      r.cep, r.nome || '', r.endereco, r.bairro, r.whatsapp,
       new Date(r.created_at).toLocaleString('pt-BR'),
     ]);
     const csv = [headers, ...rows].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
@@ -495,7 +496,7 @@ const ManageCepHistory = () => {
           <div style={cardStyle}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'flex-end' }}>
               <div style={{ flex: '1 1 250px' }}>
-                <label style={labelStyle}>Buscar (CEP, endereço, bairro, WhatsApp)</label>
+                <label style={labelStyle}>Buscar (CEP, nome, endereço, bairro, WhatsApp)</label>
                 <input style={inputStyle} placeholder="Buscar..." value={interestSearch} onChange={e => { setInterestSearch(e.target.value); setInterestPage(1); }} />
               </div>
               <div style={{ display: 'flex', gap: 8, paddingBottom: 2 }}>
@@ -517,6 +518,7 @@ const ManageCepHistory = () => {
                   <thead>
                     <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
                       <th style={thStyle}>CEP</th>
+                      <th style={thStyle}>Nome</th>
                       <th style={thStyle}>Endereço</th>
                       <th style={thStyle}>Bairro</th>
                       <th style={thStyle}>WhatsApp</th>
@@ -528,6 +530,7 @@ const ManageCepHistory = () => {
                     {interestData.data.map(item => (
                       <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                         <td style={tdStyle}><code style={{ background: '#f1f5f9', padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 600 }}>{item.cep}</code></td>
+                        <td style={{ ...tdStyle, fontWeight: 600, color: '#1e293b' }}>{item.nome || '—'}</td>
                         <td style={tdStyle}>{item.endereco || '—'}</td>
                         <td style={tdStyle}>{item.bairro || '—'}</td>
                         <td style={tdStyle}>

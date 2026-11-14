@@ -15,6 +15,7 @@ export const useCepChecker = () => {
   const [cep, setCepRaw] = useState('');
   const [result, setResult] = useState<ResultType>('idle');
   const [addressInfo, setAddressInfo] = useState<AddressInfo | null>(null);
+  const [interestNome, setInterestNome] = useState('');
   const [interestEndereco, setInterestEndereco] = useState('');
   const [interestBairro, setInterestBairro] = useState('');
   const [interestWhatsapp, setInterestWhatsapp] = useState('');
@@ -84,14 +85,22 @@ export const useCepChecker = () => {
     setResult('idle');
     setCepRaw('');
     setAddressInfo(null);
+    setInterestNome('');
     setInterestEndereco('');
     setInterestBairro('');
     setInterestWhatsapp('');
     setInterestSent(false);
   }, []);
 
+  // Mesma fórmula do "Falar com especialista": nome + WhatsApp com 11 dígitos
+  const interestDigits = interestWhatsapp.replace(/\D/g, '');
+  const interestValid =
+    interestNome.trim().length >= 2 &&
+    Boolean(interestEndereco.trim()) &&
+    interestDigits.length === 11;
+
   const handleInterestSubmit = useCallback(async () => {
-    if (!interestEndereco.trim() || !interestWhatsapp.trim()) return;
+    if (!interestNome.trim() || !interestEndereco.trim() || interestWhatsapp.replace(/\D/g, '').length !== 11) return;
     setInterestSending(true);
     try {
       await fetch(`${API_BASE_URL}/api/cep-interest`, {
@@ -99,9 +108,10 @@ export const useCepChecker = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cep,
+          nome: interestNome.trim().toUpperCase(),
           endereco: interestEndereco.trim(),
           bairro: interestBairro.trim(),
-          whatsapp: interestWhatsapp.trim(),
+          whatsapp: interestWhatsapp.replace(/\D/g, ''),
         }),
       });
       setInterestSent(true);
@@ -110,7 +120,7 @@ export const useCepChecker = () => {
     } finally {
       setInterestSending(false);
     }
-  }, [cep, interestEndereco, interestBairro, interestWhatsapp]);
+  }, [cep, interestNome, interestEndereco, interestBairro, interestWhatsapp]);
 
   const setInterestPhone = useCallback((value: string) => {
     setInterestWhatsapp(formatPhone(value));
@@ -127,6 +137,8 @@ export const useCepChecker = () => {
     handleVerify,
     reset,
     interest: {
+      nome: interestNome,
+      setNome: setInterestNome,
       endereco: interestEndereco,
       setEndereco: setInterestEndereco,
       bairro: interestBairro,
@@ -136,7 +148,7 @@ export const useCepChecker = () => {
       sent: interestSent,
       sending: interestSending,
       submit: handleInterestSubmit,
-      valid: Boolean(interestEndereco.trim() && interestWhatsapp.trim()),
+      valid: interestValid,
     },
   };
 };

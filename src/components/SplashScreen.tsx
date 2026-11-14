@@ -38,7 +38,8 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const leadDigits = leadWhats.replace(/\D/g, '');
-  const leadValid = leadName.trim().length >= 2 && leadDigits.length >= 10 && leadDigits.length <= 11;
+  const leadNameUp = leadName.trim().toUpperCase();
+  const leadValid = leadName.trim().length >= 2 && leadDigits.length === 11;
 
   useEffect(() => {
     let active = true;
@@ -155,9 +156,9 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                 )}
                 <div className="splash__lead">
                   <input
-                    className="splash__lead-input"
+                    className="splash__lead-input splash__caps"
                     type="text"
-                    placeholder="Seu nome"
+                    placeholder="SEU NOME"
                     autoComplete="name"
                     maxLength={60}
                     value={leadName}
@@ -166,7 +167,7 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                   <input
                     className="splash__lead-input"
                     type="tel"
-                    placeholder="Seu WhatsApp ((00) 00000-0000)"
+                    placeholder="(00) 00000-0000"
                     autoComplete="tel"
                     inputMode="numeric"
                     maxLength={16}
@@ -175,7 +176,7 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                   />
                   {!leadValid && (
                     <p className="splash__lead-hint">
-                      Preencha seu nome e WhatsApp para falar com o especialista
+                      Preencha seu nome e o WhatsApp completo — 11 dígitos (XX) XXXXX-XXXX
                     </p>
                   )}
                 </div>
@@ -192,7 +193,7 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                     className={`splash__mini splash__mini--ghost ${leadValid ? '' : 'is-disabled'}`}
                     style={{ color: ui.btn2Color, borderColor: ui.btn2Color }}
                     href={buildWhatsAppLink(settings.whatsapp_link, cep, addressInfo, {
-                      name: leadName.trim(),
+                      name: leadNameUp,
                       whatsapp: leadDigits,
                     })}
                     target="_blank"
@@ -204,7 +205,7 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                         return;
                       }
                       trackWhatsAppClick(cep, 'splash', {
-                        name: leadName.trim(),
+                        name: leadNameUp,
                         whatsapp: leadDigits,
                       });
                     }}
@@ -227,6 +228,15 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                       Deixe seus dados para quando expandirmos sua região:
                     </p>
                     <input
+                      className="splash__interest-input splash__caps"
+                      type="text"
+                      placeholder="SEU NOME"
+                      autoComplete="name"
+                      maxLength={60}
+                      value={interest.nome}
+                      onChange={e => interest.setNome(e.target.value)}
+                    />
+                    <input
                       className="splash__interest-input"
                       type="text"
                       placeholder="Endereço (rua, nº)"
@@ -247,7 +257,13 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                       value={interest.whatsapp}
                       onChange={e => interest.setWhatsapp(e.target.value)}
                       maxLength={16}
+                      inputMode="numeric"
                     />
+                    {!interest.valid && (
+                      <p className="splash__lead-hint">
+                        Preencha seu nome e o WhatsApp completo — 11 dígitos (XX) XXXXX-XXXX
+                      </p>
+                    )}
                     <button
                       type="button"
                       className="splash__consult"
