@@ -28,13 +28,16 @@ const DEFAULT_UI = {
 type UiSettings = typeof DEFAULT_UI;
 
 export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
-  const { settings, ready, cep, setCep, result, addressInfo, handleVerify, reset, interest } = useCepChecker();
+  const { settings, ready, cep, setCep, result, addressInfo, handleVerify, handleByAddress, reset, interest } = useCepChecker();
   const [bgUrl, setBgUrl] = useState('');
   const [logoUrl, setLogoUrl] = useState(DEFAULT_LOGO);
   const [ui, setUi] = useState<UiSettings>(DEFAULT_UI);
   const [focused, setFocused] = useState(false);
   const [leadName, setLeadName] = useState('');
   const [leadWhats, setLeadWhats] = useState('');
+  const [addrMode, setAddrMode] = useState(false);
+  const [addr, setAddr] = useState({ rua: '', bairro: '', cidade: '' });
+  const [addrBusy, setAddrBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const leadDigits = leadWhats.replace(/\D/g, '');
@@ -88,6 +91,16 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
     reset();
   };
 
+  const handleAddressSubmit = async () => {
+    if (addrBusy || !addr.rua.trim() || !addr.cidade.trim()) return;
+    setAddrBusy(true);
+    try {
+      await handleByAddress(addr.rua, addr.bairro, addr.cidade);
+    } finally {
+      setAddrBusy(false);
+    }
+  };
+
   const bgStyle: CSSProperties = bgUrl
     ? { backgroundImage: `url("${bgUrl}")` }
     : { backgroundImage: `linear-gradient(135deg, ${ui.bgColor1} 0%, ${ui.bgColor2} 100%)` };
@@ -105,7 +118,7 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
 
         {ready && settings.enabled && (
           <div className="splash__cep">
-            {showForm && (
+            {showForm && !addrMode && (
               <>
                 <div className={`splash__field ${result === 'invalid' ? 'has-error' : ''}`}>
                   <input
@@ -140,6 +153,69 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
                   onClick={handleVerify}
                 >
                   {result === 'invalid' ? 'Tentar novamente' : ui.cepButtonText}
+                </button>
+                <button
+                  type="button"
+                  className="splash__link splash__nocep"
+                  onClick={() => setAddrMode(true)}
+                >
+                  Não sei meu CEP
+                </button>
+              </>
+            )}
+
+            {showForm && addrMode && (
+              <>
+                <div className="splash__lead">
+                  <input
+                    className="splash__lead-input"
+                    type="text"
+                    placeholder="Nome da rua"
+                    autoComplete="street-address"
+                    maxLength={80}
+                    value={addr.rua}
+                    onChange={e => setAddr(a => ({ ...a, rua: e.target.value }))}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAddressSubmit(); } }}
+                  />
+                  <input
+                    className="splash__lead-input"
+                    type="text"
+                    placeholder="Bairro"
+                    maxLength={60}
+                    value={addr.bairro}
+                    onChange={e => setAddr(a => ({ ...a, bairro: e.target.value }))}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAddressSubmit(); } }}
+                  />
+                  <input
+                    className="splash__lead-input"
+                    type="text"
+                    placeholder="Cidade"
+                    autoComplete="address-level2"
+                    maxLength={60}
+                    value={addr.cidade}
+                    onChange={e => setAddr(a => ({ ...a, cidade: e.target.value }))}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAddressSubmit(); } }}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="splash__consult"
+                  style={{
+                    backgroundColor: ui.ctaBg,
+                    color: ui.ctaColor,
+                    opacity: addrBusy || !addr.rua.trim() || !addr.cidade.trim() ? 0.5 : 1,
+                  }}
+                  disabled={addrBusy || !addr.rua.trim() || !addr.cidade.trim()}
+                  onClick={handleAddressSubmit}
+                >
+                  {addrBusy ? 'Consultando...' : ui.cepButtonText}
+                </button>
+                <button
+                  type="button"
+                  className="splash__link splash__nocep"
+                  onClick={() => setAddrMode(false)}
+                >
+                  Já sei meu CEP
                 </button>
               </>
             )}
@@ -219,13 +295,19 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
               </div>
             )}
 
-            {result === 'fail' && (
+            {(result === 'fail' || result === 'pending') && (
               <div className="splash__result splash__result--fail">
-                <p className="splash__result-title">{settings.fail_msg}</p>
+                <p className="splash__result-title">
+                  {result === 'pending'
+                    ? 'Não conseguimos identificar seu CEP pelo endereço 😕'
+                    : settings.fail_msg}
+                </p>
                 {!interest.sent ? (
                   <div className="splash__interest">
                     <p className="splash__interest-title">
-                      Deixe seus dados para quando expandirmos sua região:
+                      {result === 'pending'
+                        ? 'Deixe seus dados que nossa equipe verifica se atendemos sua região:'
+                        : 'Deixe seus dados para quando expandirmos sua região:'}
                     </p>
                     <input
                       className="splash__interest-input splash__caps"

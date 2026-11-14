@@ -300,6 +300,13 @@
   letter-spacing: 0.6px;
 }
 
+/* Link "Não sei meu CEP" */
+.splash__nocep {
+  display: block;
+  margin: 12px auto 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 /* ── Botões principais ──────────────────────────────────────── */
 .splash__actions {
   display: flex;

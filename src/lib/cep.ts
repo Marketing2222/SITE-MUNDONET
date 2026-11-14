@@ -24,7 +24,7 @@ export interface AddressInfo {
   uf: string;
 }
 
-export type ResultType = 'idle' | 'invalid' | 'success' | 'fail';
+export type ResultType = 'idle' | 'invalid' | 'success' | 'fail' | 'pending';
 
 export const DEFAULT_RANGES = [
   '65015-65015', '65020-65020', '65031-65031', '65035-65035',

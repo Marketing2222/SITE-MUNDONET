@@ -126,6 +126,68 @@ export const useCepChecker = () => {
     setInterestWhatsapp(formatPhone(value));
   }, []);
 
+  /**
+   * Consulta por endereço ("Não sei meu CEP"):
+   * acha o CEP do endereço via Nominatim (OpenStreetMap) e aplica a mesma
+   * verificação de faixas. Retorna 'success' | 'fail' | 'pending'
+   * ('pending' = não conseguiu identificar o CEP → verificação manual).
+   */
+  const handleByAddress = useCallback(async (rua: string, bairro: string, cidade: string): Promise<ResultType> => {
+    const q = [rua.trim(), bairro.trim(), cidade.trim(), 'Brasil'].filter(Boolean).join(', ');
+    let cepFound = '';
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=br&q=${encodeURIComponent(q)}`
+      );
+      const data = await res.json();
+      const digits = String(data?.[0]?.address?.postcode || '').replace(/\D/g, '');
+      if (digits.length === 8) cepFound = digits;
+    } catch {
+      /* sem rede / limite do serviço → tratado como pending abaixo */
+    }
+
+    if (!cepFound) {
+      setResult('pending');
+      setAddressInfo(null);
+      return 'pending';
+    }
+
+    const formatted = formatCep(cepFound);
+    setCepRaw(formatted);
+    const r = checkCep(formatted, settings.cep_ranges);
+    setResult(r);
+    setAddressInfo(null);
+
+    // Preenche o endereço real do CEP e registra a busca (mesmo fluxo do CEP digitado)
+    try {
+      const viacepRes = await fetch(`https://viacep.com.br/ws/${cepFound}/json/`);
+      const viacepData = await viacepRes.json();
+      if (!viacepData.erro) {
+        setAddressInfo({
+          street: viacepData.logradouro || rua.trim(),
+          neighborhood: viacepData.bairro || bairro.trim(),
+          city: viacepData.localidade || cidade.trim(),
+          uf: viacepData.uf || '',
+        });
+      }
+      await fetch(`${API_BASE_URL}/api/cep-searches`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cep: formatted,
+          street: viacepData.logradouro || rua.trim(),
+          neighborhood: viacepData.bairro || bairro.trim(),
+          city: viacepData.localidade || cidade.trim(),
+          uf: viacepData.uf || '',
+          result: r,
+        }),
+      });
+    } catch {
+      /* falha silenciosa — o resultado principal já foi definido */
+    }
+    return r;
+  }, [settings.cep_ranges]);
+
   return {
     settings,
     ready,
@@ -135,6 +197,7 @@ export const useCepChecker = () => {
     setResult,
     addressInfo,
     handleVerify,
+    handleByAddress,
     reset,
     interest: {
       nome: interestNome,
