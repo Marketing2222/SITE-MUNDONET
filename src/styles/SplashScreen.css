@@ -30,10 +30,11 @@
   pointer-events: none;
 }
 
+/* ── Card de vidro (logo + CEP + ações num bloco só) ────────── */
 .splash__content {
   position: relative;
   z-index: 2;
-  width: min(460px, 88vw);
+  width: min(500px, 92vw);
   margin-left: auto;
   margin-right: 7vw;
   display: flex;
@@ -41,6 +42,18 @@
   align-items: center;
   text-align: center;
   animation: splashIn 0.6s ease both;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 26px;
+  padding: 34px 32px;
+  box-shadow: 0 30px 70px rgba(0, 8, 30, 0.4);
+}
+
+/* No resultado, não mostra SOU/QUERO SER CLIENTE (já tem "Acessar o site") */
+.splash--result .splash__actions {
+  display: none;
 }
 
 @keyframes splashIn {
@@ -49,10 +62,10 @@
 }
 
 .splash__logo {
-  max-height: 96px;
-  max-width: 260px;
+  max-height: 78px;
+  max-width: 230px;
   object-fit: contain;
-  margin-bottom: 44px;
+  margin-bottom: 26px;
   filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
 }
 
@@ -106,7 +119,7 @@
 
 .splash__consult {
   width: 100%;
-  padding: 14px 18px;
+  padding: 13px 18px;
   border: none;
   border-radius: 999px;
   background: #fcb900;
@@ -310,9 +323,11 @@
 /* ── Botões principais ──────────────────────────────────────── */
 .splash__actions {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
-  margin-top: 36px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   flex-wrap: wrap;
 }
 
@@ -364,13 +379,13 @@
 
   .splash__content {
     margin: 0 auto;
-    width: min(440px, 88vw);
-    padding-bottom: 100px;
+    width: min(440px, 92vw);
+    padding: 26px 20px;
   }
 
   .splash__logo {
-    max-height: 70px;
-    margin-bottom: 30px;
+    max-height: 64px;
+    margin-bottom: 20px;
   }
 
   .splash__actions {

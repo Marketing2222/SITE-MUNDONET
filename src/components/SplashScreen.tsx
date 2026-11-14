@@ -107,7 +107,7 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
 
   return (
     <div
-      className={`splash ${focused ? 'splash--focused' : ''}`}
+      className={`splash ${focused ? 'splash--focused' : ''} ${showForm ? 'splash--form' : 'splash--result'}`}
       style={{ '--splash-accent': ui.ctaBg } as CSSProperties}
     >
       <div className="splash__bg" style={bgStyle} />
