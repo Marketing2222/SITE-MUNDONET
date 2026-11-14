@@ -111,7 +111,6 @@ export const SplashScreen = ({ onEnter }: SplashScreenProps) => {
       style={{ '--splash-accent': ui.ctaBg } as CSSProperties}
     >
       <div className="splash__bg" style={bgStyle} />
-      <div className="splash__overlay" />
 
       <div className="splash__content">
         <img className="splash__logo" src={logoUrl} alt="Mundonet Telecom" />
